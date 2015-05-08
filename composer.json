@@ -1,0 +1,27 @@
+{
+    "name": "mmeyer2k/dcrypt",
+    "description": "A petite library of encryption functionality for PHP",
+    "tags": ["encryption", "hashing", "hmac", "aes", "otp", "pkcs7", "rc4", "spritz"],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Michael Meyer",
+            "email": "m.meyer2k@gmail.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.3.0"
+    },
+    "require": {
+        "symfony/security-core": "2.6.*"
+    },
+    "require-dev": {
+        "mmeyer2k/retro": "dev-master"
+    },
+    "autoload": {
+        "psr-4": {
+            "Dcrypt\\": "src/"
+        }
+    },
+    "minimum-stability": "dev"
+}

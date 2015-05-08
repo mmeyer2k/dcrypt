@@ -1,0 +1,4 @@
+/vendor/
+/phpunit.phar
+/nbproject/
+benchmark.html
