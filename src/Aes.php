@@ -75,7 +75,7 @@ class Aes
     public static function decrypt($cyphertext, $key, $mode = MCRYPT_MODE_CBC, $cipher = MCRYPT_RIJNDAEL_128, $algo = 'sha256')
     {
         // Normalize (de/en)cryption key (by-ref) and return block size
-        $blocksize = self::_init($key, $cipher, $mode, $algo);
+        self::_init($key, $cipher, $mode, $algo);
 
         // Determine that size of the IV in bytes
         $ivsize = mcrypt_get_iv_size($cipher, $mode);
