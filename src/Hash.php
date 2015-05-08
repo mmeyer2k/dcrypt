@@ -104,7 +104,7 @@ class Hash
     public static function ihmac($data, $key, $cost, $algo = 'sha256')
     {
         for ($i = 0; $i <= $cost; $i++) {
-            $data = hash_hmac($algo, $data . $i. $cost, $key, true);
+            $data = hash_hmac($algo, $data . $i . $cost, $key, true);
         }
 
         return $data;
