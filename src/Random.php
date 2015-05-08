@@ -38,7 +38,7 @@ class Random
         $ret = mcrypt_create_iv($bytes, MCRYPT_DEV_URANDOM);
         
         if ($ret === false) {
-            throw new \exception('Dcrypt failed to generate a random number');
+            throw new \exception('Dcrypt failed to generate a random number'); // @codeCoverageIgnore
         }
         
         return $ret;
