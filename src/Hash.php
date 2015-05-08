@@ -139,8 +139,11 @@ class Hash
         // Get the salt value from the decrypted prefix
         $salt = Otp::crypt(substr($hash, 0, self::saltbytes), $key);
 
-        // Get the cost value from the decrypted prefix
-        $cost = ord(Otp::crypt(substr($hash, self::saltbytes, self::costbytes), $key));
+        // Get the encrypted cost byte
+        $cost = substr($hash, self::saltbytes, self::costbytes);
+
+        // Decrypt the cost value convert to integer
+        $cost = ord(Otp::crypt($cost, $key));
 
         // Return the boolean equivalence.
         return StringUtils::equals($hash, self::_build($input, $key, $salt, $cost));
