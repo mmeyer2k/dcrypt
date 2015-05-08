@@ -29,9 +29,10 @@ echo bin2hex($encrypted);
 # outputs your original plain text
 echo Dcrypt\Aes::decrypt($encrypted, $password);
 ```
+Supports the following mcrypt modes: `MCRYPT_MODE_CBC`, `MCRYPT_MODE_CFB`, `MCRYPT_MODE_ECB`, `MCRYPT_MODE_OFB`, `MCRYPT_MODE_NOFB`
 
 ## Fast One Time Pad Encryption
-When low memory usage is required, OTP saves about 20% of memory overhead compared to AES at a cost of extra CPU usage.
+Extremely fast symmetric stream encryption is available with the `Otp` class.
 ```php
 $crypted = Dcrypt\Otp::crypt('plaintext', 'key');
 
