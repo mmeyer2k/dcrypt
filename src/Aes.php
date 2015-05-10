@@ -22,7 +22,7 @@ use Symfony\Component\Security\Core\Util\StringUtils;
  * Features:
  *     - PKCS #7 padding of messages
  *     - random IV selection
- *     - checksum validation with SHA-256 HMAC
+ *     - checksum validation with SHA-256 HMAC by default
  *     - tested to be compatible with many ciphers, modes and hashing algorithms.
  *     - highly customizable, but default options are most secure
  *
