@@ -12,8 +12,7 @@ class OtpTest extends PHPUnit_Framework_TestCase
         $k = 'key123';
         $p = 'hello world';
         
-        $this->assertEquals($p, Otp::crypt($h, $k))
-        
+        $this->assertEquals($p, Otp::crypt($h, $k));
     }
 
     public function testCrypt()
