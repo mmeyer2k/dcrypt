@@ -42,7 +42,7 @@ class Otp
     /**
      * Encrypt or decrypt a binary input string.
      * 
-     * @param string $input Input data to XOR
+     * @param string $input Input data to encrypt
      * @param string $key   Encryption/decryption key to use on input.
      * 
      * @return string
