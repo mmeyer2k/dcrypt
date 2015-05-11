@@ -51,8 +51,8 @@ class Otp
     {
         $chunks = str_split($input, 64);
 
-        foreach ($chunks as $i => $chunk) {
-            $chunks[$i] = $chunk ^ hash('sha512', $key . $i, true);
+        foreach ($chunks as $i => &$chunk) {
+            $chunk = $chunk ^ hash('sha512', $key . $i, true);
         }
 
         return implode($chunks);
