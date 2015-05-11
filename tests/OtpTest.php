@@ -9,7 +9,7 @@ class OtpTest extends PHPUnit_Framework_TestCase
     {
         
         $h = hex2bin('cfceb8891c58071deedbd1');
-        $k = 'key123'
+        $k = 'key123';
         $p = 'hello world';
         
         $this->assertEquals($p, Otp::crypt($h, $k))
