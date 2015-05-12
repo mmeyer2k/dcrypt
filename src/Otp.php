@@ -28,6 +28,8 @@ namespace Dcrypt;
  * - key length is 512 bits
  * - does NOT chain cypher blocks, instead uses a form of block counter feedback
  * - does NOT generate IVs
+ * - as with all stream ciphers, never use the same key more than once
+ *   and never assume the authenticity of a message when decrypting
  * 
  * @category Dcrypt
  * @package  Dcrypt
