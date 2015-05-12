@@ -40,8 +40,7 @@ class Aes
      * 
      * @param string $cyphertext Cyphertext that needs a check sum.
      * @param string $iv         Initialization vector.
-     * @param string $key        Encryption key that will act as an HMAC 
-     *                           verification signature.
+     * @param string $key        HMAC key
      * @param string $mode       Mcrypt mode
      * @param string $cipher     Mcrypt cipher
      * @param string $algo       Hashing algorithm to use for internal operations
