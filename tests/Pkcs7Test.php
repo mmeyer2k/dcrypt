@@ -8,15 +8,15 @@ class Pkcs7Test extends PHPUnit_Framework_TestCase
     public function testPad()
     {
         foreach (self::arraySet() as $t) {
-            $this->assertEquals($t[1], strlen(Pkcs7::pad($t[0])));
+            $this->assertEquals($t[1], strlen(Pkcs7::pad($t[0], 32)));
         }
     }
 
     public function testUnpad()
     {
         foreach (self::arraySet() as $t) {
-            $padded = Pkcs7::pad($t[0]);
-            $this->assertEquals($t[0], Pkcs7::unpad($padded));
+            $padded = Pkcs7::pad($t[0], 10);
+            $this->assertEquals($t[0], Pkcs7::unpad($padded, 10));
         }
     }
 
