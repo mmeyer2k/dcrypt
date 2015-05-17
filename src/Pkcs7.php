@@ -30,11 +30,11 @@ class Pkcs7
      * PKCS #7 padding function.
      * 
      * @param string  $input     String to pad
-     * @param integer $blocksize Block size in bytes (default is 32)
+     * @param integer $blocksize Block size in bytes
      * 
      * @return string
      */
-    public static function pad($input, $blocksize = 32)
+    public static function pad($input, $blocksize)
     {
         // Determine the padding string that needs to be appended.
         $pad = self::_paddingString(strlen($input), $blocksize);
