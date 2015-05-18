@@ -64,12 +64,9 @@ class Rc4
      */
     protected static function initializeState($key)
     {
-        $s = array();
-        for ($i = 0; $i < 256; $i++) {
-            $s[$i] = $i;
-        }
+        $s = range(0, 255);
         $j = 0;
-        for ($i = 0; $i < 256; $i++) {
+        foreach (range(0, 255) as $i) {
             $j = ($j + $s[$i] + ord($key[$i % strlen($key)])) % 256;
             $x = $s[$i];
             $s[$i] = $s[$j];
