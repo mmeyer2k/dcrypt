@@ -15,11 +15,10 @@
  * @license  http://opensource.org/licenses/MIT The MIT License (MIT)
  * @link     https://github.com/mmeyer2k/dcrypt
  */
-
 $g = 'dcrypt_loaded';
 
 if (!defined($g)) {
-    foreach(array('Aes', 'Hash', 'Otp', 'Pkcs7', 'Random', 'Rc4', 'Spritz') as $f) {
+    foreach (array('Mcrypt', 'Openssl', 'Strcmp', 'Hash', 'Otp', 'Pkcs7', 'Random', 'Rc4', 'Spritz') as $f) {
         require_once __DIR__ . "/src/$f.php";
     }
     define($g, true);

@@ -14,8 +14,6 @@
 
 namespace Dcrypt;
 
-use Symfony\Component\Security\Core\Util\StringUtils;
-
 /**
  * The hash class addresses some shortcomings in the password_hash function
  * built into PHP such as...
@@ -146,7 +144,7 @@ class Hash
         $cost = ord(Otp::crypt($cost, $key));
 
         // Return the boolean equivalence.
-        return StringUtils::equals($hash, self::_build($input, $key, $salt, $cost));
+        return Strcmp::equals($hash, self::_build($input, $key, $salt, $cost));
     }
 
 }
