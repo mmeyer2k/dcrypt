@@ -72,4 +72,26 @@ class Strcmp
         return 0 === $result;
     }
 
+    /**
+     * Returns the number of bytes in a string.
+     *
+     * @param string $string The string whose length we wish to obtain
+     *
+     * @return int
+     */
+    private static function safeStrlen($string)
+    {
+        // Premature optimization
+        // Since this cannot be changed at runtime, we can cache it
+        static $funcExists = null;
+        if (null === $funcExists) {
+            $funcExists = function_exists('mb_strlen');
+        }
+
+        if ($funcExists) {
+            return mb_strlen($string, '8bit');
+        }
+
+        return strlen($string);
+    }
 }
