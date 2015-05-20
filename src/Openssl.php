@@ -63,7 +63,7 @@ class Openssl extends Cryptobase
         }
 
         // Decrypt, unpad, return
-        return openssl_decrypt($message, self::cipher, $key, OPENSSL_RAW_DATA, $iv);
+        return openssl_decrypt($message, self::cipher, $key, 1, $iv);
     }
 
     /**
@@ -83,7 +83,7 @@ class Openssl extends Cryptobase
         $iv = Random::get(openssl_cipher_iv_length(self::cipher));
 
         // Encrypt the plaintext
-        $message = openssl_encrypt($plaintext, self::cipher, $key, OPENSSL_RAW_DATA, $iv);
+        $message = openssl_encrypt($plaintext, self::cipher, $key, 1, $iv);
 
         // Create the cypher text prefix (iv + checksum)
         $prefix = $iv . self::_checksum($message, $iv, $key, null, self::cipher, self::algo);
