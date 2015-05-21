@@ -60,7 +60,7 @@ class Cryptobase
             $hash .= hash($algo, $hash, true);
         }
 
-        // Return most significant bytes to a given size
+        // Truncate to specified number of bytes (if needed) and return
         return substr($hash, 0, $size);
     }
 
@@ -78,8 +78,8 @@ class Cryptobase
     {
         $key = self::_key($key, $cipher, $mode, $algo);
 
-        if ($mode === null) {
-            return 32;
+        if ($mode === 'cbc' && $cipher === 'rijndael_128') {
+            return 16;
         } else {
             return mcrypt_get_block_size($cipher, $mode);
         }
@@ -98,14 +98,12 @@ class Cryptobase
      */
     protected static function _key($key, $cipher, $mode, $algo)
     {
-        if ($mode === null) {
+        if ($mode === 'cbc' && $cipher === 'rijndael_128') {
             $keysize = 32;
         } else {
-            // Get keysize so that a normalization hash can be performed on the key
             $keysize = mcrypt_get_key_size($cipher, $mode);
         }
 
-        // Hash key
         $hash = hash($algo, $key, true);
 
         // Return hash normalized to key length

@@ -28,6 +28,7 @@ class Openssl extends Cryptobase
 
     const cipher = 'aes-256-cbc';
     const algo = 'sha256';
+    const rij = 'rijndael-128';
 
     /**
      * Decrypt data that was generated with the Aes::encrypt() method.
@@ -40,7 +41,7 @@ class Openssl extends Cryptobase
     public static function decrypt($cyphertext, $key)
     {
         // Normalize (de/en)cryption key (by-ref)
-        self::_init($key, self::cipher, null, self::algo);
+        self::_init($key, self::rij, 'cbc', self::algo);
 
         // Determine that size of the IV in bytes
         $ivsize = openssl_cipher_iv_length(self::cipher);
@@ -55,7 +56,7 @@ class Openssl extends Cryptobase
         $message = substr($cyphertext, $ivsize + strlen($key));
 
         // Calculate verification checksum
-        $verify = self::_checksum($message, $iv, $key, null, self::cipher, self::algo);
+        $verify = self::_checksum($message, $iv, $key, 'cbc', self::rij, self::algo);
 
         // If chksum could not be verified return false
         if (!Strcmp::equals($verify, $chksum)) {
@@ -77,16 +78,16 @@ class Openssl extends Cryptobase
     public static function encrypt($plaintext, $key)
     {
         // Normalize (de/en)cryption key (by-ref)
-        self::_init($key, self::cipher, null, self::algo);
+        self::_init($key, self::rij, 'cbc', self::algo);
 
         // Generate IV of appropriate size.
-        $iv = Random::get(openssl_cipher_iv_length(self::cipher));
+        $iv = Random::get(16);
 
         // Encrypt the plaintext
         $message = openssl_encrypt($plaintext, self::cipher, $key, 1, $iv);
 
         // Create the cypher text prefix (iv + checksum)
-        $prefix = $iv . self::_checksum($message, $iv, $key, null, self::cipher, self::algo);
+        $prefix = $iv . self::_checksum($message, $iv, $key, 'cbc', self::rij, self::algo);
 
         // Return prefix + cyphertext
         return $prefix . $message;
