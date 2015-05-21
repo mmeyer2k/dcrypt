@@ -35,12 +35,19 @@ class Random
      */
     public static function get($bytes)
     {
-        $ret = mcrypt_create_iv($bytes, MCRYPT_DEV_URANDOM);
-        
-        if ($ret === false) {
-            throw new \exception('Dcrypt failed to generate a random number'); // @codeCoverageIgnore
+        $e = 'Dcrypt failed to generate a random number';
+        if (function_exists('mcrypt_create_iv')) {
+            $ret = mcrypt_create_iv($bytes, MCRYPT_DEV_URANDOM);
+            if ($ret === false) {
+                throw new \exception($e); // @codeCoverageIgnore
+            }
+        } else {
+            $ret = openssl_random_pseudo_bytes($bytes, $secure);
+            if ($secure === false) {
+                throw new \exception($e); // @codeCoverageIgnore
+            }
         }
-        
+
         return $ret;
     }
 
