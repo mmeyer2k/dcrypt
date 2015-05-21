@@ -41,11 +41,13 @@ class Random
             if ($ret === false) {
                 throw new \exception($e); // @codeCoverageIgnore
             }
-        } else {
+        } elseif (function_exists('openssl_random_pseudo_bytes')) {
             $ret = openssl_random_pseudo_bytes($bytes, $secure);
             if ($secure === false) {
                 throw new \exception($e); // @codeCoverageIgnore
             }
+        } else {
+            throw new \exception($e); // @codeCoverageIgnore
         }
 
         return $ret;
