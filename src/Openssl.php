@@ -58,12 +58,12 @@ class Openssl extends Cryptobase
         // Calculate verification checksum
         $verify = self::_checksum($message, $iv, $key, 'cbc', self::rij, self::algo);
 
-        // If chksum could not be verified return false
+        // Verify HMAC before decrypting... return false if corrupt.
         if (!Strcmp::equals($verify, $chksum)) {
             return false;
         }
 
-        // Decrypt, unpad, return
+        // Decrypt message and return
         return openssl_decrypt($message, self::cipher, $key, 1, $iv);
     }
 
