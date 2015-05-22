@@ -31,7 +31,7 @@ class Openssl extends Cryptobase
     const rij = 'rijndael-128';
 
     /**
-     * Decrypt data that was generated with the Aes::encrypt() method.
+     * Decrypt cyphertext
      * 
      * @param string $cyphertext Cypher text to decrypt
      * @param string $key        Key that should be used to decrypt input data
@@ -68,7 +68,7 @@ class Openssl extends Cryptobase
     }
 
     /**
-     * Encrypt plaintext data.
+     * Encrypt plaintext
      * 
      * @param string $plaintext Plaintext string to encrypt.
      * @param string $key       Key used to encrypt data.
