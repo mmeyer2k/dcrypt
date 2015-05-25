@@ -15,8 +15,7 @@
 namespace Dcrypt;
 
 /**
- * Provides an interface to AES encryption from openssl (preferably)
- * with Mcrypt as a fall back. Automatically uses most secure options.
+ * Shorthand alias for Openssl
  * 
  * @category Dcrypt
  * @package  Dcrypt
@@ -24,24 +23,7 @@ namespace Dcrypt;
  * @license  http://opensource.org/licenses/MIT The MIT License (MIT)
  * @link     https://github.com/mmeyer2k/dcrypt
  */
-class Aes extends Cryptobase
+class Aes extends Openssl
 {
-
-    private static function _bestLibrary()
-    {
-        return function_exists('openssl_encrypt') ? 'Openssl' : 'Mcrypt';
-    }
-
-    public static function decrypt($cyphertext, $key)
-    {
-        $class = self::_bestLibrary();
-        return $class::decrypt($cyphertext, $key);
-    }
-
-    public static function encrypt($plaintext, $key)
-    {
-        $class = self::_bestLibrary();
-        return $class::decrypt($plaintext, $key);
-    }
 
 }
