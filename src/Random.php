@@ -27,7 +27,41 @@ class Random
 {
 
     /**
-     * Return random bytes
+     * Get random bytes from Mcrypt
+     * 
+     * @param int $bytes Number of bytes to get
+     * 
+     * @return string
+     */
+     private static function _fromMcrypt($bytes)
+     {
+        $ret = mcrypt_create_iv($bytes, MCRYPT_DEV_URANDOM);
+        if ($ret === false) {
+            self::_toss();
+        }
+        
+        return $ret;
+     }
+     
+    /**
+     * Get random bytes from Openssl
+     * 
+     * @param int $bytes Number of bytes to get
+     * 
+     * @return string
+     */
+     private static function _fromOpenssl($bytes)
+     {
+        $ret = openssl_random_pseudo_bytes($bytes, $secure);
+        if ($secure === false) {
+            self::_toss();
+        }
+        
+        return $ret;
+     }
+
+    /**
+     * Return securely generated random bytes.
      * 
      * @param int $bytes
      * 
@@ -35,22 +69,24 @@ class Random
      */
     public static function get($bytes)
     {
-        $e = 'Dcrypt failed to generate a random number';
         if (function_exists('mcrypt_create_iv')) {
-            $ret = mcrypt_create_iv($bytes, MCRYPT_DEV_URANDOM);
-            if ($ret === false) {
-                throw new \exception($e); // @codeCoverageIgnore
-            }
+            $ret = self::_fromMcrypt($bytes); // @codeCoverageIgnore
         } elseif (function_exists('openssl_random_pseudo_bytes')) {
-            $ret = openssl_random_pseudo_bytes($bytes, $secure);
-            if ($secure === false) {
-                throw new \exception($e); // @codeCoverageIgnore
-            }
+            $ret = self::_fromOpenssl($bytes); // @codeCoverageIgnore
         } else {
-            throw new \exception($e); // @codeCoverageIgnore
+            self::_toss(); // @codeCoverageIgnore
         }
 
         return $ret;
+    }
+
+    /*
+     * Throw an error when a failure occurs.
+     */
+    private static function _toss()
+    {
+        $e = 'Dcrypt failed to generate a random number';
+        throw new \exception($e);
     }
 
 }
