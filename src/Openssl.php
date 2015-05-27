@@ -27,9 +27,9 @@ class Openssl extends Cryptobase
 {
 
     const cipher = 'aes-256-cbc';
+    const ivsize = 16;
     const algo = 'sha256';
     const rij = 'rijndael-128';
-    const ivsize = 16;
 
     /**
      * Decrypt cyphertext
