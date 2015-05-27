@@ -29,6 +29,7 @@ class Openssl extends Cryptobase
     const cipher = 'aes-256-cbc';
     const algo = 'sha256';
     const rij = 'rijndael-128';
+    const ivsize = 16;
 
     /**
      * Decrypt cyphertext
@@ -43,17 +44,14 @@ class Openssl extends Cryptobase
         // Normalize (de/en)cryption key (by-ref)
         self::_init($key, self::rij, 'cbc', self::algo);
 
-        // Determine that size of the IV in bytes
-        $ivsize = openssl_cipher_iv_length(self::cipher);
-
         // Find the IV at the beginning of the cypher text
-        $iv = substr($cyphertext, 0, $ivsize);
+        $iv = substr($cyphertext, 0, self::ivsize);
 
         // Gather the checksum portion of the cypher text
-        $chksum = substr($cyphertext, $ivsize, strlen($key));
+        $chksum = substr($cyphertext, self::ivsize, strlen($key));
 
         // Gather message portion of cyphertext after iv and checksum
-        $message = substr($cyphertext, $ivsize + strlen($key));
+        $message = substr($cyphertext, self::ivsize + strlen($key));
 
         // Calculate verification checksum
         $verify = self::_checksum($message, $iv, $key, 'cbc', self::rij, self::algo);
@@ -81,7 +79,7 @@ class Openssl extends Cryptobase
         self::_init($key, self::rij, 'cbc', self::algo);
 
         // Generate IV of appropriate size.
-        $iv = Random::get(16);
+        $iv = Random::get(self::ivsize);
 
         // Encrypt the plaintext
         $message = openssl_encrypt($plaintext, self::cipher, $key, 1, $iv);
