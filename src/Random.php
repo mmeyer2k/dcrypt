@@ -70,14 +70,12 @@ class Random
     public static function get($bytes)
     {
         if (function_exists('mcrypt_create_iv')) {
-            $ret = self::_fromMcrypt($bytes); // @codeCoverageIgnore
+            return self::_fromMcrypt($bytes); // @codeCoverageIgnore
         } elseif (function_exists('openssl_random_pseudo_bytes')) {
-            $ret = self::_fromOpenssl($bytes); // @codeCoverageIgnore
+            return self::_fromOpenssl($bytes); // @codeCoverageIgnore
         } else {
             self::_toss(); // @codeCoverageIgnore
         }
-
-        return $ret;
     }
 
     /*
