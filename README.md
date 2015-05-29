@@ -18,19 +18,26 @@ After modification of the composer.json file, run ...
 ```
 composer install
 ```
+In environments where composer is not available, dcrypt can be used by including `load.php`.
 # Features
-## AES
-Quickly access encryption functionality with the AES class. Functions use PHP's Mcrypt module with AES 256 bit cypher in CBC mode. Random IV and HMAC check-sum validation is done for you.
+## AES (via OpenSSL)
+Quickly access symmetric encryption functions with \Dcrypt\Aes. When in doubt, use this class! All of the most secure options are the default.
 ```php
-$encrypted = Dcrypt\Aes::encrypt($input, $password);
+$encrypted = Dcrypt\Aes::encrypt($message, $password);
 
-# outputs a long encrypted hex string
-echo bin2hex($encrypted);
-
-# outputs your original plain text
-echo Dcrypt\Aes::decrypt($encrypted, $password);
+$decrypted = Dcrypt\Aes::decrypt($encrypted, $password);
 ```
-Supports the following mcrypt modes: `MCRYPT_MODE_CBC`, `MCRYPT_MODE_CFB`, `MCRYPT_MODE_ECB`, `MCRYPT_MODE_OFB`, `MCRYPT_MODE_NOFB`
+## Customizeable Encryption (via Mcrypt)
+If you have special requirements, \Dcrypt\Mcrypt might be the best solution.
+```
+# encrypt with serpent in ecb mode with sha512 hmac, for instance...
+$encrypted = \Dcrypt\Mcrypt::encrypt('message', 'password', MCRYPT_MODE_ECB, MCRYPT_SERPENT, 'sha256');
+```
+Supported (and tested) modes: `MCRYPT_MODE_CBC`, `MCRYPT_MODE_CFB`, `MCRYPT_MODE_ECB`, `MCRYPT_MODE_OFB`, `MCRYPT_MODE_NOFB`
+
+Supported (and tested) ciphers: `MCRYPT_3DES`, `MCRYPT_BLOWFISH`, `MCRYPT_BLOWFISH_COMPAT`, `MCRYPT_DES`, `MCRYPT_LOKI97`, `MCRYPT_CAST_128`, `MCRYPT_CAST_256`, `MCRYPT_RC2`, `MCRYPT_RIJNDAEL_128`, `MCRYPT_RIJNDAEL_192`, `MCRYPT_RIJNDAEL_256`, `MCRYPT_SAFERPLU`, `MCRYPT_SERPENT`, `MCRYPT_TRIPLEDES`, `MCRYPT_TWOFISH`, `MCRYPT_XTEA`
+
+Supported (and tested) hash algos: all!
 
 ## Fast One Time Pad Encryption
 Extremely fast symmetric stream encryption is available with the `Otp` class.
@@ -49,9 +56,12 @@ PKCS#7 style padding is available via the `Pkcs7::pad()` and `Pkcs7::unpad()` fu
 ```php
 $hash = Dcrypt\Hash::make('plaintext', 'key');
 
-# outputs binary string similar to 0x7d9cfc79ed7a72b322718c607c2f75dacd4a4824ad09c9f1ac0b43b5b9333ca031d9421742d968090097733a71524aa18c371d62082210a52b7e0d5eb0d5386d
-echo $hash;
-
 # to verify hashes, use Hash::verify()
 $verified = Dcrypt\Hash::verify('plaintext', $hash, 'key');
+```
+## Secure Random Number Generation
+When you absolutely MUST have cryptographically secure random numbers \Dcrypt\Random will give them to you or throw an exception.
+```
+# get 8 random bytes
+$iv = \Dcrypt\Random::get(8);
 ```
