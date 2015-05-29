@@ -39,7 +39,7 @@ Supported (and tested) ciphers: `MCRYPT_3DES`, `MCRYPT_BLOWFISH`, `MCRYPT_BLOWFI
 
 Supported (and tested) hash algos: all!
 
-NOTE: PHP Mcrypt has fallen out of favor due to its stale codebase and inability to use AES-NI. Only use these features if there is a strong need. In nearly all cases \Dcrypt\Aes (which uses OpenSSL) is preferred.
+NOTE: PHP's libmcrypt has fallen out of favor due to its stale codebase and inability to use AES-NI. Only use these features if there is a strong need. In nearly all cases \Dcrypt\Aes (which uses OpenSSL) is preferred.
 
 ## Fast One Time Pad Encryption
 Extremely fast symmetric stream encryption is available with the `Otp` class.
