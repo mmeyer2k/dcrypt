@@ -31,7 +31,7 @@ $decrypted = Dcrypt\Aes::decrypt($encrypted, $password);
 If you have special requirements, \Dcrypt\Mcrypt might be the best solution.
 ```
 # encrypt with serpent in ecb mode with sha512 hmac, for instance...
-$encrypted = \Dcrypt\Mcrypt::encrypt('message', 'password', MCRYPT_MODE_ECB, MCRYPT_SERPENT, 'sha256');
+$encrypted = \Dcrypt\Mcrypt::encrypt('message', 'password', MCRYPT_MODE_ECB, MCRYPT_SERPENT, 'sha512');
 ```
 Supported (and tested) modes: `MCRYPT_MODE_CBC`, `MCRYPT_MODE_CFB`, `MCRYPT_MODE_ECB`, `MCRYPT_MODE_OFB`, `MCRYPT_MODE_NOFB`
 
