@@ -44,10 +44,9 @@ NOTE: PHP's libmcrypt has fallen out of favor due to its stale codebase and inab
 ## Fast One Time Pad Encryption
 Extremely fast symmetric stream encryption is available with the `Otp` class.
 ```php
-$crypted = \Dcrypt\Otp::crypt('plaintext', 'key');
+$encrypted = \Dcrypt\Otp::crypt('string', 'key');
 
-# outputs 'plaintext'
-echo \Dcrypt\Otp::crypt($crypted, 'key'); 
+$decrypted = \Dcrypt\Otp::crypt($crypted, 'key'); 
 ```
 ## PKCS #7 Padding
 PKCS#7 style padding is available via the `Pkcs7::pad()` and `Pkcs7::unpad()` functions.
