@@ -29,7 +29,7 @@ $decrypted = Dcrypt\Aes::decrypt($encrypted, $password);
 ```
 ## Customizeable Encryption (via Mcrypt)
 If you have special requirements, \Dcrypt\Mcrypt might be the best solution.
-```
+```php
 # encrypt with serpent in ecb mode with sha512 hmac, for instance...
 $encrypted = \Dcrypt\Mcrypt::encrypt('message', 'password', MCRYPT_MODE_ECB, MCRYPT_SERPENT, 'sha512');
 ```
@@ -59,7 +59,7 @@ $verified = Dcrypt\Hash::verify('plaintext', $hash, 'key');
 ```
 ## Secure Random Number Generation
 When you absolutely MUST have cryptographically secure random numbers \Dcrypt\Random will give them to you or throw an exception.
-```
+```php
 # get 8 random bytes
 $iv = \Dcrypt\Random::get(8);
 ```
