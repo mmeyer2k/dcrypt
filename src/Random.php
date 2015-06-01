@@ -37,7 +37,7 @@ class Random
      {
         $ret = mcrypt_create_iv($bytes, MCRYPT_DEV_URANDOM);
         if ($ret === false) {
-            self::_toss();
+            self::_toss(); // @codeCoverageIgnore
         }
         
         return $ret;
@@ -52,12 +52,14 @@ class Random
      */
      private static function _fromOpenssl($bytes)
      {
+        // @codeCoverageIgnoreStart
         $ret = openssl_random_pseudo_bytes($bytes, $secure);
         if ($secure === false) {
             self::_toss();
         }
         
         return $ret;
+        // @codeCoverageIgnoreEnd
      }
 
     /**
