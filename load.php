@@ -15,6 +15,7 @@
  * @license  http://opensource.org/licenses/MIT The MIT License (MIT)
  * @link     https://github.com/mmeyer2k/dcrypt
  */
+// @codeCoverageIgnoreStart
 $g = 'dcrypt_loaded';
 
 if (!defined($g)) {
@@ -38,3 +39,4 @@ if (!defined($g)) {
         require_once __DIR__ . "/src/$f.php";
     }
 }
+// @codeCoverageIgnoreEnd
