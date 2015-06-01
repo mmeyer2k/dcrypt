@@ -73,3 +73,6 @@ When you absolutely MUST have cryptographically secure random numbers \Dcrypt\Ra
 # get 8 random bytes
 $iv = \Dcrypt\Random::get(8);
 ```
+
+## For fun
+\Dcrypt\Rc4 and \Dcrypt\Spritz are pure PHP implementations of the immortal RC4 cipher and its successor Spritz.
