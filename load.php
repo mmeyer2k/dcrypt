@@ -18,8 +18,23 @@
 $g = 'dcrypt_loaded';
 
 if (!defined($g)) {
-    foreach (array('Mcrypt', 'Openssl', 'Strcmp', 'Hash', 'Otp', 'Pkcs7', 'Random', 'Rc4', 'Spritz') as $f) {
+    define($g, true);
+    
+    $files = array(
+        'Aes',
+        'Cryptobase',
+        'Hash',
+        'Mcrypt',
+        'Openssl',
+        'Otp',
+        'Pkcs7',
+        'Random',
+        'Rc4',
+        'Spritz',
+        'Strcmp',
+    );
+
+    foreach ($files as $f) {
         require_once __DIR__ . "/src/$f.php";
     }
-    define($g, true);
 }
