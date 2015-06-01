@@ -38,6 +38,7 @@ As with \Dcrypt\Aes, all HMAC verification and IV creation are handled for you.
 When used with all default options, \Dcrypt\Mcrypt is compatible with \Dcrypt\Aes.
 ```php
 $encrypted = \Dcrypt\Mcrypt::encrypt('message', 'password');
+
 $decrypyed = \Dcrypt\Aes::decrypt($encrypted, 'password'); # = message
 ```
 
