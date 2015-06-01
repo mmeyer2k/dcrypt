@@ -70,7 +70,7 @@ class Random
     public static function get($bytes)
     {
         if (function_exists('mcrypt_create_iv')) {
-            return self::_fromMcrypt($bytes); // @codeCoverageIgnore
+            return self::_fromMcrypt($bytes);
         } else {
             return self::_fromOpenssl($bytes); // @codeCoverageIgnore
         }
