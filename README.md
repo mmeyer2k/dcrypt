@@ -10,13 +10,13 @@ dcrypt
 A library of essential encryption functions. 
 
 # Installation
-Add the following to the require-dev section of your composer.json file.
+Add the following to the require-dev section of your composer.json file, then run `composer install`.
 ```
 "mmeyer2k/dcrypt": "dev-master"
 ```
-After modification of the composer.json file, run ...
+Or using the command line...
 ```
-composer install
+composer global require mmeyer2k/dcrypt:dev-master
 ```
 In environments where composer is not available, dcrypt can be used by including `load.php`.
 # Features
