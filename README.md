@@ -59,11 +59,12 @@ $decrypted = \Dcrypt\Otp::crypt($crypted, 'key');
 ```
 ## PKCS #7 Padding
 PKCS#7 style padding is available via the `Pkcs7::pad()` and `Pkcs7::unpad()` functions.
-## Strong Authenticated Key Derivation Function
-```php
-$hash = Dcrypt\Hash::make('plaintext', 'key');
 
-# to verify hashes, use Hash::verify()
+## Strong Authenticated Key Derivation Function
+Dcrypt\Hash is an opaque 512 iterative hash function. It accepts cost values between 1 and 255.
+```php
+$hash = Dcrypt\Hash::make('plaintext', 'key', $cost);
+
 $verified = Dcrypt\Hash::verify('plaintext', $hash, 'key');
 ```
 ## Secure Random Number Generation
