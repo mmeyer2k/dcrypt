@@ -35,6 +35,12 @@ $encrypted = \Dcrypt\Mcrypt::encrypt('message', 'password', MCRYPT_MODE_ECB, MCR
 ```
 As with \Dcrypt\Aes, all HMAC verification and IV creation are handled for you.
 
+When used with all default options, \Dcrypt\Mcrypt is compatible with \Dcrypt\Aes.
+```php
+$encrypted = \Dcrypt\Mcrypt::encrypt('message', 'password');
+$decrypyed = \Dcrypt\Aes::decrypt($encrypted, 'password'); # = message
+```
+
 Supported (and tested) modes: `MCRYPT_MODE_CBC`, `MCRYPT_MODE_CFB`, `MCRYPT_MODE_ECB`, `MCRYPT_MODE_OFB`, `MCRYPT_MODE_NOFB`
 
 Supported (and tested) ciphers: `MCRYPT_3DES`, `MCRYPT_BLOWFISH`, `MCRYPT_BLOWFISH_COMPAT`, `MCRYPT_DES`, `MCRYPT_LOKI97`, `MCRYPT_CAST_128`, `MCRYPT_CAST_256`, `MCRYPT_RC2`, `MCRYPT_RIJNDAEL_128`, `MCRYPT_RIJNDAEL_192`, `MCRYPT_RIJNDAEL_256`, `MCRYPT_SAFERPLU`, `MCRYPT_SERPENT`, `MCRYPT_TRIPLEDES`, `MCRYPT_TWOFISH`, `MCRYPT_XTEA`
