@@ -63,7 +63,8 @@ class Random
      }
 
     /**
-     * Return securely generated random bytes.
+     * Return securely generated random bytes. 
+     * Try Mcrypt first then fall back to openssl.
      * 
      * @param int $bytes
      * 
