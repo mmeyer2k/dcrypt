@@ -70,7 +70,7 @@ class Cryptobase
      * @param string $key    Key used to (en/de)crypt data.
      * @param string $cipher Mcrypt cipher
      * @param string $mode   Mcrypt mode
-     * @param string $algo Hashing algorithm to use for internal operations
+     * @param string $algo   Hashing algorithm to use for internal operations
      * 
      * @return int Blocksize in bytes
      */
