@@ -25,7 +25,6 @@ if (!defined($g)) {
         'Aes',
         'Cryptobase',
         'Hash',
-        'Hashsize',
         'Mcrypt',
         'Openssl',
         'Otp',

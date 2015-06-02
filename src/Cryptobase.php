@@ -62,6 +62,18 @@ class Cryptobase
     }
 
     /**
+     * Determine the length of the output of a given hash algorithm in bytes.
+     * 
+     * @param string $algo Name of algorithm to look up
+     * 
+     * @return int
+     */
+    protected static function _hashSize($algo)
+    {
+        return strlen(hash($algo, 'hash me', true));
+    }
+
+    /**
      * Function which initializes common elements between encrypt and decrypt.
      * 
      * @param string $key    Key used to (en/de)crypt data.
