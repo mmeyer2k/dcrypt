@@ -35,11 +35,8 @@ class Cryptobase
         // by itself...
         $sum = hash_hmac($algo, $cyphertext, $key, true);
 
-        // ... then hash other elements with previous hmac
-        $sum = hash_hmac($algo, $sum . $iv . $mode . $cipher, $key, true);
-
-        // Return an amount of hash bytes equal to the key size 
-        return self::_hash($sum, strlen($key), $algo);
+        // ... then hash other elements with previous hmac and return
+        return hash_hmac($algo, $sum . $iv . $mode . $cipher, $key, true);
     }
 
     /**

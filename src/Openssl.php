@@ -28,7 +28,21 @@ class Openssl extends Cryptobase
 
     const cipher = 'aes-256-cbc';
     const ivsize = 16;
+    const cksize = 32;
+    
+    /**
+     * The hashing algorithm to use for checksum creation and key normalization.
+     * 
+     * @var string
+     */
     const algo = 'sha256';
+    
+    /**
+     * The string that needs to be passed to the checksum creation function
+     * that ensures cross-compatibility with dcrypt\mcrypt.
+     * 
+     * @var string 
+     */
     const rij = 'rijndael-128';
 
     /**
@@ -48,10 +62,10 @@ class Openssl extends Cryptobase
         $iv = substr($cyphertext, 0, self::ivsize);
 
         // Gather the checksum portion of the cypher text
-        $chksum = substr($cyphertext, self::ivsize, strlen($key));
+        $chksum = substr($cyphertext, self::ivsize, self::cksize);
 
         // Gather message portion of cyphertext after iv and checksum
-        $message = substr($cyphertext, self::ivsize + strlen($key));
+        $message = substr($cyphertext, self::ivsize + self::cksize);
 
         // Calculate verification checksum
         $verify = self::_checksum($message, $iv, $key, 'cbc', self::rij, self::algo);

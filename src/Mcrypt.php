@@ -56,10 +56,10 @@ class Mcrypt extends Cryptobase
         $iv = substr($cyphertext, 0, $ivsize);
 
         // Gather the checksum portion of the cypher text
-        $chksum = substr($cyphertext, $ivsize, strlen($key));
+        $chksum = substr($cyphertext, $ivsize, Hashsize::find($algo));
 
         // Gather message portion of cyphertext after iv and checksum
-        $message = substr($cyphertext, $ivsize + strlen($key));
+        $message = substr($cyphertext, $ivsize + Hashsize::find($algo));
 
         // Calculate verification checksum
         $verify = self::_checksum($message, $iv, $key, $mode, $cipher, $algo);
