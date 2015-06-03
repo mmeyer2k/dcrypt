@@ -26,12 +26,29 @@ namespace Dcrypt;
 class Openssl extends Cryptobase
 {
 
+    /**
+     * AES-256 cipher idetifier that will be passed to openssl
+     * 
+     * @var string
+     */
     const cipher = 'aes-256-cbc';
+    
+    /**
+     * Size of initialization vector in bytes
+     * 
+     * @var int
+     */
     const ivsize = 16;
+    
+    /**
+     * Size of checksum in bytes
+     * 
+     * @var int
+     */
     const cksize = 32;
     
     /**
-     * The hashing algorithm to use for checksum creation and key normalization.
+     * The hashing algorithm to use for checksum creation and key normalization
      * 
      * @var string
      */
