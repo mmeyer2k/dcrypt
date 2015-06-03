@@ -74,5 +74,10 @@ When you absolutely MUST have cryptographically secure random numbers \Dcrypt\Ra
 $iv = \Dcrypt\Random::get(8);
 ```
 
+## Time-safe String Comparison
+```php
+$equals = \Dcrypt\Strcmp::equals('known string', 'supplied string');
+```
+
 ## For fun
 \Dcrypt\Rc4 and \Dcrypt\Spritz are pure PHP implementations of the immortal RC4 cipher and its successor Spritz.
