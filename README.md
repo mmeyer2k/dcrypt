@@ -50,6 +50,15 @@ Supported (and tested) hash algos: all!
 
 NOTE: PHP's libmcrypt has fallen out of favor due to its stale codebase and inability to use AES-NI. Only use these features if there is a strong need. In nearly all cases \Dcrypt\Aes (which uses OpenSSL) is preferred.
 
+## Iterative HMAC Key Hardening
+To reduce the effectiveness of brute-force cracking on your encrypted blobs, you can provide an integer `$cost` parameter
+in your encryption/decryption calls. This integer will cause dcrypt perform `$cost` number of HMAC operations on the provided key before passing it off to the underlying encryption system.
+```php
+$encrypted = \Dcrypt\Aes::encrypt('message', 'password', 1000);
+
+$decrypyed = \Dcrypt\Aes::decrypt($encrypted, 'password', 1000);
+```
+
 ## Fast One Time Pad Encryption
 Extremely fast symmetric stream encryption is available with the `Otp` class.
 ```php
@@ -57,6 +66,7 @@ $encrypted = \Dcrypt\Otp::crypt('string', 'key');
 
 $decrypted = \Dcrypt\Otp::crypt($crypted, 'key'); 
 ```
+
 ## PKCS #7 Padding
 PKCS#7 style padding is available via the `Pkcs7::pad()` and `Pkcs7::unpad()` functions.
 
