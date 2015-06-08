@@ -46,21 +46,6 @@ class Openssl extends Cryptobase
      * @var int
      */
     const cksize = 32;
-    
-    /**
-     * The hashing algorithm to use for checksum creation and key normalization
-     * 
-     * @var string
-     */
-    const algo = 'sha256';
-    
-    /**
-     * The string that needs to be passed to the checksum creation function
-     * that ensures cross-compatibility with dcrypt\mcrypt.
-     * 
-     * @var string 
-     */
-    const rij = 'rijndael-128';
 
     /**
      * Decrypt cyphertext
@@ -73,7 +58,7 @@ class Openssl extends Cryptobase
     public static function decrypt($cyphertext, $key)
     {
         // Normalize (de/en)cryption key (by-ref)
-        self::_init($key, self::rij, 'cbc', self::algo);
+        self::_init($key);
 
         // Find the IV at the beginning of the cypher text
         $iv = substr($cyphertext, 0, self::ivsize);
@@ -85,7 +70,7 @@ class Openssl extends Cryptobase
         $message = substr($cyphertext, self::ivsize + self::cksize);
 
         // Calculate verification checksum
-        $verify = self::_checksum($message, $iv, $key, 'cbc', self::rij, self::algo);
+        $verify = self::_checksum($message, $iv, $key);
 
         // Verify HMAC before decrypting... return false if corrupt.
         if (!Strcmp::equals($verify, $chksum)) {
@@ -107,7 +92,7 @@ class Openssl extends Cryptobase
     public static function encrypt($plaintext, $key)
     {
         // Normalize (de/en)cryption key (by-ref)
-        self::_init($key, self::rij, 'cbc', self::algo);
+        self::_init($key);
 
         // Generate IV of appropriate size.
         $iv = Random::get(self::ivsize);
@@ -116,7 +101,7 @@ class Openssl extends Cryptobase
         $message = openssl_encrypt($plaintext, self::cipher, $key, 1, $iv);
 
         // Create the cypher text prefix (iv + checksum)
-        $prefix = $iv . self::_checksum($message, $iv, $key, 'cbc', self::rij, self::algo);
+        $prefix = $iv . self::_checksum($message, $iv, $key);
 
         // Return prefix + cyphertext
         return $prefix . $message;

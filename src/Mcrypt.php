@@ -62,7 +62,7 @@ class Mcrypt extends Cryptobase
         $message = substr($cyphertext, $ivsize + self::_hashSize($algo));
 
         // Calculate verification checksum
-        $verify = self::_checksum($message, $iv, $key, $mode, $cipher, $algo);
+        $verify = self::_checksum($message, $iv, $key, $cipher, $mode, $algo);
 
         // If chksum could not be verified return false
         if (!Strcmp::equals($verify, $chksum)) {
@@ -99,11 +99,10 @@ class Mcrypt extends Cryptobase
         $message = mcrypt_encrypt($cipher, $key, $padded, $mode, $iv);
 
         // Create the cypher text prefix (iv + checksum)
-        $prefix = $iv . self::_checksum($message, $iv, $key, $mode, $cipher, $algo);
+        $prefix = $iv . self::_checksum($message, $iv, $key, $cipher, $mode, $algo);
 
         // Return prefix + cyphertext
         return $prefix . $message;
     }
-
 
 }

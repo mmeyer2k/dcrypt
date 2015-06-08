@@ -23,13 +23,13 @@ class Cryptobase
      * @param string $cyphertext Cyphertext that needs a check sum.
      * @param string $iv         Initialization vector.
      * @param string $key        HMAC key
-     * @param string $mode       Mcrypt mode
      * @param string $cipher     Mcrypt cipher
+     * @param string $mode       Mcrypt mode
      * @param string $algo       Hashing algorithm to use for internal operations
      * 
      * @return string
      */
-    protected static function _checksum($cyphertext, $iv, $key, $mode, $cipher, $algo)
+    protected static function _checksum($cyphertext, $iv, $key, $cipher = 'rijndael-128', $mode = 'cbc', $algo = 'sha256')
     {
         // Prevent potentially large string concat by hmac-ing the cyphertext
         // by itself...
@@ -83,11 +83,11 @@ class Cryptobase
      * 
      * @return int Blocksize in bytes
      */
-    protected static function _init(&$key, $cipher, $mode, $algo)
+    protected static function _init(&$key, $cipher = 'rijndael-128', $mode = 'cbc', $algo = 'sha256')
     {
         $key = self::_key($key, $cipher, $mode, $algo);
 
-        if ($mode === 'cbc' && $cipher === 'rijndael_128') {
+        if ($mode === 'cbc' && $cipher === 'rijndael-128') {
             return 16;
         } else {
             return mcrypt_get_block_size($cipher, $mode);
@@ -107,7 +107,7 @@ class Cryptobase
      */
     protected static function _key($key, $cipher, $mode, $algo)
     {
-        if ($mode === 'cbc' && $cipher === 'rijndael_128') {
+        if ($mode === 'cbc' && $cipher === 'rijndael-128') {
             $keysize = 32;
         } else {
             $keysize = mcrypt_get_key_size($cipher, $mode);
