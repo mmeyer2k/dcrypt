@@ -33,7 +33,7 @@ If you have special requirements, \Dcrypt\Mcrypt might be the best solution.
 # encrypt with serpent in ecb mode with sha512 hmac, for instance...
 $encrypted = \Dcrypt\Mcrypt::encrypt('message', 'password', 0, MCRYPT_SERPENT, MCRYPT_MODE_ECB, 'sha512');
 ```
-As with \Dcrypt\Aes, all HMAC verification and IV creation are handled for you.
+As with \Dcrypt\Aes, all HMAC verification, IV creation and padding are handled for you.
 
 When used with all default options, \Dcrypt\Mcrypt is compatible with \Dcrypt\Aes.
 ```php
