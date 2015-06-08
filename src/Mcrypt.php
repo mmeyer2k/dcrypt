@@ -38,16 +38,17 @@ class Mcrypt extends Cryptobase
      * 
      * @param string $cyphertext Cypher text to decrypt
      * @param string $key        Key that should be used to decrypt input data
-     * @param string $mode       Mcrypt mode
+     * @param int    $cost       Number of HMAC iterations to perform on key
      * @param string $cipher     Mcrypt cipher
+     * @param string $mode       Mcrypt mode
      * @param string $algo       Hashing algorithm to use for internal operations
      * 
      * @return string|boolean Returns false on checksum validation failure
      */
-    public static function decrypt($cyphertext, $key, $mode = MCRYPT_MODE_CBC, $cipher = MCRYPT_RIJNDAEL_128, $algo = 'sha256')
+    public static function decrypt($cyphertext, $key, $cost = 0, $cipher = MCRYPT_RIJNDAEL_128, $mode = MCRYPT_MODE_CBC, $algo = 'sha256')
     {
         // Normalize (de/en)cryption key (by-ref)
-        self::_init($key, $cipher, $mode, $algo);
+        self::_init($key, $cost, $cipher, $mode, $algo);
 
         // Determine that size of the IV in bytes
         $ivsize = mcrypt_get_iv_size($cipher, $mode);
@@ -78,16 +79,17 @@ class Mcrypt extends Cryptobase
      * 
      * @param string $plaintext Plaintext string to encrypt.
      * @param string $key       Key used to encrypt data.
-     * @param string $mode      Mcrypt mode
+     * @param int    $cost      Number of HMAC iterations to perform on key
      * @param string $cipher    Mcrypt cipher
+     * @param string $mode      Mcrypt mode
      * @param string $algo      Hashing algorithm to use for internal operations
      * 
      * @return string 
      */
-    public static function encrypt($plaintext, $key, $mode = MCRYPT_MODE_CBC, $cipher = MCRYPT_RIJNDAEL_128, $algo = 'sha256')
+    public static function encrypt($plaintext, $key, $cost = 0, $cipher = MCRYPT_RIJNDAEL_128, $mode = MCRYPT_MODE_CBC, $algo = 'sha256')
     {
         // Normalize (de/en)cryption key (by-ref) and return block size
-        $blocksize = self::_init($key, $cipher, $mode, $algo);
+        $blocksize = self::_init($key, $cost, $cipher, $mode, $algo);
 
         // Generate IV of appropriate size.
         $iv = Random::get(mcrypt_get_iv_size($cipher, $mode));

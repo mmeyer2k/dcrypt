@@ -52,13 +52,14 @@ class Openssl extends Cryptobase
      * 
      * @param string $cyphertext Cypher text to decrypt
      * @param string $key        Key that should be used to decrypt input data
+     * @param int    $cost       Number of HMAC iterations to perform on key
      * 
      * @return string|boolean Returns false on checksum validation failure
      */
-    public static function decrypt($cyphertext, $key)
+    public static function decrypt($cyphertext, $key, $cost = 0)
     {
         // Normalize (de/en)cryption key (by-ref)
-        self::_init($key);
+        self::_init($key, $cost);
 
         // Find the IV at the beginning of the cypher text
         $iv = substr($cyphertext, 0, self::ivsize);
@@ -86,13 +87,14 @@ class Openssl extends Cryptobase
      * 
      * @param string $plaintext Plaintext string to encrypt.
      * @param string $key       Key used to encrypt data.
+     * @param int    $cost      Number of HMAC iterations to perform on key
      * 
      * @return string 
      */
-    public static function encrypt($plaintext, $key)
+    public static function encrypt($plaintext, $key, $cost = 0)
     {
         // Normalize (de/en)cryption key (by-ref)
-        self::_init($key);
+        self::_init($key, $cost);
 
         // Generate IV of appropriate size.
         $iv = Random::get(self::ivsize);

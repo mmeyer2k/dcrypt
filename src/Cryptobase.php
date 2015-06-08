@@ -77,15 +77,16 @@ class Cryptobase
      * Function which initializes common elements between encrypt and decrypt.
      * 
      * @param string $key    Key used to (en/de)crypt data.
+     * @param int    $cost   Number of HMAC iterations to perform on key
      * @param string $cipher Mcrypt cipher
      * @param string $mode   Mcrypt mode
      * @param string $algo   Hashing algorithm to use for internal operations
      * 
      * @return int Blocksize in bytes
      */
-    protected static function _init(&$key, $cipher = 'rijndael-128', $mode = 'cbc', $algo = 'sha256')
+    protected static function _init(&$key, $cost, $cipher = 'rijndael-128', $mode = 'cbc', $algo = 'sha256')
     {
-        $key = self::_key($key, $cipher, $mode, $algo);
+        $key = self::_key($key, $cipher, $mode, $algo, $cost);
 
         if ($mode === 'cbc' && $cipher === 'rijndael-128') {
             return 16;
@@ -102,10 +103,11 @@ class Cryptobase
      * @param string $cipher Mcrypt cipher
      * @param string $mode   Mcrypt block mode
      * @param string $algo   Hashing algorithm to use for internal operations
+     * @param int    $cost   Number of HMAC iterations to perform on key
      * 
      * @return string
      */
-    protected static function _key($key, $cipher, $mode, $algo)
+    protected static function _key($key, $cipher, $mode, $algo, $cost)
     {
         if ($mode === 'cbc' && $cipher === 'rijndael-128') {
             $keysize = 32;
@@ -114,6 +116,10 @@ class Cryptobase
         }
 
         $hash = hash($algo, $key, true);
+
+        if ($cost) {
+            $hash = Hash::ihmac($hash, $key, $cost, $algo);
+        }
 
         // Return hash normalized to key length
         return self::_hash($hash, $keysize, $algo);
