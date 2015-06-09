@@ -86,7 +86,7 @@ $iv = \Dcrypt\Random::get(8);
 
 ## Time-safe String Comparison
 ```php
-$equals = \Dcrypt\Strcmp::equals('known string', 'supplied string');
+$equals = \Dcrypt\Str::equals('known string', 'supplied string');
 ```
 
 ## For fun
