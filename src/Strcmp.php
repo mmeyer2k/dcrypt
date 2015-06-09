@@ -80,7 +80,7 @@ class Strcmp
      *
      * @return int
      */
-    private static function safeStrlen($string)
+    public static function safeStrlen($string)
     {
         // Premature optimization
         // Since this cannot be changed at runtime, we can cache it
