@@ -70,7 +70,7 @@ class Cryptobase
      */
     protected static function _hashSize($algo)
     {
-        return strlen(hash($algo, 'hash me', true));
+        return Strcmp::safeStrlen(hash($algo, 'hash me', true));
     }
 
     /**
