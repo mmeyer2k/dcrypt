@@ -53,7 +53,7 @@ class Cryptobase
     protected static function _hash($hash, $size, $algo)
     {
         // Extend hash if too short
-        while (strlen($hash) < $size) {
+        while (Strcmp::safeStrlen($hash) < $size) {
             $hash .= hash($algo, $hash, true);
         }
 
