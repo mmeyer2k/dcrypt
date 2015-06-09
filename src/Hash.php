@@ -135,16 +135,16 @@ class Hash
     public static function verify($input, $hash, $key)
     {
         // Get the salt value from the decrypted prefix
-        $salt = Otp::crypt(substr($hash, 0, self::saltbytes), $key);
+        $salt = Otp::crypt(Str::substr($hash, 0, self::saltbytes), $key);
 
         // Get the encrypted cost byte
-        $cost = substr($hash, self::saltbytes, self::costbytes);
+        $cost = Str::substr($hash, self::saltbytes, self::costbytes);
 
         // Decrypt the cost value convert to integer
         $cost = ord(Otp::crypt($cost, $key));
 
         // Return the boolean equivalence.
-        return Strcmp::equals($hash, self::_build($input, $key, $salt, $cost));
+        return Str::equals($hash, self::_build($input, $key, $salt, $cost));
     }
 
 }

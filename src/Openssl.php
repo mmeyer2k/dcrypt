@@ -62,19 +62,19 @@ class Openssl extends Cryptobase
         self::_init($key, $cost);
 
         // Find the IV at the beginning of the cypher text
-        $iv = substr($cyphertext, 0, self::ivsize);
+        $iv = Str::substr($cyphertext, 0, self::ivsize);
 
         // Gather the checksum portion of the cypher text
-        $chksum = substr($cyphertext, self::ivsize, self::cksize);
+        $chksum = Str::substr($cyphertext, self::ivsize, self::cksize);
 
         // Gather message portion of cyphertext after iv and checksum
-        $message = substr($cyphertext, self::ivsize + self::cksize);
+        $message = Str::substr($cyphertext, self::ivsize + self::cksize);
 
         // Calculate verification checksum
         $verify = self::_checksum($message, $iv, $key);
 
         // Verify HMAC before decrypting... return false if corrupt.
-        if (!Strcmp::equals($verify, $chksum)) {
+        if (!Str::equals($verify, $chksum)) {
             return false;
         }
 

@@ -54,19 +54,19 @@ class Mcrypt extends Cryptobase
         $ivsize = mcrypt_get_iv_size($cipher, $mode);
 
         // Find the IV at the beginning of the cypher text
-        $iv = substr($cyphertext, 0, $ivsize);
+        $iv = Str::substr($cyphertext, 0, $ivsize);
 
         // Gather the checksum portion of the cypher text
-        $chksum = substr($cyphertext, $ivsize, self::_hashSize($algo));
+        $chksum = Str::substr($cyphertext, $ivsize, self::_hashSize($algo));
 
         // Gather message portion of cyphertext after iv and checksum
-        $message = substr($cyphertext, $ivsize + self::_hashSize($algo));
+        $message = Str::substr($cyphertext, $ivsize + self::_hashSize($algo));
 
         // Calculate verification checksum
         $verify = self::_checksum($message, $iv, $key, $cipher, $mode, $algo);
 
         // If chksum could not be verified return false
-        if (!Strcmp::equals($verify, $chksum)) {
+        if (!Str::equals($verify, $chksum)) {
             return false;
         }
 

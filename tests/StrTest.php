@@ -1,10 +1,10 @@
 <?php
-use Dcrypt\Strcmp;
+use Dcrypt\Str;
 
 class StrcmpTest extends PHPUnit_Framework_TestCase
 {
     public function testSpecial()
     {
-        Strcmp::equals(1, '1234');
+        Str::equals(1, '1234');
     }
 }

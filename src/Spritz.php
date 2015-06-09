@@ -44,7 +44,7 @@ class Spritz extends Rc4
         $i = $j = $k = $z = 0;
         $w = 1;
         $res = '';
-        for ($y = 0; $y < Strcmp::safeStrlen($str); $y++) {
+        for ($y = 0; $y < Str::strlen($str); $y++) {
             $i = ($i + $w) % 256;
             $j = ($k + $s[($j + $s[$i]) % 256]) % 256;
             $k = ($i + $k + $s[$j]) % 256;

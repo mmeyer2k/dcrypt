@@ -53,12 +53,12 @@ class Cryptobase
     protected static function _hash($hash, $size, $algo)
     {
         // Extend hash if too short
-        while (Strcmp::safeStrlen($hash) < $size) {
+        while (Str::strlen($hash) < $size) {
             $hash .= hash($algo, $hash, true);
         }
 
         // Truncate to specified number of bytes (if needed) and return
-        return substr($hash, 0, $size);
+        return Str::substr($hash, 0, $size);
     }
 
     /**
@@ -70,7 +70,7 @@ class Cryptobase
      */
     protected static function _hashSize($algo)
     {
-        return Strcmp::safeStrlen(hash($algo, 'hash me', true));
+        return Str::strlen(hash($algo, 'hash me', true));
     }
 
     /**

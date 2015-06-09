@@ -32,7 +32,7 @@ if (!defined($g)) {
         'Random',
         'Rc4',
         'Spritz',
-        'Strcmp',
+        'Str',
     );
 
     foreach ($files as $f) {
