@@ -83,14 +83,7 @@ class Str
      */
     public static function strlen($string)
     {
-        // Premature optimization
-        // Since this cannot be changed at runtime, we can cache it
-        static $funcExists = null;
-        if (null === $funcExists) {
-            $funcExists = function_exists('mb_strlen');
-        }
-
-        if ($funcExists) {
+        if (function_exists('mb_strlen')) {
             return mb_strlen($string, '8bit');
         }
 
@@ -108,14 +101,7 @@ class Str
      */
     public static function substr($string, $start, $length = null)
     {
-        // Premature optimization
-        // Since this cannot be changed at runtime, we can cache it
-        static $funcExists = null;
-        if (null === $funcExists) {
-            $funcExists = function_exists('mb_substr');
-        }
-
-        if ($funcExists) {
+        if (function_exists('mb_substr')) {
             return mb_substr($string, $start, $length, '8bit');
         }
 
