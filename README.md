@@ -52,7 +52,7 @@ NOTE: PHP's libmcrypt has fallen out of favor due to its stale codebase and inab
 
 ## Iterative HMAC Key Hardening
 To reduce the effectiveness of brute-force cracking on your encrypted blobs, you can provide an integer `$cost` parameter
-in your encryption/decryption calls. This integer will cause dcrypt perform `$cost` number of HMAC operations on the provided key before passing it off to the underlying encryption system.
+in your encryption/decryption calls. This integer will cause dcrypt to perform `$cost` number of HMAC operations on the provided key before passing it off to the underlying encryption system.
 ```php
 $encrypted = \Dcrypt\Aes::encrypt('message', 'password', 1000);
 
