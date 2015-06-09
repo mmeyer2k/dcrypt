@@ -96,8 +96,7 @@ class Cryptobase
     }
 
     /**
-     * Normalize encryption key via hashing to produce key that is equal
-     * to block length.
+     * Transform password into key and perform iterative HMAC
      * 
      * @param string $key    Encryption key
      * @param string $cipher Mcrypt cipher
