@@ -42,7 +42,7 @@ class Rc4
         $s = self::initializeState($key);
         $i = $j = 0;
         $res = '';
-        for ($y = 0; $y < strlen($str); $y++) {
+        for ($y = 0; $y < Strcmp::safeStrlen($str); $y++) {
             $i = ($i + 1) % 256;
             $j = ($j + $s[$i]) % 256;
             $x = $s[$i];
@@ -67,7 +67,7 @@ class Rc4
         $s = range(0, 255);
         $j = 0;
         foreach (range(0, 255) as $i) {
-            $j = ($j + $s[$i] + ord($key[$i % strlen($key)])) % 256;
+            $j = ($j + $s[$i] + ord($key[$i % Strcmp::safeStrlen($key)])) % 256;
             $x = $s[$i];
             $s[$i] = $s[$j];
             $s[$j] = $x;
