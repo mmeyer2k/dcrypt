@@ -70,10 +70,10 @@ class Pkcs7
     {
         // Determine the padding size by converting the final byte of the  
         // input to its decimal value.
-        $padsize = ord(substr($input, -1));
+        $padsize = ord(Strcmp::safeStrlen($input, -1));
 
         // Return string minus the padding amount.
-        return substr($input, 0, strlen($input) - $padsize);
+        return substr($input, 0, Strcmp::safeStrlen($input) - $padsize);
     }
 
 }
