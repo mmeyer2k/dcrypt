@@ -83,7 +83,7 @@ class Str
      */
     protected static function strlen($string)
     {
-        if (ini_get('mbstring.func_overload')) {
+        if (function_exists('mb_strlen')) {
             return mb_strlen($string, '8bit');
         }
 
@@ -101,7 +101,7 @@ class Str
      */
     protected static function substr($string, $start, $length = null)
     {
-        if (ini_get('mbstring.func_overload')) {
+        if (function_exists('mb_substr')) {
 
             // Fix a weird quirk in PHP versions prior to 5.4.8
             if ($length === null && version_compare('5.4.8', PHP_VERSION)) {
