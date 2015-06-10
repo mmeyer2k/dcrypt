@@ -20,7 +20,7 @@ composer global require mmeyer2k/dcrypt:dev-master
 ```
 In environments where composer is not available, dcrypt can be used by including `load.php`.
 # Features
-## AES (via OpenSSL)
+## AES Encryption (via OpenSSL)
 Quickly access symmetric encryption functions with \Dcrypt\Aes. When in doubt, use this class! All of the most secure options are the default. Naturally, strongly random initialization vectors are generated upon encryption and standard HMAC (sha256) checksums are verified before decryption.
 ```php
 $encrypted = Dcrypt\Aes::encrypt($message, $password);
