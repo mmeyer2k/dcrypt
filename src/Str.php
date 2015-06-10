@@ -18,7 +18,7 @@ namespace Dcrypt;
  * Provides time-safe string comparison facilities, and safe string operations
  * on systems that have mb_* function overloading enabled.
  * 
- * The functions in this class are was based on the symfony security package. 
+ * The functions in this class were inspired by the symfony's StringUtils class. 
  * 
  * @category Dcrypt
  * @package  Dcrypt
