@@ -81,7 +81,7 @@ class Str
      *
      * @return int
      */
-    public static function strlen($string)
+    protected static function strlen($string)
     {
         if (function_exists('mb_strlen')) {
             return mb_strlen($string, '8bit');
@@ -99,7 +99,7 @@ class Str
      * 
      * @return string the extracted part of string; or FALSE on failure, or an empty string.
      */
-    public static function substr($string, $start, $length = null)
+    protected static function substr($string, $start, $length = null)
     {
         if (function_exists('mb_substr')) {
 

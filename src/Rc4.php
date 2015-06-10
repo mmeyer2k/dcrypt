@@ -26,7 +26,7 @@ namespace Dcrypt;
  * @link     http://en.wikipedia.org/wiki/Stream_cipher
  * @link     https://en.wikipedia.org/wiki/RC4
  */
-class Rc4
+class Rc4 extends Str
 {
 
     /**
@@ -42,7 +42,7 @@ class Rc4
         $s = self::initializeState($key);
         $i = $j = 0;
         $res = '';
-        for ($y = 0; $y < Str::strlen($str); $y++) {
+        for ($y = 0; $y < self::strlen($str); $y++) {
             $i = ($i + 1) % 256;
             $j = ($j + $s[$i]) % 256;
             $x = $s[$i];
@@ -67,7 +67,7 @@ class Rc4
         $s = range(0, 255);
         $j = 0;
         foreach (range(0, 255) as $i) {
-            $j = ($j + $s[$i] + ord($key[$i % Str::strlen($key)])) % 256;
+            $j = ($j + $s[$i] + ord($key[$i % self::strlen($key)])) % 256;
             $x = $s[$i];
             $s[$i] = $s[$j];
             $s[$j] = $x;

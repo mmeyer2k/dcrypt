@@ -34,10 +34,10 @@ class Mcrypt extends Cryptobase
 {
 
     /**
-     * Decrypt data that was generated with the Aes::encrypt() method.
+     * Decrypt cyphertext
      * 
      * @param string $cyphertext Cypher text to decrypt
-     * @param string $key        Key that should be used to decrypt input data
+     * @param string $password   Password that should be used to decrypt input data
      * @param int    $cost       Number of HMAC iterations to perform on key
      * @param string $cipher     Mcrypt cipher
      * @param string $mode       Mcrypt mode
@@ -45,28 +45,28 @@ class Mcrypt extends Cryptobase
      * 
      * @return string|boolean Returns false on checksum validation failure
      */
-    public static function decrypt($cyphertext, $key, $cost = 0, $cipher = MCRYPT_RIJNDAEL_128, $mode = MCRYPT_MODE_CBC, $algo = 'sha256')
+    public static function decrypt($cyphertext, $password, $cost = 0, $cipher = MCRYPT_RIJNDAEL_128, $mode = MCRYPT_MODE_CBC, $algo = 'sha256')
     {
-        // Normalize (de/en)cryption key (by-ref)
-        self::_init($key, $cost, $cipher, $mode, $algo);
-
         // Determine that size of the IV in bytes
         $ivsize = mcrypt_get_iv_size($cipher, $mode);
 
         // Find the IV at the beginning of the cypher text
-        $iv = Str::substr($cyphertext, 0, $ivsize);
+        $iv = self::substr($cyphertext, 0, $ivsize);
 
         // Gather the checksum portion of the cypher text
-        $chksum = Str::substr($cyphertext, $ivsize, self::_hashSize($algo));
+        $chksum = self::substr($cyphertext, $ivsize, self::hashSize($algo));
 
         // Gather message portion of cyphertext after iv and checksum
-        $message = Str::substr($cyphertext, $ivsize + self::_hashSize($algo));
+        $message = self::substr($cyphertext, $ivsize + self::hashSize($algo));
+
+        // Derive key from password
+        $key = self::key($password, $cost, $cipher, $mode, $algo);
 
         // Calculate verification checksum
-        $verify = self::_checksum($message, $iv, $key, $cipher, $mode, $algo);
+        $verify = self::checksum($message, $iv, $key, $cipher, $mode, $algo);
 
         // If chksum could not be verified return false
-        if (!Str::equals($verify, $chksum)) {
+        if (!self::equals($verify, $chksum)) {
             return false;
         }
 
@@ -75,10 +75,10 @@ class Mcrypt extends Cryptobase
     }
 
     /**
-     * Encrypt plaintext data.
+     * Encrypt plaintext
      * 
-     * @param string $plaintext Plaintext string to encrypt.
-     * @param string $key       Key used to encrypt data.
+     * @param string $plaintext Plaintext string to encrypt
+     * @param string $password  Key used to encrypt data
      * @param int    $cost      Number of HMAC iterations to perform on key
      * @param string $cipher    Mcrypt cipher
      * @param string $mode      Mcrypt mode
@@ -86,13 +86,16 @@ class Mcrypt extends Cryptobase
      * 
      * @return string 
      */
-    public static function encrypt($plaintext, $key, $cost = 0, $cipher = MCRYPT_RIJNDAEL_128, $mode = MCRYPT_MODE_CBC, $algo = 'sha256')
+    public static function encrypt($plaintext, $password, $cost = 0, $cipher = MCRYPT_RIJNDAEL_128, $mode = MCRYPT_MODE_CBC, $algo = 'sha256')
     {
-        // Normalize (de/en)cryption key (by-ref) and return block size
-        $blocksize = self::_init($key, $cost, $cipher, $mode, $algo);
+        // Derive key from password
+        $key = self::key($password, $cost, $cipher, $mode, $algo);
 
         // Generate IV of appropriate size.
         $iv = Random::get(mcrypt_get_iv_size($cipher, $mode));
+
+        // Determine the blocksize for the selected cipher/mode
+        $blocksize = self::blocksize($cipher, $mode);
 
         // Pad the input string
         $padded = Pkcs7::pad($plaintext, $blocksize);
@@ -101,7 +104,7 @@ class Mcrypt extends Cryptobase
         $message = mcrypt_encrypt($cipher, $key, $padded, $mode, $iv);
 
         // Create the cypher text prefix (iv + checksum)
-        $prefix = $iv . self::_checksum($message, $iv, $key, $cipher, $mode, $algo);
+        $prefix = $iv . self::checksum($message, $iv, $key, $cipher, $mode, $algo);
 
         // Return prefix + cyphertext
         return $prefix . $message;

@@ -14,8 +14,25 @@
 
 namespace Dcrypt;
 
-class Cryptobase
+class Cryptobase extends Str
 {
+
+    /**
+     * Determine the blocksize in bytes.
+     * 
+     * @param string $cipher Mcrypt cipher
+     * @param string $mode   Mcrypt mode
+     * 
+     * @return int Blocksize in bytes
+     */
+    protected static function blocksize($cipher = 'rijndael-128', $mode = 'cbc')
+    {
+        if ($mode === 'cbc' && $cipher === 'rijndael-128') {
+            return 16;
+        } else {
+            return mcrypt_get_block_size($cipher, $mode);
+        }
+    }
 
     /**
      * Create a message authentication checksum.
@@ -29,7 +46,7 @@ class Cryptobase
      * 
      * @return string
      */
-    protected static function _checksum($cyphertext, $iv, $key, $cipher = 'rijndael-128', $mode = 'cbc', $algo = 'sha256')
+    protected static function checksum($cyphertext, $iv, $key, $cipher = 'rijndael-128', $mode = 'cbc', $algo = 'sha256')
     {
         // Prevent potentially large string concat by hmac-ing the cyphertext
         // by itself...
@@ -50,15 +67,15 @@ class Cryptobase
      * 
      * @return string
      */
-    protected static function _hash($hash, $size, $algo)
+    protected static function hashNormalize($hash, $size, $algo)
     {
         // Extend hash if too short
-        while (Str::strlen($hash) < $size) {
+        while (self::strlen($hash) < $size) {
             $hash .= hash($algo, $hash, true);
         }
 
         // Truncate to specified number of bytes (if needed) and return
-        return Str::substr($hash, 0, $size);
+        return self::substr($hash, 0, $size);
     }
 
     /**
@@ -68,45 +85,23 @@ class Cryptobase
      * 
      * @return int
      */
-    protected static function _hashSize($algo)
+    protected static function hashSize($algo)
     {
-        return Str::strlen(hash($algo, 'hash me', true));
-    }
-
-    /**
-     * Function which initializes common elements between encrypt and decrypt.
-     * 
-     * @param string $key    Key used to (en/de)crypt data.
-     * @param int    $cost   Number of HMAC iterations to perform on key
-     * @param string $cipher Mcrypt cipher
-     * @param string $mode   Mcrypt mode
-     * @param string $algo   Hashing algorithm to use for internal operations
-     * 
-     * @return int Blocksize in bytes
-     */
-    protected static function _init(&$key, $cost, $cipher = 'rijndael-128', $mode = 'cbc', $algo = 'sha256')
-    {
-        $key = self::_key($key, $cipher, $mode, $algo, $cost);
-
-        if ($mode === 'cbc' && $cipher === 'rijndael-128') {
-            return 16;
-        } else {
-            return mcrypt_get_block_size($cipher, $mode);
-        }
+        return self::strlen(hash($algo, 'hash me', true));
     }
 
     /**
      * Transform password into key and perform iterative HMAC
      * 
-     * @param string $key    Encryption key
+     * @param string $password    Encryption key
+     * @param int    $cost   Number of HMAC iterations to perform on key
      * @param string $cipher Mcrypt cipher
      * @param string $mode   Mcrypt block mode
      * @param string $algo   Hashing algorithm to use for internal operations
-     * @param int    $cost   Number of HMAC iterations to perform on key
      * 
      * @return string
      */
-    protected static function _key($key, $cipher, $mode, $algo, $cost)
+    protected static function key($password, $cost = 0, $cipher = 'rijndael-128', $mode = 'cbc', $algo = 'sha256')
     {
         if ($mode === 'cbc' && $cipher === 'rijndael-128') {
             $keysize = 32;
@@ -114,14 +109,14 @@ class Cryptobase
             $keysize = mcrypt_get_key_size($cipher, $mode);
         }
 
-        $hash = hash($algo, $key, true);
+        $key = hash($algo, $password, true);
 
         if ($cost) {
-            $hash = Hash::ihmac($hash, $key, $cost, $algo);
+            $key = Hash::ihmac($key, $password, $cost, $algo);
         }
 
         // Return hash normalized to key length
-        return self::_hash($hash, $keysize, $algo);
+        return self::hashNormalize($key, $keysize, $algo);
     }
 
 }

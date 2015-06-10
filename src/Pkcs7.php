@@ -23,7 +23,7 @@ namespace Dcrypt;
  * @license  http://opensource.org/licenses/MIT The MIT License (MIT)
  * @link     https://github.com/mmeyer2k/dcrypt
  */
-class Pkcs7
+class Pkcs7 extends Str
 {
 
     /**
@@ -37,7 +37,7 @@ class Pkcs7
     public static function pad($input, $blocksize)
     {
         // Determine the padding string that needs to be appended.
-        $pad = self::_paddingString(Str::strlen($input), $blocksize);
+        $pad = self::_paddingString(self::strlen($input), $blocksize);
 
         // Return input + padding
         return $input . $pad;
@@ -70,10 +70,10 @@ class Pkcs7
     {
         // Determine the padding size by converting the final byte of the  
         // input to its decimal value.
-        $padsize = ord(Str::substr($input, -1));
+        $padsize = ord(self::substr($input, -1));
 
         // Return string minus the padding amount.
-        return Str::substr($input, 0, Str::strlen($input) - $padsize);
+        return self::substr($input, 0, self::strlen($input) - $padsize);
     }
 
 }

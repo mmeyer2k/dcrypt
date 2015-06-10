@@ -51,30 +51,30 @@ class Openssl extends Cryptobase
      * Decrypt cyphertext
      * 
      * @param string $cyphertext Cypher text to decrypt
-     * @param string $key        Key that should be used to decrypt input data
+     * @param string $password   Key that should be used to decrypt input data
      * @param int    $cost       Number of HMAC iterations to perform on key
      * 
      * @return string|boolean Returns false on checksum validation failure
      */
-    public static function decrypt($cyphertext, $key, $cost = 0)
+    public static function decrypt($cyphertext, $password, $cost = 0)
     {
-        // Normalize (de/en)cryption key (by-ref)
-        self::_init($key, $cost);
+        // Derive key from password
+        $key = self::key($password, $cost);
 
         // Find the IV at the beginning of the cypher text
-        $iv = Str::substr($cyphertext, 0, self::ivsize);
+        $iv = self::substr($cyphertext, 0, self::ivsize);
 
         // Gather the checksum portion of the cypher text
-        $chksum = Str::substr($cyphertext, self::ivsize, self::cksize);
+        $chksum = self::substr($cyphertext, self::ivsize, self::cksize);
 
         // Gather message portion of cyphertext after iv and checksum
-        $message = Str::substr($cyphertext, self::ivsize + self::cksize);
+        $message = self::substr($cyphertext, self::ivsize + self::cksize);
 
         // Calculate verification checksum
-        $verify = self::_checksum($message, $iv, $key);
+        $verify = self::checksum($message, $iv, $key);
 
         // Verify HMAC before decrypting... return false if corrupt.
-        if (!Str::equals($verify, $chksum)) {
+        if (!self::equals($verify, $chksum)) {
             return false;
         }
 
@@ -86,15 +86,15 @@ class Openssl extends Cryptobase
      * Encrypt plaintext
      * 
      * @param string $plaintext Plaintext string to encrypt.
-     * @param string $key       Key used to encrypt data.
+     * @param string $password  Password used to encrypt data.
      * @param int    $cost      Number of HMAC iterations to perform on key
      * 
      * @return string 
      */
-    public static function encrypt($plaintext, $key, $cost = 0)
+    public static function encrypt($plaintext, $password, $cost = 0)
     {
-        // Normalize (de/en)cryption key (by-ref)
-        self::_init($key, $cost);
+        // Derive key from password
+        $key = self::key($password, $cost);
 
         // Generate IV of appropriate size.
         $iv = Random::get(self::ivsize);
@@ -103,7 +103,7 @@ class Openssl extends Cryptobase
         $message = openssl_encrypt($plaintext, self::cipher, $key, 1, $iv);
 
         // Create the cypher text prefix (iv + checksum)
-        $prefix = $iv . self::_checksum($message, $iv, $key);
+        $prefix = $iv . self::checksum($message, $iv, $key);
 
         // Return prefix + cyphertext
         return $prefix . $message;

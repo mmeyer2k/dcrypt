@@ -33,7 +33,7 @@ namespace Dcrypt;
  * @license  http://opensource.org/licenses/MIT The MIT License (MIT)
  * @link     https://github.com/mmeyer2k/dcrypt
  */
-class Hash
+class Hash extends Str
 {
 
     const saltbytes = 31;
@@ -135,10 +135,10 @@ class Hash
     public static function verify($input, $hash, $key)
     {
         // Get the salt value from the decrypted prefix
-        $salt = Otp::crypt(Str::substr($hash, 0, self::saltbytes), $key);
+        $salt = Otp::crypt(self::substr($hash, 0, self::saltbytes), $key);
 
         // Get the encrypted cost byte
-        $cost = Str::substr($hash, self::saltbytes, self::costbytes);
+        $cost = self::substr($hash, self::saltbytes, self::costbytes);
 
         // Decrypt the cost value convert to integer
         $cost = ord(Otp::crypt($cost, $key));
