@@ -95,7 +95,7 @@ class Mcrypt extends Cryptobase
         $iv = Random::get(mcrypt_get_iv_size($cipher, $mode));
 
         // Determine the blocksize for the selected cipher/mode
-        $blocksize = self::blocksize($cipher, $mode);
+        $blocksize = mcrypt_get_block_size($cipher, $mode);
 
         // Pad the input string
         $padded = Pkcs7::pad($plaintext, $blocksize);

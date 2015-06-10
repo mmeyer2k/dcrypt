@@ -18,23 +18,6 @@ class Cryptobase extends Str
 {
 
     /**
-     * Determine the blocksize in bytes.
-     * 
-     * @param string $cipher Mcrypt cipher
-     * @param string $mode   Mcrypt mode
-     * 
-     * @return int Blocksize in bytes
-     */
-    protected static function blocksize($cipher = 'rijndael-128', $mode = 'cbc')
-    {
-        if ($mode === 'cbc' && $cipher === 'rijndael-128') {
-            return 16;
-        } else {
-            return mcrypt_get_block_size($cipher, $mode);
-        }
-    }
-
-    /**
      * Create a message authentication checksum.
      * 
      * @param string $cyphertext Cyphertext that needs a check sum.
