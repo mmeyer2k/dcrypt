@@ -24,8 +24,8 @@ class McryptTest extends PHPUnit_Framework_TestCase
 
                     // Perform a validation by replacing a random byte to make sure
                     // the decryption fails. After enough successful runs,
-                    // all areas of the cypher text will have been tested
-                    // for integrity
+                    // it can be assumed that all areas of the cyphertext
+                    // (including the IV) are covered by this test
                     $corrupt = swaprandbyte($encrypted);
                     $this->assertFalse(Mcrypt::decrypt($corrupt, $key, $cost, $cipher, $mode, $algo));
                 }

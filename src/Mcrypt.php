@@ -88,17 +88,18 @@ class Mcrypt extends Cryptobase
      */
     public static function encrypt($plaintext, $password, $cost = 0, $cipher = MCRYPT_RIJNDAEL_128, $mode = MCRYPT_MODE_CBC, $algo = 'sha256')
     {
-        // Derive key from password
-        $key = self::key($password, $cost, $cipher, $mode, $algo);
-
-        // Generate IV of appropriate size.
-        $iv = Random::get(mcrypt_get_iv_size($cipher, $mode));
 
         // Determine the blocksize for the selected cipher/mode
         $blocksize = mcrypt_get_block_size($cipher, $mode);
 
         // Pad the input string
         $padded = Pkcs7::pad($plaintext, $blocksize);
+        
+        // Generate IV of appropriate size.
+        $iv = Random::get(mcrypt_get_iv_size($cipher, $mode));
+        
+        // Derive key from password
+        $key = self::key($password, $cost, $cipher, $mode, $algo);
 
         // Encrypt the plaintext
         $message = mcrypt_encrypt($cipher, $key, $padded, $mode, $iv);

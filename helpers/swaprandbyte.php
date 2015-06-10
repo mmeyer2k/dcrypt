@@ -3,7 +3,8 @@
 if (!function_exists('swaprandbyte')) {
 
     /**
-     * Change a random byte, randomly.
+     * Change a random byte, randomly. This function is used in unit testing
+     * only and never in the namespaced areas of code.
      * 
      * @param string $input
      * @return string
