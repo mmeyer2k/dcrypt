@@ -10,7 +10,7 @@ dcrypt
 A library of essential encryption functions for PHP. To see dcrypt in action, check out the [demo](http://mmeyer2k.github.io/dcrypt). 
 
 # Installation
-Add the following to the require-dev section of your composer.json file, then run `composer install`.
+Add the following to the require section of your composer.json file, then run `composer install`.
 ```
 "mmeyer2k/dcrypt": "dev-master"
 ```
