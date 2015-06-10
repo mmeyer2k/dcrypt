@@ -7,7 +7,7 @@ dcrypt
 [![License](https://poser.pugx.org/mmeyer2k/dcrypt/license.svg)](https://packagist.org/packages/mmeyer2k/dcrypt)
 [![experimental](http://badges.github.io/stability-badges/dist/experimental.svg)](http://github.com/badges/stability-badges)
 
-A library of essential encryption functions for PHP. To see dcrypt in action, check out the [demo](http://mmeyer2k.github.io/dcrypt). 
+A library of essential encryption functions for PHP.
 
 # Installation
 Add the following to the require section of your composer.json file, then run `composer install`.
