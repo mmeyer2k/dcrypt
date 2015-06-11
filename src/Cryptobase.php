@@ -87,7 +87,9 @@ class Cryptobase extends Str
      * @return string
      */
     protected static function key($password, $cost = 0, $cipher = 'rijndael-128', $mode = 'cbc', $algo = 'sha256')
-    {
+    {        
+        // This if statement allows the usage of the Openssl library without
+        // the need to have the mcrypt plugin installed at all.
         if ($mode === 'cbc' && $cipher === 'rijndael-128') {
             $keysize = 32;
         } else {
@@ -95,7 +97,8 @@ class Cryptobase extends Str
         }
 
         $key = hash($algo, $password, true);
-
+        
+        // Perform key derivation
         if ($cost) {
             $key = Hash::ihmac($key, $password, $cost, $algo);
         }
