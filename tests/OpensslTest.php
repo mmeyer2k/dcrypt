@@ -7,6 +7,17 @@ require __DIR__ . '/../helpers/swaprandbyte.php';
 class OpensslTest extends PHPUnit_Framework_TestCase
 {
 
+    public function testPkdf()
+    {
+        $input = 'AAAAAAAA';
+        $key = 'AAAAAAAA';
+        $encrypted = Openssl::encrypt($input, $key, 10);
+        $this->assertEquals($input, Openssl::decrypt($encrypted, $key, 10));
+
+        $corrupt = swaprandbyte($encrypted);
+        $this->assertFalse(Openssl::decrypt($corrupt, $key, 10));
+    }
+    
     public function testEngine()
     {
         $input = 'AAAAAAAA';
