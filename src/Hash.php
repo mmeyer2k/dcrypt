@@ -58,8 +58,7 @@ class Hash extends Str
             $salt = Random::get(self::saltbytes);
         }
 
-        // Verify and zero pad the cost out to 16 bytes as specified in the hash
-        // format then encrypt it with the salt.
+        // Verify and normalize cost value
         $cost = self::_cost($cost);
 
         // Perform hash iterations. Get a 32 byte output value.
