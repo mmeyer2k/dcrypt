@@ -67,7 +67,7 @@ class Str
         $result = 0;
 
         for ($i = 0; $i < $knownLen; $i++) {
-            $result |= (ord($knownString[$i]) ^ ord($userInput[$i]));
+            $result |= ord($knownString[$i]) ^ ord($userInput[$i]);
         }
 
         // They are only identical strings if $result is exactly 0...
