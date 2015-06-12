@@ -21,19 +21,21 @@ composer global require mmeyer2k/dcrypt:dev-master
 In environments where composer is not available, dcrypt can be used by including `load.php`.
 # Features
 ## AES Encryption (via OpenSSL)
-Quickly access symmetric encryption functions with \Dcrypt\Aes. When in doubt, use this class! All of the most secure options are the default. Naturally, strongly random initialization vectors are generated upon encryption and standard HMAC (sha256) checksums are verified before decryption.
+Quickly access symmetric encryption functions with \Dcrypt\Aes. When in doubt, use this class! All of the most secure options are the default. Naturally, strongly random initialization vectors are generated upon encryption and standard HMAC (sha256) checksums are verified (in a time-safe manner) before decryption.
 ```php
 $encrypted = Dcrypt\Aes::encrypt($message, $password);
 
 $decrypted = Dcrypt\Aes::decrypt($encrypted, $password);
 ```
+
 ## Customizeable Encryption (via Mcrypt)
 If you have special requirements, \Dcrypt\Mcrypt might be the best solution.
 ```php
 # encrypt with serpent in ecb mode with sha512 hmac, for instance...
+# the third parameter of 0 specifies that no extra key hardening will take place (see below...)
 $encrypted = \Dcrypt\Mcrypt::encrypt('message', 'password', 0, MCRYPT_SERPENT, MCRYPT_MODE_ECB, 'sha512');
 ```
-As with \Dcrypt\Aes, all HMAC verification, IV creation and padding are handled for you.
+As with \Dcrypt\Aes, all time-safe HMAC verification, strong IV creation and padding (PKCS#7) are handled for you.
 
 When used with all default options, \Dcrypt\Mcrypt is compatible with \Dcrypt\Aes.
 ```php
@@ -58,6 +60,7 @@ $encrypted = \Dcrypt\Aes::encrypt('message', 'password', 1000);
 
 $decrypyed = \Dcrypt\Aes::decrypt($encrypted, 'password', 1000);
 ```
+`cost` can also be passed into the third parameter of \Dcrypt\Mcrypt's functions.
 
 ## Fast One Time Pad Encryption
 Extremely fast symmetric stream encryption is available with the `Otp` class.
@@ -85,6 +88,7 @@ $iv = \Dcrypt\Random::get(8);
 ```
 
 ## Time-safe String Comparison
+Dcrypt uses time-safe string comparisons in all sensitive areas. The same function that is used internally is also exposed for use in your projects.
 ```php
 $equals = \Dcrypt\Str::equals('known string', 'supplied string');
 ```
