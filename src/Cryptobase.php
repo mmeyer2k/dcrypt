@@ -41,7 +41,7 @@ class Cryptobase extends Str
 
     /**
      * This will normalize a hash to a certain length by extending it if
-     * too long and truncating it if too short. This ensures that any
+     * too short and truncating it if too long. This ensures that any
      * hash algo will work with any combination of other settings. However,
      * it is probably best to make sure that the keysize and algo size
      * are identical so that the input hash passes through unchanged.
