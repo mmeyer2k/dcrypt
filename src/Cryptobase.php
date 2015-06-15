@@ -78,11 +78,11 @@ class Cryptobase extends Str
     /**
      * Transform password into key and perform iterative HMAC
      * 
-     * @param string $password    Encryption key
-     * @param int    $cost   Number of HMAC iterations to perform on key
-     * @param string $cipher Mcrypt cipher
-     * @param string $mode   Mcrypt block mode
-     * @param string $algo   Hashing algorithm to use for internal operations
+     * @param string $password Encryption key
+     * @param int    $cost     Number of HMAC iterations to perform on key
+     * @param string $cipher   Mcrypt cipher
+     * @param string $mode     Mcrypt block mode
+     * @param string $algo     Hashing algorithm to use for internal operations
      * 
      * @return string
      */
