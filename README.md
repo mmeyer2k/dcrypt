@@ -76,9 +76,9 @@ PKCS#7 style padding is available via the `Pkcs7::pad()` and `Pkcs7::unpad()` fu
 ## Strong Authenticated Key Derivation Function
 Dcrypt\Hash is an opaque 512 bit iterative hash function. It accepts cost values between 1 and 255.
 ```php
-$hash = Dcrypt\Hash::make('plaintext', 'key', $cost);
+$hash = \Dcrypt\Hash::make('plaintext', 'key', $cost);
 
-$verified = Dcrypt\Hash::verify('plaintext', $hash, 'key');
+$verified = \Dcrypt\Hash::verify('plaintext', $hash, 'key');
 ```
 ## Secure Random Number Generation
 When you absolutely MUST have cryptographically secure random numbers \Dcrypt\Random will give them to you or throw an exception.
