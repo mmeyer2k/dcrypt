@@ -50,7 +50,7 @@ Supported (and tested) ciphers: `MCRYPT_3DES`, `MCRYPT_BLOWFISH`, `MCRYPT_BLOWFI
 
 Supported (and tested) hash algos: all!
 
-NOTE: PHP's libmcrypt has fallen out of favor due to its stale codebase and inability to use AES-NI. Only use these features if there is a strong need. In nearly all cases \Dcrypt\Aes (which uses OpenSSL) is preferred.
+**NOTE**: PHP's libmcrypt has fallen out of favor due to its stale codebase and inability to use AES-NI. Only use these features if there is a strong need. In nearly all cases \Dcrypt\Aes (which uses OpenSSL) is preferred.
 
 ## Iterative HMAC Key Hardening
 To reduce the effectiveness of brute-force cracking on your encrypted blobs, you can provide an integer `$cost` parameter
