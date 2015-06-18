@@ -44,7 +44,7 @@ class Pkcs7 extends Str
     }
 
     /**
-     * Determine the size of the padding to use.
+     * Create the padding string that will be appended to the input.
      * 
      * @param integer $inputsize Size of the input in bytes.
      * @param integer $blocksize Size of the output in bytes.
