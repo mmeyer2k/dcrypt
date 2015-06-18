@@ -63,7 +63,7 @@ $decrypyed = \Dcrypt\Aes::decrypt($encrypted, 'password', 1000);
 `$cost` can also be passed into the third parameter of `\Dcrypt\Mcrypt`'s functions.
 
 ## Fast One Time Pad Encryption
-Extremely fast symmetric stream encryption is available with the `Otp` class.
+Extremely fast symmetric stream encryption is available with the `\Dcrypt\Otp` class.
 ```php
 $encrypted = \Dcrypt\Otp::crypt('string', 'key');
 
