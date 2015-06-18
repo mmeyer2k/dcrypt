@@ -26,8 +26,13 @@ class McryptTest extends PHPUnit_Framework_TestCase
                     // the decryption fails. After enough successful runs,
                     // it can be assumed that all areas of the cyphertext
                     // (including the IV) are covered by this test
-                    $corrupt = swaprandbyte($encrypted);
-                    $this->assertFalse(Mcrypt::decrypt($corrupt, $key, $cost, $cipher, $mode, $algo));
+                    //
+                    // However, this test should only be performed when the hash
+                    // algo is large enough to avoid collisions
+                    if (strlen(hash($algo, 'hash me', true)) >= 8) {
+                        $corrupt = swaprandbyte($encrypted);
+                        $this->assertFalse(Mcrypt::decrypt($corrupt, $key, $cost, $cipher, $mode, $algo));
+                    }
                 }
             }
         }
