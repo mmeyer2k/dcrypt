@@ -7,7 +7,7 @@ dcrypt
 [![License](https://poser.pugx.org/mmeyer2k/dcrypt/license.svg)](https://packagist.org/packages/mmeyer2k/dcrypt)
 [![experimental](http://badges.github.io/stability-badges/dist/experimental.svg)](http://github.com/badges/stability-badges)
 
-A library of essential encryption functions for PHP.
+A library of essential encryption functions for PHP (5.3+).
 
 # Installation
 Add the following to the require section of your composer.json file, then run `composer install`.
@@ -60,7 +60,7 @@ $encrypted = \Dcrypt\Aes::encrypt('message', 'password', 1000);
 
 $decrypyed = \Dcrypt\Aes::decrypt($encrypted, 'password', 1000);
 ```
-`cost` can also be passed into the third parameter of \Dcrypt\Mcrypt's functions.
+`$cost` can also be passed into the third parameter of \Dcrypt\Mcrypt's functions.
 
 ## Fast One Time Pad Encryption
 Extremely fast symmetric stream encryption is available with the `Otp` class.
