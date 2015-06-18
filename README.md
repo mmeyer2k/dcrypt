@@ -21,7 +21,7 @@ composer global require mmeyer2k/dcrypt:dev-master
 In environments where composer is not available, dcrypt can be used by including `load.php`.
 # Features
 ## AES Encryption (via OpenSSL)
-Quickly access symmetric encryption functions with \Dcrypt\Aes. When in doubt, use this class! All of the most secure options are the default. Naturally, strongly random initialization vectors are generated upon encryption and standard HMAC (sha256) checksums are verified (in a time-safe manner) before decryption.
+Quickly access symmetric encryption functions with `\Dcrypt\Aes`. When in doubt, use this class! All of the most secure options are the default. Naturally, strongly random initialization vectors are generated upon encryption and standard HMAC (sha256) checksums are verified (in a time-safe manner) before decryption.
 ```php
 $encrypted = \Dcrypt\Aes::encrypt($message, $password);
 
@@ -29,7 +29,7 @@ $decrypted = \Dcrypt\Aes::decrypt($encrypted, $password);
 ```
 
 ## Customizeable Encryption (via Mcrypt)
-If you have special requirements, \Dcrypt\Mcrypt might be the best solution.
+If you have special requirements, `\Dcrypt\Mcrypt` might be the best solution.
 ```php
 # encrypt with serpent in ecb mode with sha512 hmac, for instance...
 # the third parameter of 0 specifies that no extra key hardening will take place (see below...)
@@ -37,7 +37,7 @@ $encrypted = \Dcrypt\Mcrypt::encrypt('message', 'password', 0, MCRYPT_SERPENT, M
 ```
 As with \Dcrypt\Aes, all time-safe HMAC verification, strong IV creation and padding (PKCS#7) are handled for you.
 
-When used with all default options, \Dcrypt\Mcrypt is compatible with \Dcrypt\Aes.
+When used with all default options, `\Dcrypt\Mcrypt` is compatible with \Dcrypt\Aes.
 ```php
 $encrypted = \Dcrypt\Mcrypt::encrypt('message', 'password');
 
@@ -50,7 +50,7 @@ Supported (and tested) ciphers: `MCRYPT_3DES`, `MCRYPT_BLOWFISH`, `MCRYPT_BLOWFI
 
 Supported (and tested) hash algos: all!
 
-**NOTE**: PHP's libmcrypt has fallen out of favor due to its stale codebase and inability to use AES-NI. Only use these features if there is a strong need. In nearly all cases \Dcrypt\Aes (which uses OpenSSL) is preferred.
+**NOTE**: PHP's libmcrypt has fallen out of favor due to its stale codebase and inability to use AES-NI. Only use these features if there is a strong need. In nearly all cases `\Dcrypt\Aes` (which uses OpenSSL) is preferred.
 
 ## Iterative HMAC Key Hardening
 To reduce the effectiveness of brute-force cracking on your encrypted blobs, you can provide an integer `$cost` parameter
@@ -60,7 +60,7 @@ $encrypted = \Dcrypt\Aes::encrypt('message', 'password', 1000);
 
 $decrypyed = \Dcrypt\Aes::decrypt($encrypted, 'password', 1000);
 ```
-`$cost` can also be passed into the third parameter of \Dcrypt\Mcrypt's functions.
+`$cost` can also be passed into the third parameter of `\Dcrypt\Mcrypt`'s functions.
 
 ## Fast One Time Pad Encryption
 Extremely fast symmetric stream encryption is available with the `Otp` class.
@@ -74,14 +74,14 @@ $decrypted = \Dcrypt\Otp::crypt($crypted, 'key');
 PKCS#7 style padding is available via the `Pkcs7::pad()` and `Pkcs7::unpad()` functions.
 
 ## Strong Authenticated Key Derivation Function
-Dcrypt\Hash is an opaque 512 bit iterative hash function. It accepts cost values between 1 and 255.
+`Dcrypt\Hash` is an opaque 512 bit iterative hash function. It accepts cost values between 1 and 255.
 ```php
 $hash = \Dcrypt\Hash::make('plaintext', 'key', $cost);
 
 $verified = \Dcrypt\Hash::verify('plaintext', $hash, 'key');
 ```
 ## Secure Random Number Generation
-When you absolutely MUST have cryptographically secure random numbers \Dcrypt\Random will give them to you or throw an exception.
+When you absolutely MUST have cryptographically secure random numbers `\Dcrypt\Random` will give them to you or throw an exception.
 ```php
 # get 8 random bytes
 $iv = \Dcrypt\Random::get(8);
@@ -94,4 +94,4 @@ $equals = \Dcrypt\Str::equals('known string', 'supplied string');
 ```
 
 ## For fun
-\Dcrypt\Rc4 and \Dcrypt\Spritz are pure PHP implementations of the immortal RC4 cipher and its successor Spritz.
+`\Dcrypt\Rc4` and `\Dcrypt\Spritz` are pure PHP implementations of the immortal RC4 cipher and its successor Spritz.
