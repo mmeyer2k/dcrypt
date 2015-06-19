@@ -24,6 +24,7 @@ if (!function_exists('swaprandbyte')) {
             } else {
                 $rbyte = $rbyte + 1;
             }
+            $rbyte = chr($rbyte);
         }
         $input[$offset] = $rbyte;
         
