@@ -23,9 +23,9 @@ In environments where composer is not available, dcrypt can be used by including
 ## AES Encryption (via OpenSSL)
 Quickly access symmetric encryption functions with `\Dcrypt\Aes`. When in doubt, use this class! All of the most secure options are the default. Naturally, strongly random initialization vectors are generated upon encryption and standard HMAC (sha256) checksums are verified (in a time-safe manner) before decryption.
 ```php
-$encrypted = \Dcrypt\Aes::encrypt($message, $password);
+$encrypted = \Dcrypt\Aes::encrypt($plaintext, $password);
 
-$decrypted = \Dcrypt\Aes::decrypt($encrypted, $password);
+$plaintext = \Dcrypt\Aes::decrypt($encrypted, $password);
 ```
 
 ## Customizeable Encryption (via Mcrypt)
