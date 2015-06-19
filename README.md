@@ -39,9 +39,9 @@ As with `\Dcrypt\Aes`, all time-safe HMAC verification, strong IV creation and p
 
 When used with all default options, `\Dcrypt\Mcrypt` is compatible with `\Dcrypt\Aes`.
 ```php
-$encrypted = \Dcrypt\Mcrypt::encrypt('message', 'password');
+$encrypted = \Dcrypt\Mcrypt::encrypt($plaintext, 'password');
 
-$decrypyed = \Dcrypt\Aes::decrypt($encrypted, 'password'); # = message
+$plaintext = \Dcrypt\Aes::decrypt($encrypted, 'password'); # = message
 ```
 
 Supported (and tested) modes: `MCRYPT_MODE_CBC`, `MCRYPT_MODE_CFB`, `MCRYPT_MODE_ECB`, `MCRYPT_MODE_OFB`, `MCRYPT_MODE_NOFB`
@@ -56,18 +56,18 @@ Supported (and tested) hash algos: all!
 To reduce the effectiveness of brute-force cracking on your encrypted blobs, you can provide an integer `$cost` parameter
 in your encryption/decryption calls. This integer will cause dcrypt to perform `$cost` number of HMAC operations on the provided key before passing it off to the underlying encryption system.
 ```php
-$encrypted = \Dcrypt\Aes::encrypt('message', 'password', 1000);
+$encrypted = \Dcrypt\Aes::encrypt($plaintext, 'password', 1000);
 
-$decrypyed = \Dcrypt\Aes::decrypt($encrypted, 'password', 1000);
+$plaintext = \Dcrypt\Aes::decrypt($encrypted, 'password', 1000);
 ```
 `$cost` can also be passed into the third parameter of `\Dcrypt\Mcrypt`'s functions.
 
 ## Fast One Time Pad Encryption
 Extremely fast symmetric stream encryption is available with the `\Dcrypt\Otp` class.
 ```php
-$encrypted = \Dcrypt\Otp::crypt('string', 'key');
+$encrypted = \Dcrypt\Otp::crypt($plaintext, 'key');
 
-$decrypted = \Dcrypt\Otp::crypt($crypted, 'key'); 
+$plaintext = \Dcrypt\Otp::crypt($encrypted, 'key');
 ```
 
 ## PKCS #7 Padding
@@ -76,7 +76,7 @@ PKCS#7 style padding is available via the `Pkcs7::pad()` and `Pkcs7::unpad()` fu
 ## Strong Authenticated Key Derivation Function
 `Dcrypt\Hash` is an opaque 512 bit iterative hash function. It accepts cost values between 1 and 255.
 ```php
-$hash = \Dcrypt\Hash::make('plaintext', 'key', $cost);
+$hash = \Dcrypt\Hash::make($plaintext, 'key', $cost);
 
 $verified = \Dcrypt\Hash::verify('plaintext', $hash, 'key');
 ```
