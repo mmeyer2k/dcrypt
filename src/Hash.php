@@ -59,10 +59,10 @@ class Hash extends Str
         }
 
         // Verify and normalize cost value
-        $cost = self::_cost($cost) * self::coef;
+        $cost = self::_cost($cost);
 
         // Perform hash iterations. Get a 32 byte output value.
-        $hash = self::ihmac($input . $salt, $password, $cost, 'sha256');
+        $hash = self::ihmac($input . $salt, $password, $cost * self::coef, 'sha256');
 
         // Return the encrypted salt + encrypted cost value + hmac.
         return Otp::crypt($salt, $password) . Otp::crypt(chr($cost), $password) . $hash;
