@@ -15,7 +15,8 @@
 namespace Dcrypt;
 
 /**
- * Fail-safe wrapper for mcrypt_create_iv
+ * Fail-safe wrapper for mcrypt_create_iv (preferably) and
+ * openssl_random_pseudo_bytes (fallback).
  *
  * @category Dcrypt
  * @package  Dcrypt
@@ -36,6 +37,7 @@ class Random
      private static function _fromMcrypt($bytes)
      {
         $ret = mcrypt_create_iv($bytes, MCRYPT_DEV_URANDOM);
+        
         if ($ret === false) {
             self::_toss(); // @codeCoverageIgnore
         }
@@ -54,6 +56,7 @@ class Random
      {
         // @codeCoverageIgnoreStart
         $ret = openssl_random_pseudo_bytes($bytes, $secure);
+        
         if ($secure === false) {
             self::_toss();
         }
