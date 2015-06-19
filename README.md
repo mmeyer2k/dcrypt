@@ -54,11 +54,11 @@ Supported (and tested) hash algos: all!
 
 ## Iterative HMAC Key Hardening
 To reduce the effectiveness of brute-force cracking on your encrypted blobs, you can provide an integer `$cost` parameter
-in your encryption/decryption calls. This integer will cause dcrypt to perform `$cost` number of HMAC operations on the provided key before passing it off to the underlying encryption system.
+in your encryption/decryption calls. This integer will cause dcrypt to perform `$cost` number of extra HMAC operations on the key before passing it off to the underlying encryption system.
 ```php
-$encrypted = \Dcrypt\Aes::encrypt($plaintext, 'password', 1000);
+$encrypted = \Dcrypt\Aes::encrypt($plaintext, 'password', 10000);
 
-$plaintext = \Dcrypt\Aes::decrypt($encrypted, 'password', 1000);
+$plaintext = \Dcrypt\Aes::decrypt($encrypted, 'password', 10000);
 ```
 `$cost` can also be passed into the third parameter of `\Dcrypt\Mcrypt`'s functions.
 
@@ -95,8 +95,18 @@ $iv = \Dcrypt\Random::get(8);
 ## Time-safe String Comparison
 Dcrypt uses time-safe string comparisons in all sensitive areas. The same function that is used internally is also exposed for use in your projects.
 ```php
-$equals = \Dcrypt\Str::equals('known string', 'supplied string');
+$equals = \Dcrypt\Str::equals('known', 'given');
 ```
 
 ## For fun
 `\Dcrypt\Rc4` and `\Dcrypt\Spritz` are pure PHP implementations of the immortal RC4 cipher and its successor Spritz.
+```php
+$encrypted = \Dcrypt\Rc4::crypt($plaintext, 'password');
+
+$decrypted = \Dcrypt\Rc4::crypt($encrypted, 'password');
+```
+```php
+$encrypted = \Dcrypt\Spritz::crypt($plaintext, 'password');
+
+$decrypted = \Dcrypt\Spritz::crypt($encrypted, 'password');
+```
