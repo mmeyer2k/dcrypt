@@ -114,7 +114,7 @@ $encrypted = \Dcrypt\Spritz::crypt($plaintext, $password);
 $plaintext = \Dcrypt\Spritz::crypt($encrypted, $password);
 ```
 
-## Usage Notes
+# Usage Notes
 1. All encryption functions and `\Dcrypt\Hash::make()` output raw binary data.
 1. All encryption functions and `\Dcrypt\Hash::make()` accept any binary data of arbitrary length as `$password`.
 1. Dcrypt is safe to use on systems that have `mbstring.func_overload` enabled.
