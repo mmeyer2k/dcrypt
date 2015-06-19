@@ -17,7 +17,8 @@ if (!function_exists('swaprandbyte')) {
         $byte = $input[$offset];
         $rbyte = \Dcrypt\Random::get(1);
         if ($byte === $rbyte) {
-            if(ord($rbyte) === 0) {
+            $rbyte = ord($rbyte);
+            if($rbyte === 0) {
                 $rbyte = 255;
             } elseif(ord($rbyte) === 255) {
                 $rbyte = 0;
