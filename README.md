@@ -72,6 +72,10 @@ $plaintext = \Dcrypt\Otp::crypt($encrypted, 'key');
 
 ## PKCS #7 Padding
 PKCS#7 style padding is available via the `Pkcs7::pad()` and `Pkcs7::unpad()` functions.
+```php
+\Dcrpyt\Pkcs7::pad('aaaabbbb', 11); # = aaaabbbb\x030303
+\Dcrpyt\Pkcs7::pad('aaaabbbb', 8);  # = aaaabbbb\x0808080808080808
+```
 
 ## Strong Authenticated Key Derivation Function
 `Dcrypt\Hash` is an opaque 512 bit iterative hash function. It accepts cost values between 1 and 255.
