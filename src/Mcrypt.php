@@ -66,7 +66,7 @@ class Mcrypt extends Cryptobase
         $verify = self::checksum($message, $iv, $key, $cipher, $mode, $algo);
 
         // If chksum could not be verified return false
-        if (!self::equals($verify, $chksum)) {
+        if (!self::equal($verify, $chksum)) {
             return false;
         }
 

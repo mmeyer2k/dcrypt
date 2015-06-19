@@ -74,7 +74,7 @@ class Openssl extends Cryptobase
         $verify = self::checksum($message, $iv, $key);
 
         // Verify HMAC before decrypting... return false if corrupt.
-        if (!self::equals($verify, $chksum)) {
+        if (!self::equal($verify, $chksum)) {
             return false;
         }
 

@@ -42,7 +42,7 @@ class Str
      *
      * @return bool true if the two strings are the same, false otherwise
      */
-    public static function equals($knownString, $userInput)
+    public static function equal($knownString, $userInput)
     {
         // Avoid making unnecessary duplications of secret data
         if (!is_string($knownString)) {

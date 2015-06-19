@@ -5,6 +5,6 @@ class StrcmpTest extends PHPUnit_Framework_TestCase
 {
     public function testSpecial()
     {
-        Str::equals(1, '1234');
+        Str::equal(1, '1234');
     }
 }

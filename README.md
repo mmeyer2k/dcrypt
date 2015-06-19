@@ -98,7 +98,7 @@ $iv = \Dcrypt\Random::get(8);
 ## Time-safe String Comparison
 Dcrypt uses time-safe string comparisons in all sensitive areas. The same function that is used internally is also exposed for use in your projects.
 ```php
-$equals = \Dcrypt\Str::equals('known', 'given');
+$equals = \Dcrypt\Str::equal('known', 'given');
 ```
 
 ## For Fun

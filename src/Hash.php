@@ -145,7 +145,7 @@ class Hash extends Str
         $cost = ord(Otp::crypt($cost, $password));
 
         // Return the boolean equivalence.
-        return Str::equals($hash, self::_build($input, $password, $salt, $cost));
+        return Str::equal($hash, self::_build($input, $password, $salt, $cost));
     }
 
 }
