@@ -125,8 +125,7 @@ class Hash extends Str
     }
 
     /**
-     * Check the validity of an Nhash gerneated checksum against a plaintext 
-     * string.
+     * Check the validity of a hash.
      * 
      * @param string $input Input to compare.
      * @param string $hash  User provided input to verify.
