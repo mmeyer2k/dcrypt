@@ -43,14 +43,14 @@ class Hash extends Str
     /**
      * Internal function used to build the actual hash.
      *  
-     * @param string       $input Data to hash.
-     * @param string       $key   Key to use in HMAC call.
-     * @param string|null  $salt  Salt to use in HMAC call.
-     * @param integer      $cost  Number of iterations to use.
+     * @param string       $input    Data to hash.
+     * @param string       $password Password to use in HMAC call.
+     * @param string|null  $salt     Salt to use in HMAC call.
+     * @param integer      $cost     Number of iterations to use.
      * 
      * @return string
      */
-    private static function _build($input, $key, $salt = null, $cost = 10)
+    private static function _build($input, $password, $salt = null, $cost = 10)
     {
         // If no salt was specified, generate a random 16 byte one. The salt 
         // will be provided during the verification step.
@@ -59,13 +59,13 @@ class Hash extends Str
         }
 
         // Verify and normalize cost value
-        $cost = self::_cost($cost);
+        $cost = self::_cost($cost) * self::coef;
 
         // Perform hash iterations. Get a 32 byte output value.
-        $hash = self::ihmac($input, $salt, $cost * self::coef, 'sha256');
+        $hash = self::ihmac($input . $salt, $password, $cost, 'sha256');
 
         // Return the encrypted salt + encrypted cost value + hmac.
-        return Otp::crypt($salt, $key) . Otp::crypt(chr($cost), $key) . $hash;
+        return Otp::crypt($salt, $password) . Otp::crypt(chr($cost), $password) . $hash;
     }
 
     /**
@@ -113,9 +113,9 @@ class Hash extends Str
     /**
      * Hash an input string into a salted 512 byte hash.
      * 
-     * @param string  $input Data to hash.
-     * @param string  $key   HMAC validation key.
-     * @param integer $cost  Cost value of the hash.
+     * @param string  $input    Data to hash.
+     * @param string  $password HMAC validation password.
+     * @param integer $cost     Cost value of the hash.
      * 
      * @return string
      */
@@ -127,25 +127,25 @@ class Hash extends Str
     /**
      * Check the validity of a hash.
      * 
-     * @param string $input Input to compare.
-     * @param string $hash  User provided input to verify.
-     * @param string $key   HMAC key to use during iterative hash. 
+     * @param string $input    Input to test.
+     * @param string $hash     Known hash to validate against.
+     * @param string $password HMAC password to use during iterative hash. 
      * 
      * @return boolean
      */
-    public static function verify($input, $hash, $key)
+    public static function verify($input, $hash, $password)
     {
         // Get the salt value from the decrypted prefix
-        $salt = Otp::crypt(self::substr($hash, 0, self::saltbytes), $key);
+        $salt = Otp::crypt(self::substr($hash, 0, self::saltbytes), $password);
 
         // Get the encrypted cost byte
         $cost = self::substr($hash, self::saltbytes, self::costbytes);
 
-        // Decrypt the cost value convert to integer
-        $cost = ord(Otp::crypt($cost, $key));
+        // Decrypt the cost value then convert to integer
+        $cost = ord(Otp::crypt($cost, $password));
 
         // Return the boolean equivalence.
-        return Str::equals($hash, self::_build($input, $key, $salt, $cost));
+        return Str::equals($hash, self::_build($input, $password, $salt, $cost));
     }
 
 }
