@@ -96,15 +96,15 @@ class Hash extends Str
      * 
      * @param string  $data Data to hash.
      * @param string  $key  Key to use to authenticate the hash.
-     * @param integer $cost Number of times to iteratate the hash
+     * @param integer $iter Number of times to iteratate the hash
      * @param string  $algo Name of algo (sha256 or sha512 recommended)
      * 
      * @return string
      */
-    public static function ihmac($data, $key, $cost, $algo = 'sha256')
+    public static function ihmac($data, $key, $iter, $algo = 'sha256')
     {
-        for ($i = 0; $i <= abs($cost); $i++) {
-            $data = hash_hmac($algo, $data . $i . $cost, $key, true);
+        for ($i = 0; $i <= abs($iter); $i++) {
+            $data = hash_hmac($algo, $data . $i . $iter, $key, true);
         }
 
         return $data;
