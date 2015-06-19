@@ -59,18 +59,18 @@ in your encryption/decryption calls. This integer will cause dcrypt to perform `
 All keys are hashed at least once with the initialization vector as an extra layer of protection.
 
 ```php
-$encrypted = \Dcrypt\Aes::encrypt($plaintext, 'password', 10000);
+$encrypted = \Dcrypt\Aes::encrypt($plaintext, $password, 10000);
 
-$plaintext = \Dcrypt\Aes::decrypt($encrypted, 'password', 10000);
+$plaintext = \Dcrypt\Aes::decrypt($encrypted, $password, 10000);
 ```
 `$cost` can also be passed into the third parameter of `\Dcrypt\Mcrypt`'s functions.
 
 ## Fast One Time Pad Encryption
 Extremely fast symmetric stream encryption is available with the `\Dcrypt\Otp` class.
 ```php
-$encrypted = \Dcrypt\Otp::crypt($plaintext, 'key');
+$encrypted = \Dcrypt\Otp::crypt($plaintext, $password);
 
-$plaintext = \Dcrypt\Otp::crypt($encrypted, 'key');
+$plaintext = \Dcrypt\Otp::crypt($encrypted, $password);
 ```
 
 ## PKCS #7 Padding
@@ -101,15 +101,20 @@ Dcrypt uses time-safe string comparisons in all sensitive areas. The same functi
 $equals = \Dcrypt\Str::equals('known', 'given');
 ```
 
-## For fun
+## For Fun
 `\Dcrypt\Rc4` and `\Dcrypt\Spritz` are pure PHP implementations of the immortal RC4 cipher and its successor Spritz.
 ```php
-$encrypted = \Dcrypt\Rc4::crypt($plaintext, 'password');
+$encrypted = \Dcrypt\Rc4::crypt($plaintext, $password);
 
-$decrypted = \Dcrypt\Rc4::crypt($encrypted, 'password');
+$plaintext = \Dcrypt\Rc4::crypt($encrypted, $password);
 ```
 ```php
-$encrypted = \Dcrypt\Spritz::crypt($plaintext, 'password');
+$encrypted = \Dcrypt\Spritz::crypt($plaintext, $password);
 
-$decrypted = \Dcrypt\Spritz::crypt($encrypted, 'password');
+$plaintext = \Dcrypt\Spritz::crypt($encrypted, $password);
 ```
+
+## Usage Notes
+1. All encryption functions and `\Dcrypt\Hash::make()` output raw binary data.
+1. All encryption functions and `\Dcrypt\Hash::make()` accept any binary data of arbitrary length as `$password`.
+1. Dcrypt is safe to use on systems that have `mbstring.func_overload` enabled.
