@@ -76,9 +76,9 @@ $plaintext = \Dcrypt\Otp::crypt($encrypted, 'key');
 ## PKCS #7 Padding
 PKCS#7 style padding is available via the `Pkcs7::pad()` and `Pkcs7::unpad()` functions.
 ```php
-\Dcrpyt\Pkcs7::pad('aaaabbbb', 11); # = aaaabbbb\x030303
+\Dcrpyt\Pkcs7::pad('aaaabbbb', 3); # = aaaabbbb\x01
 
-\Dcrpyt\Pkcs7::pad('aaaabbbb', 4);  # = aaaabbbb\x04040404
+\Dcrpyt\Pkcs7::pad('aaaabbbb', 4); # = aaaabbbb\x04040404
 ```
 
 ## Strong Authenticated Key Derivation Function
