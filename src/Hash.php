@@ -45,27 +45,30 @@ class Hash extends Str
      *  
      * @param string       $input    Data to hash.
      * @param string       $password Password to use in HMAC call.
-     * @param string|null  $salt     Salt to use in HMAC call.
+     * @param string|null  $iv       Initialization vector to use in HMAC calls.
      * @param integer      $cost     Number of iterations to use.
      * 
      * @return string
      */
-    private static function _build($input, $password, $salt = null, $cost = 10)
+    private static function _build($input, $password, $iv = null, $cost = 10)
     {
         // If no salt was specified, generate a random 16 byte one. The salt 
         // will be provided during the verification step.
-        if ($salt === null) {
-            $salt = Random::get(self::saltbytes);
+        if ($iv === null) {
+            $iv = Random::get(self::saltbytes);
         }
 
         // Verify and normalize cost value
         $cost = self::_cost($cost);
 
+        // Derive key from password
+        $key = hash_hmac('sha256', $password . $iv, $password, true);
+
         // Perform hash iterations. Get a 32 byte output value.
-        $hash = self::ihmac($input . $salt, $password, $cost * self::coef, 'sha256');
+        $hash = self::ihmac($input, $key, $cost * self::coef, 'sha256');
 
         // Return the encrypted salt + encrypted cost value + hmac.
-        return Otp::crypt($salt, $password) . Otp::crypt(chr($cost), $password) . $hash;
+        return Otp::crypt($iv, $password) . Otp::crypt(chr($cost), $password) . $hash;
     }
 
     /**
@@ -119,9 +122,9 @@ class Hash extends Str
      * 
      * @return string
      */
-    public static function make($input, $key, $cost = 10)
+    public static function make($input, $password, $cost = 10)
     {
-        return self::_build($input, $key, null, $cost);
+        return self::_build($input, $password, null, $cost);
     }
 
     /**
