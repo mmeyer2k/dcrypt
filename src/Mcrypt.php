@@ -60,7 +60,7 @@ class Mcrypt extends Cryptobase
         $message = self::substr($cyphertext, $ivsize + self::hashSize($algo));
 
         // Derive key from password
-        $key = self::key($password, $cost, $cipher, $mode, $algo);
+        $key = self::key($password, $iv, $cost, $cipher, $mode, $algo);
 
         // Calculate verification checksum
         $verify = self::checksum($message, $iv, $key, $cipher, $mode, $algo);
@@ -90,12 +90,12 @@ class Mcrypt extends Cryptobase
     {
         // Pad the input string to a multiple of block size
         $padded = Pkcs7::pad($plaintext, mcrypt_get_block_size($cipher, $mode));
-        
+
         // Generate IV of appropriate size.
         $iv = Random::get(mcrypt_get_iv_size($cipher, $mode));
-        
+
         // Derive key from password
-        $key = self::key($password, $cost, $cipher, $mode, $algo);
+        $key = self::key($password, $iv, $cost, $cipher, $mode, $algo);
 
         // Encrypt the plaintext
         $message = mcrypt_encrypt($cipher, $key, $padded, $mode, $iv);

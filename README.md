@@ -35,9 +35,9 @@ If you have special requirements, `\Dcrypt\Mcrypt` might be the best solution.
 # the third parameter of 0 specifies that no extra key hardening will take place (see below...)
 $encrypted = \Dcrypt\Mcrypt::encrypt('message', 'password', 0, MCRYPT_SERPENT, MCRYPT_MODE_ECB, 'sha512');
 ```
-As with \Dcrypt\Aes, all time-safe HMAC verification, strong IV creation and padding (PKCS#7) are handled for you.
+As with `\Dcrypt\Aes`, all time-safe HMAC verification, strong IV creation and padding (PKCS#7) are handled for you.
 
-When used with all default options, `\Dcrypt\Mcrypt` is compatible with \Dcrypt\Aes.
+When used with all default options, `\Dcrypt\Mcrypt` is compatible with `\Dcrypt\Aes`.
 ```php
 $encrypted = \Dcrypt\Mcrypt::encrypt('message', 'password');
 

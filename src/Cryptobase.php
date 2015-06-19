@@ -79,6 +79,7 @@ class Cryptobase extends Str
      * Transform password into key and perform iterative HMAC
      * 
      * @param string $password Encryption key
+     * @param string $iv       Initialization vector
      * @param int    $cost     Number of HMAC iterations to perform on key
      * @param string $cipher   Mcrypt cipher
      * @param string $mode     Mcrypt block mode
@@ -86,8 +87,8 @@ class Cryptobase extends Str
      * 
      * @return string
      */
-    protected static function key($password, $cost = 0, $cipher = 'rijndael-128', $mode = 'cbc', $algo = 'sha256')
-    {        
+    protected static function key($password, $iv, $cost, $cipher = 'rijndael-128', $mode = 'cbc', $algo = 'sha256')
+    {
         // This if statement allows the usage of the Openssl library without
         // the need to have the mcrypt plugin installed at all.
         if ($mode === 'cbc' && $cipher === 'rijndael-128') {
@@ -96,12 +97,8 @@ class Cryptobase extends Str
             $keysize = mcrypt_get_key_size($cipher, $mode);
         }
 
-        $key = hash($algo, $password, true);
-        
         // Perform key derivation
-        if ($cost) {
-            $key = Hash::ihmac($key, $password, $cost, $algo);
-        }
+        $key = Hash::ihmac($password . $iv, $password, $cost, $algo);
 
         // Return hash normalized to key length
         return self::hashNormalize($key, $keysize, $algo);

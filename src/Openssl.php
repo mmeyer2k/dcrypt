@@ -58,9 +58,6 @@ class Openssl extends Cryptobase
      */
     public static function decrypt($cyphertext, $password, $cost = 0)
     {
-        // Derive key from password
-        $key = self::key($password, $cost);
-
         // Find the IV at the beginning of the cypher text
         $iv = self::substr($cyphertext, 0, self::ivsize);
 
@@ -69,6 +66,9 @@ class Openssl extends Cryptobase
 
         // Gather message portion of cyphertext after iv and checksum
         $message = self::substr($cyphertext, self::ivsize + self::cksize);
+        
+        // Derive key from password
+        $key = self::key($password, $iv, $cost);
 
         // Calculate verification checksum
         $verify = self::checksum($message, $iv, $key);
@@ -93,11 +93,11 @@ class Openssl extends Cryptobase
      */
     public static function encrypt($plaintext, $password, $cost = 0)
     {
-        // Derive key from password
-        $key = self::key($password, $cost);
-
         // Generate IV of appropriate size.
         $iv = Random::get(self::ivsize);
+        
+        // Derive key from password
+        $key = self::key($password, $iv, $cost);
 
         // Encrypt the plaintext
         $message = openssl_encrypt($plaintext, self::cipher, $key, 1, $iv);

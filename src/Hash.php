@@ -91,6 +91,9 @@ class Hash extends Str
     /**
      * Perform a raw iterative HMAC operation with a configurable algo.
      * 
+     * This class always performs at least one hash to prevent the input from
+     * being passed back unchanged if bad parameters are set.
+     * 
      * @param string  $data Data to hash.
      * @param string  $key  Key to use to authenticate the hash.
      * @param integer $cost Number of times to iteratate the hash
@@ -100,7 +103,7 @@ class Hash extends Str
      */
     public static function ihmac($data, $key, $cost, $algo = 'sha256')
     {
-        for ($i = 0; $i <= $cost; $i++) {
+        for ($i = 0; $i <= abs($cost); $i++) {
             $data = hash_hmac($algo, $data . $i . $cost, $key, true);
         }
 
