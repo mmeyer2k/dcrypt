@@ -41,7 +41,7 @@ When used with all default options, `\Dcrypt\Mcrypt` is compatible with `\Dcrypt
 ```php
 $encrypted = \Dcrypt\Mcrypt::encrypt($plaintext, 'password');
 
-$plaintext = \Dcrypt\Aes::decrypt($encrypted, 'password'); # = message
+$plaintext = \Dcrypt\Aes::decrypt($encrypted, 'password');
 ```
 
 Supported (and tested) modes: `MCRYPT_MODE_CBC`, `MCRYPT_MODE_CFB`, `MCRYPT_MODE_ECB`, `MCRYPT_MODE_OFB`, `MCRYPT_MODE_NOFB`
