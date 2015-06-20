@@ -91,7 +91,7 @@ class Str
             return mb_strlen($string, '8bit');
         }
 
-        return strlen($string);
+        return strlen($string); // @codeCoverageIgnore
     }
 
     /**
@@ -115,7 +115,7 @@ class Str
             return mb_substr($string, $start, $length, '8bit');
         }
 
-        return substr($string, $start, $length);
+        return substr($string, $start, $length); // @codeCoverageIgnore
     }
 
 }
