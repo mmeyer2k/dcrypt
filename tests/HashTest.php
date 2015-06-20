@@ -14,11 +14,11 @@ class HashTest extends PHPUnit_Framework_TestCase
 
     public function testRange()
     {
-        $i = 'input test';
-        $k = 'key123';
-        foreach (array(1, 10, 15) as $i) {
-            $hash = Hash::make($i, $k, $i);
-            $this->assertTrue(Hash::verify($i, $hash, $k));
+        $input = 'input test';
+        $key = 'key123';
+        foreach (array(1, 10, 15) as $cost) {
+            $hash = Hash::make($input, $key, $cost);
+            $this->assertTrue(Hash::verify($input, $hash, $key));
         }
     }
 
@@ -26,9 +26,10 @@ class HashTest extends PHPUnit_Framework_TestCase
     {
         $input = str_repeat('A', rand(0, 10000));
         $key = str_repeat('A', rand(10, 100));
-        $cost = 2;
+        $cost = 1;
 
         $output = Hash::make($input, $key, $cost);
+        $this->assertTrue(Hash::verify($input, $output, $key));
 
         for ($i = 0; $i < 10; $i++) {
             $corrupt = swaprandbyte($output);
