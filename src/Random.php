@@ -54,15 +54,13 @@ class Random
      */
      private static function _fromOpenssl($bytes)
      {
-        // @codeCoverageIgnoreStart
         $ret = openssl_random_pseudo_bytes($bytes, $secure);
         
         if ($secure === false) {
-            self::_toss();
+            self::_toss(); // @codeCoverageIgnore
         }
         
         return $ret;
-        // @codeCoverageIgnoreEnd
      }
 
     /**
@@ -77,10 +75,8 @@ class Random
     {
         if (function_exists('mcrypt_create_iv') && $mcrypt === true) {
             return self::_fromMcrypt($bytes);
-        } elseif (function_exists('openssl_random_pseudo_bytes')) {
-            return self::_fromOpenssl($bytes);
         } else {
-            self::_toss();
+            return self::_fromOpenssl($bytes);
         }
     }
 
