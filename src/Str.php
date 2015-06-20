@@ -56,7 +56,9 @@ class Str
         if (function_exists('hash_equals')) {
             return hash_equals($knownString, $userInput);
         }
-
+        
+        //@codeCoverageIgnoreStart
+        
         $knownLen = self::strlen($knownString);
         $userLen = self::strlen($userInput);
 
@@ -72,6 +74,8 @@ class Str
 
         // They are only identical strings if $result is exactly 0...
         return 0 === $result;
+        
+        //@codeCoverageIgnoreEnd
     }
 
     /**

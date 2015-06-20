@@ -17,7 +17,7 @@ class OpensslTest extends PHPUnit_Framework_TestCase
         $corrupt = swaprandbyte($encrypted);
         $this->assertFalse(Openssl::decrypt($corrupt, $key, 10));
     }
-    
+
     public function testEngine()
     {
         $input = 'AAAAAAAA';
@@ -32,6 +32,15 @@ class OpensslTest extends PHPUnit_Framework_TestCase
         // for integrity
         $corrupt = swaprandbyte($encrypted);
         $this->assertFalse(Openssl::decrypt($corrupt, $key));
+    }
+
+    public function testVector()
+    {
+        $input = 'hello world';
+        $pass = 'password';
+        $vector = base64_decode('BwjqDdmriMTni8Cqs1N8kbtV7fdC1e9VSWGLa75NoTVdKvGfZ0q2fjPFDllKikOtiUyzNRN4k42XnqI/2U+5LA==');
+        
+        $this->assertEquals($input, Openssl::decrypt($vector, $pass, 10));
     }
 
 }

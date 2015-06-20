@@ -7,7 +7,7 @@ use Dcrypt\Openssl;
 class AesTest extends PHPUnit_Framework_TestCase
 {
 
-    public function testCrosscompat()
+    public function testCrossCompatability()
     {
         $k = 'asdf';
         $p = '1234';
