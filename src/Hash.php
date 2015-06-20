@@ -15,13 +15,7 @@
 namespace Dcrypt;
 
 /**
- * The hash class addresses some shortcomings in the password_hash function
- * built into PHP such as...
- *     - salt is known
- *     - rounds are known
- *     - password hashing scheme is obvious
- * 
- * hash::make() outputs a binary 512 bit string with the following format:
+ * \Dcrypt\Hash::make() outputs a binary 512 bit string with the following format:
  * 
  *              salt            cost              hash
  * [============================]|[===============================]
@@ -56,14 +50,11 @@ class Hash extends Str
         // Verify and normalize cost value
         $cost = self::_cost($cost);
 
-        // Derive key from password + iv
-        $key = hash_hmac('sha256', $password . $iv, $password, true);
-
         // Perform hash iterations. Get a 32 byte output value.
-        $hash = self::ihmac($input, $key, $cost * 32123, 'sha256');
+        $hash = self::ihmac($input, $password . $iv, $cost * 32123, 'sha256');
 
         // Return the encrypted salt + cost + hmac.
-        return $iv . chr($cost) . $hash;
+        return $iv . Otp::crypt(chr($cost), $password) . $hash;
     }
 
     /**
@@ -137,7 +128,7 @@ class Hash extends Str
         $iv = self::substr($hash, 0, 31);
 
         // Get the encrypted cost byte
-        $cost = ord(self::substr($hash, 31, 1));
+        $cost = ord(Otp::crypt(self::substr($hash, 31, 1), $password));
 
         // Return the boolean equivalence.
         return Str::equal($hash, self::_build($input, $password, $iv, $cost));
