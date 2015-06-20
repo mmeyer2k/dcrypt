@@ -16,7 +16,7 @@ class HashTest extends PHPUnit_Framework_TestCase
     {
         $i = 'input test';
         $k = 'key123';
-        foreach (array(0, 256) as $i) {
+        foreach (array(1, 10, 15) as $i) {
             $hash = Hash::make($i, $k, $i);
             $this->assertTrue(Hash::verify($i, $hash, $k));
         }

@@ -36,10 +36,6 @@ namespace Dcrypt;
 class Hash extends Str
 {
 
-    const saltbytes = 31;
-    const costbytes = 1;
-    const coef = 32123;
-
     /**
      * Internal function used to build the actual hash.
      *  
@@ -52,23 +48,22 @@ class Hash extends Str
      */
     private static function _build($input, $password, $iv = null, $cost = 10)
     {
-        // If no salt was specified, generate a random 16 byte one. The salt 
-        // will be provided during the verification step.
+        // Generate salt if needed
         if ($iv === null) {
-            $iv = Random::get(self::saltbytes);
+            $iv = Random::get(31);
         }
 
         // Verify and normalize cost value
         $cost = self::_cost($cost);
 
-        // Derive key from password
+        // Derive key from password + iv
         $key = hash_hmac('sha256', $password . $iv, $password, true);
 
         // Perform hash iterations. Get a 32 byte output value.
-        $hash = self::ihmac($input, $key, $cost * self::coef, 'sha256');
+        $hash = self::ihmac($input, $key, $cost * 32123, 'sha256');
 
-        // Return the encrypted salt + encrypted cost value + hmac.
-        return Otp::crypt($iv, $password) . Otp::crypt(chr($cost), $password) . $hash;
+        // Return the encrypted salt + cost + hmac.
+        return $iv . chr($cost) . $hash;
     }
 
     /**
@@ -82,7 +77,7 @@ class Hash extends Str
     {
         // Do bounds constraints
         if ($cost > 255) {
-            $cost = 255;
+            $cost = 255; // @codeCoverageIgnore
         } elseif ($cost < 1) {
             $cost = 1;
         }
@@ -139,16 +134,13 @@ class Hash extends Str
     public static function verify($input, $hash, $password)
     {
         // Get the salt value from the decrypted prefix
-        $salt = Otp::crypt(self::substr($hash, 0, self::saltbytes), $password);
+        $iv = self::substr($hash, 0, 31);
 
         // Get the encrypted cost byte
-        $cost = self::substr($hash, self::saltbytes, self::costbytes);
-
-        // Decrypt the cost value then convert to integer
-        $cost = ord(Otp::crypt($cost, $password));
+        $cost = ord(self::substr($hash, 31, 1));
 
         // Return the boolean equivalence.
-        return Str::equal($hash, self::_build($input, $password, $salt, $cost));
+        return Str::equal($hash, self::_build($input, $password, $iv, $cost));
     }
 
 }

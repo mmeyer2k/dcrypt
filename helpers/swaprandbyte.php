@@ -20,7 +20,7 @@ if (!function_exists('swaprandbyte')) {
             $rbyte = ord($rbyte);
             if($rbyte === 0) {
                 $rbyte = 255;
-            } elseif(ord($rbyte) === 255) {
+            } elseif($rbyte === 255) {
                 $rbyte = 0;
             } else {
                 $rbyte = $rbyte + 1;
