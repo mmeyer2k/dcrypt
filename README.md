@@ -20,7 +20,9 @@ composer global require mmeyer2k/dcrypt:dev-master
 ```
 In environments where composer is not available, dcrypt can be used by including `load.php`.
 # Features
-## AES Encryption (via OpenSSL)
+
+## Block Ciphers
+### AES Encryption (via OpenSSL)
 Quickly access symmetric encryption functions with `\Dcrypt\Aes`. When in doubt, use this class! All of the most secure options are the default. Naturally, strongly random initialization vectors are generated upon encryption and standard HMAC (sha256) checksums are verified (in a time-safe manner) before decryption.
 ```php
 $encrypted = \Dcrypt\Aes::encrypt($plaintext, $password);
@@ -28,7 +30,7 @@ $encrypted = \Dcrypt\Aes::encrypt($plaintext, $password);
 $plaintext = \Dcrypt\Aes::decrypt($encrypted, $password);
 ```
 
-## Customizeable Encryption (via Mcrypt)
+### Customizeable Encryption (via Mcrypt)
 If you have special requirements, `\Dcrypt\Mcrypt` might be the best solution.
 ```php
 # encrypt with serpent in ecb mode with sha512 hmac, for instance...
@@ -52,7 +54,7 @@ Supported (and tested) hash algos: all!
 
 **NOTE**: PHP's libmcrypt has fallen out of favor due to its stale codebase and inability to use AES-NI. Only use these features if there is a strong need. In nearly all cases `\Dcrypt\Aes` (which uses OpenSSL) is preferred.
 
-## Iterative HMAC Key Hardening
+### Iterative HMAC Key Hardening
 To reduce the effectiveness of brute-force cracking on your encrypted blobs, you can provide an integer `$cost` parameter
 in your encryption/decryption calls. This integer will cause dcrypt to perform `$cost` number of extra HMAC operations on the key before passing it off to the underlying encryption system.
 
@@ -65,12 +67,28 @@ $plaintext = \Dcrypt\Aes::decrypt($encrypted, $password, 10000);
 ```
 `$cost` can also be passed into the third parameter of `\Dcrypt\Mcrypt`'s functions.
 
-## Fast One Time Pad Encryption
+## Stream Ciphers
+
+### Fast One Time Pad Encryption
 Extremely fast symmetric stream encryption is available with the `\Dcrypt\Otp` class.
+`Otp` uses SHA512 to output a keystream that is ⊕'d with the input in 512 chunks. 
 ```php
 $encrypted = \Dcrypt\Otp::crypt($plaintext, $password);
 
 $plaintext = \Dcrypt\Otp::crypt($encrypted, $password);
+```
+
+### For Fun
+`\Dcrypt\Rc4` and `\Dcrypt\Spritz` are pure PHP implementations of the immortal RC4 cipher and its successor Spritz.
+```php
+$encrypted = \Dcrypt\Rc4::crypt($plaintext, $password);
+
+$plaintext = \Dcrypt\Rc4::crypt($encrypted, $password);
+```
+```php
+$encrypted = \Dcrypt\Spritz::crypt($plaintext, $password);
+
+$plaintext = \Dcrypt\Spritz::crypt($encrypted, $password);
 ```
 
 ## PKCS #7 Padding
@@ -105,19 +123,6 @@ $iv = \Dcrypt\Random::get(8);
 Dcrypt uses time-safe string comparisons in all sensitive areas. The same function that is used internally is also exposed for use in your projects.
 ```php
 $equals = \Dcrypt\Str::equal('known', 'given');
-```
-
-## For Fun
-`\Dcrypt\Rc4` and `\Dcrypt\Spritz` are pure PHP implementations of the immortal RC4 cipher and its successor Spritz.
-```php
-$encrypted = \Dcrypt\Rc4::crypt($plaintext, $password);
-
-$plaintext = \Dcrypt\Rc4::crypt($encrypted, $password);
-```
-```php
-$encrypted = \Dcrypt\Spritz::crypt($plaintext, $password);
-
-$plaintext = \Dcrypt\Spritz::crypt($encrypted, $password);
 ```
 
 # Usage Notes
