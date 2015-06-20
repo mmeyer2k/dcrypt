@@ -66,19 +66,21 @@ class Random
      }
 
     /**
-     * Return securely generated random bytes. 
-     * Try Mcrypt first then fall back to openssl.
+     * Return securely generated random bytes.
      * 
-     * @param int $bytes
+     * @param int  $bytes  Number of bytes to get
+     * @param bool $mcrypt Whether to use mcrypt_create_iv as first choice.
      * 
      * @return string
      */
-    public static function get($bytes)
+    public static function get($bytes, $mcrypt = true)
     {
-        if (function_exists('mcrypt_create_iv')) {
+        if (function_exists('mcrypt_create_iv') && $mcrypt === true) {
             return self::_fromMcrypt($bytes);
+        } elseif (function_exists('openssl_random_pseudo_bytes')) {
+            return self::_fromOpenssl($bytes);
         } else {
-            return self::_fromOpenssl($bytes); // @codeCoverageIgnore
+            self::_toss();
         }
     }
 
