@@ -87,7 +87,7 @@ PKCS#7 style padding is available via the `Pkcs7::pad()` and `Pkcs7::unpad()` fu
 \Dcrpyt\Pkcs7::unpad("aaaabbbb\x04\x04\x04\x04"); # = aaaabbbb
 ```
 
-## Strong Authenticated Key Derivation Function
+## Authenticated Key Derivation Function
 `Dcrypt\Hash` is an opaque 512 bit iterative hash function. It accepts cost values between 1 and 255.
 ```php
 $hash = \Dcrypt\Hash::make($plaintext, $password, $cost);
