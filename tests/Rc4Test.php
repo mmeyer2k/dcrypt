@@ -24,7 +24,7 @@ class Rc4Test extends PHPUnit_Framework_TestCase
         $this->assertEquals($input, $decrypted);
     }
     
-    public function testKnown()
+    public function testVector()
     {
         /*
          * Test that known cypher text decrypts properly
