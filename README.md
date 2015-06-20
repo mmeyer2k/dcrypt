@@ -84,7 +84,7 @@ PKCS#7 style padding is available via the `Pkcs7::pad()` and `Pkcs7::unpad()` fu
 ```php
 \Dcrpyt\Pkcs7::unpad("aaaabbbb\x01"); # = aaaabbbb
 
-\Dcrpyt\Pkcs7::unpad("aaaabbbb\x04040404"); # = aaaabbbb
+\Dcrpyt\Pkcs7::unpad("aaaabbbb\x04\x04\x04\x04"); # = aaaabbbb
 ```
 
 ## Strong Authenticated Key Derivation Function
