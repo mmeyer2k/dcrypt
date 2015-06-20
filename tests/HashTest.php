@@ -12,14 +12,12 @@ class HashTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(64, strlen(Hash::make('test', '1234')));
     }
 
-    public function testRange()
+    public function testCycle()
     {
         $input = 'input test';
         $key = 'key123';
-        foreach (array(1, 10) as $cost) {
-            $hash = Hash::make($input, $key, $cost);
-            $this->assertTrue(Hash::verify($input, $hash, $key));
-        }
+        $hash = Hash::make($input, $key, 1);
+        $this->assertTrue(Hash::verify($input, $hash, $key));
     }
 
     public function testFail()
