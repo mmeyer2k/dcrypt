@@ -69,9 +69,9 @@ $plaintext = \Dcrypt\Aes::decrypt($encrypted, $password, 10000);
 
 ## Stream Ciphers
 
-### Fast One Time Pad Encryption
+### One Time Pad Encryption
 Extremely fast symmetric stream encryption is available with the `\Dcrypt\Otp` class.
-`Otp` uses SHA512 to output a keystream that is ⊕'d with the input in 512 bit chunks. 
+`Otp` uses SHA-512 to output a keystream that is ⊕'d with the input in 512 bit chunks. 
 ```php
 $encrypted = \Dcrypt\Otp::crypt($plaintext, $password);
 
