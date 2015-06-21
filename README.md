@@ -71,7 +71,7 @@ $plaintext = \Dcrypt\Aes::decrypt($encrypted, $password, 10000);
 
 ### Fast One Time Pad Encryption
 Extremely fast symmetric stream encryption is available with the `\Dcrypt\Otp` class.
-`Otp` uses SHA512 to output a keystream that is ⊕'d with the input in 512 chunks. 
+`Otp` uses SHA512 to output a keystream that is ⊕'d with the input in 512 bit chunks. 
 ```php
 $encrypted = \Dcrypt\Otp::crypt($plaintext, $password);
 
@@ -127,7 +127,7 @@ $equals = \Dcrypt\Str::equal('known', 'given');
 
 # Usage Notes
 1. All encryption functions and `\Dcrypt\Hash::make()` output raw binary data.
-1. All encryption functions and `\Dcrypt\Hash::make()` accept any binary data of arbitrary length as `$password`.
+1. All encryption functions and `\Dcrypt\Hash::make()` accept any binary data of arbitrary length as `input` and `$password`.
   1. Dcrypt takes special steps to avoid frivolus concatenations of potentially large input parameters.
   1. `$password` type parameters are freqently concatentated. Therefore, avoid using excessively large passwords when memory is an issue. 
 1. Dcrypt is safe to use on systems that have `mbstring.func_overload` enabled.
