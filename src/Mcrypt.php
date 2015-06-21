@@ -91,7 +91,7 @@ class Mcrypt extends Cryptobase
         // Pad the input string to a multiple of block size
         $padded = Pkcs7::pad($plaintext, mcrypt_get_block_size($cipher, $mode));
 
-        // Generate IV of appropriate size.
+        // Generate IV of appropriate size
         $iv = Random::get(mcrypt_get_iv_size($cipher, $mode));
 
         // Derive key from password
