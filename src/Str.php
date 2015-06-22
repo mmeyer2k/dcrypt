@@ -45,12 +45,12 @@ class Str
      */
     public static function equal($known, $given, $hash_equals = true)
     {
+        // Make sure inputs are both strings. This was taken from Symfony.
         $known = (string) $known;
         $given = (string) $given;
         
-        // We hash the 2 inputs at this point because hash_equals
-        // is still vulnerable to timing attacks when the inputs
-        // have different sizes.
+        // We hash the 2 inputs at this point because hash_equals is still 
+        // vulnerable to timing attacks when the inputs have different sizes.
         $nonce = Random::get(32);
         $known = hash_hmac('sha256', $known, $nonce, true);
         $given = hash_hmac('sha256', $given, $nonce, true);
@@ -59,14 +59,10 @@ class Str
             return hash_equals($known, $given); // @codeCoverageIgnore
         }
 
-        $result = 0;
+        $xor = $known ^ $given;
 
-        for ($i = 0; $i < 32; $i++) {
-            $result |= ord($known[$i]) ^ ord($given[$i]);
-        }
-
-        // They are only identical strings if $result is exactly 0...
-        return 0 === $result;
+        // Strings are equal if xor is 32 null bytes
+        return $xor === str_repeat("\x00", 32);
     }
 
     /**
