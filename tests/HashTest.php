@@ -14,6 +14,11 @@ class HashTest extends PHPUnit_Framework_TestCase
         $this->assertNotEquals('aaaa', Hash::ihmac('aaaa', 'bbbb', -1));
     }
 
+    public function testBadCost()
+    {
+        $this->assertEquals(64, strlen(Hash::make('test', '1234', 0)));
+    }
+
     public function testLength()
     {
         $this->assertEquals(64, strlen(Hash::make('test', '1234')));

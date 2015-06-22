@@ -54,9 +54,9 @@ class Pkcs7 extends Str
     private static function _paddingString($inputsize, $blocksize)
     {
         // Determine the amount of padding to use
-	$pad = $blocksize - ($inputsize % $blocksize);
-		
-	return str_repeat(chr($pad), $pad);
+        $pad = $blocksize - ($inputsize % $blocksize);
+
+        return str_repeat(chr($pad), $pad);
     }
 
     /**
