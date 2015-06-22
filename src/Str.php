@@ -45,11 +45,13 @@ class Str
      */
     public static function equal($known, $given, $hash_equals = true)
     {
-        $nonce = Random::get(32);
-        
         $known = (string) $known;
         $given = (string) $given;
         
+        // We hash the 2 inputs at this point because hash_equals
+        // is still vulnerable to timing attacks when the inputs
+        // have different sizes.
+        $nonce = Random::get(32);
         $known = hash_hmac('sha256', $known, $nonce, true);
         $given = hash_hmac('sha256', $given, $nonce, true);
 
