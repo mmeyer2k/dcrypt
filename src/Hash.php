@@ -66,15 +66,7 @@ class Hash extends Str
      */
     private static function _cost($cost)
     {
-        // Do bounds constraints
-        if ($cost > 255) {
-            $cost = 255; // @codeCoverageIgnore
-        } elseif ($cost < 1) {
-            $cost = 1;
-        }
-
-        // When all constraints are set, return cost
-        return (int) $cost;
+        return $cost % 255;
     }
 
     /**
