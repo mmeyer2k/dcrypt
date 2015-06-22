@@ -46,8 +46,8 @@ class Pkcs7 extends Str
     /**
      * Create the padding string that will be appended to the input.
      * 
-     * @param integer $inputsize Size of the input in bytes.
-     * @param integer $blocksize Size of the output in bytes.
+     * @param integer $inputsize Size of the input in bytes
+     * @param integer $blocksize Blocksize in bytes
      * 
      * @return integer
      */
@@ -56,23 +56,24 @@ class Pkcs7 extends Str
         // Determine the amount of padding to use
         $pad = $blocksize - ($inputsize % $blocksize);
 
+        // Create and return the padding string
         return str_repeat(chr($pad), $pad);
     }
 
     /**
      * PKCS #7 unpadding function.
      * 
-     * @param string $input Padded string to unpad.
+     * @param string $input Padded string to unpad
      * 
      * @return string
      */
     public static function unpad($input)
     {
         // Determine the padding size by converting the final byte of the  
-        // input to its decimal value.
+        // input to its decimal value
         $padsize = ord(self::substr($input, -1));
 
-        // Return string minus the padding amount.
+        // Return string minus the padding amount
         return self::substr($input, 0, self::strlen($input) - $padsize);
     }
 
