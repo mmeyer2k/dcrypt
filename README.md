@@ -9,6 +9,16 @@ dcrypt
 
 A library of essential encryption functions for PHP (5.3+).
 
+- [Installation](#installation)
+- [Features](#features)
+  - [Block Ciphers](#block-ciphers)
+  - [Stream Ciphers](#stream-ciphers)
+  - [PKCS #7 Padding](#pkcs-7-padding)
+  - [Authenticated Key Derivation Function](#authenticated-key-derivation-function)
+  - [Secure Random Number Generation](#secure-random-number-generation)
+  - [Time-safe String Comparison](#time-safe-string-comparison)
+- [Usage Notes](#usage-notes)
+
 # Installation
 Add the following to the require section of your composer.json file, then run `composer install`.
 ```
