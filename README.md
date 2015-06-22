@@ -32,6 +32,7 @@ In environments where composer is not available, dcrypt can be used by including
 # Features
 
 ## Block Ciphers
+
 ### AES Encryption (via OpenSSL)
 Quickly access symmetric encryption functions with `\Dcrypt\Aes`. When in doubt, use this class! All of the most secure options are the default. Naturally, strongly random initialization vectors are generated upon encryption and standard HMAC (sha256) checksums are verified (in a time-safe manner) before decryption.
 ```php
@@ -106,7 +107,7 @@ PKCS#7 style padding is available via the `Pkcs7::pad()` and `Pkcs7::unpad()` fu
 ```php
 \Dcrpyt\Pkcs7::pad('aaaabbbb', 3); # = aaaabbbb\x01
 
-\Dcrpyt\Pkcs7::pad('aaaabbbb', 4); # = aaaabbbb\x04040404
+\Dcrpyt\Pkcs7::pad('aaaabbbb', 4); # = aaaabbbb\x04\x04\x04\x04
 ```
 
 ```php
