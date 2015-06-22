@@ -25,7 +25,6 @@ namespace Dcrypt;
  * 
  * Details of OTP's operation:
  * - output is in binary format
- * - key length is 512 bits
  * - does NOT chain cypher blocks, instead uses a form of block counter feedback
  * - does NOT generate IVs
  * - as with all stream ciphers, never use the same key more than once
