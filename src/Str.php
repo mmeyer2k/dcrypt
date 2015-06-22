@@ -55,12 +55,16 @@ class Str
         if ($hash_equals === true && function_exists('hash_equals')) {
             return hash_equals($known, $given); // @codeCoverageIgnore
         }
-
-        // XOR the bytes of the 2 input hashes and remove any nulls from the result
-        $xor = str_replace("\x00", '', $known ^ $given);
+        
+        $result = 0;
+        
+        // XOR the bytes of the 2 input hashes and loop over them
+        foreach(str_split($known ^ $given) as $xbyte) {
+            $result += ord($xbyte);    
+        }
 
         // Strings are equal if the final length of $xor is exactly 0
-        return self::strlen($xor) === 0;
+        return 0 === $result;
     }
 
     /**
