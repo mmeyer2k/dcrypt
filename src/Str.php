@@ -37,45 +37,43 @@ class Str
      * This method implements a constant-time algorithm to compare strings.
      * Regardless of the used implementation, it will leak length information.
      *
-     * @param string $knownString The string of known length to compare against
-     * @param string $userInput   The string that the user can control
+     * @param string $known The string of known length to compare against
+     * @param string $given The string that the user can control
      *
      * @return bool true if the two strings are the same, false otherwise
      */
-    public static function equal($knownString, $userInput)
+    public static function equal($known, $given)
     {
         // Avoid making unnecessary duplications of secret data
-        if (!is_string($knownString)) {
-            $knownString = (string) $knownString;
+        if (!is_string($known)) {
+            $known = (string) $known;
         }
 
-        if (!is_string($userInput)) {
-            $userInput = (string) $userInput;
+        if (!is_string($given)) {
+            $given = (string) $given;
         }
+
+        $nonce = Random::get(32);
+
+        $known = hash_hmac('sha256', $known, $nonce, true);
+        $given = hash_hmac('sha256', $given, $nonce, true);
 
         if (function_exists('hash_equals')) {
-            return hash_equals($knownString, $userInput);
+            return hash_equals($known, $given);
         }
-        
-        //@codeCoverageIgnoreStart
-        
-        $knownLen = self::strlen($knownString);
-        $userLen = self::strlen($userInput);
 
-        if ($userLen !== $knownLen) {
-            return false;
-        }
+        // @codeCoverageIgnoreStart
 
         $result = 0;
 
-        for ($i = 0; $i < $knownLen; $i++) {
-            $result |= ord($knownString[$i]) ^ ord($userInput[$i]);
+        for ($i = 0; $i < 32; $i++) {
+            $result |= ord($known[$i]) ^ ord($given[$i]);
         }
 
         // They are only identical strings if $result is exactly 0...
         return 0 === $result;
-        
-        //@codeCoverageIgnoreEnd
+
+        // @codeCoverageIgnoreEnd
     }
 
     /**
