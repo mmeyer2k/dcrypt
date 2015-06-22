@@ -59,10 +59,11 @@ class Str
             return hash_equals($known, $given); // @codeCoverageIgnore
         }
 
-        $xor = $known ^ $given;
+        // XOR the bytes of the 2 input hashes and remove any nulls from the result
+        $xor = str_replace("\x00", '', $known ^ $given);
 
-        // Strings are equal if xor is 32 null bytes
-        return $xor === str_repeat("\x00", 32);
+        // Strings are equal if the final length of $xor is exactly 0
+        return self::strlen($xor) === 0;
     }
 
     /**
