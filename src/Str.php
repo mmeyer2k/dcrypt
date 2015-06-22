@@ -37,12 +37,13 @@ class Str
      * This method implements a constant-time algorithm to compare strings.
      * Regardless of the used implementation, it will leak length information.
      *
-     * @param string $known The string of known length to compare against
-     * @param string $given The string that the user can control
+     * @param string $known       The string of known length to compare against
+     * @param string $given       The string that the user can control
+     * @param bool   $hash_equals Use hash_equals() if available
      *
      * @return bool true if the two strings are the same, false otherwise
      */
-    public static function equal($known, $given)
+    public static function equal($known, $given, $hash_equals = true)
     {
         // Avoid making unnecessary duplications of secret data
         if (!is_string($known)) {
@@ -58,11 +59,9 @@ class Str
         $known = hash_hmac('sha256', $known, $nonce, true);
         $given = hash_hmac('sha256', $given, $nonce, true);
 
-        if (function_exists('hash_equals')) {
+        if ($hash_equals === true && function_exists('hash_equals')) {
             return hash_equals($known, $given);
         }
-
-        // @codeCoverageIgnoreStart
 
         $result = 0;
 
@@ -72,8 +71,6 @@ class Str
 
         // They are only identical strings if $result is exactly 0...
         return 0 === $result;
-
-        // @codeCoverageIgnoreEnd
     }
 
     /**
