@@ -53,7 +53,7 @@ class Hash extends Str
         // Perform hash iterations. Get a 32 byte output value.
         $hash = self::ihmac($input, $password . $iv, $cost * 32123, 'sha256');
 
-        // Return the encrypted salt + cost + hmac.
+        // Return the salt + cost (encrypted) + hmac.
         return $iv . Otp::crypt(chr($cost), $password) . $hash;
     }
 
