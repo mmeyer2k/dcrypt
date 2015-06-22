@@ -81,12 +81,20 @@ $plaintext = \Dcrypt\Aes::decrypt($encrypted, $password, 10000);
 ## Stream Ciphers
 
 ### One Time Pad Encryption
-Extremely fast symmetric stream encryption is available with the `\Dcrypt\Otp` class.
-`Otp` uses SHA-512 to output a keystream that is ⊕'d with the input in 512 bit chunks. 
+Fast symmetric stream encryption is available with the `\Dcrypt\Otp` class.
+`Otp` uses SHA-512 (by default) to output a keystream that is ⊕'d with the input in 512 bit chunks. 
 ```php
 $encrypted = \Dcrypt\Otp::crypt($plaintext, $password);
 
 $plaintext = \Dcrypt\Otp::crypt($encrypted, $password);
+```
+
+`Otp` can also be configured to use any other hashing algorithm to generate the
+pseudorandom keystream.
+```php
+$encrypted = \Dcrypt\Otp::crypt($plaintext, $password, 'whirlpool');
+
+$plaintext = \Dcrypt\Otp::crypt($encrypted, $password, 'whirlpool');
 ```
 
 ### For Fun
@@ -135,7 +143,7 @@ $equals = \Dcrypt\Str::equal('known', 'given');
 ```
 
 ## Secure Random Byte Generator
-When you absolutely MUST have cryptographically secure random bytes `\Dcrypt\Random` will give them to you or throw an exception.
+When you absolutely **must** have cryptographically secure random bytes `\Dcrypt\Random` will give them to you or throw an exception.
 ```php
 $iv = \Dcrypt\Random::get(8); # get 8 random bytes
 ```
