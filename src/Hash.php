@@ -66,7 +66,7 @@ class Hash extends Str
      */
     private static function _cost($cost)
     {
-        return $cost % 255;
+        return $cost % 256;
     }
 
     /**
