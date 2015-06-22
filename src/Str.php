@@ -32,10 +32,31 @@ class Str
 {
 
     /**
-     * Compares two strings.
+     * Private constant-time strcmp method to use when hash_equals is unavailable.
      *
-     * This method implements a constant-time algorithm to compare strings.
-     * Regardless of the used implementation, it will leak length information.
+     * @param string $known The string of known length to compare against
+     * @param string $given The string that the user can control
+     *
+     * @return bool true if the two strings are the same, false otherwise
+     */
+    private static function _strcmp($known, $given)
+    {
+        $result = 0;
+
+        // XOR the bytes of the 2 input hashes and loop over them.
+        // Each byte value is then added to a running total...
+        foreach (str_split($known ^ $given) as $xbyte) {
+            $result += ord($xbyte);
+        }
+
+        // Strings are equal if the final result is exactly zero
+        return 0 === $result;
+    }
+
+    /**
+     * Compares two strings in constant time. Strings are hashed before 
+     * comparison so information is not leaked when strings are not of
+     * equal length.
      *
      * @param string $known       The string of known length to compare against
      * @param string $given       The string that the user can control
@@ -56,16 +77,7 @@ class Str
             return hash_equals($known, $given); // @codeCoverageIgnore
         }
         
-        $result = 0;
-        
-        // XOR the bytes of the 2 input hashes and loop over them.
-        // Each byte value is then added to a running total...
-        foreach(str_split($known ^ $given) as $xbyte) {
-            $result += ord($xbyte);    
-        }
-
-        // Strings are equal if the final result is exactly zero
-        return 0 === $result;
+        return self::_strcmp($known, $given);
     }
 
     /**
