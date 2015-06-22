@@ -45,17 +45,16 @@ class Str
      */
     public static function equal($known, $given, $hash_equals = true)
     {
-        // Avoid making unnecessary duplications of secret data
+        $nonce = Random::get(32);
+        
         $known = (string) $known;
         $given = (string) $given;
-
-        $nonce = Random::get(32);
         
         $known = hash_hmac('sha256', $known, $nonce, true);
         $given = hash_hmac('sha256', $given, $nonce, true);
 
         if ($hash_equals === true && function_exists('hash_equals')) {
-            return hash_equals($known, $given);
+            return hash_equals($known, $given); // @codeCoverageIgnore
         }
 
         $result = 0;
