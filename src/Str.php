@@ -34,18 +34,18 @@ class Str
     /**
      * Private constant-time strcmp method to use when hash_equals is unavailable.
      *
-     * @param string $known The string of known length to compare against
-     * @param string $given The string that the user can control
+     * @param string $knownHash Hash of the known string
+     * @param string $givenHash Hash of the given string
      *
      * @return bool true if the two strings are the same, false otherwise
      */
-    private static function _strcmp($known, $given)
+    private static function _strcmp($knownHash, $givenHash)
     {
         $result = 0;
 
         // XOR the bytes of the 2 input hashes and loop over them.
         // Each byte value is then added to a running total...
-        foreach (str_split($known ^ $given) as $xbyte) {
+        foreach (str_split($knownHash ^ $givenHash) as $xbyte) {
             $result += ord($xbyte);
         }
 
