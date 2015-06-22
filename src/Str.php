@@ -58,7 +58,8 @@ class Str
         
         $result = 0;
         
-        // XOR the bytes of the 2 input hashes and loop over them
+        // XOR the bytes of the 2 input hashes and loop over them.
+        // Each byte value is then added to a running total...
         foreach(str_split($known ^ $given) as $xbyte) {
             $result += ord($xbyte);    
         }
