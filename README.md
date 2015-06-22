@@ -15,7 +15,7 @@ A petite library of essential encryption functions for PHP (5.3+).
   - [Stream Ciphers](#stream-ciphers)
   - [PKCS #7 Padding](#pkcs-7-padding)
   - [Authenticated Key Derivation Function](#authenticated-key-derivation-function)
-  - [Secure Random Number Generation](#secure-random-number-generation)
+  - [Secure Random Byte Generator](#secure-random-byte-generator)
   - [Time-safe String Comparison](#time-safe-string-comparison)
 - [Usage Notes](#usage-notes)
 
@@ -123,11 +123,10 @@ $hash = \Dcrypt\Hash::make($plaintext, $password, $cost);
 
 $bool = \Dcrypt\Hash::verify($plaintext, $hash, $password);
 ```
-## Secure Random Number Generation
-When you absolutely MUST have cryptographically secure random numbers `\Dcrypt\Random` will give them to you or throw an exception.
+## Secure Random Byte Generator
+When you absolutely MUST have cryptographically secure random bytes `\Dcrypt\Random` will give them to you or throw an exception.
 ```php
-# get 8 random bytes
-$iv = \Dcrypt\Random::get(8);
+$iv = \Dcrypt\Random::get(8); # get 8 random bytes
 ```
 
 ## Time-safe String Comparison
