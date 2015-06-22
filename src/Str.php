@@ -63,7 +63,7 @@ class Str
             $result += ord($xbyte);    
         }
 
-        // Strings are equal if the final length of $xor is exactly 0
+        // Strings are equal if the final result is exactly zero
         return 0 === $result;
     }
 
