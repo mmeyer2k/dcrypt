@@ -20,7 +20,7 @@ namespace Dcrypt;
  * Features:
  *     - PKCS #7 padding of messages
  *     - random IV selection
- *     - checksum validation with SHA-256 HMAC by default
+ *     - checksum validation with HMAC
  *     - tested to be compatible with many ciphers, modes and hashing algorithms.
  *     - highly customizable, but default options are most secure
  *
@@ -65,12 +65,12 @@ class Mcrypt extends Cryptobase
         // Calculate verification checksum
         $verify = self::checksum($message, $iv, $key, $cipher, $mode, $algo);
 
-        // If chksum could not be verified return false
+        // If checksum could not be verified return false
         if (!self::equal($verify, $chksum)) {
             return false;
         }
 
-        // Decrypt, unpad, return
+        // Decrypt unpad return
         return Pkcs7::unpad(mcrypt_decrypt($cipher, $key, $message, $mode, $iv));
     }
 
