@@ -7,11 +7,8 @@ class StrcmpTest extends PHPUnit_Framework_TestCase
 
     public function testEquals()
     {
-        // This function tests the conditionals from symfony
-        $this->assertTrue(Str::equal('2222', 2222));
-        $this->assertTrue(Str::equal(2222, '2222'));
-
-        // Test falseness
+        // Test with hash_equals
+        $this->assertTrue(Str::equal('2222', '2222', true));
         $this->assertFalse(Str::equal('2222', '3333', true));
 
         // Test without hash_equals
