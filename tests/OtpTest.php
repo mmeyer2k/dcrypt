@@ -42,7 +42,7 @@ class OtpTest extends PHPUnit_Framework_TestCase
         $pass = 'password';
         $vector = base64_decode('vusXragCy83KQFo');
         
-        $this->assertEquals($input, Otp::crypt($vector, $pass, 10));
+        $this->assertEquals($input, Otp::crypt($vector, $pass));
     }
 
 }
