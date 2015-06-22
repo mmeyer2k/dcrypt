@@ -117,7 +117,11 @@ PKCS#7 style padding is available via the `Pkcs7::pad()` and `Pkcs7::unpad()` fu
 ```
 
 ## Key Derivation Function
-`Dcrypt\Hash` is an opaque 512 bit iterative hash function. It accepts cost values between 1 and 255.
+`Dcrypt\Hash` is an opaque 512 bit iterative hash function. SHA-256-HMAC
+is keyed with a 31 byte initialization vector before iterating the hash
+a number of times determined by the `$cost` parameter. `$cost` is stored
+in the hash as a single byte, so it can be any value between 0 and 255.
+
 ```php
 $hash = \Dcrypt\Hash::make($plaintext, $password, $cost);
 
