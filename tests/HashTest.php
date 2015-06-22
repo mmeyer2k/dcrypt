@@ -7,6 +7,13 @@ require __DIR__ . '/../helpers/swaprandbyte.php';
 class HashTest extends PHPUnit_Framework_TestCase
 {
 
+    public function testIhmacSanity()
+    {
+        // Make sure at least one hash always happens with any kind of crazy cost value
+        $this->assertNotEquals('aaaa', Hash::ihmac('aaaa', 'bbbb', 0));
+        $this->assertNotEquals('aaaa', Hash::ihmac('aaaa', 'bbbb', -1));
+    }
+
     public function testLength()
     {
         $this->assertEquals(64, strlen(Hash::make('test', '1234')));

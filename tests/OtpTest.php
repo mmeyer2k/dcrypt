@@ -17,7 +17,7 @@ class OtpTest extends PHPUnit_Framework_TestCase
 
     public function testCrypt()
     {
-        foreach (array(1, 1000, 100000) as $mult) {
+        foreach (array(1, 1000) as $mult) {
             $input = str_repeat('A', 4 * $mult);
             $key = openssl_random_pseudo_bytes(32);
 
