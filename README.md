@@ -14,7 +14,7 @@ A petite library of essential encryption functions for PHP (5.3+).
   - [Block Ciphers](#block-ciphers)
   - [Stream Ciphers](#stream-ciphers)
   - [PKCS #7 Padding](#pkcs-7-padding)
-  - [Authenticated Key Derivation Function](#authenticated-key-derivation-function)
+  - [Key Derivation Function](#key-derivation-function)
   - [Secure Random Byte Generator](#secure-random-byte-generator)
   - [Time-safe String Comparison](#time-safe-string-comparison)
 - [Usage Notes](#usage-notes)
