@@ -38,7 +38,7 @@ namespace Dcrypt;
  * @link     https://github.com/mmeyer2k/dcrypt
  * @link     http://en.wikipedia.org/wiki/Stream_cipher
  */
-class Otp
+class Otp extends Cryptobase
 {
 
     /**
@@ -46,15 +46,16 @@ class Otp
      * 
      * @param string $input Input data to encrypt
      * @param string $key   Encryption/decryption key to use on input.
+     * @param string $algo  Hashing algo
      * 
      * @return string
      */
-    public static function crypt($input, $key)
+    public static function crypt($input, $key, $algo = 'sha512')
     {
-        $chunks = str_split($input, 64);
+        $chunks = str_split($input, self::hashSize($algo));
 
         foreach ($chunks as $i => &$chunk) {
-            $chunk = $chunk ^ hash('sha512', $key . $i, true);
+            $chunk = $chunk ^ hash($algo, $key . $i, true);
         }
 
         return implode($chunks);
