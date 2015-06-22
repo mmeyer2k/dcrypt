@@ -33,10 +33,10 @@ class Hash extends Str
     /**
      * Internal function used to build the actual hash.
      *  
-     * @param string       $input    Data to hash.
-     * @param string       $password Password to use in HMAC call.
-     * @param string|null  $iv       Initialization vector to use in HMAC calls.
-     * @param integer      $cost     Number of iterations to use.
+     * @param string       $input    Data to hash
+     * @param string       $password Password to use in HMAC call
+     * @param string|null  $iv       Initialization vector to use in HMAC calls
+     * @param integer      $cost     Number of iterations to use
      * 
      * @return string
      */
@@ -50,10 +50,10 @@ class Hash extends Str
         // Verify and normalize cost value
         $cost = self::_cost($cost);
 
-        // Perform hash iterations. Get a 32 byte output value.
-        $hash = self::ihmac($input, $password . $iv, $cost * 32123, 'sha256');
+        // Perform hash iterations. Get a 32 byte output value
+        $hash = self::ihmac($input, $password . $iv, $cost * 100000, 'sha256');
 
-        // Return the salt + cost (encrypted) + hmac.
+        // Return the salt + cost (encrypted) + hmac
         return $iv . Otp::crypt(chr($cost), $password) . $hash;
     }
 
@@ -122,8 +122,8 @@ class Hash extends Str
         // Get the encrypted cost byte
         $cost = ord(Otp::crypt(self::substr($hash, 31, 1), $password));
 
-        // Return the boolean equivalence.
-        return Str::equal($hash, self::_build($input, $password, $iv, $cost));
+        // Return the boolean equivalence
+        return self::equal($hash, self::_build($input, $password, $iv, $cost));
     }
 
 }
