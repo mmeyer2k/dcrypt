@@ -85,8 +85,10 @@ class Random
      */
     private static function _toss()
     {
+        // @codeCoverageIgnoreStart
         $e = 'Dcrypt failed to generate a random number';
         throw new \exception($e);
+        // @codeCoverageIgnoreEnd
     }
 
 }
