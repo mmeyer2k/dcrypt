@@ -43,18 +43,18 @@ class Otp extends Cryptobase
     /**
      * Encrypt or decrypt a binary input string.
      * 
-     * @param string $input Input data to encrypt
-     * @param string $key   Encryption/decryption key to use on input.
-     * @param string $algo  Hashing algo
+     * @param string $input    Input data to encrypt
+     * @param string $password Encryption/decryption key to use on input
+     * @param string $algo     Hashing algo to generate keystream
      * 
      * @return string
      */
-    public static function crypt($input, $key, $algo = 'sha512')
+    public static function crypt($input, $password, $algo = 'sha512')
     {
         $chunks = str_split($input, self::hashSize($algo));
 
         foreach ($chunks as $i => &$chunk) {
-            $chunk = $chunk ^ hash($algo, $key . $i, true);
+            $chunk = $chunk ^ hash($algo, $password . $i, true);
         }
 
         return implode($chunks);
