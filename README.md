@@ -136,6 +136,9 @@ $hash = \Dcrypt\Hash::make($plaintext, $password, $cost);
 $bool = \Dcrypt\Hash::verify($plaintext, $hash, $password);
 ```
 
+Incrementing the `$cost` value by 1 increases the number of hash iterations by `100,000`.
+A `$cost` value of 0 results in a single hash being performed.
+
 ## Time-safe String Comparison
 Dcrypt uses time-safe string comparisons in all sensitive areas. The same function that is used internally is also exposed for use in your projects.
 ```php
