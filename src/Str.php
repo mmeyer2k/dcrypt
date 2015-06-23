@@ -62,7 +62,7 @@ class Str
      * @param string $given       The string that the user can control
      * @param bool   $hash_equals Use hash_equals() if available
      *
-     * @return bool true if the two strings are the same, false otherwise
+     * @return bool
      */
     public static function equal($known, $given, $hash_equals = true)
     {
