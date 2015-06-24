@@ -51,7 +51,7 @@ class HashTest extends PHPUnit_Framework_TestCase
     {
         $input = 'hello world';
         $key = 'password';
-        $vector = base64_decode('d4ImS9VJJYUfC5E0HZlZ/eNl2udhmmOivglH8AxQeNyYO7LaYzP1I6sHbkolGGpwxp84QDbLFGEqzNOAeS1obw==');
+        $vector = base64_decode('cuAQCZ2XKGst/MkCQW0iYfYlJcMZG+ChiyHCUAJ0PNxlKhb6kQjLcKUriB3j1yPUlICiiZ3JXPUBO2cN+Lo0dQ==');
         $this->assertTrue(Hash::verify($input, $vector, $key));
     }
 

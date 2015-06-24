@@ -50,8 +50,11 @@ class Hash extends Str
         // Verify and normalize cost value
         $cost = self::_cost($cost);
 
+        // Create key to use for hmac operations
+        $key = hash_hmac('sha256', $iv, $password, true);
+        
         // Perform hash iterations. Get a 32 byte output value
-        $hash = self::ihmac($input, $password . $iv, $cost * 100000, 'sha256');
+        $hash = self::ihmac($input, $key, $cost * 100000);
 
         // Return the salt + cost (encrypted) + hmac
         return $iv . Otp::crypt(chr($cost), $password) . $hash;
