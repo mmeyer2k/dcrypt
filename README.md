@@ -160,4 +160,4 @@ $iv = \Dcrypt\Random::get(8); # get 8 random bytes
 1. Both `\Dcrypt\Aes` and `\Dcrypt\Mcrypt` block ciphers will return `false` upon decryption of any malformed cyphertext. 
 1. Dcrypt's block ciphers and `Hash::make()` output very space efficient blobs. Every bit is used to its fullest potential. 
   1. Known offset + length is how the components of the cyphertexts are parsed. No serialization, marker bytes, encoding schemes or any other nonsense is used. Because of this, the output size of the block ciphers is easily predictable.
-  1. The output size of `Aes::encrypt` on a 32 byte plaintext would be: IV (16 bytes) + SHA-256 HMAC (32 bytes) + encrypted plaintext bytes (32 bytes) + encrypted extra padding block required by PKCS #7 (32 bytes) = 112 bytes.
+  1. The output size of `Aes::encrypt` on a 10 byte plaintext would be: IV (16 bytes) + SHA-256 HMAC (32 bytes) + encrypted plaintext and padding bytes (16 bytes) = 64 bytes.
