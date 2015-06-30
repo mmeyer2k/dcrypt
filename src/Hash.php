@@ -40,11 +40,11 @@ class Hash extends Str
      *  
      * @param string       $input    Data to hash
      * @param string       $password Password to use in HMAC call
-     * @param string|null  $salt     Initialization vector to use in HMAC calls
      * @param integer      $cost     Number of iterations to use
+     * @param string|null  $salt     Initialization vector to use in HMAC calls
      * @return string
      */
-    private static function _build($input, $password, $salt = null)
+    private static function _build($input, $password, $cost, $salt = null)
     {
         // Generate salt if needed
         $salt = $salt === null ? Random::get(16) : $salt;
@@ -118,7 +118,7 @@ class Hash extends Str
      */
     public static function make($input, $password, $cost = 250000)
     {
-        return self::_build($input, $password, null, $cost);
+        return self::_build($input, $password, $cost, null);
     }
 
     /**
@@ -146,7 +146,7 @@ class Hash extends Str
         }
 
         // Return the boolean equivalence
-        return self::equal($hash, self::_build($input, $password, $salt, $cost));
+        return self::equal($hash, self::_build($input, $password, $cost, $salt));
     }
 
 }
