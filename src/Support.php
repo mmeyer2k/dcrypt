@@ -6,32 +6,42 @@ class Support
 {
 
     /**
+     * Turns an integer into a 4 byte binary representation
      * 
-     * @param type $dec
-     * @return type
+     * @param int $dec Integer to convert to binary
+     * 
+     * @return string
      */
-    protected static function _dec2bin($dec)
+    protected static function dec2bin($dec)
     {
-        return hex2bin(str_pad(dechex($dec), 8, '0', STR_PAD_LEFT));
+        return self::hex2bin(str_pad(dechex($dec), 8, '0', STR_PAD_LEFT));
     }
 
     /**
+     * Reverses dec2bin
      * 
-     * @param type $bin
+     * @param string $bin
+     * 
      * @return type
      */
-    protected static function _bin2dec($bin)
+    protected static function bin2dec($bin)
     {
         return hexdec(bin2hex($bin));
     }
 
     /**
+     * An internal hex2bin implementation for PHP 5.3
      * 
-     * @param type $hexstr
-     * @return type
+     * @param string $hexstr
+     * 
+     * @return string
      */
     protected static function hex2bin($hexstr)
     {
+        if (function_exists('hex2bin')) {
+            return hex2bin($hexstr);
+        }
+        
         $n = strlen($hexstr);
         $sbin = '';
         $i = 0;
@@ -45,6 +55,7 @@ class Support
             }
             $i+=2;
         }
+        
         return $sbin;
     }
 

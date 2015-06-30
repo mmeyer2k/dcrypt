@@ -80,7 +80,7 @@ class Hash extends Str
         $hash = substr(hash_hmac(self::algo, $cost, $salt, true), 0, 12);
 
         // Convert cost to base 256 then encrypt with OTP stream cipher
-        $cost = Otp::crypt(self::_dec2bin($cost), $password);
+        $cost = Otp::crypt(self::dec2bin($cost), $password);
 
         return $hash . $cost;
     }
@@ -136,7 +136,7 @@ class Hash extends Str
         $salt = self::substr($hash, 0, 16);
 
         // Get the encrypted cost bytes
-        $cost = self::_bin2dec(Otp::crypt(self::substr($hash, 28, 4), $password));
+        $cost = self::bin2dec(Otp::crypt(self::substr($hash, 28, 4), $password));
 
         // Get the entire cost+hash blob for comparison
         $blob = self::substr($hash, 16, 16);
