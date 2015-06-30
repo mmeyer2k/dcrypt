@@ -1,7 +1,28 @@
 <?php
 
+/**
+ * Support.php
+ * 
+ * PHP version 5
+ * 
+ * @category Dcrypt
+ * @package  Dcrypt
+ * @author   Michael Meyer (mmeyer2k) <m.meyer2k@gmail.com>
+ * @license  http://opensource.org/licenses/MIT The MIT License (MIT)
+ * @link     https://github.com/mmeyer2k/dcrypt
+ */
+
 namespace Dcrypt;
 
+/**
+ * Provides numeric data conversion helper functions.
+ * 
+ * @category Dcrypt
+ * @package  Dcrypt
+ * @author   Michael Meyer (mmeyer2k) <m.meyer2k@gmail.com>
+ * @license  http://opensource.org/licenses/MIT The MIT License (MIT)
+ * @link     https://github.com/mmeyer2k/dcrypt
+ */
 class Support extends Str
 {
 
@@ -20,9 +41,9 @@ class Support extends Str
     /**
      * Reverses dec2bin
      * 
-     * @param string $bin
+     * @param string $bin Binary string to convert to decimal
      * 
-     * @return type
+     * @return string
      */
     protected static function bin2dec($bin)
     {
@@ -41,7 +62,7 @@ class Support extends Str
         if (function_exists('hex2bin')) {
             return hex2bin($hexstr);
         }
-        
+
         $n = strlen($hexstr);
         $sbin = '';
         $i = 0;
@@ -55,7 +76,7 @@ class Support extends Str
             }
             $i+=2;
         }
-        
+
         return $sbin;
     }
 
