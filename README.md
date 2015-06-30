@@ -129,7 +129,8 @@ PKCS#7 style padding is available via the `Pkcs7::pad()` and `Pkcs7::unpad()` fu
 ## Key Derivation Function
 `Dcrypt\Hash` is an opaque 512 bit iterative hash function. First, SHA-256 is 
 used to hash a 16 byte initialization vector with your secret password to create
-a unique key. Then `$cost` number of iterations are performed.
+a unique key. Then `$cost` number of HMAC iterations are performed on the input
+using the unique key.
 
 The `$cost` parameter can be any integer between 0 and 2<sup>32</sup>. This
 `$cost` value is stored as 4 encrypted bytes in the output. A `$cost` value of 
