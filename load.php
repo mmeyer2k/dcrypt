@@ -33,6 +33,7 @@ if (!defined($g)) {
         'Rc4',
         'Spritz',
         'Str',
+        'Support',
     );
 
     foreach ($files as $f) {

@@ -28,7 +28,7 @@ namespace Dcrypt;
  * @link     https://github.com/symfony/Security/blob/master/Core/Util/StringUtils.php
  * @link     https://php.net/manual/en/mbstring.overload.php
  */
-class Str
+class Str extends Support
 {
 
     /**
@@ -76,7 +76,7 @@ class Str
         if ($hash_equals === true && function_exists('hash_equals')) {
             return hash_equals($known, $given); // @codeCoverageIgnore
         }
-        
+
         return self::_strcmp($known, $given);
     }
 

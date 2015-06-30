@@ -125,10 +125,13 @@ PKCS#7 style padding is available via the `Pkcs7::pad()` and `Pkcs7::unpad()` fu
 ```
 
 ## Key Derivation Function
-`Dcrypt\Hash` is an opaque 512 bit iterative hash function. SHA-256-HMAC
-is keyed with a 31 byte initialization vector before iterating the hash
-a number of times determined by the `$cost` parameter. `$cost` is stored
-in the hash as a single encrypted byte, so it can be any value between 0 and 255.
+`Dcrypt\Hash` is an opaque 512 bit iterative hash function. First, SHA-256 is 
+used to hash a 16 byte initialization vector with your secret password to create
+a unique key. Then `$cost` number of iterations are performed.
+
+The `$cost` parameter can be any integer between 0 and 2<sup>32</sup>. This
+`$cost` value is stored as 4 encrypted bytes in the output. A `$cost` value of 
+`0` results in only a single hash being performed.
 
 ```php
 $hash = \Dcrypt\Hash::make($plaintext, $password, $cost);
@@ -136,8 +139,6 @@ $hash = \Dcrypt\Hash::make($plaintext, $password, $cost);
 $bool = \Dcrypt\Hash::verify($plaintext, $hash, $password);
 ```
 
-Each increment of the `$cost` value increases the number of hash iterations by `100,000`.
-A `$cost` value of `0` results in only a single hash being performed.
 
 ## Time-safe String Comparison
 Dcrypt uses time-safe string comparisons in all sensitive areas. The same function that is used internally is also exposed for use in your projects.

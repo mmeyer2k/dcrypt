@@ -15,11 +15,14 @@
 namespace Dcrypt;
 
 /**
- * \Dcrypt\Hash::make() outputs a binary 512 bit string with the following format:
+ * Outputs a binary 512 bit string with the following format:
  * 
- *              salt            cost              hash
- * [============================]|[===============================]
- *            31 byte          1 byte           32 byte
+ * 16 bytes => iv
+ * 12 bytes => cost checksum
+ *  4 bytes => cost
+ * 32 bytes => hmac
+ * 
+ * ivivivivivivivivsssssssssssscosthmachmachmachmachmachmachmachmac
  * 
  * @category Dcrypt
  * @package  Dcrypt
@@ -30,34 +33,33 @@ namespace Dcrypt;
 class Hash extends Str
 {
 
+    const algo = 'sha256';
+
     /**
      * Internal function used to build the actual hash.
      *  
      * @param string       $input    Data to hash
      * @param string       $password Password to use in HMAC call
-     * @param string|null  $iv       Initialization vector to use in HMAC calls
+     * @param string|null  $salt     Initialization vector to use in HMAC calls
      * @param integer      $cost     Number of iterations to use
-     * 
      * @return string
      */
-    private static function _build($input, $password, $iv = null, $cost = 10)
+    private static function _build($input, $password, $salt = null, $cost = 10)
     {
         // Generate salt if needed
-        if ($iv === null) {
-            $iv = Random::get(31);
-        }
+        $salt = $salt === null ? Random::get(16) : $salt;
 
         // Verify and normalize cost value
         $cost = self::_cost($cost);
 
         // Create key to use for hmac operations
-        $key = hash_hmac('sha256', $iv, $password, true);
-        
-        // Perform hash iterations. Get a 32 byte output value
-        $hash = self::ihmac($input, $key, $cost * 100000);
+        $key = hash_hmac(self::algo, $salt, $password, true);
 
-        // Return the salt + cost (encrypted) + hmac
-        return $iv . Otp::crypt(chr($cost), $password) . $hash;
+        // Perform hash iterations. Get a 32 byte output value
+        $hash = self::ihmac($input, $key, $cost, self::algo);
+
+        // Return the salt + cost blob + hmac
+        return $salt . self::_costHash($cost, $salt, $password) . $hash;
     }
 
     /**
@@ -69,7 +71,18 @@ class Hash extends Str
      */
     private static function _cost($cost)
     {
-        return $cost % 256;
+        return $cost % pow(2, 32);
+    }
+
+    private static function _costHash($cost, $salt, $password)
+    {
+        // Hash and return first 12 bytes
+        $hash = substr(hash_hmac(self::algo, $cost, $salt, true), 0, 12);
+
+        // Convert cost to base 256 then encrypt with OTP stream cipher
+        $cost = Otp::crypt(self::_dec2bin($cost), $password);
+
+        return $hash . $cost;
     }
 
     /**
@@ -103,7 +116,7 @@ class Hash extends Str
      * 
      * @return string
      */
-    public static function make($input, $password, $cost = 10)
+    public static function make($input, $password, $cost = 25000)
     {
         return self::_build($input, $password, null, $cost);
     }
@@ -120,13 +133,20 @@ class Hash extends Str
     public static function verify($input, $hash, $password)
     {
         // Get the salt value from the decrypted prefix
-        $iv = self::substr($hash, 0, 31);
+        $salt = self::substr($hash, 0, 16);
 
-        // Get the encrypted cost byte
-        $cost = ord(Otp::crypt(self::substr($hash, 31, 1), $password));
+        // Get the encrypted cost bytes
+        $cost = self::_bin2dec(Otp::crypt(self::substr($hash, 28, 4), $password));
+
+        // Get the entire cost+hash blob for comparison
+        $blob = self::substr($hash, 16, 16);
+
+        if (!self::equal(self::_costHash($cost, $salt, $password), $blob)) {
+            return false;
+        }
 
         // Return the boolean equivalence
-        return self::equal($hash, self::_build($input, $password, $iv, $cost));
+        return self::equal($hash, self::_build($input, $password, $salt, $cost));
     }
 
 }
