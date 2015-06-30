@@ -30,7 +30,7 @@ namespace Dcrypt;
  * @license  http://opensource.org/licenses/MIT The MIT License (MIT)
  * @link     https://github.com/mmeyer2k/dcrypt
  */
-class Hash extends Str
+class Hash extends Support
 {
 
     const algo = 'sha256';

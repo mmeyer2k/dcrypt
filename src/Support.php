@@ -2,7 +2,7 @@
 
 namespace Dcrypt;
 
-class Support
+class Support extends Str
 {
 
     /**
