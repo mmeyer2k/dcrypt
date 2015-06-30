@@ -44,7 +44,7 @@ class Hash extends Str
      * @param integer      $cost     Number of iterations to use
      * @return string
      */
-    private static function _build($input, $password, $salt = null, $cost = 10)
+    private static function _build($input, $password, $salt = null)
     {
         // Generate salt if needed
         $salt = $salt === null ? Random::get(16) : $salt;
@@ -116,7 +116,7 @@ class Hash extends Str
      * 
      * @return string
      */
-    public static function make($input, $password, $cost = 25000)
+    public static function make($input, $password, $cost = 250000)
     {
         return self::_build($input, $password, null, $cost);
     }
