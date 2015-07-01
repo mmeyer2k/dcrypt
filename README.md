@@ -21,7 +21,7 @@ A petite library of essential encryption functions for PHP (5.3+).
 
 # Installation
 Add the following to the require section of your composer.json file, then run `composer install`.
-```
+```json
 "require": {
   "mmeyer2k/dcrypt": "~0.0"
 }
