@@ -27,7 +27,7 @@ Add the following to the require section of your composer.json file, then run `c
 }
 ```
 Or using the command line...
-```
+```bash
 composer global require "mmeyer2k/dcrypt=~0.0"
 ```
 In environments where composer is not available, dcrypt can be used by including `load.php`.
