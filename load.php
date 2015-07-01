@@ -22,18 +22,18 @@ if (!defined($g)) {
     define($g, true);
     
     $files = array(
-        'Aes',
+        'Str',
+        'Support',
         'Cryptobase',
         'Hash',
         'Mcrypt',
         'Openssl',
+        'Aes',
         'Otp',
         'Pkcs7',
         'Random',
         'Rc4',
         'Spritz',
-        'Str',
-        'Support',
     );
 
     foreach ($files as $f) {
