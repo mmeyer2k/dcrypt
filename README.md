@@ -48,7 +48,14 @@ If you have special requirements, `\Dcrypt\Mcrypt` might be the best solution.
 ```php
 # encrypt with serpent in ecb mode with sha512 hmac, for instance...
 # the third parameter of 0 specifies that no extra key hardening will take place (see below...)
-$encrypted = \Dcrypt\Mcrypt::encrypt('message', 'password', 0, MCRYPT_SERPENT, MCRYPT_MODE_ECB, 'sha512');
+$encrypted = \Dcrypt\Mcrypt::encrypt(
+  'message', 
+  'password', 
+  0,
+  MCRYPT_SERPENT, 
+  MCRYPT_MODE_ECB, 
+  'sha512'
+);
 ```
 As with `\Dcrypt\Aes`, all time-safe HMAC verification, strong IV creation and padding (PKCS#7) are handled for you.
 
@@ -99,7 +106,7 @@ $encrypted = \Dcrypt\Otp::crypt($plaintext, $password, 'whirlpool');
 $plaintext = \Dcrypt\Otp::crypt($encrypted, $password, 'whirlpool');
 ```
 
-### For Fun
+### Rivest's Ciphers
 `\Dcrypt\Rc4` and `\Dcrypt\Spritz` are pure PHP implementations of the immortal RC4 cipher and its successor Spritz.
 ```php
 $encrypted = \Dcrypt\Rc4::crypt($plaintext, $password);
@@ -158,7 +165,7 @@ $iv = \Dcrypt\Random::get(8); # get 8 random bytes
 # Usage Notes
 1. All encryption functions and `\Dcrypt\Hash::make()` output raw binary data.
 1. All encryption functions and `\Dcrypt\Hash::make()` accept any binary data of arbitrary length as `$input` and `$password`.
-  1. Dcrypt takes special steps to avoid frivolus concatenations of potentially large input parameters.
+  1. Dcrypt takes special steps to avoid frivolus concatenations of potentially large `$input` type parameters.
   1. `$password` type parameters are freqently concatentated. Therefore, avoid using excessively large passwords when memory is an issue. 
 1. Dcrypt is safe to use on systems that have `mbstring.func_overload` enabled.
 1. Both `\Dcrypt\Aes` and `\Dcrypt\Mcrypt` block ciphers will return `false` upon decryption of any malformed cyphertext. 
