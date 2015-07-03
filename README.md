@@ -87,6 +87,16 @@ $plaintext = \Dcrypt\Aes::decrypt($encrypted, $password, 10000);
 ```
 `$cost` can also be passed into the third parameter of `\Dcrypt\Mcrypt`'s functions.
 
+### Tamper Protection
+To prevent padding oracle attacks, both `\Dcrypt\Aes` and `\Dcrypt\Mcrypt` block ciphers will return boolean `false` upon decryption of any malformed cyphertext. The cyphertext and IV are both protected by this verification.
+```php
+$decrypted = \Dcrypt\Aes::decrypt($badInput, $password);
+
+if ($decrypted === false) {
+  # throw an exception here
+}
+```
+
 ## Stream Ciphers
 
 ### One Time Pad Encryption
@@ -168,7 +178,6 @@ $iv = \Dcrypt\Random::get(8); # get 8 random bytes
   1. Dcrypt takes special steps to avoid frivolus concatenations of potentially large `$input` type parameters.
   1. `$password` type parameters are freqently concatentated. Therefore, avoid using excessively large passwords when memory is an issue. 
 1. Dcrypt is safe to use on systems that have `mbstring.func_overload` enabled.
-1. Both `\Dcrypt\Aes` and `\Dcrypt\Mcrypt` block ciphers will return `false` upon decryption of any malformed cyphertext. 
 1. Dcrypt's block ciphers and `Hash::make()` output very space efficient blobs. Every bit is used to its fullest potential. 
   1. Known offset + length is how the components of the cyphertexts are parsed. No serialization, marker bytes, encoding schemes or any other nonsense is used. Because of this, the output size of the block ciphers is easily predictable.
   1. The output size of `Aes::encrypt` on a 10 byte plaintext would be: IV (16 bytes) + SHA-256 HMAC (32 bytes) + encrypted plaintext and padding bytes (16 bytes) = 64 bytes.
