@@ -9,7 +9,7 @@ dcrypt
 
 A petite library of essential encryption functions for PHP (5.3+).
 
-- [Installation](#installation)
+- [Install](#install)
 - [Features](#features)
   - [Block Ciphers](#block-ciphers)
   - [Stream Ciphers](#stream-ciphers)
@@ -18,8 +18,9 @@ A petite library of essential encryption functions for PHP (5.3+).
   - [Time-safe String Comparison](#time-safe-string-comparison)
   - [Secure Random Byte Generator](#secure-random-byte-generator)
 - [Usage Notes](#usage-notes)
+- [API Documentation](#api-documentation)
 
-# Installation
+# Install
 Add the following to the require section of your composer.json file, then run `composer install`.
 ```json
 "require": {
@@ -182,3 +183,6 @@ $iv = \Dcrypt\Random::get(8); # get 8 random bytes
   1. Known offset + length is how the components of the cyphertexts are parsed. No serialization, marker bytes, encoding schemes or any other nonsense is used. Because of this, the output size of the block ciphers is easily predictable.
   1. The output size of `Aes::encrypt` on a 10 byte plaintext would be: IV (16 bytes) + SHA-256 HMAC (32 bytes) + encrypted plaintext and padding bytes (16 bytes) = 64 bytes.
 1. Dcrypt is built entirely with static functions. If you are using the `new` keyword on any Dcrypt classes, you are doing it wrong!
+
+# API Documentation
+The latest API documentation can be found [here](https://mmeyer2k.github.io/dcrypt/).
