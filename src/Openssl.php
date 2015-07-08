@@ -79,7 +79,7 @@ class Openssl extends Cryptobase
         }
 
         // Decrypt message and return
-        return openssl_decrypt($message, self::cipher, $key, 1, $iv);
+        return \openssl_decrypt($message, self::cipher, $key, 1, $iv);
     }
 
     /**
@@ -100,7 +100,7 @@ class Openssl extends Cryptobase
         $key = self::key($password, $iv, $cost);
 
         // Encrypt the plaintext
-        $message = openssl_encrypt($plaintext, self::cipher, $key, 1, $iv);
+        $message = \openssl_encrypt($plaintext, self::cipher, $key, 1, $iv);
 
         // Create the cypher text prefix (iv + checksum)
         $prefix = $iv . self::checksum($message, $iv, $key);
