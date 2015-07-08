@@ -31,7 +31,10 @@ Or using the command line...
 ```bash
 composer global require "mmeyer2k/dcrypt=~0.0"
 ```
-In environments where composer is not available, dcrypt can be used by including `load.php`.
+In environments where composer is not available, Dcrypt can be used by including `load.php`.
+```php
+require 'path/to/dcrypt/load.php';
+```
 # Features
 
 ## Block Ciphers
