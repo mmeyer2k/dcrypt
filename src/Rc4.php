@@ -15,7 +15,6 @@
 namespace Dcrypt;
 
 /**
- * 
  * An implementation of RC4 symmetric encryption.
  * 
  * @category Dcrypt

@@ -15,10 +15,7 @@
 namespace Dcrypt;
 
 /**
- * 
- * One Time Pad
- * 
- * A simple stream encryption class designed to provide moderate security and 
+ * A simple one time pad encryption class designed to provide moderate security and 
  * high performance with low memory usage. Uses simple XOR operations to encrypt 
  * data with a key. The Otp::crypt() function is safer to run on pseuro-random
  * input that needs to be obscured.

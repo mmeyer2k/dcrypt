@@ -15,8 +15,7 @@
 namespace Dcrypt;
 
 /**
- * 
- * An implementation of the Spritz symmetric encryption algorithm.
+ * An implementation of Spritz symmetric encryption.
  * 
  * @category Dcrypt
  * @package  Dcrypt
