@@ -27,7 +27,7 @@ class Aes extends Cryptobase
 {
 
     /**
-     * AES-256 cipher idetifier that will be passed to openssl
+     * AES-256 cipher identifier that will be passed to openssl
      * 
      * @var string
      */
