@@ -40,7 +40,7 @@ require 'path/to/dcrypt/load.php';
 ## Block Ciphers
 
 ### AES Encryption (via OpenSSL)
-Quickly access symmetric encryption functions with `\Dcrypt\Aes`. When in doubt, use this class! All of the most secure options are the default. Naturally, strongly random initialization vectors are generated upon encryption and standard HMAC (sha256) checksums are verified (in a time-safe manner) before decryption.
+Quickly access symmetric encryption functions with `\Dcrypt\Aes`. When in doubt, use this class! All of the most secure options are the default. Naturally, strongly random initialization vectors are generated upon encryption and standard HMAC (SHA-256) checksums are verified in a time-safe manner before decryption.
 ```php
 $encrypted = \Dcrypt\Aes::encrypt($plaintext, $password);
 
@@ -105,14 +105,14 @@ if ($decrypted === false) {
 
 ### One Time Pad Encryption
 Fast symmetric stream encryption is available with the `\Dcrypt\Otp` class.
-`Otp` uses SHA-512 (by default) to output a keystream that is ⊕'d with the input in 512 bit chunks. 
+`\Dcrypt\Otp` uses SHA-512 (by default) to output a keystream that is ⊕'d with the input in 512 bit chunks. 
 ```php
 $encrypted = \Dcrypt\Otp::crypt($plaintext, $password);
 
 $plaintext = \Dcrypt\Otp::crypt($encrypted, $password);
 ```
 
-`Otp` can also be configured to use any other hashing algorithm to generate the
+`\Dcrypt\Otp` can also be configured to use any other hashing algorithm to generate the
 pseudorandom keystream.
 ```php
 $encrypted = \Dcrypt\Otp::crypt($plaintext, $password, 'whirlpool');
