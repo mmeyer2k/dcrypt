@@ -36,7 +36,7 @@ class Random
      */
      private static function _fromMcrypt($bytes)
      {
-        $ret = mcrypt_create_iv($bytes, MCRYPT_DEV_URANDOM);
+        $ret = \mcrypt_create_iv($bytes, MCRYPT_DEV_URANDOM);
         
         if ($ret === false) {
             self::_toss(); // @codeCoverageIgnore
@@ -54,7 +54,7 @@ class Random
      */
      private static function _fromOpenssl($bytes)
      {
-        $ret = openssl_random_pseudo_bytes($bytes, $secure);
+        $ret = \openssl_random_pseudo_bytes($bytes, $secure);
         
         if ($secure === false) {
             self::_toss(); // @codeCoverageIgnore
@@ -73,7 +73,7 @@ class Random
      */
     public static function get($bytes, $mcrypt = true)
     {
-        if (function_exists('mcrypt_create_iv') && $mcrypt === true) {
+        if (\function_exists('mcrypt_create_iv') && $mcrypt === true) {
             return self::_fromMcrypt($bytes);
         } else {
             return self::_fromOpenssl($bytes);
