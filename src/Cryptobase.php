@@ -33,10 +33,10 @@ class Cryptobase extends Str
     {
         // Prevent potentially large string concat by hmac-ing the cyphertext
         // by itself...
-        $sum = hash_hmac($algo, $cyphertext, $key, true);
+        $sum = \hash_hmac($algo, $cyphertext, $key, true);
 
         // ... then hash other elements with previous hmac and return
-        return hash_hmac($algo, $sum . $iv . $mode . $cipher, $key, true);
+        return \hash_hmac($algo, $sum . $iv . $mode . $cipher, $key, true);
     }
 
     /**
@@ -94,7 +94,7 @@ class Cryptobase extends Str
         if ($mode === 'cbc' && $cipher === 'rijndael-128') {
             $keysize = 32;
         } else {
-            $keysize = mcrypt_get_key_size($cipher, $mode);
+            $keysize = \mcrypt_get_key_size($cipher, $mode);
         }
 
         // Perform key derivation
