@@ -57,7 +57,7 @@ class Pkcs7 extends Str
         $pad = $blocksize - ($inputsize % $blocksize);
 
         // Create and return the padding string
-        return str_repeat(chr($pad), $pad);
+        return \str_repeat(chr($pad), $pad);
     }
 
     /**
@@ -71,7 +71,7 @@ class Pkcs7 extends Str
     {
         // Determine the padding size by converting the final byte of the  
         // input to its decimal value
-        $padsize = ord(self::substr($input, -1));
+        $padsize = \ord(self::substr($input, -1));
 
         // Return string minus the padding amount
         return self::substr($input, 0, self::strlen($input) - $padsize);
