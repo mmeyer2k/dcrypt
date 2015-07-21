@@ -53,7 +53,7 @@ class Hash extends Support
         $cost = self::_cost($cost);
 
         // Create key to use for hmac operations
-        $key = hash_hmac(self::algo, $salt, $password, true);
+        $key = \hash_hmac(self::algo, $salt, $password, true);
 
         // Perform hash iterations. Get a 32 byte output value
         $hash = self::ihmac($input, $key, $cost, self::algo);
@@ -71,13 +71,13 @@ class Hash extends Support
      */
     private static function _cost($cost)
     {
-        return $cost % pow(2, 32);
+        return $cost % \pow(2, 32);
     }
 
     private static function _costHash($cost, $salt, $password)
     {
         // Hash and return first 12 bytes
-        $hash = substr(hash_hmac(self::algo, $cost, $salt, true), 0, 12);
+        $hash = self::substr(\hash_hmac(self::algo, $cost, $salt, true), 0, 12);
 
         // Convert cost to base 256 then encrypt with OTP stream cipher
         $cost = Otp::crypt(self::dec2bin($cost), $password);
@@ -101,7 +101,7 @@ class Hash extends Support
     public static function ihmac($data, $key, $iter, $algo = 'sha256')
     {
         for ($i = 0; $i <= abs($iter); $i++) {
-            $data = hash_hmac($algo, $data . $i . $iter, $key, true);
+            $data = \hash_hmac($algo, $data . $i . $iter, $key, true);
         }
 
         return $data;
