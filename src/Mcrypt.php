@@ -48,7 +48,7 @@ class Mcrypt extends Cryptobase
     public static function decrypt($cyphertext, $password, $cost = 0, $cipher = MCRYPT_RIJNDAEL_128, $mode = MCRYPT_MODE_CBC, $algo = 'sha256')
     {
         // Determine that size of the IV in bytes
-        $ivsize = mcrypt_get_iv_size($cipher, $mode);
+        $ivsize = \mcrypt_get_iv_size($cipher, $mode);
 
         // Find the IV at the beginning of the cypher text
         $iv = self::substr($cyphertext, 0, $ivsize);
@@ -71,7 +71,7 @@ class Mcrypt extends Cryptobase
         }
 
         // Decrypt unpad return
-        return Pkcs7::unpad(mcrypt_decrypt($cipher, $key, $message, $mode, $iv));
+        return Pkcs7::unpad(\mcrypt_decrypt($cipher, $key, $message, $mode, $iv));
     }
 
     /**
@@ -89,16 +89,16 @@ class Mcrypt extends Cryptobase
     public static function encrypt($plaintext, $password, $cost = 0, $cipher = MCRYPT_RIJNDAEL_128, $mode = MCRYPT_MODE_CBC, $algo = 'sha256')
     {
         // Pad the input string to a multiple of block size
-        $padded = Pkcs7::pad($plaintext, mcrypt_get_block_size($cipher, $mode));
+        $padded = Pkcs7::pad($plaintext, \mcrypt_get_block_size($cipher, $mode));
 
         // Generate IV of appropriate size
-        $iv = Random::get(mcrypt_get_iv_size($cipher, $mode));
+        $iv = Random::get(\mcrypt_get_iv_size($cipher, $mode));
 
         // Derive key from password
         $key = self::key($password, $iv, $cost, $cipher, $mode, $algo);
 
         // Encrypt the plaintext
-        $message = mcrypt_encrypt($cipher, $key, $padded, $mode, $iv);
+        $message = \mcrypt_encrypt($cipher, $key, $padded, $mode, $iv);
 
         // Create the cypher text prefix (iv + checksum)
         $prefix = $iv . self::checksum($message, $iv, $key, $cipher, $mode, $algo);
