@@ -51,7 +51,7 @@ class Spritz extends Rc4
             $s[$i] = $s[$j];
             $s[$j] = $x;
             $z = $s[($j + $s[($i + $s[($z + $k) % 256]) % 256]) % 256];
-            $res .= $str[$y] ^ chr($z);
+            $res .= $str[$y] ^ \chr($z);
         }
 
         return $res;
