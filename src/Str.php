@@ -115,7 +115,7 @@ class Str
                 $length = self::strlen($string);
             }
 
-            \return mb_substr($string, $start, $length, '8bit');
+            return \mb_substr($string, $start, $length, '8bit');
         }
 
         return \substr($string, $start, $length); // @codeCoverageIgnore
