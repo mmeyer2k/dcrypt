@@ -47,7 +47,7 @@ class Rc4 extends Str
             $x = $s[$i];
             $s[$i] = $s[$j];
             $s[$j] = $x;
-            $res .= $str[$y] ^ chr($s[($s[$i] + $s[$j]) % 256]);
+            $res .= $str[$y] ^ \chr($s[($s[$i] + $s[$j]) % 256]);
         }
 
         return $res;
@@ -63,10 +63,10 @@ class Rc4 extends Str
      */
     protected static function initializeState($key)
     {
-        $s = range(0, 255);
+        $s = \range(0, 255);
         $j = 0;
-        foreach (range(0, 255) as $i) {
-            $j = ($j + $s[$i] + ord($key[$i % self::strlen($key)])) % 256;
+        foreach (\range(0, 255) as $i) {
+            $j = ($j + $s[$i] + \ord($key[$i % self::strlen($key)])) % 256;
             $x = $s[$i];
             $s[$i] = $s[$j];
             $s[$j] = $x;
