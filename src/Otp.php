@@ -54,7 +54,7 @@ class Otp extends Cryptobase
             $chunk = $chunk ^ \hash($algo, $password . $i, true);
         }
 
-        return implode($chunks);
+        return \implode($chunks);
     }
 
 }
