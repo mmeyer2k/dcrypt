@@ -46,7 +46,7 @@ class Str
         // XOR the bytes of the 2 input hashes and loop over them.
         // Each byte value is then added to a running total...
         foreach (str_split($knownHash ^ $givenHash) as $xbyte) {
-            $result += ord($xbyte);
+            $result += \ord($xbyte);
         }
 
         // Strings are equal if the final result is exactly zero
@@ -70,11 +70,12 @@ class Str
         // vulnerable to timing attacks when the inputs have different sizes.
         // Inputs are also cast to string like in symfony stringutils.
         $nonce = Random::get(32);
-        $known = hash_hmac('sha256', (string) $known, $nonce, true);
-        $given = hash_hmac('sha256', (string) $given, $nonce, true);
+        
+        $known = \hash_hmac('sha256', (string) $known, $nonce, true);
+        $given = \hash_hmac('sha256', (string) $given, $nonce, true);
 
-        if ($hash_equals === true && function_exists('hash_equals')) {
-            return hash_equals($known, $given); // @codeCoverageIgnore
+        if ($hash_equals === true && \function_exists('hash_equals')) {
+            return \hash_equals($known, $given); // @codeCoverageIgnore
         }
 
         return self::_strcmp($known, $given);
@@ -89,11 +90,11 @@ class Str
      */
     protected static function strlen($string)
     {
-        if (function_exists('mb_strlen')) {
-            return mb_strlen($string, '8bit');
+        if (\function_exists('mb_strlen')) {
+            return \mb_strlen($string, '8bit');
         }
 
-        return strlen($string); // @codeCoverageIgnore
+        return \strlen($string); // @codeCoverageIgnore
     }
 
     /**
@@ -107,17 +108,17 @@ class Str
      */
     protected static function substr($string, $start, $length = null)
     {
-        if (function_exists('mb_substr')) {
+        if (\function_exists('mb_substr')) {
 
             // Fix a weird quirk in PHP versions prior to 5.4.8
-            if ($length === null && version_compare('5.4.8', PHP_VERSION)) {
+            if ($length === null && \version_compare('5.4.8', PHP_VERSION)) {
                 $length = self::strlen($string);
             }
 
-            return mb_substr($string, $start, $length, '8bit');
+            \return mb_substr($string, $start, $length, '8bit');
         }
 
-        return substr($string, $start, $length); // @codeCoverageIgnore
+        return \substr($string, $start, $length); // @codeCoverageIgnore
     }
 
 }
