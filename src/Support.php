@@ -35,7 +35,7 @@ class Support extends Str
      */
     protected static function dec2bin($dec)
     {
-        return self::hex2bin(str_pad(dechex($dec), 8, '0', STR_PAD_LEFT));
+        return self::hex2bin(\str_pad(\dechex($dec), 8, '0', STR_PAD_LEFT));
     }
 
     /**
@@ -47,7 +47,7 @@ class Support extends Str
      */
     protected static function bin2dec($bin)
     {
-        return hexdec(bin2hex($bin));
+        return \hexdec(\bin2hex($bin));
     }
 
     /**
@@ -59,16 +59,16 @@ class Support extends Str
      */
     protected static function hex2bin($hexstr)
     {
-        if (function_exists('hex2bin')) {
-            return hex2bin($hexstr);
+        if (\function_exists('hex2bin')) {
+            return \hex2bin($hexstr);
         }
 
-        $n = strlen($hexstr);
+        $n = \strlen($hexstr);
         $sbin = '';
         $i = 0;
         while ($i < $n) {
-            $a = substr($hexstr, $i, 2);
-            $c = pack('H*', $a);
+            $a = \substr($hexstr, $i, 2);
+            $c = \pack('H*', $a);
             $sbin.= $c;
             $i+=2;
         }
