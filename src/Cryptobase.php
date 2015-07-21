@@ -56,7 +56,7 @@ class Cryptobase extends Str
     {
         // Extend hash if too short
         while (self::strlen($hash) < $size) {
-            $hash .= hash($algo, $hash, true);
+            $hash .= \hash($algo, $hash, true);
         }
 
         // Truncate to specified number of bytes (if needed) and return
@@ -72,7 +72,7 @@ class Cryptobase extends Str
      */
     protected static function hashSize($algo)
     {
-        return self::strlen(hash($algo, 'hash me', true));
+        return self::strlen(\hash($algo, 'hash me', true));
     }
 
     /**
