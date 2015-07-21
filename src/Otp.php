@@ -48,10 +48,10 @@ class Otp extends Cryptobase
      */
     public static function crypt($input, $password, $algo = 'sha512')
     {
-        $chunks = str_split($input, self::hashSize($algo));
+        $chunks = \str_split($input, self::hashSize($algo));
 
         foreach ($chunks as $i => &$chunk) {
-            $chunk = $chunk ^ hash($algo, $password . $i, true);
+            $chunk = $chunk ^ \hash($algo, $password . $i, true);
         }
 
         return implode($chunks);
