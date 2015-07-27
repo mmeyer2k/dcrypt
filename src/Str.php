@@ -45,7 +45,7 @@ class Str
 
         // XOR the bytes of the 2 input hashes and loop over them.
         // Each byte value is then added to a running total...
-        foreach (str_split($knownHash ^ $givenHash) as $xbyte) {
+        foreach (\str_split($knownHash ^ $givenHash) as $xbyte) {
             $result += \ord($xbyte);
         }
 
