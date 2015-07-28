@@ -47,7 +47,7 @@ $encrypted = \Dcrypt\Aes::encrypt($plaintext, $password);
 $plaintext = \Dcrypt\Aes::decrypt($encrypted, $password);
 ```
 
-### Customizeable Encryption (via Mcrypt)
+### Customizable Encryption (via Mcrypt)
 If you have special requirements, `\Dcrypt\Mcrypt` might be the best solution.
 ```php
 # encrypt with serpent in ecb mode with sha512 hmac, for instance...
