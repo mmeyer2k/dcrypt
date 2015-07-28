@@ -57,7 +57,7 @@ class Pkcs7 extends Str
         $pad = $blocksize - ($inputsize % $blocksize);
 
         // Create and return the padding string
-        return \str_repeat(chr($pad), $pad);
+        return \str_repeat(\chr($pad), $pad);
     }
 
     /**
