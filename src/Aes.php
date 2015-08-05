@@ -31,21 +31,21 @@ class Aes extends Cryptobase
      * 
      * @var string
      */
-    const cipher = 'aes-256-cbc';
+    const CIPHER = 'aes-256-cbc';
 
     /**
      * Size of initialization vector in bytes
      * 
      * @var int
      */
-    const ivsize = 16;
+    const IVSIZE = 16;
 
     /**
      * Size of checksum in bytes
      * 
      * @var int
      */
-    const cksize = 32;
+    const CKSIZE = 32;
 
     /**
      * Decrypt cyphertext
@@ -59,13 +59,13 @@ class Aes extends Cryptobase
     public static function decrypt($cyphertext, $password, $cost = 0)
     {
         // Find the IV at the beginning of the cypher text
-        $iv = self::substr($cyphertext, 0, self::ivsize);
+        $iv = self::substr($cyphertext, 0, self::IVSIZE);
 
         // Gather the checksum portion of the cypher text
-        $chksum = self::substr($cyphertext, self::ivsize, self::cksize);
+        $chksum = self::substr($cyphertext, self::IVSIZE, self::CKSIZE);
 
         // Gather message portion of cyphertext after iv and checksum
-        $message = self::substr($cyphertext, self::ivsize + self::cksize);
+        $message = self::substr($cyphertext, self::IVSIZE + self::CKSIZE);
 
         // Derive key from password
         $key = self::key($password, $iv, $cost);
@@ -79,7 +79,7 @@ class Aes extends Cryptobase
         }
 
         // Decrypt message and return
-        return \openssl_decrypt($message, self::cipher, $key, 1, $iv);
+        return \openssl_decrypt($message, self::CIPHER, $key, 1, $iv);
     }
 
     /**
@@ -94,13 +94,13 @@ class Aes extends Cryptobase
     public static function encrypt($plaintext, $password, $cost = 0)
     {
         // Generate IV of appropriate size.
-        $iv = Random::get(self::ivsize);
+        $iv = Random::get(self::IVSIZE);
 
         // Derive key from password
         $key = self::key($password, $iv, $cost);
 
         // Encrypt the plaintext
-        $message = \openssl_encrypt($plaintext, self::cipher, $key, 1, $iv);
+        $message = \openssl_encrypt($plaintext, self::CIPHER, $key, 1, $iv);
 
         // Create the cypher text prefix (iv + checksum)
         $prefix = $iv . self::checksum($message, $iv, $key);
