@@ -100,7 +100,9 @@ class Hash extends Support
      */
     public static function ihmac($data, $key, $iter, $algo = 'sha256')
     {
-        for ($i = 0; $i <= abs($iter); $i++) {
+        $iter = abs($iter);
+        
+        for ($i = 0; $i <= $iter; $i++) {
             $data = \hash_hmac($algo, $data . $i . $iter, $key, true);
         }
 
