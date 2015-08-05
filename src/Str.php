@@ -39,7 +39,7 @@ class Str
      *
      * @return bool true if the two strings are the same, false otherwise
      */
-    private static function _strcmp($knownHash, $givenHash)
+    private static function strcmp($knownHash, $givenHash)
     {
         $result = 0;
 
@@ -78,7 +78,7 @@ class Str
             return \hash_equals($known, $given); // @codeCoverageIgnore
         }
 
-        return self::_strcmp($known, $given);
+        return self::strcmp($known, $given);
     }
 
     /**

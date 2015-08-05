@@ -39,7 +39,7 @@ class Random
         $ret = \mcrypt_create_iv($bytes, MCRYPT_DEV_URANDOM);
 
         if ($ret === false) {
-            self::_toss(); // @codeCoverageIgnore
+            self::toss(); // @codeCoverageIgnore
         }
 
         return $ret;
@@ -57,7 +57,7 @@ class Random
         $ret = \openssl_random_pseudo_bytes($bytes, $secure);
 
         if ($secure === false) {
-            self::_toss(); // @codeCoverageIgnore
+            self::toss(); // @codeCoverageIgnore
         }
 
         return $ret;
@@ -84,7 +84,7 @@ class Random
      * Throw an error when a failure occurs.
      */
 
-    private static function _toss()
+    private static function toss()
     {
         // @codeCoverageIgnoreStart
         $e = 'Dcrypt failed to generate a random number';
