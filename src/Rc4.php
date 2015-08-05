@@ -41,7 +41,8 @@ class Rc4 extends Str
         $s = self::initializeState($key);
         $i = $j = 0;
         $res = '';
-        for ($y = 0; $y < self::strlen($str); $y++) {
+        $size = self::strlen($str);
+        for ($y = 0; $y < $size; $y++) {
             $i = ($i + 1) % 256;
             $j = ($j + $s[$i]) % 256;
             $x = $s[$i];
