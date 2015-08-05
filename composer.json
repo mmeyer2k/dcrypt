@@ -20,5 +20,10 @@
             "Dcrypt\\": "src/"
         }
     },
+    "autoload-dev": {
+        "psr-4": {
+            "Dcrypt\\Support\\": "helpers/"
+        }
+    },
     "minimum-stability": "dev"
 }

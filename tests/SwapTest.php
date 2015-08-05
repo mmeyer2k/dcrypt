@@ -1,7 +1,5 @@
 <?php
 
-require __DIR__ . '/../helpers/swaprandbyte.php';
-
 class SwapTest extends PHPUnit_Framework_TestCase
 {
 
@@ -9,8 +7,8 @@ class SwapTest extends PHPUnit_Framework_TestCase
     {
         $orig = 'AAAAAAAAAA';
         for ($i = 0; $i < 10; $i = $i + 5) {
-            $this->assertFalse($orig === swaprandbyte($orig));
-            $this->assertEquals(levenshtein($orig, swaprandbyte($orig)), 1);
+            $this->assertFalse($orig === \Dcrypt\Support\Support::swaprandbyte($orig));
+            $this->assertEquals(levenshtein($orig, \Dcrypt\Support\Support::swaprandbyte($orig)), 1);
         }
     }
 

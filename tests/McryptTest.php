@@ -2,15 +2,13 @@
 
 use Dcrypt\Mcrypt;
 
-require __DIR__ . '/../helpers/swaprandbyte.php';
-
 class McryptTest extends PHPUnit_Framework_TestCase
 {
 
     public function testEngine()
     {
-        $modes = require __DIR__ . '/../helpers/mcrypt/modes.php';
-        $ciphers = require __DIR__ . '/../helpers/mcrypt/ciphers.php';
+        $modes = \Dcrypt\Support\Support::mcryptModes();
+        $ciphers = \Dcrypt\Support\Support::mcryptCiphers();
 
         foreach (hash_algos() as $algo) {
             $input = 'AAAAAAAA';
@@ -30,7 +28,7 @@ class McryptTest extends PHPUnit_Framework_TestCase
                     // However, this test should only be performed when the hash
                     // algo is large enough to avoid collisions
                     if (strlen(hash($algo, 'hash me', true)) >= 8) {
-                        $corrupt = swaprandbyte($encrypted);
+                        $corrupt = \Dcrypt\Support\Support::swaprandbyte($encrypted);
                         $this->assertFalse(Mcrypt::decrypt($corrupt, $key, $cost, $cipher, $mode, $algo));
                     }
                 }

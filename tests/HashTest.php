@@ -2,8 +2,6 @@
 
 use Dcrypt\Hash;
 
-require __DIR__ . '/../helpers/swaprandbyte.php';
-
 class HashTest extends PHPUnit_Framework_TestCase
 {
 
@@ -42,7 +40,7 @@ class HashTest extends PHPUnit_Framework_TestCase
         $this->assertTrue(Hash::verify($input, $output, $key));
 
         for ($i = 0; $i < 10; $i++) {
-            $corrupt = swaprandbyte($output);
+            $corrupt = \Dcrypt\Support\Support::swaprandbyte($output);
             $this->assertFalse(Hash::verify($input, $corrupt, $key));
         }
     }

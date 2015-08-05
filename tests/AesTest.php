@@ -21,7 +21,7 @@ class AesTest extends PHPUnit_Framework_TestCase
         $encrypted = Aes::encrypt($input, $key, 10);
         $this->assertEquals($input, Aes::decrypt($encrypted, $key, 10));
 
-        $corrupt = swaprandbyte($encrypted);
+        $corrupt = \Dcrypt\Support\Support::swaprandbyte($encrypted);
         $this->assertFalse(Aes::decrypt($corrupt, $key, 10));
     }
 
@@ -37,7 +37,7 @@ class AesTest extends PHPUnit_Framework_TestCase
         // the decryption fails. After enough successful runs,
         // all areas of the cypher text will have been tested
         // for integrity
-        $corrupt = swaprandbyte($encrypted);
+        $corrupt = \Dcrypt\Support\Support::swaprandbyte($encrypted);
         $this->assertFalse(Aes::decrypt($corrupt, $key));
     }
 
