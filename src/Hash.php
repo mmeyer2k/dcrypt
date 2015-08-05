@@ -33,7 +33,7 @@ namespace Dcrypt;
 class Hash extends Support
 {
 
-    const algo = 'sha256';
+    const ALGO = 'sha256';
 
     /**
      * Internal function used to build the actual hash.
@@ -53,10 +53,10 @@ class Hash extends Support
         $cost = self::_cost($cost);
 
         // Create key to use for hmac operations
-        $key = \hash_hmac(self::algo, $salt, $password, true);
+        $key = \hash_hmac(self::ALGO, $salt, $password, true);
 
         // Perform hash iterations. Get a 32 byte output value
-        $hash = self::ihmac($input, $key, $cost, self::algo);
+        $hash = self::ihmac($input, $key, $cost, self::ALGO);
 
         // Return the salt + cost blob + hmac
         return $salt . self::_costHash($cost, $salt, $password) . $hash;
@@ -77,7 +77,7 @@ class Hash extends Support
     private static function _costHash($cost, $salt, $password)
     {
         // Hash and return first 12 bytes
-        $hash = self::substr(\hash_hmac(self::algo, $cost, $salt, true), 0, 12);
+        $hash = self::substr(\hash_hmac(self::ALGO, $cost, $salt, true), 0, 12);
 
         // Convert cost to base 256 then encrypt with OTP stream cipher
         $cost = Otp::crypt(self::dec2bin($cost), $password);
