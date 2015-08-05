@@ -44,13 +44,13 @@ class Hash extends Support
      * @param string|null  $salt     Initialization vector to use in HMAC calls
      * @return string
      */
-    private static function _build($input, $password, $cost, $salt = null)
+    private static function build($input, $password, $cost, $salt = null)
     {
         // Generate salt if needed
         $salt = $salt === null ? Random::get(16) : $salt;
 
         // Verify and normalize cost value
-        $cost = self::_cost($cost);
+        $cost = self::cost($cost);
 
         // Create key to use for hmac operations
         $key = \hash_hmac(self::ALGO, $salt, $password, true);
@@ -59,7 +59,7 @@ class Hash extends Support
         $hash = self::ihmac($input, $key, $cost, self::ALGO);
 
         // Return the salt + cost blob + hmac
-        return $salt . self::_costHash($cost, $salt, $password) . $hash;
+        return $salt . self::costHash($cost, $salt, $password) . $hash;
     }
 
     /**
@@ -69,12 +69,12 @@ class Hash extends Support
      * 
      * @return int
      */
-    private static function _cost($cost)
+    private static function cost($cost)
     {
         return $cost % \pow(2, 32);
     }
 
-    private static function _costHash($cost, $salt, $password)
+    private static function costHash($cost, $salt, $password)
     {
         // Hash and return first 12 bytes
         $hash = self::substr(\hash_hmac(self::ALGO, $cost, $salt, true), 0, 12);
@@ -120,7 +120,7 @@ class Hash extends Support
      */
     public static function make($input, $password, $cost = 250000)
     {
-        return self::_build($input, $password, $cost, null);
+        return self::build($input, $password, $cost, null);
     }
 
     /**
@@ -143,12 +143,12 @@ class Hash extends Support
         // Get the entire cost+hash blob for comparison
         $blob = self::substr($hash, 16, 16);
 
-        if (!self::equal(self::_costHash($cost, $salt, $password), $blob)) {
+        if (!self::equal(self::costHash($cost, $salt, $password), $blob)) {
             return false;
         }
 
         // Return the boolean equivalence
-        return self::equal($hash, self::_build($input, $password, $cost, $salt));
+        return self::equal($hash, self::build($input, $password, $cost, $salt));
     }
 
 }

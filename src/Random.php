@@ -34,17 +34,17 @@ class Random
      * 
      * @return string
      */
-     private static function _fromMcrypt($bytes)
-     {
+    private static function fromMcrypt($bytes)
+    {
         $ret = \mcrypt_create_iv($bytes, MCRYPT_DEV_URANDOM);
-        
+
         if ($ret === false) {
             self::_toss(); // @codeCoverageIgnore
         }
-        
+
         return $ret;
-     }
-     
+    }
+
     /**
      * Get random bytes from Openssl
      * 
@@ -52,16 +52,16 @@ class Random
      * 
      * @return string
      */
-     private static function _fromOpenssl($bytes)
-     {
+    private static function fromOpenssl($bytes)
+    {
         $ret = \openssl_random_pseudo_bytes($bytes, $secure);
-        
+
         if ($secure === false) {
             self::_toss(); // @codeCoverageIgnore
         }
-        
+
         return $ret;
-     }
+    }
 
     /**
      * Return securely generated random bytes.
@@ -74,15 +74,16 @@ class Random
     public static function get($bytes, $mcrypt = true)
     {
         if (\function_exists('mcrypt_create_iv') && $mcrypt === true) {
-            return self::_fromMcrypt($bytes);
+            return self::fromMcrypt($bytes);
         } else {
-            return self::_fromOpenssl($bytes);
+            return self::fromOpenssl($bytes);
         }
     }
 
     /*
      * Throw an error when a failure occurs.
      */
+
     private static function _toss()
     {
         // @codeCoverageIgnoreStart

@@ -37,7 +37,7 @@ class Pkcs7 extends Str
     public static function pad($input, $blocksize)
     {
         // Determine the padding string that needs to be appended.
-        $pad = self::_paddingString(self::strlen($input), $blocksize);
+        $pad = self::paddingString(self::strlen($input), $blocksize);
 
         // Return input + padding
         return $input . $pad;
@@ -51,7 +51,7 @@ class Pkcs7 extends Str
      * 
      * @return integer
      */
-    private static function _paddingString($inputsize, $blocksize)
+    private static function paddingString($inputsize, $blocksize)
     {
         // Determine the amount of padding to use
         $pad = $blocksize - ($inputsize % $blocksize);
