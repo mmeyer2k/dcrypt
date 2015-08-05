@@ -15,7 +15,7 @@
 namespace Dcrypt;
 
 /**
- * Outputs a binary 512 bit string with the following format:
+ * An opaque 512 bit iterative hash function.
  * 
  * 16 bytes => iv
  * 12 bytes => cost checksum
