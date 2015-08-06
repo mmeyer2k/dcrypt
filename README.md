@@ -134,6 +134,9 @@ $encrypted = \Dcrypt\Spritz::crypt($plaintext, $password);
 $plaintext = \Dcrypt\Spritz::crypt($encrypted, $password);
 ```
 
+**NOTE**: These implementations are for reference only. The RC4 cipher in general has many known security problems, and the Spirtz implementation provided here has not been verified against known test vectors. 
+Both are very slow and inefficient. This was just for fun. Use `Dcrypt\Aes` for anything important.
+
 ## PKCS #7 Padding
 PKCS#7 style padding is available via the `Pkcs7::pad()` and `Pkcs7::unpad()` functions.
 ```php
