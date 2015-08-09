@@ -51,12 +51,11 @@ $plaintext = \Dcrypt\Aes::decrypt($encrypted, $password);
 ### Customizable Encryption (via Mcrypt)
 If you have special requirements, `\Dcrypt\Mcrypt` might be the best solution.
 ```php
-# encrypt with serpent in ecb mode with sha512 hmac, for instance...
-# the third parameter of 0 specifies that no key hardening will take place (see below...)
+# encrypt with serpent in ecb mode with sha512 hmac
 $encrypted = \Dcrypt\Mcrypt::encrypt(
   'message', 
   'password', 
-  0,
+  0, # specifies that no key hardening will take place (see below...)
   MCRYPT_SERPENT, 
   MCRYPT_MODE_ECB, 
   'sha512'
