@@ -41,7 +41,7 @@ require 'path/to/dcrypt/load.php';
 ## Block Ciphers
 
 ### AES Encryption (via OpenSSL)
-Quickly access AES-256 CBC mode encryption with `\Dcrypt\Aes`. When in doubt, use this class! All of the most secure options are the default. Naturally, strongly random initialization vectors are generated upon encryption and standard HMAC (SHA-256) checksums are verified in a time-safe manner before decryption.
+Quickly access AES-256 CBC mode encryption with `\Dcrypt\Aes`. **When in doubt, use this class!** All of the most secure options are the default. Naturally, strongly random initialization vectors are generated upon encryption and standard HMAC (SHA-256) checksums are verified in a time-safe manner before decryption.
 ```php
 $encrypted = \Dcrypt\Aes::encrypt($plaintext, $password);
 
