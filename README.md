@@ -30,7 +30,7 @@ Add the following to the require section of your `composer.json` file, then run 
 ```
 Or using the command line...
 ```bash
-composer global require "mmeyer2k/dcrypt=~0.0"
+composer require "mmeyer2k/dcrypt=~0.0"
 ```
 In environments where composer is not available, Dcrypt can be used by including `load.php`.
 ```php
