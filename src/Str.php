@@ -27,6 +27,7 @@ namespace Dcrypt;
  * @link     https://github.com/mmeyer2k/dcrypt
  * @link     https://github.com/symfony/Security/blob/master/Core/Util/StringUtils.php
  * @link     https://php.net/manual/en/mbstring.overload.php
+ * @link     https://apigen.ci/github/mmeyer2k/dcrypt/namespace-Dcrypt.html
  */
 class Str
 {

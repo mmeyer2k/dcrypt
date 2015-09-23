@@ -24,6 +24,7 @@ namespace Dcrypt;
  * @link     https://github.com/mmeyer2k/dcrypt
  * @link     http://en.wikipedia.org/wiki/Stream_cipher
  * @link     https://en.wikipedia.org/wiki/RC4
+ * @link     https://apigen.ci/github/mmeyer2k/dcrypt/namespace-Dcrypt.html
  */
 class Rc4 extends Str
 {

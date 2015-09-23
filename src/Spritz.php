@@ -25,6 +25,7 @@ namespace Dcrypt;
  * @link     http://en.wikipedia.org/wiki/Stream_cipher
  * @link     https://en.wikipedia.org/wiki/RC4
  * @link     http://people.csail.mit.edu/rivest/pubs/RS14.pdf
+ * @link     https://apigen.ci/github/mmeyer2k/dcrypt/namespace-Dcrypt.html
  */
 class Spritz extends Rc4
 {

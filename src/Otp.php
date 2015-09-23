@@ -33,6 +33,7 @@ namespace Dcrypt;
  * @license  http://opensource.org/licenses/MIT The MIT License (MIT)
  * @link     https://github.com/mmeyer2k/dcrypt
  * @link     http://en.wikipedia.org/wiki/Stream_cipher
+ * @link     https://apigen.ci/github/mmeyer2k/dcrypt/namespace-Dcrypt.html
  */
 class Otp extends Cryptobase
 {
