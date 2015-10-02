@@ -20,6 +20,9 @@
             "Dcrypt\\": "src/"
         }
     },
+    "suggest": {
+        "paragonie/random_compat": "For better random numbers."
+    },
     "autoload-dev": {
         "psr-4": {
             "Dcrypt\\Support\\": "helpers/"
