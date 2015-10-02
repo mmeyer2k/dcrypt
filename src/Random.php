@@ -55,8 +55,8 @@ class Random
      */
     public static function get($bytes)
     {
-        if (function_exists('random_bytes')) {
-            return random_bytes($bytes);
+        if (\function_exists('random_bytes')) {
+            return \random_bytes($bytes);
         } elseif (\function_exists('mcrypt_create_iv')) {
             return self::fromMcrypt($bytes);
         }
