@@ -121,7 +121,7 @@ $plaintext = \Dcrypt\Otp::crypt($encrypted, $password, 'whirlpool');
 ```
 
 ### Rivest's Ciphers
-`\Dcrypt\Rc4` and `\Dcrypt\Spritz` are pure PHP implementations of the immortal RC4 cipher and its successor Spritz.
+`\Dcrypt\Rc4` and `\Dcrypt\Spritz` are pure PHP implementations of the immortal [RC4](https://en.wikipedia.org/wiki/RC4) cipher and its successor [Spritz](https://people.csail.mit.edu/rivest/pubs/RS14.pdf).
 ```php
 $encrypted = \Dcrypt\Rc4::crypt($plaintext, $password);
 
