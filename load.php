@@ -21,6 +21,7 @@ $g = 'dcrypt_loaded';
 if (!defined($g)) {
     define($g, true);
     
+    // Files must be in correct order to honor inheritance
     $files = array(
         'Str',
         'Support',
@@ -28,6 +29,7 @@ if (!defined($g)) {
         'Hash',
         'Mcrypt',
         'Aes',
+        'AesExp',
         'Otp',
         'Pkcs7',
         'Random',

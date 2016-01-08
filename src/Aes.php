@@ -15,7 +15,7 @@
 namespace Dcrypt;
 
 /**
- * Symmetric encryption functions powered by OpenSSL.
+ * Symmetric AES-256-CBC encryption functions powered by OpenSSL.
  * 
  * @category Dcrypt
  * @package  Dcrypt
@@ -76,7 +76,7 @@ class Aes extends Cryptobase
 
         // Verify HMAC before decrypting... return false if corrupt.
         if (!self::equal($verify, $chksum)) {
-            return false;
+            return static::invalidChecksum();
         }
 
         // Decrypt message and return
@@ -108,6 +108,17 @@ class Aes extends Cryptobase
 
         // Return prefix + cyphertext
         return $prefix . $message;
+    }
+
+    /**
+     * By default, \Dcrypt\Aes will will return false when the checksum is invalid.
+     * Use AesExp to force an exception to be thrown instead.
+     * 
+     * @return false
+     */
+    private static function invalidChecksum()
+    {
+        return false;
     }
 
 }
