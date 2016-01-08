@@ -2,3 +2,4 @@
 /phpunit.phar
 /nbproject/
 benchmark.html
+/composer.lock
