@@ -34,7 +34,7 @@ class AesExp extends Aes
     protected static function invalidChecksum()
     {
         $e = 'Decryption can not proceed due to invalid cyphertext checksum.';
-        throw new \Exception($e);
+        throw new \InvalidArgumentException($e);
     }
 
 }
