@@ -97,7 +97,7 @@ To prevent padding oracle attacks, both `\Dcrypt\Aes` and `\Dcrypt\Mcrypt` block
 $decrypted = \Dcrypt\Aes::decrypt($badInput, $password);
 
 if ($decrypted === false) {
-  # throw an exception here
+  # do something
 }
 ```
 
@@ -106,7 +106,7 @@ To throw an `InvalidArgumentException` instead, use the `decrypt()` method withi
 try {
   $decrypted = \Dcrypt\AesExp::decrypt($badInput, $password);
 } catch (\Exception $ex) {
-  # do whatever
+  # do something
 }
 ```
 
