@@ -101,6 +101,15 @@ if ($decrypted === false) {
 }
 ```
 
+To throw an `InvalidArgumentException` instead, use the `decrypt()` method within the `\Dcrypt\AesExp` class.
+```php
+try {
+  $decrypted = \Dcrypt\AesExp::decrypt($badInput, $password);
+} catch (\Exception $ex) {
+  # do whatever
+}
+```
+
 ## Stream Ciphers
 
 ### One Time Pad Encryption
