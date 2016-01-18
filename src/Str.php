@@ -110,7 +110,6 @@ class Str
     protected static function substr($string, $start, $length = null)
     {
         if (\function_exists('mb_substr')) {
-
             // Fix a weird quirk in PHP versions prior to 5.4.8
             if ($length === null && \version_compare('5.4.8', PHP_VERSION)) {
                 $length = self::strlen($string);
