@@ -31,7 +31,7 @@ namespace Dcrypt;
  * @link     https://github.com/mmeyer2k/dcrypt
  * @link     https://apigen.ci/github/mmeyer2k/dcrypt/namespace-Dcrypt.html
  */
-class Mcrypt extends Cryptobase
+final class Mcrypt extends Cryptobase
 {
 
     /**
