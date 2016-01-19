@@ -57,7 +57,7 @@ class Aes extends Cryptobase
      * 
      * @return string|boolean Returns false on checksum validation failure
      */
-    public static function decrypt($cyphertext, $password, $cost = 0)
+    final public static function decrypt($cyphertext, $password, $cost = 0)
     {
         // Find the IV at the beginning of the cypher text
         $iv = self::substr($cyphertext, 0, self::IVSIZE);
@@ -92,7 +92,7 @@ class Aes extends Cryptobase
      * 
      * @return string 
      */
-    public static function encrypt($plaintext, $password, $cost = 0)
+    final public static function encrypt($plaintext, $password, $cost = 0)
     {
         // Generate IV of appropriate size.
         $iv = Random::get(self::IVSIZE);
