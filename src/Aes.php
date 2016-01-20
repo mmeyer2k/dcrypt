@@ -74,7 +74,7 @@ class Aes extends Cryptobase
         // Calculate verification checksum
         $verify = self::checksum($message, $iv, $key);
 
-        // Verify HMAC before decrypting... return false if corrupt.
+        // Verify HMAC before decrypting
         if (!self::equal($verify, $chksum)) {
             return static::invalidChecksum();
         }
