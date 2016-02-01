@@ -65,7 +65,7 @@ class Str
      *
      * @return bool
      */
-    public static function equal($known, $given, $hash_equals = true)
+    final public static function equal($known, $given, $hash_equals = true)
     {
         // We hash the 2 inputs at this point because hash_equals is still 
         // vulnerable to timing attacks when the inputs have different sizes.
