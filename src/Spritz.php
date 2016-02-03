@@ -27,7 +27,7 @@ namespace Dcrypt;
  * @link     http://people.csail.mit.edu/rivest/pubs/RS14.pdf
  * @link     https://apigen.ci/github/mmeyer2k/dcrypt/namespace-Dcrypt.html
  */
-final class Spritz extends Rc4
+class Spritz extends Rc4
 {
 
     /**
