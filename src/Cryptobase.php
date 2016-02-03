@@ -24,7 +24,7 @@ namespace Dcrypt;
  * @link     https://github.com/mmeyer2k/dcrypt
  * @link     https://apigen.ci/github/mmeyer2k/dcrypt/namespace-Dcrypt.html
  */
-class Cryptobase extends Str
+class Cryptobase
 {
 
     /**
@@ -65,12 +65,12 @@ class Cryptobase extends Str
     protected static function hashNormalize($hash, $size, $algo)
     {
         // Extend hash if too short
-        while (self::strlen($hash) < $size) {
+        while (Str::strlen($hash) < $size) {
             $hash .= \hash($algo, $hash, true);
         }
 
         // Truncate to specified number of bytes (if needed) and return
-        return self::substr($hash, 0, $size);
+        return Str::substr($hash, 0, $size);
     }
 
     /**
@@ -82,7 +82,7 @@ class Cryptobase extends Str
      */
     protected static function hashSize($algo)
     {
-        return self::strlen(\hash($algo, 'hash me', true));
+        return Str::strlen(\hash($algo, 'hash me', true));
     }
 
     /**
