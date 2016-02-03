@@ -24,7 +24,7 @@ namespace Dcrypt;
  * @link     https://github.com/mmeyer2k/dcrypt
  * @link     https://apigen.ci/github/mmeyer2k/dcrypt/namespace-Dcrypt.html
  */
-final class Pkcs7 extends Str
+final class Pkcs7
 {
 
     /**
