@@ -60,13 +60,13 @@ class Aes extends Cryptobase
     final public static function decrypt($cyphertext, $password, $cost = 0)
     {
         // Find the IV at the beginning of the cypher text
-        $iv = self::substr($cyphertext, 0, self::IVSIZE);
+        $iv = Str::substr($cyphertext, 0, self::IVSIZE);
 
         // Gather the checksum portion of the cypher text
-        $chksum = self::substr($cyphertext, self::IVSIZE, self::CKSIZE);
+        $chksum = Str::substr($cyphertext, self::IVSIZE, self::CKSIZE);
 
         // Gather message portion of cyphertext after iv and checksum
-        $message = self::substr($cyphertext, self::IVSIZE + self::CKSIZE);
+        $message = Str::substr($cyphertext, self::IVSIZE + self::CKSIZE);
 
         // Derive key from password
         $key = self::key($password, $iv, $cost);
