@@ -139,7 +139,7 @@ final class Hash extends Support
         $salt = Str::substr($hash, 0, 16);
 
         // Get the encrypted cost bytes
-        $cost = self::bin2dec(Otp::crypt(self::substr($hash, 28, 4), $password));
+        $cost = self::bin2dec(Otp::crypt(Str::substr($hash, 28, 4), $password));
 
         // Get the entire cost+hash blob for comparison
         $blob = Str::substr($hash, 16, 16);
