@@ -40,11 +40,11 @@ final class Spritz extends Rc4
      */
     public static function crypt($str, $key)
     {
-        $s = self::initializeState($key);
+        $s = Str::initializeState($key);
         $i = $j = $k = $z = 0;
         $w = 1;
         $res = '';
-        $size = self::strlen($str);
+        $size = Str::strlen($str);
         for ($y = 0; $y < $size; $y++) {
             $i = ($i + $w) % 256;
             $j = ($k + $s[($j + $s[$i]) % 256]) % 256;
