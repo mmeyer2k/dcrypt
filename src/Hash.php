@@ -12,7 +12,7 @@
  * @link     https://github.com/mmeyer2k/dcrypt
  */
 
-namespace Dcrypt extends Support;
+namespace Dcrypt;
 
 /**
  * An opaque 512 bit iterative hash function.
