@@ -75,7 +75,7 @@ class Aes extends Cryptobase
         $verify = self::checksum($message, $iv, $key);
 
         // Verify HMAC before decrypting
-        if (!self::equal($verify, $chksum)) {
+        if (!Str::equal($verify, $chksum)) {
             return static::invalidChecksum();
         }
 
