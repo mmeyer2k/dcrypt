@@ -78,7 +78,7 @@ final class Hash extends Support
     private static function costHash($cost, $salt, $password)
     {
         // Hash and return first 12 bytes
-        $hash = self::substr(\hash_hmac(self::ALGO, $cost, $salt, true), 0, 12);
+        $hash = Str::substr(\hash_hmac(self::ALGO, $cost, $salt, true), 0, 12);
 
         // Convert cost to base 256 then encrypt with OTP stream cipher
         $cost = Otp::crypt(self::dec2bin($cost), $password);
@@ -136,20 +136,20 @@ final class Hash extends Support
     public static function verify($input, $hash, $password)
     {
         // Get the salt value from the decrypted prefix
-        $salt = self::substr($hash, 0, 16);
+        $salt = Str::substr($hash, 0, 16);
 
         // Get the encrypted cost bytes
         $cost = self::bin2dec(Otp::crypt(self::substr($hash, 28, 4), $password));
 
         // Get the entire cost+hash blob for comparison
-        $blob = self::substr($hash, 16, 16);
+        $blob = Str::substr($hash, 16, 16);
 
-        if (!self::equal(self::costHash($cost, $salt, $password), $blob)) {
+        if (!Str::equal(self::costHash($cost, $salt, $password), $blob)) {
             return false;
         }
 
         // Return the boolean equivalence
-        return self::equal($hash, self::build($input, $password, $cost, $salt));
+        return Str::equal($hash, self::build($input, $password, $cost, $salt));
     }
 
 }
