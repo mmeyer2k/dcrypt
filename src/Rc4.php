@@ -26,7 +26,7 @@ namespace Dcrypt;
  * @link     https://en.wikipedia.org/wiki/RC4
  * @link     https://apigen.ci/github/mmeyer2k/dcrypt/namespace-Dcrypt.html
  */
-class Rc4 extends Str
+class Rc4
 {
 
     /**
@@ -42,7 +42,7 @@ class Rc4 extends Str
         $s = self::initializeState($key);
         $i = $j = 0;
         $res = '';
-        $size = self::strlen($str);
+        $size = Str::strlen($str);
         for ($y = 0; $y < $size; $y++) {
             $i = ($i + 1) % 256;
             $j = ($j + $s[$i]) % 256;
@@ -68,7 +68,7 @@ class Rc4 extends Str
         $s = \range(0, 255);
         $j = 0;
         foreach (\range(0, 255) as $i) {
-            $j = ($j + $s[$i] + \ord($key[$i % self::strlen($key)])) % 256;
+            $j = ($j + $s[$i] + \ord($key[$i % Str::strlen($key)])) % 256;
             $x = $s[$i];
             $s[$i] = $s[$j];
             $s[$j] = $x;
