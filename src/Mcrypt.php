@@ -52,13 +52,13 @@ final class Mcrypt extends Cryptobase
         $ivsize = \mcrypt_get_iv_size($cipher, $mode);
 
         // Find the IV at the beginning of the cypher text
-        $iv = self::substr($cyphertext, 0, $ivsize);
+        $iv = Str::substr($cyphertext, 0, $ivsize);
 
         // Gather the checksum portion of the cypher text
-        $chksum = self::substr($cyphertext, $ivsize, self::hashSize($algo));
+        $chksum = Str::substr($cyphertext, $ivsize, self::hashSize($algo));
 
         // Gather message portion of cyphertext after iv and checksum
-        $message = self::substr($cyphertext, $ivsize + self::hashSize($algo));
+        $message = Str::substr($cyphertext, $ivsize + self::hashSize($algo));
 
         // Derive key from password
         $key = self::key($password, $iv, $cost, $cipher, $mode, $algo);
