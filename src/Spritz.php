@@ -40,7 +40,7 @@ class Spritz extends Rc4
      */
     public static function crypt($str, $key)
     {
-        $s = Str::initializeState($key);
+        $s = self::initializeState($key);
         $i = $j = $k = $z = 0;
         $w = 1;
         $res = '';
