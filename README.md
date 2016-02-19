@@ -40,13 +40,22 @@ require 'path/to/dcrypt/load.php';
 
 ## Block Ciphers
 
-### AES Encryption (via OpenSSL)
-Quickly access AES-256 CBC mode encryption with `\Dcrypt\Aes`. **When in doubt, use this class!** All of the most secure options are the default. Naturally, strongly random initialization vectors are generated upon encryption and standard HMAC (SHA-256) checksums are verified in a time-safe manner before decryption.
+### AES-256-CBC Encryption (via OpenSSL)
+Quickly access AES-256-CBC encryption with `\Dcrypt\Aes`. **When in doubt, use this class!** All of the most secure options are the default. Naturally, strongly random initialization vectors are generated upon encryption and standard HMAC (SHA-256) checksums are verified in a time-safe manner before decryption.
 ```php
 $encrypted = \Dcrypt\Aes::encrypt($plaintext, $password);
 
 $plaintext = \Dcrypt\Aes::decrypt($encrypted, $password);
 ```
+
+### AES-256-CTR Encryption (via OpenSSL) with Padding
+If the `CTR` mode is preferred, `\Dcrypt\AesCtr` can be used. As an extra precaution, the plaintext is padded using PKCS #7.
+```php
+$encrypted = \Dcrypt\AesCtr::encrypt($plaintext, $password);
+
+$plaintext = \Dcrypt\AesCtr::decrypt($encrypted, $password);
+```
+
 
 ### Customizable Encryption (via Mcrypt)
 If you have special requirements, `\Dcrypt\Mcrypt` might be the best solution.
