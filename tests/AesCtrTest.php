@@ -29,7 +29,7 @@ class AesCtrTest extends PHPUnit_Framework_TestCase
     {
         $input = 'hello world';
         $pass = 'password';
-        $vector = \base64_decode('BwjqDdmriMTni8Cqs1N8kbtV7fdC1e9VSWGLa75NoTVdKvGfZ0q2fjPFDllKikOtiUyzNRN4k42XnqI/2U+5LA==');
+        $vector = \base64_decode('z2A4NFRzf5d+39fZe9RHj94vZInO5l7ogR/6EaAyALYMwbC5HCVoWtod3agCA25kwFvSRUbiAK19wH6KUN0hwlSFwa1uw0dp2sq/21Cmg8M=');
         $this->assertEquals($input, AesCtr::decrypt($vector, $pass, 10));
     }
 }
