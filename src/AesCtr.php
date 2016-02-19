@@ -62,15 +62,4 @@ class AesCtr extends Aes
         return parent::encrypt(Pkcs7::pad($plaintext, 16), $password, $cost);
     }
 
-    /**
-     * By default, \Dcrypt\Aes will will return false when the checksum is invalid.
-     * Use AesExp to force an exception to be thrown instead.
-     * 
-     * @return false
-     */
-    private static function invalidChecksum()
-    {
-        return false;
-    }
-
 }
