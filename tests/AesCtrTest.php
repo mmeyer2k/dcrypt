@@ -1,7 +1,7 @@
 <?php
 use Dcrypt\Aes;
 use Dcrypt\Mcrypt;
-class AesTest extends PHPUnit_Framework_TestCase
+class AesCtrTest extends PHPUnit_Framework_TestCase
 {
 
     public function testPbkdf()
