@@ -108,15 +108,4 @@ class Aes extends Cryptobase
         return $prefix . $message;
     }
 
-    /**
-     * By default, \Dcrypt\Aes will will return false when the checksum is invalid.
-     * Use AesExp to force an exception to be thrown instead.
-     * 
-     * @return false
-     */
-    private static function invalidChecksum()
-    {
-        return false;
-    }
-
 }
