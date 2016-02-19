@@ -67,9 +67,7 @@ final class Mcrypt extends Cryptobase
         $verify = self::checksum($message, $iv, $key, $cipher, $mode, $algo);
 
         // If checksum could not be verified return false
-        if (!Str::equal($verify, $chksum)) {
-            return false;
-        }
+        self::checksumVerify($verify, $chksum);
 
         // Decrypt unpad return
         return Pkcs7::unpad(\mcrypt_decrypt($cipher, $key, $message, $mode, $iv));
