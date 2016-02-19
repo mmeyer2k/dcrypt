@@ -30,6 +30,8 @@ if (!defined($g)) {
         'Mcrypt',
         'Aes',
         'AesExp',
+        'AesCtr',
+        'AesCtrExp',
         'Otp',
         'Pkcs7',
         'Random',
