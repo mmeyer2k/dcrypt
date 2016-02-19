@@ -7,7 +7,7 @@ class RandomTest extends PHPUnit_Framework_TestCase
     {
         $len = 10;
     
-        $m = \Dcrypt\Random::get($len);
+        $m = \Dcrypt\Random::bytes($len);
         $this->assertTrue(strlen($m) === $len);
     }
     

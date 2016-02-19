@@ -93,7 +93,7 @@ final class Mcrypt extends Cryptobase
         $padded = Pkcs7::pad($plaintext, \mcrypt_get_block_size($cipher, $mode));
 
         // Generate IV of appropriate size
-        $iv = Random::get(\mcrypt_get_iv_size($cipher, $mode));
+        $iv = Random::bytes(\mcrypt_get_iv_size($cipher, $mode));
 
         // Derive key from password
         $key = self::key($password, $iv, $cost, $cipher, $mode, $algo);

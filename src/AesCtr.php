@@ -24,7 +24,7 @@ namespace Dcrypt;
  * @link     https://github.com/mmeyer2k/dcrypt
  * @link     https://apigen.ci/github/mmeyer2k/dcrypt/namespace-Dcrypt.html
  */
-class AesCtr extends Cryptobase
+class AesCtr extends Aes
 {
 
     /**
@@ -33,20 +33,6 @@ class AesCtr extends Cryptobase
      * @var string
      */
     const CIPHER = 'aes-256-ctr';
-
-    /**
-     * Size of initialization vector in bytes
-     * 
-     * @var int
-     */
-    const IVSIZE = 16;
-
-    /**
-     * Size of checksum in bytes
-     * 
-     * @var int
-     */
-    const CKSIZE = 32;
 
     /**
      * Decrypt cyphertext
@@ -59,33 +45,7 @@ class AesCtr extends Cryptobase
      */
     public static function decrypt($cyphertext, $password, $cost = 0)
     {
-        // Find the IV at the beginning of the cypher text
-        $iv = Str::substr($cyphertext, 0, self::IVSIZE);
-
-        // Gather the key IV
-        $keyiv = Str::substr($cyphertext, self::IVSIZE, self::IVSIZE);
-
-        // Gather the checksum portion of the cypher text
-        $chksum = Str::substr($cyphertext, self::IVSIZE * 2, self::CKSIZE);
-
-        // Gather message portion of cyphertext after iv and checksum
-        $message = Str::substr($cyphertext, self::IVSIZE * 2 + self::CKSIZE);
-
-        // Derive key from password
-        $key = self::key($password, $iv . $keyiv, $cost);
-
-        // Calculate verification checksum
-        $verify = self::checksum($message, $iv, $key);
-
-        // Verify HMAC before decrypting
-        if (!Str::equal($verify, $chksum)) {
-            return static::invalidChecksum();
-        }
-
-        // Decrypt message with padding
-        $padded = \openssl_decrypt($message, self::CIPHER, $key, 1, $iv);
-
-        return Pkcs7::unpad($padded);
+        return Pkcs7::unpad(parent::decrypt($password, $cyphertext, $cost));
     }
 
     /**
@@ -99,26 +59,7 @@ class AesCtr extends Cryptobase
      */
     public static function encrypt($plaintext, $password, $cost = 0)
     {
-        // Generate IV of appropriate size.
-        $iv = Random::get(self::IVSIZE);
-
-        // Generage a second IV used only for the key. This helps to mitigate
-        // the problem of encrypting twice with the same IV and key.
-        $keyiv = Random::get(self::IVSIZE);
-
-        // Derive key from password
-        $key = self::key($password, $iv . $keyiv, $cost);
-
-        $padded = Pkcs7::pad($plaintext, 16);
-
-        // Encrypt the plaintext
-        $message = \openssl_encrypt($padded, self::CIPHER, $key, 1, $iv);
-
-        // Create the cypher text prefix (iv + checksum)
-        $prefix = $iv . $keyiv . self::checksum($message, $iv, $key);
-
-        // Return prefix + cyphertext
-        return $prefix . $message;
+        return parent::encrypt(Pkcs7::pad($plaintext), $password, $cost);
     }
 
     /**
