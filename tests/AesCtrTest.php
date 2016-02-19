@@ -1,7 +1,10 @@
 <?php
+
 use Dcrypt\AesCtr;
+
 class AesCtrTest extends PHPUnit_Framework_TestCase
 {
+
     /**
      * @expectedException InvalidArgumentException
      */
@@ -14,7 +17,7 @@ class AesCtrTest extends PHPUnit_Framework_TestCase
         $corrupt = \Dcrypt\Support\Support::swaprandbyte($encrypted);
         $this->assertFalse(AesCtr::decrypt($corrupt, $key, 10));
     }
-    
+
     /**
      * @expectedException InvalidArgumentException
      */
@@ -31,7 +34,7 @@ class AesCtrTest extends PHPUnit_Framework_TestCase
         $corrupt = \Dcrypt\Support\Support::swaprandbyte($encrypted);
         AesCtr::decrypt($corrupt, $key);
     }
-    
+
     public function testVector()
     {
         $input = 'hello world';
@@ -39,4 +42,5 @@ class AesCtrTest extends PHPUnit_Framework_TestCase
         $vector = \base64_decode('z2A4NFRzf5d+39fZe9RHj94vZInO5l7ogR/6EaAyALYMwbC5HCVoWtod3agCA25kwFvSRUbiAK19wH6KUN0hwlSFwa1uw0dp2sq/21Cmg8M=');
         $this->assertEquals($input, AesCtr::decrypt($vector, $pass));
     }
+
 }
