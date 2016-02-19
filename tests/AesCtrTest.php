@@ -2,7 +2,9 @@
 use Dcrypt\AesCtr;
 class AesCtrTest extends PHPUnit_Framework_TestCase
 {
-
+    /**
+     * @expectedException InvalidArgumentException
+     */
     public function testPbkdf()
     {
         $input = 'AAAAAAAA';
@@ -12,6 +14,10 @@ class AesCtrTest extends PHPUnit_Framework_TestCase
         $corrupt = \Dcrypt\Support\Support::swaprandbyte($encrypted);
         $this->assertFalse(AesCtr::decrypt($corrupt, $key, 10));
     }
+    
+    /**
+     * @expectedException InvalidArgumentException
+     */
     public function testEngine()
     {
         $input = 'AAAAAAAA';
@@ -23,8 +29,9 @@ class AesCtrTest extends PHPUnit_Framework_TestCase
         // all areas of the cypher text will have been tested
         // for integrity
         $corrupt = \Dcrypt\Support\Support::swaprandbyte($encrypted);
-        $this->assertFalse(AesCtr::decrypt($corrupt, $key));
+        AesCtr::decrypt($corrupt, $key);
     }
+    
     public function testVector()
     {
         $input = 'hello world';
