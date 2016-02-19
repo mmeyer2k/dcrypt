@@ -1,6 +1,5 @@
 <?php
 use Dcrypt\AesCtr;
-use Dcrypt\Mcrypt;
 class AesCtrTest extends PHPUnit_Framework_TestCase
 {
 
