@@ -62,14 +62,17 @@ class AesCtr extends Cryptobase
         // Find the IV at the beginning of the cypher text
         $iv = Str::substr($cyphertext, 0, self::IVSIZE);
 
+        // Gather the key IV
+        $keyiv = Str::substr($cyphertext, self::IVSIZE, self::IVSIZE);
+
         // Gather the checksum portion of the cypher text
-        $chksum = Str::substr($cyphertext, self::IVSIZE, self::CKSIZE);
+        $chksum = Str::substr($cyphertext, self::IVSIZE * 2, self::CKSIZE);
 
         // Gather message portion of cyphertext after iv and checksum
-        $message = Str::substr($cyphertext, self::IVSIZE + self::CKSIZE);
+        $message = Str::substr($cyphertext, self::IVSIZE * 2 + self::CKSIZE);
 
         // Derive key from password
-        $key = self::key($password, $iv, $cost);
+        $key = self::key($password, $iv . $keyiv, $cost);
 
         // Calculate verification checksum
         $verify = self::checksum($message, $iv, $key);
@@ -81,7 +84,7 @@ class AesCtr extends Cryptobase
 
         // Decrypt message with padding
         $padded = \openssl_decrypt($message, self::CIPHER, $key, 1, $iv);
-        
+
         return Pkcs7::unpad($padded);
     }
 
@@ -99,16 +102,20 @@ class AesCtr extends Cryptobase
         // Generate IV of appropriate size.
         $iv = Random::get(self::IVSIZE);
 
+        // Generage a second IV used only for the key. This helps to mitigate
+        // the problem of encrypting twice with the same IV and key.
+        $keyiv = Random::get(self::IVSIZE);
+
         // Derive key from password
-        $key = self::key($password, $iv, $cost);
+        $key = self::key($password, $iv . $keyiv, $cost);
 
         $padded = Pkcs7::pad($plaintext, 16);
-        
+
         // Encrypt the plaintext
         $message = \openssl_encrypt($padded, self::CIPHER, $key, 1, $iv);
 
         // Create the cypher text prefix (iv + checksum)
-        $prefix = $iv . self::checksum($message, $iv, $key);
+        $prefix = $iv . $keyiv . self::checksum($message, $iv, $key);
 
         // Return prefix + cyphertext
         return $prefix . $message;
