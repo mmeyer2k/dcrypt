@@ -61,11 +61,10 @@ final class Str
      *
      * @param string $known       The string of known length to compare against
      * @param string $given       The string that the user can control
-     * @param bool   $hash_equals Use hash_equals() if available
      *
      * @return bool
      */
-    public static function equal($known, $given, $hash_equals = true)
+    public static function equal($known, $given)
     {
         // We hash the 2 inputs at this point because hash_equals is still 
         // vulnerable to timing attacks when the inputs have different sizes.
@@ -75,7 +74,7 @@ final class Str
         $known = \hash_hmac('sha256', (string) $known, $nonce, true);
         $given = \hash_hmac('sha256', (string) $given, $nonce, true);
 
-        if ($hash_equals === true && \function_exists('hash_equals')) {
+        if (\function_exists('hash_equals')) {
             return \hash_equals($known, $given); // @codeCoverageIgnore
         }
 
