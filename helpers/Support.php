@@ -51,7 +51,7 @@ class Support
         $input = str_split($input);
         $offset = rand(0, $len - 1);
         $byte = $input[$offset];
-        $rbyte = \Dcrypt\Random::get(1);
+        $rbyte = \Dcrypt\Random::bytes(1);
         if ($byte === $rbyte) {
             $rbyte = (ord($rbyte) + 1) % 256;
             $rbyte = chr($rbyte);

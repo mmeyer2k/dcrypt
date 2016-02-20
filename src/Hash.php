@@ -48,7 +48,7 @@ final class Hash extends Support
     private static function build($input, $password, $cost, $salt = null)
     {
         // Generate salt if needed
-        $salt = $salt === null ? Random::get(16) : $salt;
+        $salt = $salt === null ? Random::bytes(16) : $salt;
 
         // Verify and normalize cost value
         $cost = self::cost($cost);

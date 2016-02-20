@@ -25,12 +25,12 @@ A petite library of essential encryption functions for PHP (5.3 - 7.0).
 Add the following to the require section of your `composer.json` file, then run `composer install`.
 ```json
 "require": {
-  "mmeyer2k/dcrypt": "~0.0"
+  "mmeyer2k/dcrypt": "~1.0"
 }
 ```
 Or using the command line...
 ```bash
-composer require "mmeyer2k/dcrypt=~0.0"
+composer require "mmeyer2k/dcrypt=~1.0"
 ```
 In environments where composer is not available, Dcrypt can be used by including `load.php`.
 ```php
@@ -101,19 +101,11 @@ $plaintext = \Dcrypt\Aes::decrypt($encrypted, $password, 10000);
 `$cost` can also be passed into the third parameter of `\Dcrypt\Mcrypt`'s functions.
 
 ### Tamper Protection
-To prevent padding oracle attacks, both `\Dcrypt\Aes` and `\Dcrypt\Mcrypt` block ciphers will return boolean `false` upon decryption of any malformed cyphertext. The cyphertext and IV are both protected by this verification.
-```php
-$decrypted = \Dcrypt\Aes::decrypt($badInput, $password);
-
-if ($decrypted === false) {
-  # do something
-}
-```
-
-To throw an `InvalidArgumentException` instead, use the `decrypt()` method within the `\Dcrypt\AesExp` class.
+By default, `\Dcrypt\Aes`, `\Dcrypt\AesCtr` and `\Dcrypt\Mcrypt` will throw an `InvalidArgumentException` 
+if upon decryption if the supplied checksum is not valid.
 ```php
 try {
-  $decrypted = \Dcrypt\AesExp::decrypt($badInput, $password);
+  $decrypted = \Dcrypt\Aes::decrypt($badInput, $password);
 } catch (\Exception $ex) {
   # do something
 }
@@ -194,7 +186,7 @@ $equals = \Dcrypt\Str::equal('known', 'given');
 ## Secure Random Byte Generator
 When you absolutely **must** have cryptographically secure random bytes `\Dcrypt\Random` will give them to you or throw an exception.
 ```php
-$iv = \Dcrypt\Random::get(8); # get 8 random bytes
+$iv = \Dcrypt\Random::bytes(8); # get 8 random bytes
 ```
 
 # Usage Notes

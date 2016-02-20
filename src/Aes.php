@@ -75,12 +75,10 @@ class Aes extends Cryptobase
         $verify = self::checksum($message, $iv, $key);
 
         // Verify HMAC before decrypting
-        if (!Str::equal($verify, $chksum)) {
-            return static::invalidChecksum();
-        }
+        self::checksumVerify($verify, $chksum);
 
         // Decrypt message and return
-        return \openssl_decrypt($message, self::CIPHER, $key, 1, $iv);
+        return \openssl_decrypt($message, static::CIPHER, $key, 1, $iv);
     }
 
     /**
@@ -95,30 +93,19 @@ class Aes extends Cryptobase
     public static function encrypt($plaintext, $password, $cost = 0)
     {
         // Generate IV of appropriate size.
-        $iv = Random::get(self::IVSIZE);
+        $iv = Random::bytes(self::IVSIZE);
 
         // Derive key from password
         $key = self::key($password, $iv, $cost);
 
         // Encrypt the plaintext
-        $message = \openssl_encrypt($plaintext, self::CIPHER, $key, 1, $iv);
+        $message = \openssl_encrypt($plaintext, static::CIPHER, $key, 1, $iv);
 
         // Create the cypher text prefix (iv + checksum)
         $prefix = $iv . self::checksum($message, $iv, $key);
 
         // Return prefix + cyphertext
         return $prefix . $message;
-    }
-
-    /**
-     * By default, \Dcrypt\Aes will will return false when the checksum is invalid.
-     * Use AesExp to force an exception to be thrown instead.
-     * 
-     * @return false
-     */
-    private static function invalidChecksum()
-    {
-        return false;
     }
 
 }

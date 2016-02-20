@@ -14,6 +14,9 @@ class AesTest extends PHPUnit_Framework_TestCase
         $this->assertEquals($p, Mcrypt::decrypt($c, $k));
     }
 
+    /**
+     * @expectedException InvalidArgumentException
+     */
     public function testPbkdf()
     {
         $input = 'AAAAAAAA';
@@ -22,9 +25,12 @@ class AesTest extends PHPUnit_Framework_TestCase
         $this->assertEquals($input, Aes::decrypt($encrypted, $key, 10));
 
         $corrupt = \Dcrypt\Support\Support::swaprandbyte($encrypted);
-        $this->assertFalse(Aes::decrypt($corrupt, $key, 10));
+        Aes::decrypt($corrupt, $key, 10);
     }
 
+    /**
+     * @expectedException InvalidArgumentException
+     */
     public function testEngine()
     {
         $input = 'AAAAAAAA';
@@ -38,7 +44,7 @@ class AesTest extends PHPUnit_Framework_TestCase
         // all areas of the cypher text will have been tested
         // for integrity
         $corrupt = \Dcrypt\Support\Support::swaprandbyte($encrypted);
-        $this->assertFalse(Aes::decrypt($corrupt, $key));
+        Aes::decrypt($corrupt, $key);
     }
 
     public function testVector()

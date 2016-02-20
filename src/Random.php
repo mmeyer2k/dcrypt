@@ -54,7 +54,7 @@ final class Random
      * 
      * @return string
      */
-    public static function get($bytes)
+    public static function bytes($bytes)
     {
         if (\function_exists('random_bytes')) {
             return \random_bytes($bytes);

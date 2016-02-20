@@ -114,4 +114,12 @@ class Cryptobase
         return self::hashNormalize($key, $keysize, $algo);
     }
 
+    protected static function checksumVerify($calculated, $supplied)
+    {
+        if (!Str::equal($calculated, $supplied)) {
+            $e = 'Decryption can not proceed due to invalid cyphertext checksum.';
+            throw new \InvalidArgumentException($e);
+        }
+    }
+
 }

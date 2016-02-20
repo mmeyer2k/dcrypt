@@ -67,9 +67,7 @@ final class Mcrypt extends Cryptobase
         $verify = self::checksum($message, $iv, $key, $cipher, $mode, $algo);
 
         // If checksum could not be verified return false
-        if (!Str::equal($verify, $chksum)) {
-            return false;
-        }
+        self::checksumVerify($verify, $chksum);
 
         // Decrypt unpad return
         return Pkcs7::unpad(\mcrypt_decrypt($cipher, $key, $message, $mode, $iv));
@@ -93,7 +91,7 @@ final class Mcrypt extends Cryptobase
         $padded = Pkcs7::pad($plaintext, \mcrypt_get_block_size($cipher, $mode));
 
         // Generate IV of appropriate size
-        $iv = Random::get(\mcrypt_get_iv_size($cipher, $mode));
+        $iv = Random::bytes(\mcrypt_get_iv_size($cipher, $mode));
 
         // Derive key from password
         $key = self::key($password, $iv, $cost, $cipher, $mode, $algo);
