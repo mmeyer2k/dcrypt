@@ -62,7 +62,7 @@ class Cryptobase
      * 
      * @return string
      */
-    protected static function hashNormalize($hash, $size, $algo)
+    private static function hashNormalize($hash, $size, $algo)
     {
         // Extend hash if too short
         while (Str::strlen($hash) < $size) {
