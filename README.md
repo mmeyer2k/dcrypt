@@ -186,7 +186,7 @@ $equals = \Dcrypt\Str::equal('known', 'given');
 ## Secure Random Byte Generator
 When you absolutely **must** have cryptographically secure random bytes `\Dcrypt\Random` will give them to you or throw an exception.
 ```php
-$iv = \Dcrypt\Random::get(8); # get 8 random bytes
+$iv = \Dcrypt\Random::bytes(8); # get 8 random bytes
 ```
 
 # Usage Notes
