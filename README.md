@@ -101,19 +101,11 @@ $plaintext = \Dcrypt\Aes::decrypt($encrypted, $password, 10000);
 `$cost` can also be passed into the third parameter of `\Dcrypt\Mcrypt`'s functions.
 
 ### Tamper Protection
-To prevent padding oracle attacks, both `\Dcrypt\Aes` and `\Dcrypt\Mcrypt` block ciphers will return boolean `false` upon decryption of any malformed cyphertext. The cyphertext and IV are both protected by this verification.
-```php
-$decrypted = \Dcrypt\Aes::decrypt($badInput, $password);
-
-if ($decrypted === false) {
-  # do something
-}
-```
-
-To throw an `InvalidArgumentException` instead, use the `decrypt()` method within the `\Dcrypt\AesExp` class.
+By default, `\Dcrypt\Aes`, `\Dcrypt\AesCtr` and `\Dcrypt\Mcrypt` will throw an `InvalidArgumentException` 
+if upon decryption if the supplied checksum is not valid.
 ```php
 try {
-  $decrypted = \Dcrypt\AesExp::decrypt($badInput, $password);
+  $decrypted = \Dcrypt\Aes::decrypt($badInput, $password);
 } catch (\Exception $ex) {
   # do something
 }
