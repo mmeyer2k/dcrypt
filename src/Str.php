@@ -90,7 +90,7 @@ final class Str
      */
     public static function hashSize($algo)
     {
-        return Str::strlen(\hash($algo, 'hash me', true));
+        return self::strlen(\hash($algo, 'hash me', true));
     }
 
     /**
