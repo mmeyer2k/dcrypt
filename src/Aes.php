@@ -69,7 +69,7 @@ class Aes extends Cryptobase
         $message = Str::substr($cyphertext, self::IVSIZE + self::CKSIZE);
 
         // Derive key from password
-        $key = self::key($password, $iv, $cost);
+        $key = self::key($password, $iv, $cost, 'rijndael-128', substr(static::CIPHER, -3));
 
         // Calculate verification checksum
         $verify = self::checksum($message, $iv, $key);
