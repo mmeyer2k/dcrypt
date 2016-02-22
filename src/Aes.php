@@ -96,7 +96,7 @@ class Aes extends Cryptobase
         $iv = Random::bytes(self::IVSIZE);
 
         // Derive key from password
-        $key = self::key($password, $iv, $cost);
+        $key = self::key($password, $iv, $cost, 'rijndael-128', substr(static::CIPHER, -3));
 
         // Encrypt the plaintext
         $message = \openssl_encrypt($plaintext, static::CIPHER, $key, 1, $iv);
