@@ -74,19 +74,7 @@ class Cryptobase
     }
 
     /**
-     * Determine the length of the output of a given hash algorithm in bytes.
-     * 
-     * @param string $algo Name of algorithm to look up
-     * 
-     * @return int
-     */
-    protected static function hashSize($algo)
-    {
-        return Str::strlen(\hash($algo, 'hash me', true));
-    }
-
-    /**
-     * Transform password into key and perform iterative HMAC
+     * Transform password into key and perform iterative HMAC (if specified)
      * 
      * @param string $password Encryption key
      * @param string $iv       Initialization vector
@@ -108,7 +96,7 @@ class Cryptobase
         }
 
         // Perform key derivation
-        $key = Hash::ihmac($password . $iv, $password, $cost, $algo);
+        $key = Hash::ihmac($iv . $cipher . $mode, $password, $cost, $algo);
 
         // Return hash normalized to key length
         return self::hashNormalize($key, $keysize, $algo);
