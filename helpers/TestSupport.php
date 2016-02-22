@@ -2,7 +2,7 @@
 
 namespace Dcrypt\Support;
 
-class Support
+class TestSupport
 {
 
     public static function mcryptCiphers()
@@ -42,25 +42,25 @@ class Support
      * Change a random byte, randomly. This function is used in unit testing
      * only and never in the namespaced areas of code.
      * 
-     * @param string $input
+     * @param string $inp
      * @return string
      */
-    public static function swaprandbyte($input)
+    public static function swaprandbyte($inp)
     {
         // @codeCoverageIgnoreStart
-        $len = strlen($input);
-        $input = str_split($input);
-        $offset = rand(0, $len - 1);
-        $byte = $input[$offset];
+        $len = strlen($inp);
+        $inp = str_split($inp);
+        $off = rand(0, $len - 1);
+        $byte = $inp[$off];
         $rbyte = \Dcrypt\Random::bytes(1);
         if ($byte === $rbyte) {
             $rbyte = (ord($rbyte) + 1) % 256;
             $rbyte = chr($rbyte);
         }
-        $input[$offset] = $rbyte;
+        $inp[$off] = $rbyte;
 
         // @codeCoverageIgnoreEnd
-        return implode($input);
+        return implode($inp);
     }
 
 }
