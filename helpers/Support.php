@@ -47,6 +47,7 @@ class Support
      */
     public static function swaprandbyte($input)
     {
+        // @codeCoverageIgnoreStart
         $len = strlen($input);
         $input = str_split($input);
         $offset = rand(0, $len - 1);
@@ -58,6 +59,7 @@ class Support
         }
         $input[$offset] = $rbyte;
 
+        // @codeCoverageIgnoreEnd
         return implode($input);
     }
 
