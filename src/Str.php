@@ -70,7 +70,7 @@ final class Str
         // vulnerable to timing attacks when the inputs have different sizes.
         // Inputs are also cast to string like in symfony stringutils.
         $nonce = Random::bytes(32);
-        
+
         $known = \hash_hmac('sha256', (string) $known, $nonce, true);
         $given = \hash_hmac('sha256', (string) $given, $nonce, true);
 
@@ -79,6 +79,18 @@ final class Str
         }
 
         return self::strcmp($known, $given);
+    }
+
+    /**
+     * Determine the length of the output of a given hash algorithm in bytes.
+     * 
+     * @param string $algo Name of algorithm to look up
+     * 
+     * @return int
+     */
+    public static function hashSize($algo)
+    {
+        return Str::strlen(\hash($algo, 'hash me', true));
     }
 
     /**
