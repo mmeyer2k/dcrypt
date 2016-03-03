@@ -69,7 +69,7 @@ class Aes extends Cryptobase
         $message = Str::substr($cyphertext, self::IVSIZE + self::CKSIZE);
 
         // Derive key from password
-        $key = self::key($password, $iv, $cost, 'rijndael-128', substr(static::CIPHER, -3));
+        $key = self::key($password, $iv, $cost, 'rijndael-128', static::mode());
 
         // Calculate verification checksum
         $verify = self::checksum($message, $iv, $key);
@@ -96,7 +96,7 @@ class Aes extends Cryptobase
         $iv = Random::bytes(self::IVSIZE);
 
         // Derive key from password
-        $key = self::key($password, $iv, $cost, 'rijndael-128', substr(static::CIPHER, -3));
+        $key = self::key($password, $iv, $cost, 'rijndael-128', static::mode());
 
         // Encrypt the plaintext
         $message = \openssl_encrypt($plaintext, static::CIPHER, $key, 1, $iv);
@@ -106,6 +106,11 @@ class Aes extends Cryptobase
 
         // Return prefix + cyphertext
         return $prefix . $message;
+    }
+
+    protected static function mode()
+    {
+        return substr(static::CIPHER, -3);
     }
 
 }
