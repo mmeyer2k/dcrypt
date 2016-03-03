@@ -47,6 +47,12 @@ class Aes extends Cryptobase
      * @var int
      */
     const CKSIZE = 32;
+    
+    /**
+     * This string is used when hashing to ensure cross compatibility between
+     * dcrypt\mcrypt and dcrypt\aes*.
+     */
+    const RIJNDA = 'rijndael-128';
 
     /**
      * Decrypt cyphertext
@@ -69,10 +75,10 @@ class Aes extends Cryptobase
         $message = Str::substr($cyphertext, self::IVSIZE + self::CKSIZE);
 
         // Derive key from password
-        $key = self::key($password, $iv, $cost, 'rijndael-128', static::mode());
+        $key = self::key($password, $iv, $cost, self::RIJNDA, static::mode());
 
         // Calculate verification checksum
-        $verify = self::checksum($message, $iv, $key);
+        $verify = self::checksum($message, $iv, $key, self::RIJNDA, static::mode());
 
         // Verify HMAC before decrypting
         self::checksumVerify($verify, $chksum);
@@ -96,13 +102,13 @@ class Aes extends Cryptobase
         $iv = Random::bytes(self::IVSIZE);
 
         // Derive key from password
-        $key = self::key($password, $iv, $cost, 'rijndael-128', static::mode());
+        $key = self::key($password, $iv, $cost, self::RIJNDA, static::mode());
 
         // Encrypt the plaintext
         $message = \openssl_encrypt($plaintext, static::CIPHER, $key, 1, $iv);
 
         // Create the cypher text prefix (iv + checksum)
-        $prefix = $iv . self::checksum($message, $iv, $key);
+        $prefix = $iv . self::checksum($message, $iv, $key, self::RIJNDA, static::mode());
 
         // Return prefix + cyphertext
         return $prefix . $message;
