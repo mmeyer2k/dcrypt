@@ -75,10 +75,10 @@ class Aes extends Cryptobase
         $message = Str::substr($cyphertext, self::IVSIZE + self::CKSIZE);
 
         // Derive key from password
-        $key = self::key($password, $iv, $cost, self::RIJNDA, static::mode());
+        $key = self::key($password, $iv, $cost, self::RIJNDA, self::mode());
 
         // Calculate verification checksum
-        $verify = self::checksum($message, $iv, $key, self::RIJNDA, static::mode());
+        $verify = self::checksum($message, $iv, $key, self::RIJNDA, self::mode());
 
         // Verify HMAC before decrypting
         self::checksumVerify($verify, $chksum);
@@ -102,13 +102,13 @@ class Aes extends Cryptobase
         $iv = Random::bytes(self::IVSIZE);
 
         // Derive key from password
-        $key = self::key($password, $iv, $cost, self::RIJNDA, static::mode());
+        $key = self::key($password, $iv, $cost, self::RIJNDA, self::mode());
 
         // Encrypt the plaintext
         $message = \openssl_encrypt($plaintext, static::CIPHER, $key, 1, $iv);
 
         // Create the cypher text prefix (iv + checksum)
-        $prefix = $iv . self::checksum($message, $iv, $key, self::RIJNDA, static::mode());
+        $prefix = $iv . self::checksum($message, $iv, $key, self::RIJNDA, self::mode());
 
         // Return prefix + cyphertext
         return $prefix . $message;
