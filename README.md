@@ -48,8 +48,8 @@ $encrypted = \Dcrypt\Aes::encrypt($plaintext, $password);
 $plaintext = \Dcrypt\Aes::decrypt($encrypted, $password);
 ```
 
-### AES-256-CTR Encryption (via OpenSSL) with Padding
-If the `CTR` mode is preferred, `\Dcrypt\AesCtr` can be used. As an extra precaution, the plaintext is padded using PKCS #7.
+### AES-256-CTR Encryption (via OpenSSL)
+If the `CTR` mode is preferred, `\Dcrypt\AesCtr` can be used.
 ```php
 $encrypted = \Dcrypt\AesCtr::encrypt($plaintext, $password);
 
