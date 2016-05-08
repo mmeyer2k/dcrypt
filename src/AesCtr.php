@@ -45,7 +45,7 @@ class AesCtr extends Aes
      */
     public static function decrypt($cyphertext, $password, $cost = 0)
     {
-        return Pkcs7::unpad(parent::decrypt($cyphertext, $password, $cost));
+        return parent::decrypt($cyphertext, $password, $cost);
     }
 
     /**
@@ -59,7 +59,7 @@ class AesCtr extends Aes
      */
     public static function encrypt($plaintext, $password, $cost = 0)
     {
-        return parent::encrypt(Pkcs7::pad($plaintext, 16), $password, $cost);
+        return parent::encrypt($plaintext, $password, $cost);
     }
 
 }
