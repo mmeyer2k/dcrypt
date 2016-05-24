@@ -25,12 +25,12 @@ A petite library of essential encryption functions for PHP (5.3 - 7.0).
 Add the following to the require section of your `composer.json` file, then run `composer install`.
 ```json
 "require": {
-  "mmeyer2k/dcrypt": "~2.0"
+  "mmeyer2k/dcrypt": "~3.0"
 }
 ```
 Or using the command line...
 ```bash
-composer require "mmeyer2k/dcrypt=~2.0"
+composer require "mmeyer2k/dcrypt=~3.0"
 ```
 In environments where composer is not available, Dcrypt can be used by including `load.php`.
 ```php
@@ -48,8 +48,8 @@ $encrypted = \Dcrypt\Aes::encrypt($plaintext, $password);
 $plaintext = \Dcrypt\Aes::decrypt($encrypted, $password);
 ```
 
-### AES-256-CTR Encryption (via OpenSSL) with Padding
-If the `CTR` mode is preferred, `\Dcrypt\AesCtr` can be used. As an extra precaution, the plaintext is padded using PKCS #7.
+### AES-256-CTR Encryption (via OpenSSL)
+If the `CTR` mode is preferred, `\Dcrypt\AesCtr` can be used.
 ```php
 $encrypted = \Dcrypt\AesCtr::encrypt($plaintext, $password);
 

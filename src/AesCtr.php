@@ -34,32 +34,4 @@ class AesCtr extends Aes
      */
     const CIPHER = 'aes-256-ctr';
 
-    /**
-     * Decrypt cyphertext
-     * 
-     * @param string $cyphertext Cyphertext to decrypt
-     * @param string $password   Password that should be used to decrypt input data
-     * @param int    $cost       Number of HMAC iterations to perform on key
-     * 
-     * @return string|boolean Returns false on checksum validation failure
-     */
-    public static function decrypt($cyphertext, $password, $cost = 0)
-    {
-        return Pkcs7::unpad(parent::decrypt($cyphertext, $password, $cost));
-    }
-
-    /**
-     * Encrypt plaintext
-     * 
-     * @param string $plaintext Plaintext string to encrypt.
-     * @param string $password  Password used to encrypt data.
-     * @param int    $cost      Number of HMAC iterations to perform on key
-     * 
-     * @return string 
-     */
-    public static function encrypt($plaintext, $password, $cost = 0)
-    {
-        return parent::encrypt(Pkcs7::pad($plaintext, 16), $password, $cost);
-    }
-
 }
