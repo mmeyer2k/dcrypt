@@ -50,7 +50,7 @@ class Aes extends Cryptobase
     
     /**
      * This string is used when hashing to ensure cross compatibility between
-     * dcrypt\mcrypt and dcrypt\aes*.
+     * dcrypt\mcrypt and dcrypt\aes.
      */
     const RIJNDA = 'rijndael-128';
 
@@ -61,7 +61,7 @@ class Aes extends Cryptobase
      * @param string $password   Password that should be used to decrypt input data
      * @param int    $cost       Number of HMAC iterations to perform on key
      * 
-     * @return string|boolean Returns false on checksum validation failure
+     * @return string
      */
     public static function decrypt($cyphertext, $password, $cost = 0)
     {
