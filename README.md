@@ -102,7 +102,7 @@ $plaintext = \Dcrypt\Aes::decrypt($encrypted, $password, 10000);
 
 ### Tamper Protection
 By default, `\Dcrypt\Aes`, `\Dcrypt\AesCtr` and `\Dcrypt\Mcrypt` will throw an `InvalidArgumentException` 
-if upon decryption if the supplied checksum is not valid.
+if *before* decryption if the supplied checksum is not valid.
 ```php
 try {
   $decrypted = \Dcrypt\Aes::decrypt($badInput, $password);
