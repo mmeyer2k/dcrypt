@@ -5,28 +5,33 @@ use Dcrypt\AesCtr;
 class AesCtrTest extends PHPUnit_Framework_TestCase
 {
 
+    private $input = 'AAAAAAAA', $key = 'BBBBBBBB';
+
     public function testPbkdf()
     {
-        $input = 'AAAAAAAA';
-        $key = 'AAAAAAAA';
-        $encrypted = AesCtr::encrypt($input, $key, 10);
-        $this->assertEquals($input, AesCtr::decrypt($encrypted, $key, 10));
-        #$corrupt = \Dcrypt\Support\Support::swaprandbyte($encrypted);
-        #$this->assertFalse(AesCtr::decrypt($corrupt, $key, 10));
+        $encrypted = AesCtr::encrypt($this->input, $this->key, 10);
+        $this->assertEquals($this->input, AesCtr::decrypt($encrypted, $this->key, 10));
     }
 
     public function testEngine()
     {
-        $input = 'AAAAAAAA';
-        $key = 'AAAAAAAA';
-        $encrypted = AesCtr::encrypt($input, $key);
-        $this->assertEquals($input, AesCtr::decrypt($encrypted, $key));
+        $encrypted = AesCtr::encrypt($this->input, $this->key);
+        $this->assertEquals($this->input, AesCtr::decrypt($encrypted, $this->key));
+    }
+
+    /**
+     * @expectedException     InvalidArgumentException
+     */
+    public function testCorrupt()
+    {
+        $encrypted = AesCtr::encrypt($this->input, $this->key);
+
         // Perform a validation by replacing a random byte to make sure
         // the decryption fails. After enough successful runs,
         // all areas of the cypher text will have been tested
         // for integrity
-        #$corrupt = \Dcrypt\Support\Support::swaprandbyte($encrypted);
-        # AesCtr::decrypt($corrupt, $key);
+        $corrupt = \Dcrypt\Support\TestSupport::swaprandbyte($encrypted);
+        AesCtr::decrypt($corrupt, $this->key);
     }
 
     public function testVector()
