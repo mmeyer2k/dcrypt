@@ -62,7 +62,7 @@ final class Random
             return self::fromMcrypt($bytes);
         }
         
-        self::toss();
+        self::toss(); // @codeCoverageIgnore
     }
 
     /*
