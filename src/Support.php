@@ -55,7 +55,7 @@ class Support
      * An internal hex2bin implementation for PHP 5.3
      * 
      * @param string $hexstr
-     * 
+     * @codeCoverageIgnore
      * @return string
      */
     protected static function hex2bin($hexstr)
