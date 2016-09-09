@@ -65,16 +65,15 @@ final class Random
         self::toss(); // @codeCoverageIgnore
     }
 
-    /*
+    /**
      * Throw an error when a failure occurs.
+     * 
+     * @codeCoverageIgnore
      */
-
     private static function toss()
     {
-        // @codeCoverageIgnoreStart
         $e = 'Dcrypt failed to generate a random number';
         throw new \exception($e);
-        // @codeCoverageIgnoreEnd
     }
 
 }
