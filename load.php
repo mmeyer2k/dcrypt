@@ -3,7 +3,7 @@
 /**
  * load.php
  * 
- * This file performs class loading operations if/when composer is not available.
+ * This file performs class loading operations when composer is not available.
  * Including this file in your project will give you immediate access to the 
  * functionality of Dcrypt.
  * 
@@ -16,12 +16,9 @@
  * @link     https://github.com/mmeyer2k/dcrypt
  */
 // @codeCoverageIgnoreStart
-$g = 'dcrypt_loaded';
-
-if (!defined($g)) {
-    define($g, true);
+if (!class_exists('Dcrypt\Aes')) {
     
-    // Files must be in correct order to honor inheritance
+    // Source files must be in correct order to honor inheritance
     $files = array(
         'Str',
         'Support',
