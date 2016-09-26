@@ -3,7 +3,7 @@
 use Dcrypt\Aes;
 use Dcrypt\Mcrypt;
 
-class AesTest extends PHPUnit_Framework_TestCase
+class AesTest extends TestSupport
 {
 
     public function testCrossCompatability()
