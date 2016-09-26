@@ -24,7 +24,7 @@ class AesTest extends TestSupport
         $encrypted = Aes::encrypt($input, $key, 10);
         $this->assertEquals($input, Aes::decrypt($encrypted, $key, 10));
 
-        $corrupt = \Dcrypt\Support\TestSupport::swaprandbyte($encrypted);
+        $corrupt = self::swaprandbyte($encrypted);
         Aes::decrypt($corrupt, $key, 10);
     }
 
@@ -43,7 +43,7 @@ class AesTest extends TestSupport
         // the decryption fails. After enough successful runs,
         // all areas of the cypher text will have been tested
         // for integrity
-        $corrupt = \Dcrypt\Support\TestSupport::swaprandbyte($encrypted);
+        $corrupt = self::swaprandbyte($encrypted);
         Aes::decrypt($corrupt, $key);
     }
 
