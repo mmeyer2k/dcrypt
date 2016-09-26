@@ -8,6 +8,12 @@ class AesTest extends TestSupport
 
     public function testCrossCompatability()
     {
+        // If PHP 7.1, skip this test
+        if (!function_exists('mcrypt_get_iv_size')) {
+            $this->assertTrue(true);
+            return;
+        }
+        
         $k = 'asdf';
         $p = '1234';
         $c = Aes::encrypt($p, $k);
