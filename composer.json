@@ -24,10 +24,5 @@
         "paragonie/random_compat": "Provides PHP7-like random_int() and random_bytes() functions.",
         "ext-libsodium": "Provides a modern crypto API that can be used to generate random bytes."
     },
-    "autoload-dev": {
-        "psr-4": {
-            "Dcrypt\\Support\\": "helpers/"
-        }
-    },
     "minimum-stability": "dev"
 }
