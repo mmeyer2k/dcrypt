@@ -2,7 +2,7 @@
 
 use Dcrypt\Hash;
 
-class HashTest extends PHPUnit_Framework_TestCase
+class HashTest extends TestSupport
 {
 
     public function testIhmacSanity()
@@ -40,7 +40,7 @@ class HashTest extends PHPUnit_Framework_TestCase
         $this->assertTrue(Hash::verify($input, $output, $key));
 
         for ($i = 0; $i < 10; $i++) {
-            $corrupt = \Dcrypt\Support\TestSupport::swaprandbyte($output);
+            $corrupt = self::swaprandbyte($output);
             $this->assertFalse(Hash::verify($input, $corrupt, $key));
         }
     }
