@@ -20,6 +20,11 @@
             "Dcrypt\\": "src/"
         }
     },
+    "autoload-dev": {
+      "classmap": [
+        "tests/TestSupport.php",
+      ]
+    },
     "suggest": {
         "paragonie/random_compat": "Provides PHP7-like random_int() and random_bytes() functions.",
         "ext-libsodium": "Provides a modern crypto API that can be used to generate random bytes."
