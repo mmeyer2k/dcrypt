@@ -7,8 +7,14 @@ class McryptTest extends PHPUnit_Framework_TestCase
 
     public function testEngine()
     {
-        $modes = \Dcrypt\Support\TestSupport::mcryptModes();
-        $ciphers = \Dcrypt\Support\TestSupport::mcryptCiphers();
+        // If PHP 7.1, skip this test
+        if (!function_exists('mcrypt_get_iv_size')) {
+            $this->assertTrue(true);
+            return;
+        }
+        
+        $modes = \Dcrypt\Support\Support::mcryptModes();
+        $ciphers = \Dcrypt\Support\Support::mcryptCiphers();
 
         foreach (hash_algos() as $algo) {
             $input = 'AAAAAAAA';
