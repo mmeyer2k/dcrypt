@@ -87,6 +87,8 @@ Supported (and tested) hash algos: all!
 
 **NOTE**: PHP's libmcrypt has fallen out of favor due to its stale codebase and inability to use AES-NI. Only use `\Dcrypt\Mcrypt` if there is a strong need. In nearly all cases `\Dcrypt\Aes` (which uses OpenSSL) is preferred.
 
+**NOTE**: Mcrypt module is removed in PHP 7.1+.
+
 ### Iterative HMAC Key Hardening
 To reduce the effectiveness of brute-force cracking on your encrypted blobs, you can provide an integer `$cost` parameter
 in your encryption/decryption calls. This integer will cause dcrypt to perform `$cost` number of extra HMAC operations on the key before passing it off to the underlying encryption system.
