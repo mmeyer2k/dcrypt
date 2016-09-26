@@ -1,8 +1,6 @@
 <?php
 
-namespace Dcrypt\Support;
-
-class TestSupport
+class TestSupport extends PHPUnit_Framework_TestCase
 {
     public static function mcryptCiphers()
     {
