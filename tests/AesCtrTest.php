@@ -2,7 +2,7 @@
 
 use Dcrypt\AesCtr;
 
-class AesCtrTest extends PHPUnit_Framework_TestCase
+class AesCtrTest extends TestSupport
 {
 
     private $input = 'AAAAAAAA', $key = 'BBBBBBBB';
@@ -30,7 +30,7 @@ class AesCtrTest extends PHPUnit_Framework_TestCase
         // the decryption fails. After enough successful runs,
         // all areas of the cypher text will have been tested
         // for integrity
-        $corrupt = \Dcrypt\Support\TestSupport::swaprandbyte($encrypted);
+        $corrupt = self::swaprandbyte($encrypted);
         AesCtr::decrypt($corrupt, $this->key);
     }
 
