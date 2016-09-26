@@ -13,8 +13,8 @@ class McryptTest extends TestSupport
             return;
         }
         
-        $modes = \Dcrypt\Support\Support::mcryptModes();
-        $ciphers = \Dcrypt\Support\Support::mcryptCiphers();
+        $modes = self::mcryptModes();
+        $ciphers = self::mcryptCiphers();
 
         foreach (hash_algos() as $algo) {
             $input = 'AAAAAAAA';
