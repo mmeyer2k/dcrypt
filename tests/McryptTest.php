@@ -2,7 +2,7 @@
 
 use Dcrypt\Mcrypt;
 
-class McryptTest extends PHPUnit_Framework_TestCase
+class McryptTest extends TestSupport
 {
 
     public function testEngine()
