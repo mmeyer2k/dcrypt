@@ -22,7 +22,7 @@
     },
     "autoload-dev": {
       "classmap": [
-        "tests/TestSupport.php",
+        "tests/TestSupport.php"
       ]
     },
     "suggest": {
