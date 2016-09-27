@@ -9,7 +9,7 @@ class AesTest extends TestSupport
     public function testCrossCompatability()
     {
         // If PHP 7.1, skip this test
-        if (!function_exists('mcrypt_get_block_size')) {
+        if (self::mcryptDeprecated()) {
             $this->assertTrue(true);
             return;
         }
