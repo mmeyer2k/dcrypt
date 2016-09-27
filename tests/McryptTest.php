@@ -8,7 +8,7 @@ class McryptTest extends TestSupport
     public function testEngine()
     {
         // If PHP 7.1, skip this test
-        if (!function_exists('mcrypt_get_block_size')) {
+        if (self::mcryptDeprecated()) {
             $this->assertTrue(true);
             return;
         }
