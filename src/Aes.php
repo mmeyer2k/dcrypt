@@ -59,7 +59,7 @@ class Aes extends Cryptobase
      * 
      * @param string $cyphertext Cyphertext to decrypt
      * @param string $password   Password that should be used to decrypt input data
-     * @param int    $cost       Number of HMAC iterations to perform on key
+     * @param int    $cost       Number of extra HMAC iterations to perform on key
      * 
      * @return string
      */
@@ -92,7 +92,7 @@ class Aes extends Cryptobase
      * 
      * @param string $plaintext Plaintext string to encrypt.
      * @param string $password  Password used to encrypt data.
-     * @param int    $cost      Number of HMAC iterations to perform on key
+     * @param int    $cost      Number of extra HMAC iterations to perform on key
      * 
      * @return string 
      */
