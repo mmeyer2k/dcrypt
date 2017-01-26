@@ -4,7 +4,7 @@ class TestSupport extends PHPUnit_Framework_TestCase
 {
     public static function mcryptDeprecated() 
     {
-        return (bool)version_compare(PHP_VERSION, '7.1.0');
+        return version_compare(PHP_VERSION, '7.1.0') >= 0;
     }
     
     public static function mcryptCiphers()
