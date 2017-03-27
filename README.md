@@ -205,4 +205,4 @@ $iv = \Dcrypt\Random::bytes(8); # get 8 random bytes
 1. Dcrypt is built entirely with static functions. If you are using the `new` keyword on any Dcrypt classes, you are doing it wrong!
 
 # API Documentation
-The latest API documentation can be found [here](https://apigen.ci/github/mmeyer2k/dcrypt/namespace-Dcrypt.html).
+The latest API documentation can be found [here](https://mmeyer2k.github.io/dcrypt/).
