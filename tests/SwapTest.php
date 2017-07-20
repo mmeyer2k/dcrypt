@@ -2,7 +2,6 @@
 
 class SwapTest extends TestSupport
 {
-
     public function testSwap()
     {
         $orig = 'AAAAAAAAAA';
@@ -11,5 +10,4 @@ class SwapTest extends TestSupport
             $this->assertEquals(levenshtein($orig, self::swaprandbyte($orig)), 1);
         }
     }
-
 }
