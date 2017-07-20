@@ -5,7 +5,6 @@ use Dcrypt\Mcrypt;
 
 class BlockCiphersGenericTest extends \PHPUnit\Framework\TestCase
 {
-
     public function testCrossDecryptFailure()
     {
         $pw = 'password';
@@ -32,5 +31,4 @@ class BlockCiphersGenericTest extends \PHPUnit\Framework\TestCase
             $this->assertTrue(true);
         }
     }
-
 }
