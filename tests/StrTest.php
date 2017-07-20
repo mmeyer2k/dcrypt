@@ -2,9 +2,8 @@
 
 use Dcrypt\Str;
 
-class StrcmpTest extends PHPUnit_Framework_TestCase
+class StrcmpTest extends \PHPUnit\Framework\TestCase
 {
-
     public function testEquals()
     {
         // Test with hash_equals
@@ -15,5 +14,4 @@ class StrcmpTest extends PHPUnit_Framework_TestCase
         $this->assertTrue(Str::equal('2222', '2222', false));
         $this->assertFalse(Str::equal('2222', '3333', false));
     }
-
 }
