@@ -3,7 +3,7 @@
 use Dcrypt\Aes;
 use Dcrypt\Mcrypt;
 
-class BlockCiphersGenericTest extends PHPUnit_Framework_TestCase
+class BlockCiphersGenericTest extends \PHPUnit\Framework\TestCase
 {
 
     public function testCrossDecryptFailure()
