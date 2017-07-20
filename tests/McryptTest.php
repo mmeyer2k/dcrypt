@@ -4,10 +4,9 @@ use Dcrypt\Mcrypt;
 
 class McryptTest extends TestSupport
 {
-
     public function testEngine()
     {
-        // If PHP 7.1, skip this test
+        // If PHP 7.0, skip this test
         if (self::mcryptDeprecated()) {
             $this->assertTrue(true);
             return;
@@ -29,5 +28,4 @@ class McryptTest extends TestSupport
             }
         }
     }
-
 }
