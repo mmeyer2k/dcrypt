@@ -2,9 +2,8 @@
 
 use Dcrypt\Rc4;
 
-class Rc4Test extends PHPUnit_Framework_TestCase
+class Rc4Test extends \PHPUnit\Framework\TestCase
 {
-
     public function testCrypt()
     {
         $input = openssl_random_pseudo_bytes(256);
@@ -35,5 +34,4 @@ class Rc4Test extends PHPUnit_Framework_TestCase
         
         $this->assertEquals($plain, Rc4::crypt($cyphertext, $key));
     }
-
 }
