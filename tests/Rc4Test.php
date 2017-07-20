@@ -22,7 +22,7 @@ class Rc4Test extends \PHPUnit\Framework\TestCase
         $decrypted = Rc4::crypt($encrypted, $key);
         $this->assertEquals($input, $decrypted);
     }
-    
+
     public function testVector()
     {
         /*
@@ -31,7 +31,7 @@ class Rc4Test extends \PHPUnit\Framework\TestCase
         $cyphertext = hex2bin('140ad3d278a229ff3c487d');
         $plain = 'Hello World';
         $key = 'asdf';
-        
+
         $this->assertEquals($plain, Rc4::crypt($cyphertext, $key));
     }
 }

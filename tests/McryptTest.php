@@ -11,7 +11,7 @@ class McryptTest extends TestSupport
             $this->assertTrue(true);
             return;
         }
-        
+
         $modes = self::mcryptModes();
         $ciphers = self::mcryptCiphers();
 

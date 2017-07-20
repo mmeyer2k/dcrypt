@@ -2,11 +2,11 @@
 
 class TestSupport extends \PHPUnit\Framework\TestCase
 {
-    public static function mcryptDeprecated() 
+    public static function mcryptDeprecated()
     {
         return function_exists('mcrypt_decrypt') && function_exists('mcrypt_get_iv_size');
     }
-    
+
     public static function mcryptCiphers()
     {
         return array(
@@ -28,7 +28,7 @@ class TestSupport extends \PHPUnit\Framework\TestCase
             MCRYPT_XTEA,
         );
     }
-    
+
     public static function mcryptModes()
     {
         return array(
@@ -39,11 +39,11 @@ class TestSupport extends \PHPUnit\Framework\TestCase
             MCRYPT_MODE_NOFB,
         );
     }
-    
+
     /**
      * Change a random byte, randomly. This function is used in unit testing
      * only and never in the namespaced areas of code.
-     * 
+     *
      * @param string $inp
      * @return string
      */
