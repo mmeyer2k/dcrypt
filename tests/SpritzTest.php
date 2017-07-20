@@ -2,9 +2,8 @@
 
 use Dcrypt\Spritz;
 
-class SpritzTest extends PHPUnit_Framework_TestCase
+class SpritzTest extends \PHPUnit\Framework\TestCase
 {
-
     public function testCrypt()
     {
         $input = 'AAAAAAAA';
@@ -23,5 +22,4 @@ class SpritzTest extends PHPUnit_Framework_TestCase
         $decrypted = Spritz::crypt($encrypted, $key);
         $this->assertEquals($input, $decrypted);
     }
-
 }
