@@ -1,6 +1,6 @@
 <?php
 
-class TestSupport extends PHPUnit_Framework_TestCase
+class TestSupport extends \PHPUnit\Framework\TestCase
 {
     public static function mcryptDeprecated() 
     {
