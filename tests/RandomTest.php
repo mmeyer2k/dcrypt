@@ -1,8 +1,7 @@
 <?php
 
-class RandomTest extends PHPUnit_Framework_TestCase
+class RandomTest extends \PHPUnit\Framework\TestCase
 {
-
     public function testGet()
     {
         $len = 10;
@@ -10,5 +9,4 @@ class RandomTest extends PHPUnit_Framework_TestCase
         $m = \Dcrypt\Random::bytes($len);
         $this->assertTrue(strlen($m) === $len);
     }
-    
 }
