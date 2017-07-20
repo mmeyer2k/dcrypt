@@ -2,9 +2,8 @@
 
 use Dcrypt\Otp;
 
-class OtpTest extends PHPUnit_Framework_TestCase
+class OtpTest extends \PHPUnit\Framework\TestCase
 {
-
     public function testCompatibility()
     {
 
@@ -44,5 +43,4 @@ class OtpTest extends PHPUnit_Framework_TestCase
         
         $this->assertEquals($input, Otp::crypt($vector, $pass));
     }
-
 }
