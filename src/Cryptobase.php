@@ -89,7 +89,7 @@ class Cryptobase
     {
         // This if statement allows the usage of the Openssl library without
         // the need to have the mcrypt plugin installed at all.
-        if ($cipher === 'rijndael-128') {
+        if ($cipher === Aes::RIJNDA) {
             $keysize = 32;
         } else {
             $keysize = \mcrypt_get_key_size($cipher, $mode);
