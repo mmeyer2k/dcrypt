@@ -2,28 +2,53 @@
 
 use Dcrypt\Mcrypt;
 
-class McryptTest extends TestSupport
+class McryptTest extends PHPUnit_Framework_TestCase
 {
+
     public function testEngine()
     {
-        // If PHP 7.0, skip this test
-        if (self::mcryptDeprecated()) {
-            $this->assertTrue(true);
-            return;
-        }
+        $modes = \Dcrypt\Support\TestSupport::mcryptModes();
+        $ciphers = \Dcrypt\Support\TestSupport::mcryptCiphers();
 
-        $modes = self::mcryptModes();
-        $ciphers = self::mcryptCiphers();
+        $inp = 'aaaaaaaaaaaaaaa';
+        $key = 'AAAAAAAAAAAAAAA';
+
+        $output = [
+            'key' => $key,
+            'inp' => $inp,
+        ];
 
         foreach (hash_algos() as $algo) {
-            $input = 'AAAAAAAA';
-            $key = 'AAAAAAAA';
+
+            $output[$algo] = [];
             $cost = 0;
 
             foreach ($modes as $mode) {
+                $output[$algo][$mode] = [];
+
                 foreach ($ciphers as $cipher) {
-                    $encrypted = Mcrypt::encrypt($input, $key, $cost, $cipher, $mode, $algo);
-                    $this->assertEquals($input, Mcrypt::decrypt($encrypted, $key, $cost, $cipher, $mode, $algo));
+                    $encrypted = Mcrypt::encrypt($inp, $key, $cost, $cipher, $mode, $algo);
+
+                    $output[$algo][$mode][$cipher] = base64_encode($encrypted);
+
+                    $this->assertEquals($inp, Mcrypt::decrypt($encrypted, $key, $cost, $cipher, $mode, $algo));
+                }
+            }
+        }
+
+        #file_put_contents(__DIR__ . '/mcryptvectors.json', json_encode($output, JSON_PRETTY_PRINT));
+    }
+
+    public function testKnownVectors()
+    {
+        $json = json_decode(file_get_contents(__DIR__ . '/mcryptvectors.json'), true);
+
+        foreach ($json as $algo => $r1) {
+            if (is_array($r1)) {
+                foreach ($r1 as $mode => $r2) {
+                    foreach ($r2 as $cipher => $r3) {
+                        $this->assertEquals($json['inp'], Mcrypt::decrypt(base64_decode($r3), $json['key'], 0, $cipher, $mode, $algo));
+                    }
                 }
             }
         }
