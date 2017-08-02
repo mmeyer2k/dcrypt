@@ -13,18 +13,18 @@ class McryptTest extends PHPUnit_Framework_TestCase
         $inp = 'aaaaaaaaaaaaaaa';
         $key = 'AAAAAAAAAAAAAAA';
 
-        $output = [
+        $output = array(
             'key' => $key,
             'inp' => $inp,
-        ];
+        );
 
         foreach (hash_algos() as $algo) {
 
-            $output[$algo] = [];
+            $output[$algo] = array();
             $cost = 0;
 
             foreach ($modes as $mode) {
-                $output[$algo][$mode] = [];
+                $output[$algo][$mode] = array();
 
                 foreach ($ciphers as $cipher) {
                     $encrypted = Mcrypt::encrypt($inp, $key, $cost, $cipher, $mode, $algo);
