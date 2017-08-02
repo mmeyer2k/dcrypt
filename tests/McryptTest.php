@@ -7,8 +7,8 @@ class McryptTest extends PHPUnit_Framework_TestCase
 
     public function testEngine()
     {
-        $modes = \Dcrypt\Support\TestSupport::mcryptModes();
-        $ciphers = \Dcrypt\Support\TestSupport::mcryptCiphers();
+        $modes = \TestSupport::mcryptModes();
+        $ciphers = \TestSupport::mcryptCiphers();
 
         $inp = 'aaaaaaaaaaaaaaa';
         $key = 'AAAAAAAAAAAAAAA';
