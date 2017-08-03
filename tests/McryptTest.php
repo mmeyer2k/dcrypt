@@ -44,7 +44,7 @@ class McryptTest extends \TestSupport
         $json = json_decode(file_get_contents(__DIR__ . '/mcryptvectors.json'), true);
 
         foreach ($json as $algo => $r1) {
-            if (is_array($r1)) {
+            if (is_array($r1) && in_array($algo, hash_algos())) {
                 foreach ($r1 as $mode => $r2) {
                     foreach ($r2 as $cipher => $r3) {
                         $this->assertEquals($json['inp'], Mcrypt::decrypt(base64_decode($r3), $json['key'], 0, $cipher, $mode, $algo));
