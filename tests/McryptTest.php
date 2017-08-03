@@ -7,6 +7,12 @@ class McryptTest extends \TestSupport
 
     public function testEngine()
     {
+        // If mcrypt not supported, escape here
+        if (self::mcryptDeprecated()) {
+            $this->assertTrue(true);
+            return;
+        }
+
         $modes = \TestSupport::mcryptModes();
         $ciphers = \TestSupport::mcryptCiphers();
 
@@ -41,13 +47,24 @@ class McryptTest extends \TestSupport
 
     public function testKnownVectors()
     {
+        // If mcrypt not supported, escape here
+        if (self::mcryptDeprecated()) {
+            $this->assertTrue(true);
+            return;
+        }
+
         $json = json_decode(file_get_contents(__DIR__ . '/mcryptvectors.json'), true);
 
         foreach ($json as $algo => $r1) {
             if (is_array($r1) && in_array($algo, hash_algos())) {
                 foreach ($r1 as $mode => $r2) {
                     foreach ($r2 as $cipher => $r3) {
-                        $this->assertEquals($json['inp'], Mcrypt::decrypt(base64_decode($r3), $json['key'], 0, $cipher, $mode, $algo));
+                        try {
+                            $this->assertEquals($json['inp'], Mcrypt::decrypt(base64_decode($r3), $json['key'], 0, $cipher, $mode, $algo));
+                        } catch (\exception $e) {
+                            echo "===$algo===$mode===$cipher";
+                            throw $e;
+                        }
                     }
                 }
             }
