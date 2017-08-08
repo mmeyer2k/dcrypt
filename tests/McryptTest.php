@@ -59,11 +59,13 @@ class McryptTest extends \TestSupport
             if (is_array($r1) && in_array($algo, hash_algos())) {
                 foreach ($r1 as $mode => $r2) {
                     foreach ($r2 as $cipher => $r3) {
-                        try {
-                            $this->assertEquals($json['inp'], Mcrypt::decrypt(base64_decode($r3), $json['key'], 0, $cipher, $mode, $algo));
-                        } catch (\exception $e) {
-                            echo "===$algo===$mode===$cipher";
-                            throw $e;
+                        if (in_array($cipher, mcrypt_list_algorithms())) {
+                            try {
+                                $this->assertEquals($json['inp'], Mcrypt::decrypt(base64_decode($r3), $json['key'], 0, $cipher, $mode, $algo));
+                            } catch (\exception $e) {
+                                echo "===$algo===$mode===$cipher";
+                                throw $e;
+                            }
                         }
                     }
                 }
