@@ -4,7 +4,7 @@ class TestSupport extends \PHPUnit\Framework\TestCase
 {
     public static function mcryptDeprecated()
     {
-        return function_exists('mcrypt_decrypt') && function_exists('mcrypt_get_iv_size');
+        return !function_exists('mcrypt_decrypt') || !function_exists('mcrypt_get_iv_size');
     }
 
     public static function mcryptCiphers()
