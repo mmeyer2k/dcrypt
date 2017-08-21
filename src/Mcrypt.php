@@ -98,6 +98,11 @@ final class Mcrypt extends Cryptobase
 
         // Encrypt the plaintext
         $message = \mcrypt_encrypt($cipher, $key, $padded, $mode, $iv);
+        
+        // If message could not be encrypted then throw an exception
+        if ($message === false) {
+            throw new \exception('Could not encrypt the data.');
+        }
 
         // Create the cypher text prefix (iv + checksum)
         $prefix = $iv . self::checksum($message, $iv, $key, $cipher, $mode, $algo);
