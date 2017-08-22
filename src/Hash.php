@@ -108,7 +108,7 @@ final class Hash extends Support
         }
         
         if ($data === false) {
-            throw new \exception("$algo is not supported by hash_hmac");
+            throw new \exception("$algo is not supported by hash_hmac"); // @codeCoverageIgnore
         }
 
         return $data;
