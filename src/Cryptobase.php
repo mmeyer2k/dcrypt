@@ -44,6 +44,11 @@ class Cryptobase
         // Prevent potentially large string concat by hmac-ing the cyphertext
         // by itself...
         $sum = \hash_hmac($algo, $cyphertext, $key, true);
+        
+        // If algo is unknown, throw an exception
+        if ($sum === false) {
+            throw new \exception("$algo is not supported by hash_hmac"); // @codeCoverageIgnore
+        }
 
         // ... then hash other elements with previous hmac and return
         return \hash_hmac($algo, $sum . $iv . $mode . $cipher, $key, true);
