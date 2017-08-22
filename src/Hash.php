@@ -106,6 +106,10 @@ final class Hash extends Support
         for ($i = 0; $i <= $iter; $i++) {
             $data = \hash_hmac($algo, $data . $i . $iter, $key, true);
         }
+        
+        if ($data === false) {
+            throw new \exception("$algo is not supported by hash_hmac");
+        }
 
         return $data;
     }
