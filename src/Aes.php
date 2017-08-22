@@ -109,7 +109,7 @@ class Aes extends Cryptobase
         
         // If message could not be encrypted then throw an exception
         if ($message === false) {
-            throw new \exception('Could not encrypt the data.');
+            throw new \exception('Could not encrypt the data.'); // @codeCoverageIgnore
         }
 
         // Create the cypher text prefix (iv + checksum)
