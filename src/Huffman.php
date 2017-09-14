@@ -26,7 +26,6 @@ namespace Dcrypt;
  */
 final class Huffman
 {
-
     /**
      * Compress data
      *
