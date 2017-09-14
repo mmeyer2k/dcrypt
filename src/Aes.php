@@ -105,7 +105,7 @@ class Aes extends Cryptobase
         $key = self::key($password, $iv, $cost, self::RIJNDA, self::mode());
 
         // Encrypt the plaintext
-        $message = \openssl_encrypt($plaintext, static::CIPHER, $key, OPENSSL_RAW_DATA, $iv);
+        $message = \openssl_encrypt($plaintext, static::CIPHER, $key, 1, $iv);
         
         // If message could not be encrypted then throw an exception
         if ($message === false) {
