@@ -88,9 +88,7 @@ final class Huffman
             $b = decbin(ord(array_shift($data)));
 
             // Pad to the left with zeros
-            $b = str_pad($b, 8, '0', STR_PAD_LEFT);
-
-            $binary .= $b;
+            $binary .= str_pad($b, 8, '0', STR_PAD_LEFT);
         }
 
         $binary = str_split($binary);
@@ -226,4 +224,5 @@ final class Huffman
         // Return the array in descending order
         return array_reverse($occurences);
     }
+
 }

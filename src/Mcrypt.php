@@ -33,7 +33,6 @@ namespace Dcrypt;
  */
 final class Mcrypt extends Cryptobase
 {
-
     /**
      * Decrypt cyphertext
      * 
@@ -110,5 +109,4 @@ final class Mcrypt extends Cryptobase
         // Return prefix + cyphertext
         return $prefix . $message;
     }
-
 }

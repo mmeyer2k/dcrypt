@@ -26,12 +26,10 @@ namespace Dcrypt;
  */
 class AesCtr extends Aes
 {
-
     /**
      * AES-256 cipher identifier that will be passed to openssl
      * 
      * @var string
      */
     const CIPHER = 'aes-256-ctr';
-
 }

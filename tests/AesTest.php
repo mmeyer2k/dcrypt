@@ -5,7 +5,6 @@ use Dcrypt\Mcrypt;
 
 class AesTest extends TestSupport
 {
-
     public function testCrossCompatability()
     {
         // If PHP 7.1, skip this test

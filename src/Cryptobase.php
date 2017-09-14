@@ -26,7 +26,6 @@ namespace Dcrypt;
  */
 class Cryptobase
 {
-
     /**
      * Create a message authentication checksum.
      *
@@ -120,5 +119,4 @@ class Cryptobase
             throw new \InvalidArgumentException($e);
         }
     }
-
 }

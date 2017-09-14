@@ -26,7 +26,6 @@ namespace Dcrypt;
  */
 class Support
 {
-
     /**
      * Turns an integer into a 4 byte binary representation
      * 
@@ -76,5 +75,4 @@ class Support
 
         return $sbin;
     }
-
 }

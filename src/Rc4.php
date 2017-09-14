@@ -28,7 +28,6 @@ namespace Dcrypt;
  */
 class Rc4
 {
-
     /**
      * Perform (en/de)cryption
      * 
@@ -76,5 +75,4 @@ class Rc4
         
         return $s;
     }
-
 }

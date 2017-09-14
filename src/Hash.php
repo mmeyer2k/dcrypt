@@ -33,7 +33,6 @@ namespace Dcrypt;
  */
 final class Hash extends Support
 {
-
     const ALGO = 'sha256';
 
     /**
@@ -155,5 +154,4 @@ final class Hash extends Support
         // Return the boolean equivalence
         return Str::equal($hash, self::build($input, $password, $cost, $salt));
     }
-
 }

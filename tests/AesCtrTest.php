@@ -4,7 +4,6 @@ use Dcrypt\AesCtr;
 
 class AesCtrTest extends TestSupport
 {
-
     private $input = 'AAAAAAAA', $key = 'BBBBBBBB';
 
     public function testPbkdf()

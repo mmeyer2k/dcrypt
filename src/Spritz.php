@@ -29,13 +29,12 @@ namespace Dcrypt;
  */
 class Spritz extends Rc4
 {
-
     /**
      * Perform (en/de)cryption
-     * 
+     *
      * @param string $str String to be encrypted
      * @param string $key Key to use for encryption
-     * 
+     *
      * @return string
      */
     public static function crypt($str, $key)
@@ -58,5 +57,4 @@ class Spritz extends Rc4
 
         return $res;
     }
-
 }

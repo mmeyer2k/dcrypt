@@ -37,7 +37,6 @@ namespace Dcrypt;
  */
 class Otp
 {
-
     /**
      * Encrypt or decrypt a binary input string.
      * 
@@ -57,5 +56,4 @@ class Otp
 
         return \implode($chunks);
     }
-
 }

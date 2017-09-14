@@ -26,7 +26,6 @@ namespace Dcrypt;
  */
 final class Pkcs7
 {
-
     /**
      * PKCS #7 padding function.
      * 
@@ -77,5 +76,4 @@ final class Pkcs7
         // Return string minus the padding amount
         return Str::substr($input, 0, Str::strlen($input) - $padsize);
     }
-
 }

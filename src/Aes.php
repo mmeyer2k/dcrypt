@@ -26,7 +26,6 @@ namespace Dcrypt;
  */
 class Aes extends Cryptobase
 {
-
     /**
      * AES-256 cipher identifier that will be passed to openssl
      * 
@@ -128,5 +127,4 @@ class Aes extends Cryptobase
     {
         return substr(static::CIPHER, -3);
     }
-
 }

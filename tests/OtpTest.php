@@ -6,7 +6,6 @@ class OtpTest extends \PHPUnit\Framework\TestCase
 {
     public function testCompatibility()
     {
-
         $h = hex2bin('cfceb8891c58071deedbd1');
         $k = 'key123';
         $p = 'hello world';

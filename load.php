@@ -24,6 +24,7 @@ if (!class_exists('Dcrypt\Aes')) {
         'Support',
         'Cryptobase',
         'Hash',
+        'Huffman',
         'Mcrypt',
         'Aes',
         'AesCtr',

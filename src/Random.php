@@ -28,7 +28,6 @@ namespace Dcrypt;
  */
 final class Random
 {
-
     /**
      * Get random bytes from Mcrypt
      * 
@@ -75,5 +74,4 @@ final class Random
         $e = 'Dcrypt failed to generate a random number';
         throw new \exception($e);
     }
-
 }

@@ -31,7 +31,6 @@ namespace Dcrypt;
  */
 final class Str
 {
-
     /**
      * Private constant-time strcmp method to use when hash_equals is unavailable.
      *
@@ -131,5 +130,4 @@ final class Str
 
         return \substr($string, $start, $length); // @codeCoverageIgnore
     }
-
 }
