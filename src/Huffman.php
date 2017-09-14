@@ -119,7 +119,7 @@ final class Huffman
         $out = chr(count($dictionary));
 
         // Get the binary index mapping
-        $indexMap = self::createBinaryIndexTree(count($dictionary));
+        $indexMap = self::createBinaryIndexes(count($dictionary));
 
         $dictionary = array_keys($dictionary);
 
