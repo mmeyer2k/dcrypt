@@ -17,7 +17,7 @@ class Huffman
 
         $binaryString = '';
 
-        $indexMap = self::createBinaryIndexTree(count($dictionary));
+        $indexMap = self::createBinaryIndexes(count($dictionary));
 
         // Map the binary data to the index
         foreach (str_split($data) as $d) {
@@ -42,6 +42,7 @@ class Huffman
             $chunk = chr(bindec($padded));
         }
 
+        // Return compressed data with packed dictionary
         return self::packDictionary($dictionary) . implode($chunks);
     }
 
@@ -87,7 +88,7 @@ class Huffman
     }
 
     /**
-     *
+     * Creates a packed dictionary.
      *
      * @param array $dictionary
      * @return string
@@ -110,7 +111,7 @@ class Huffman
     }
 
     /**
-     *
+     * Unpack dictionary
      *
      * @param $data
      * @return array
@@ -143,20 +144,20 @@ class Huffman
      * @param $count
      * @return array
      */
-    public static function createBinaryIndexTree($count)
+    private static function createBinaryIndexes($count)
     {
         // Start a counter to base our binary frame on
         $startOffset = 0;
 
         // Start a loop that we will manually break out of
         while (1) {
-            $out = [];
+            $out = array();
 
             foreach (range(1, $count) as $range) {
                 $out[] = decbin($startOffset + $range);
             }
 
-            // Make sure that no index is the prefix of another
+            // Make sure that no index is the prefix of any another
             $found = false;
             foreach ($out as $v1) {
                 foreach ($out as $v2) {
@@ -171,17 +172,22 @@ class Huffman
                 return $out;
             }
 
+            // ... otherwise, try again from the next highest position
             $startOffset = $startOffset + 1;
         }
     }
 
     /**
-     * Map
+     * Map character frequency as array. Returns array like this:
+     *
+     * array(
+     * 
+     * )
      *
      * @param string $data
      * @return array
      */
-    public static function frequencyMap($data)
+    private static function frequencyMap($data)
     {
         $occurences = array();
 
@@ -192,8 +198,10 @@ class Huffman
             $data = str_replace($data[0], '', $data);
         }
 
+        // Sort the resulting array
         asort($occurences);
 
+        // Return the array in descending order
         return array_reverse($occurences);
     }
 }
