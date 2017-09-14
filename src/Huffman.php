@@ -142,7 +142,7 @@ final class Huffman
         $count = ord(substr($data, 0, 1));
         $packedBytes = str_split(substr($data, 1, $count * 2));
 
-        $out = [];
+        $out = array();
 
         while ($packedBytes) {
             $idx = array_shift($packedBytes);
