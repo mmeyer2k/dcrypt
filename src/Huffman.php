@@ -180,7 +180,7 @@ final class Huffman
             $found = false;
             foreach ($out as $v1) {
                 foreach ($out as $v2) {
-                    if ($v1 !== $v2 && starts_with($v1, $v2)) {
+                    if ($v1 !== $v2 && strpos($v1, $v2) === 0) {
                         $found = true;
                     }
                 }
