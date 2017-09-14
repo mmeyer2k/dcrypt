@@ -223,5 +223,4 @@ final class Huffman
         // Return the array in descending order
         return array_reverse($occurences);
     }
-
 }
