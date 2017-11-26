@@ -15,6 +15,7 @@ A petite library of essential encryption functions for PHP (5.3 - 7.1).
   - [Block Ciphers](#block-ciphers)
   - [Stream Ciphers](#stream-ciphers)
   - [PKCS #7 Padding](#pkcs-7-padding)
+  - [Seeded Array Shuffling](#seeded-array-shuffling)
   - [Key Derivation Function](#key-derivation-function)
   - [Time-safe String Comparison](#time-safe-string-comparison)
   - [Secure Random Byte Generator](#secure-random-byte-generator)
@@ -164,6 +165,16 @@ PKCS#7 style padding is available via the `Pkcs7::pad()` and `Pkcs7::unpad()` fu
 \Dcrpyt\Pkcs7::unpad("aaaabbbb\x04\x04\x04\x04"); # = aaaabbbb
 ```
 
+## Seeded Array Shuffling
+`Random::shuffle()` creates a deterministically shuffled array based on a seed. 
+```php
+$array = ['a', 'b', 'c', 'd'];
+$array = \Dcrypt\Random::shuffle($array, 'seed string can be any length because it is hashed before use');
+# returned array will always be ['b', 'a', 'c', 'd']
+```
+**NOTE**: This function works by seeding PHP's internal random number generator which has a maximum seed value
+of 64 or 32 bits, and therefore does not provide strong cryptographic security.
+
 ## Key Derivation Function
 `Dcrypt\Hash` is an opaque 512 bit iterative hash function. First, SHA-256 is 
 used to hash a 16 byte initialization vector with your secret password to create
@@ -179,7 +190,6 @@ $hash = \Dcrypt\Hash::make($plaintext, $password, $cost);
 
 $bool = \Dcrypt\Hash::verify($plaintext, $hash, $password);
 ```
-
 
 ## Time-safe String Comparison
 Dcrypt uses time-safe string comparisons in all sensitive areas. The same function that is used internally is also exposed for use in your projects.
