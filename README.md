@@ -178,7 +178,7 @@ $array = \Dcrypt\Random::shuffle($array, 'seed string can be any length because 
 **NOTE**: This function works by seeding PHP's internal random number generator which has a maximum seed value
 of 64 or 32 bits, and therefore does not provide strong cryptographic security.
 
-**NOTE**:Versions of PHP prior to 7.1 have a broken PRNG implementation. For backwards compatibility in fixed PHP versions, pass `false` to the third parameter.
+**NOTE**: Versions of PHP prior to 7.1 have a broken PRNG implementation. For backwards compatibility in fixed PHP versions, pass `false` to the third parameter.
 
 ## Key Derivation Function
 `Dcrypt\Hash` is an opaque 512 bit iterative hash function. First, SHA-256 is 
