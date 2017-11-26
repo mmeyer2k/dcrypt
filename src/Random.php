@@ -75,16 +75,17 @@ final class Random
         throw new \exception($e);
     }
     
+
     /**
      * Deterministic seeded array shuffle function.
      *
      * @param array  $array
      * @param string $seed
-     * @param int    $mode
-     * 
+     * @param bool   $secure
+     *
      * @return array
      */
-    public static function shuffle($array, $seed, $mode = MT_RAND_PHP)
+    public static function shuffle($array, $seed, $secure = true)
     {
         $count = count($array);
 
@@ -96,7 +97,12 @@ final class Random
         // Convert bytes to int
         $seed = unpack("L", $seed);
 
-        mt_srand($seed[1], $mode);
+        if (version_compare(PHP_VERSION, '7.1.0') >= 0 && $secure === false) {
+            // Handle PHP 7.1+ calls requiring the old implementation which has broken implementation
+            mt_srand($seed[1], MT_RAND_PHP);
+        } else {
+            mt_srand($seed[1]);
+        }
 
         foreach ($range as $a) {
             $b = mt_rand(0, $count - 1);
