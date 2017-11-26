@@ -74,4 +74,34 @@ final class Random
         $e = 'Dcrypt failed to generate a random number';
         throw new \exception($e);
     }
+    
+    /**
+     * Deterministic seeded array shuffle function.
+     * 
+     * @param array $array
+     * @param string $seed
+     * @return array
+     */
+    public static function shuffle($array, $seed)
+    {
+        $count = count($array);
+
+        $range = range(0, count($array) - 1);
+
+        $seed = substr(hash('sha256', $seed, true), 0, PHP_INT_SIZE);
+
+        mt_srand(unpack("L", $seed)[1]);
+
+        foreach ($range as $a) {
+            $b = mt_rand(0, $count - 1);
+
+            $v = $array[$a];
+
+            $array[$a] = $array[$b];
+
+            $array[$b] = $v;
+        }
+
+        return $array;
+    }
 }
