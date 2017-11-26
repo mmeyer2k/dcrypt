@@ -169,7 +169,9 @@ PKCS#7 style padding is available via the `Pkcs7::pad()` and `Pkcs7::unpad()` fu
 `Random::shuffle()` creates a deterministically shuffled array based on a seed. 
 ```php
 $array = ['a', 'b', 'c', 'd'];
+
 $array = \Dcrypt\Random::shuffle($array, 'seed string can be any length because it is hashed before use');
+
 # returned array will always be ['b', 'a', 'c', 'd']
 ```
 **NOTE**: This function works by seeding PHP's internal random number generator which has a maximum seed value
