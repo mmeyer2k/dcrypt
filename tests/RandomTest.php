@@ -13,7 +13,7 @@ class RandomTest extends \PHPUnit\Framework\TestCase
     
     public function testShuffle()
     {
-        $array = ['a', 'b', 'c', 'd'];
+        $array = array('a', 'b', 'c', 'd');
 
         $array = \Dcrypt\Random::shuffle($array, 'seed string can be any length because it is hashed before use');
         
