@@ -77,20 +77,26 @@ final class Random
     
     /**
      * Deterministic seeded array shuffle function.
-     * 
-     * @param array $array
+     *
+     * @param array  $array
      * @param string $seed
+     * @param int    $mode
+     * 
      * @return array
      */
-    public static function shuffle($array, $seed)
+    public static function shuffle($array, $seed, $mode = MT_RAND_PHP)
     {
         $count = count($array);
 
         $range = range(0, count($array) - 1);
 
+        // Hash the seed and extract bytes to make integer with
         $seed = substr(hash('sha256', $seed, true), 0, PHP_INT_SIZE);
 
-        mt_srand(unpack("L", $seed)[1]);
+        // Convert bytes to int
+        $seed = unpack("L", $seed);
+
+        mt_srand($seed[1], $mode);
 
         foreach ($range as $a) {
             $b = mt_rand(0, $count - 1);
