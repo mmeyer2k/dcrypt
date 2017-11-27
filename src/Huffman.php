@@ -83,7 +83,7 @@ final class Huffman
         $binary = '';
 
         // Convert data to binary
-        while ($data) {
+        while (!empty($data)) {
             $b = decbin(ord(array_shift($data)));
 
             // Pad to the left with zeros
@@ -95,7 +95,7 @@ final class Huffman
         $pop = '';
         $out = '';
 
-        while ($binary) {
+        while (!empty($binary)) {
             $pop .= array_shift($binary);
             if (isset($dictionary[$pop])) {
                 $out .= $dictionary[$pop];
