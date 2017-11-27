@@ -89,12 +89,12 @@ final class Random
     {
         $count = count($array);
 
-        $range = range(0, count($array) - 1);
+        $range = range(0, $count - 1);
 
         // Hash the seed and extract bytes to make integer with
         $seed = substr(hash('sha256', $seed, true), 0, PHP_INT_SIZE);
 
-        // Convert bytes to int
+        // Convert bytes to an int
         $seed = unpack("L", $seed);
 
         if (version_compare(PHP_VERSION, '7.1.0') >= 0 && $secure === false) {
@@ -104,6 +104,7 @@ final class Random
             mt_srand($seed[1]);
         }
 
+        // Swap array values randomly
         foreach ($range as $a) {
             $b = mt_rand(0, $count - 1);
 
