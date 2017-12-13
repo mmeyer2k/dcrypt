@@ -4,15 +4,6 @@ use Dcrypt\Otp;
 
 class OtpTest extends \PHPUnit\Framework\TestCase
 {
-    public function testCompatibility()
-    {
-        $h = hex2bin('cfceb8891c58071deedbd1');
-        $k = 'key123';
-        $p = 'hello world';
-
-        $this->assertEquals($p, Otp::crypt($h, $k));
-    }
-
     public function testCrypt()
     {
         foreach (array(1, 1000) as $mult) {
@@ -38,7 +29,7 @@ class OtpTest extends \PHPUnit\Framework\TestCase
     {
         $input = 'hello world';
         $pass = 'password';
-        $vector = base64_decode('vusXragCy83KQFo');
+        $vector = base64_decode('6+a66+lQT4atW4E=');
 
         $this->assertEquals($input, Otp::crypt($vector, $pass));
     }
