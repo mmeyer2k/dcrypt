@@ -50,8 +50,10 @@ class Otp
     {
         $chunks = \str_split($input, Str::hashSize($algo));
 
+        $length = Str::strlen($input);
+        
         foreach ($chunks as $i => &$chunk) {
-            $chunk = $chunk ^ \hash($algo, $password . $i, true);
+            $chunk = $chunk ^ \hash($algo, $password . $i . $length, true);
         }
 
         return \implode($chunks);
