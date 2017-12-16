@@ -77,36 +77,36 @@ final class Random
     
 
     /**
-     * Deterministic seeded array shuffle function.
+     * Deterministic seeded array shuffle function. Does not keep keys.
      *
-     * @param array  $array
-     * @param string $seed
-     * @param bool   $secure
+     * @param array  $array  Array to shuffle
+     * @param string $seed   Seed to use 
+     * @param bool   $secure Whether to use secure RNG in PHP 7.1+. Use false to fall back to broken version for BC.
      *
      * @return array
      */
     public static function shuffle($array, $seed, $secure = true)
     {
-        $count = count($array);
+        $count = \count($array);
 
-        $range = range(0, $count - 1);
+        $range = \range(0, $count - 1);
 
         // Hash the seed and extract bytes to make integer with
-        $seed = substr(hash('sha256', $seed, true), 0, PHP_INT_SIZE);
+        $seed = \substr(\hash('sha256', $seed, true), 0, PHP_INT_SIZE);
 
         // Convert bytes to an int
-        $seed = unpack("L", $seed);
+        $seed = \unpack("L", $seed);
 
-        if (version_compare(PHP_VERSION, '7.1.0') >= 0 && $secure === false) {
+        if (\version_compare(PHP_VERSION, '7.1.0') >= 0 && $secure === false) {
             // Handle PHP 7.1+ calls requiring the old implementation which has broken implementation
-            mt_srand($seed[1], MT_RAND_PHP);
+            \mt_srand($seed[1], MT_RAND_PHP);
         } else {
-            mt_srand($seed[1]);
+            \mt_srand($seed[1]);
         }
 
         // Swap array values randomly
         foreach ($range as $a) {
-            $b = mt_rand(0, $count - 1);
+            $b = \mt_rand(0, $count - 1);
 
             $v = $array[$a];
 
