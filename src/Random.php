@@ -92,7 +92,7 @@ final class Random
         $range = \range(0, $count - 1);
 
         // Hash the seed and extract bytes to make integer with
-        $seed = \substr(\hash('sha256', $seed, true), 0, PHP_INT_SIZE);
+        $seed = Str::substr(\hash('sha256', $seed, true), 0, PHP_INT_SIZE);
 
         // Convert bytes to an int
         $seed = \unpack("L", $seed);
