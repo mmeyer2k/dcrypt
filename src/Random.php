@@ -55,13 +55,23 @@ final class Random
      */
     public static function bytes($bytes)
     {
+        if (!\is_int($bytes)) {
+            throw new \exception('Number of random bytes must be an integer');
+        }
+            
         if (\function_exists('random_bytes')) {
-            return \random_bytes($bytes);
+            $ret = \random_bytes($bytes);
         } elseif (\function_exists('mcrypt_create_iv')) {
-            return self::fromMcrypt($bytes);
+            $ret = self::fromMcrypt($bytes);
+        } else {
+            self::toss(); // @codeCoverageIgnore
         }
         
-        self::toss(); // @codeCoverageIgnore
+        if (Str::strlen($ret) !== $bytes) {
+            self::toss(); // @codeCoverageIgnore
+        }
+        
+        return $ret;
     }
 
     /**
