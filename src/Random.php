@@ -29,37 +29,15 @@ namespace Dcrypt;
 final class Random
 {
     /**
-     * Get random bytes from Mcrypt
-     * 
-     * @param int $bytes Number of bytes to get
-     * 
-     * @return string
-     */
-    private static function fromMcrypt($bytes)
-    {
-        $ret = \mcrypt_create_iv($bytes, MCRYPT_DEV_URANDOM);
-
-        if ($ret === false) {
-            self::toss(); // @codeCoverageIgnore
-        }
-
-        return $ret;
-    }
-
-    /**
      * Return securely generated random bytes.
      * 
      * @param int  $bytes  Number of bytes to get
      * 
      * @return string
      */
-    public static function bytes($bytes)
-    {
-        if (!\is_int($bytes)) {
-            throw new \exception('Number of random bytes must be an integer');
-        }
-        
-        $ret = \function_exists('random_bytes') ? \random_bytes($bytes) : self::fromMcrypt($bytes);
+    public static function bytes(int $bytes): string
+    {        
+        $ret = \random_bytes($bytes);
         
         if (Str::strlen($ret) !== $bytes) {
             self::toss(); // @codeCoverageIgnore
@@ -89,7 +67,7 @@ final class Random
      *
      * @return array
      */
-    public static function shuffle($array, $seed, $secure = true)
+    public static function shuffle(array $array, string $seed, bool $secure = true): array
     {
         $count = \count($array);
 
