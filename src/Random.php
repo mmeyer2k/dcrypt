@@ -58,14 +58,8 @@ final class Random
         if (!\is_int($bytes)) {
             throw new \exception('Number of random bytes must be an integer');
         }
-            
-        if (\function_exists('random_bytes')) {
-            $ret = \random_bytes($bytes);
-        } elseif (\function_exists('mcrypt_create_iv')) {
-            $ret = self::fromMcrypt($bytes);
-        } else {
-            self::toss(); // @codeCoverageIgnore
-        }
+        
+        $ret = \function_exists('random_bytes') ? \random_bytes($bytes) : self::fromMcrypt($bytes);
         
         if (Str::strlen($ret) !== $bytes) {
             self::toss(); // @codeCoverageIgnore
