@@ -40,11 +40,12 @@ final class Hash extends Support
      *  
      * @param string       $input    Data to hash
      * @param string       $password Password to use in HMAC call
-     * @param integer      $cost     Number of iterations to use
+     * @param int          $cost     Number of iterations to use
      * @param string|null  $salt     Initialization vector to use in HMAC calls
+     *
      * @return string
      */
-    private static function build($input, $password, $cost, $salt = null)
+    private static function build(string $input, string $password, int $cost, $salt = null): string
     {
         // Generate salt if needed
         $salt = $salt === null ? Random::bytes(16) : $salt;
@@ -69,7 +70,7 @@ final class Hash extends Support
      * 
      * @return int
      */
-    private static function cost($cost)
+    private static function cost(int $cost): int
     {
         return $cost % \pow(2, 32);
     }
@@ -93,12 +94,12 @@ final class Hash extends Support
      * 
      * @param string  $data Data to hash.
      * @param string  $key  Key to use to authenticate the hash.
-     * @param integer $iter Number of times to iteratate the hash
+     * @param int     $iter Number of times to iteratate the hash
      * @param string  $algo Name of algo (sha256 or sha512 recommended)
      * 
      * @return string
      */
-    public static function ihmac($data, $key, $iter, $algo = 'sha256')
+    public static function ihmac(string $data, string $key, int $iter, string $algo = 'sha256'): string
     {
         $iter = abs($iter);
         
@@ -118,11 +119,11 @@ final class Hash extends Support
      * 
      * @param string  $input    Data to hash.
      * @param string  $password HMAC validation password.
-     * @param integer $cost     Cost value of the hash.
+     * @param int     $cost     Cost value of the hash.
      * 
      * @return string
      */
-    public static function make($input, $password, $cost = 250000)
+    public static function make(string $input, string $password, string $cost = 250000)
     {
         return self::build($input, $password, $cost, null);
     }
@@ -136,7 +137,7 @@ final class Hash extends Support
      * 
      * @return boolean
      */
-    public static function verify($input, $hash, $password)
+    public static function verify(string $input, string $hash, string $password): bool
     {
         // Get the salt value from the decrypted prefix
         $salt = Str::substr($hash, 0, 16);
