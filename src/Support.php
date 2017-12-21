@@ -54,10 +54,12 @@ class Support
      * An internal hex2bin implementation for PHP 5.3
      * 
      * @param string $hexstr
-     * @codeCoverageIgnore
+     
      * @return string
+     
+     * @codeCoverageIgnore
      */
-    protected static function hex2bin($hexstr)
+    protected static function hex2bin(string $hexstr): string
     {
         if (\function_exists('hex2bin')) {
             return \hex2bin($hexstr);
