@@ -36,7 +36,7 @@ class Rc4
      * 
      * @return string
      */
-    public static function crypt($str, $key)
+    public static function crypt(string $str, string $key): string
     {
         $s = self::initializeState($key);
         $i = $j = 0;
@@ -62,7 +62,7 @@ class Rc4
      * 
      * @return array
      */
-    protected static function initializeState($key)
+    protected static function initializeState(string $key): array
     {
         $s = \range(0, 255);
         $j = 0;
