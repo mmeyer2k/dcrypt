@@ -112,7 +112,7 @@ class Cryptobase
      * @param string $calculated
      * @param string $supplied
      */
-    protected static function checksumVerify(string $calculated, string $supplied): bool
+    protected static function checksumVerify(string $calculated, string $supplied)
     {
         if (!Str::equal($calculated, $supplied)) {
             $e = 'Decryption can not proceed due to invalid cyphertext checksum.';
