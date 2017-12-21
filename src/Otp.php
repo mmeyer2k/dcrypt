@@ -46,7 +46,7 @@ class Otp
      * 
      * @return string
      */
-    public static function crypt($input, $password, $algo = 'sha512')
+    public static function crypt(string $input, string $password, string $algo = 'sha512'): string
     {
         $chunks = \str_split($input, Str::hashSize($algo));
 
