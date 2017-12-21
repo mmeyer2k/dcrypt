@@ -3,7 +3,7 @@
 /**
  * Pkcs7.php
  * 
- * PHP version 5
+ * PHP version 7
  * 
  * @category Dcrypt
  * @package  Dcrypt
@@ -30,11 +30,11 @@ final class Pkcs7
      * PKCS #7 padding function.
      * 
      * @param string  $input     String to pad
-     * @param integer $blocksize Block size in bytes
+     * @param int     $blocksize Block size in bytes
      * 
      * @return string
      */
-    public static function pad($input, $blocksize)
+    public static function pad(string $input, int $blocksize): string
     {
         // Determine the padding string that needs to be appended.
         $pad = self::paddingString(Str::strlen($input), $blocksize);
@@ -46,12 +46,12 @@ final class Pkcs7
     /**
      * Create the padding string that will be appended to the input.
      * 
-     * @param integer $inputsize Size of the input in bytes
-     * @param integer $blocksize Blocksize in bytes
+     * @param int $inputsize Size of the input in bytes
+     * @param int $blocksize Blocksize in bytes
      * 
-     * @return integer
+     * @return int
      */
-    private static function paddingString($inputsize, $blocksize)
+    private static function paddingString(int $inputsize, int $blocksize): int
     {
         // Determine the amount of padding to use
         $pad = $blocksize - ($inputsize % $blocksize);
@@ -67,7 +67,7 @@ final class Pkcs7
      * 
      * @return string
      */
-    public static function unpad($input)
+    public static function unpad(string $input): string
     {
         // Determine the padding size by converting the final byte of the  
         // input to its decimal value
