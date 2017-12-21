@@ -3,7 +3,7 @@
 /**
  * Str.php
  * 
- * PHP version 5
+ * PHP version 7
  * 
  * @category Dcrypt
  * @package  Dcrypt
@@ -39,7 +39,7 @@ final class Str
      *
      * @return bool true if the two strings are the same, false otherwise
      */
-    private static function strcmp($knownHash, $givenHash)
+    private static function strcmp(string $knownHash, string $givenHash): bool
     {
         $result = 0;
 
@@ -63,7 +63,7 @@ final class Str
      *
      * @return bool
      */
-    public static function equal($known, $given)
+    public static function equal(string $known, string $given): bool
     {
         // We hash the 2 inputs at this point because hash_equals is still 
         // vulnerable to timing attacks when the inputs have different sizes.
@@ -87,7 +87,7 @@ final class Str
      * 
      * @return int
      */
-    public static function hashSize($algo)
+    public static function hashSize(string $algo): int
     {
         return self::strlen(\hash($algo, 'hash me', true));
     }
@@ -99,7 +99,7 @@ final class Str
      *
      * @return int
      */
-    public static function strlen($string)
+    public static function strlen(string $string): int
     {
         if (\function_exists('mb_strlen')) {
             return \mb_strlen($string, '8bit');
@@ -117,7 +117,7 @@ final class Str
      * 
      * @return string the extracted part of string; or FALSE on failure, or an empty string.
      */
-    public static function substr($string, $start, $length = null)
+    public static function substr(string $string, int $start, int $length = null): string
     {
         if (\function_exists('mb_substr')) {
             // Fix a weird quirk in PHP versions prior to 5.4.8
