@@ -49,9 +49,9 @@ final class Pkcs7
      * @param int $inputsize Size of the input in bytes
      * @param int $blocksize Blocksize in bytes
      * 
-     * @return int
+     * @return string
      */
-    private static function paddingString(int $inputsize, int $blocksize): int
+    private static function paddingString(int $inputsize, int $blocksize): string
     {
         // Determine the amount of padding to use
         $pad = $blocksize - ($inputsize % $blocksize);
