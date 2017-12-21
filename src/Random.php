@@ -37,26 +37,8 @@ final class Random
      */
     public static function bytes(int $bytes): string
     {        
-        $ret = \random_bytes($bytes);
-        
-        if (Str::strlen($ret) !== $bytes) {
-            self::toss(); // @codeCoverageIgnore
-        }
-        
-        return $ret;
-    }
-
-    /**
-     * Throw an error when a failure occurs.
-     * 
-     * @codeCoverageIgnore
-     */
-    private static function toss()
-    {
-        $e = 'Dcrypt failed to generate a random number';
-        throw new \exception($e);
-    }
-    
+        return \random_bytes($bytes);
+    }    
 
     /**
      * Deterministic seeded array shuffle function. Does not keep keys.
