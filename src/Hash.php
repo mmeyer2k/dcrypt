@@ -123,7 +123,7 @@ final class Hash extends Support
      * 
      * @return string
      */
-    public static function make(string $input, string $password, string $cost = 250000)
+    public static function make(string $input, string $password, int $cost = 250000): string
     {
         return self::build($input, $password, $cost, null);
     }
