@@ -66,7 +66,7 @@ class Cryptobase
      *
      * @return string
      */
-    private static function hashNormalize($hash, $size, $algo)
+    private static function hashNormalize(string $hash, int $size, string $algo): string
     {
         // Extend hash if too short
         while (Str::strlen($hash) < $size) {
@@ -89,7 +89,7 @@ class Cryptobase
      *
      * @return string
      */
-    protected static function key($password, $iv, $cost, $cipher = 'rijndael-128', $mode = 'cbc', $algo = 'sha256')
+    protected static function key(string $password, string $iv, $cost, $cipher = 'rijndael-128', $mode = 'cbc', $algo = 'sha256')
     {
         // This if statement allows the usage of the Openssl library without
         // the need to have the mcrypt plugin installed at all.
@@ -112,7 +112,7 @@ class Cryptobase
      * @param string $calculated
      * @param string $supplied
      */
-    protected static function checksumVerify($calculated, $supplied)
+    protected static function checksumVerify(string $calculated, string $supplied): bool
     {
         if (!Str::equal($calculated, $supplied)) {
             $e = 'Decryption can not proceed due to invalid cyphertext checksum.';
