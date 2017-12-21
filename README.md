@@ -26,12 +26,12 @@ A petite library of essential encryption functions for PHP (5.3 - 7.2).
 Add the following to the require section of your `composer.json` file, then run `composer install`.
 ```json
 "require": {
-  "mmeyer2k/dcrypt": "~4.0"
+  "mmeyer2k/dcrypt": "~5.0"
 }
 ```
 Or using the command line...
 ```bash
-composer require "mmeyer2k/dcrypt=~4.0"
+composer require "mmeyer2k/dcrypt=~5.0"
 ```
 In environments where composer is not available, Dcrypt can be used by including `load.php`.
 ```php
@@ -56,39 +56,6 @@ $encrypted = \Dcrypt\AesCtr::encrypt($plaintext, $password);
 
 $plaintext = \Dcrypt\AesCtr::decrypt($encrypted, $password);
 ```
-
-
-### Customizable Encryption (via Mcrypt)
-If you have special requirements, `\Dcrypt\Mcrypt` might be the best solution.
-```php
-# encrypt with serpent in ecb mode with sha512 hmac
-$encrypted = \Dcrypt\Mcrypt::encrypt(
-  'message', 
-  'password', 
-  0, # specifies that no key hardening will take place (see below...)
-  MCRYPT_SERPENT, 
-  MCRYPT_MODE_ECB, 
-  'sha512'
-);
-```
-As with `\Dcrypt\Aes`, all time-safe HMAC verification, strong IV creation and padding (PKCS#7) are handled for you.
-
-When used with all default options, `\Dcrypt\Mcrypt` is compatible with `\Dcrypt\Aes`.
-```php
-$encrypted = \Dcrypt\Mcrypt::encrypt($plaintext, 'password');
-
-$plaintext = \Dcrypt\Aes::decrypt($encrypted, 'password');
-```
-
-Supported (and tested) modes: `MCRYPT_MODE_CBC`, `MCRYPT_MODE_CFB`, `MCRYPT_MODE_ECB`, `MCRYPT_MODE_OFB`, `MCRYPT_MODE_NOFB`
-
-Supported (and tested) ciphers: `MCRYPT_3DES`, `MCRYPT_BLOWFISH`, `MCRYPT_BLOWFISH_COMPAT`, `MCRYPT_DES`, `MCRYPT_LOKI97`, `MCRYPT_CAST_128`, `MCRYPT_CAST_256`, `MCRYPT_RC2`, `MCRYPT_RIJNDAEL_128`, `MCRYPT_RIJNDAEL_192`, `MCRYPT_RIJNDAEL_256`, `MCRYPT_SAFERPLU`, `MCRYPT_SERPENT`, `MCRYPT_TRIPLEDES`, `MCRYPT_TWOFISH`, `MCRYPT_XTEA`
-
-Supported (and tested) hash algos: all!
-
-**NOTE**: PHP's libmcrypt has fallen out of favor due to its stale codebase and inability to use AES-NI. Only use `\Dcrypt\Mcrypt` if there is a strong need. In nearly all cases `\Dcrypt\Aes` (which uses OpenSSL) is preferred.
-
-**NOTE**: Mcrypt module is removed in PHP 7.1+.
 
 ### Iterative HMAC Key Hardening
 To reduce the effectiveness of brute-force cracking on your encrypted blobs, you can provide an integer `$cost` parameter
