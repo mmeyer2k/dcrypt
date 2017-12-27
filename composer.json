@@ -10,7 +10,7 @@
         }
     ],
     "require": {
-        "php": ">=5.3.0"
+        "php": ">=7.0.0"
     },
     "require-dev": {
         "mmeyer2k/retro": "dev-master"
@@ -24,10 +24,6 @@
       "classmap": [
         "tests/TestSupport.php"
       ]
-    },
-    "suggest": {
-        "paragonie/random_compat": "Provides PHP7-like random_int() and random_bytes() functions.",
-        "ext-libsodium": "Provides a modern crypto API that can be used to generate random bytes."
     },
     "minimum-stability": "dev"
 }
