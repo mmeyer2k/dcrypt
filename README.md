@@ -228,3 +228,4 @@ Developing dcrypt has been a labor of love for many years. If you find it useful
 LN97LrLCNiv14V6fntp247H2pj9UiFzUQZ
 
  [Other cryptos are cool too...](https://freewallet.org/id/1f01979d/ltc/).
+ ![litecoin address](https://rawgit.com/mmeyer2k/dcrypt/master/litecoin.jpg)
