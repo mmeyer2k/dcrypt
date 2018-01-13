@@ -21,6 +21,7 @@ A petite library of essential encryption functions for PHP (5.3 - 7.2).
   - [Secure Random Byte Generator](#secure-random-byte-generator)
 - [Usage Notes](#usage-notes)
 - [API Documentation](#api-documentation)
+- [Show me some love](#show-me-some-love)
 
 # Install
 Add the following to the require section of your `composer.json` file, then run `composer install`.
@@ -228,4 +229,5 @@ Developing dcrypt has been a labor of love for many years. If you find it useful
 LN97LrLCNiv14V6fntp247H2pj9UiFzUQZ
 
  [Other cryptos are cool too...](https://freewallet.org/id/1f01979d/ltc/).
+ 
  ![litecoin address](https://rawgit.com/mmeyer2k/dcrypt/master/litecoin.jpg)
