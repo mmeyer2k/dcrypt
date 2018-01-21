@@ -21,6 +21,7 @@ A petite library of essential encryption functions for PHP7. For PHP5 support, c
   - [Secure Random Byte Generator](#secure-random-byte-generator)
 - [Usage Notes](#usage-notes)
 - [API Documentation](#api-documentation)
+- [Show me some love](#show-me-some-love)
 
 # Install
 Add the following to the require section of your `composer.json` file, then run `composer install`.
@@ -188,3 +189,12 @@ $iv = \Dcrypt\Random::bytes(8); # get 8 random bytes
 
 # API Documentation
 The latest API documentation can be found [here](https://mmeyer2k.github.io/dcrypt/).
+
+# Show me some love
+Developing dcrypt has been a labor of love for many years. If you find it useful consider donating some of your fancy meme-coins (litecoin prefered).
+
+LN97LrLCNiv14V6fntp247H2pj9UiFzUQZ
+
+ [Other cryptos are cool too...](https://freewallet.org/id/1f01979d/ltc/).
+ 
+ ![litecoin address](https://rawgit.com/mmeyer2k/dcrypt/master/litecoin.jpg)
