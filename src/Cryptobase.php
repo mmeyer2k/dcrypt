@@ -89,7 +89,7 @@ class Cryptobase
      *
      * @return string
      */
-    protected static function key(string $password, string $iv, $cost, $cipher = 'rijndael-128', $mode = 'cbc', $algo = 'sha256')
+    protected static function key(string $password, string $iv, int $cost, string $cipher = 'rijndael-128', string $mode = 'cbc', string $algo = 'sha256'): string
     {
         // This if statement allows the usage of the Openssl library without
         // the need to have the mcrypt plugin installed at all.
