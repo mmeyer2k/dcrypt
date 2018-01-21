@@ -38,7 +38,7 @@ class Cryptobase
      *
      * @return string
      */
-    protected static function checksum($cyphertext, $iv, $key, $cipher = 'rijndael-128', $mode = 'cbc', $algo = 'sha256')
+    protected static function checksum(string $cyphertext, string $iv, string $key, $cipher = 'rijndael-128', $mode = 'cbc', $algo = 'sha256'): string
     {
         // Prevent potentially large string concat by hmac-ing the cyphertext
         // by itself...
