@@ -75,7 +75,7 @@ final class Hash extends Support
         return $cost % \pow(2, 32);
     }
 
-    private static function costHash($cost, $salt, $password)
+    private static function costHash(int $cost, string $salt, string $password): string
     {
         // Hash and return first 12 bytes
         $hash = Str::substr(\hash_hmac(self::ALGO, $cost, $salt, true), 0, 12);
