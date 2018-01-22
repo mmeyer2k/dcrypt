@@ -224,9 +224,9 @@ $iv = \Dcrypt\Random::bytes(8); # get 8 random bytes
 The latest API documentation can be found [here](https://mmeyer2k.github.io/dcrypt/).
 
 # Show me some love
-Developing dcrypt has been a labor of love for many years. If you find it useful consider donating some of your fancy meme-coins (litecoin prefered).
+Developing dcrypt has been a labor of love for many years. If you find dcrypt useful, please consider donating some cryptocurrency.
 
-LN97LrLCNiv14V6fntp247H2pj9UiFzUQZ
+Litecoin: `LN97LrLCNiv14V6fntp247H2pj9UiFzUQZ`
 
  [Other cryptos are cool too...](https://freewallet.org/id/1f01979d/ltc/).
  
