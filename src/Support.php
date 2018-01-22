@@ -33,7 +33,7 @@ class Support
      * 
      * @return string
      */
-    protected static function dec2bin($dec)
+    protected static function dec2bin(int $dec): string
     {
         return self::hex2bin(\str_pad(\dechex($dec), 8, '0', STR_PAD_LEFT));
     }
@@ -54,9 +54,7 @@ class Support
      * An internal hex2bin implementation for PHP 5.3
      * 
      * @param string $hexstr
-     
      * @return string
-     
      * @codeCoverageIgnore
      */
     protected static function hex2bin(string $hexstr): string
