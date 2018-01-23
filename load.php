@@ -25,7 +25,6 @@ if (!class_exists('Dcrypt\Aes')) {
         'Cryptobase',
         'Hash',
         'Huffman',
-        'Mcrypt',
         'Aes',
         'AesCtr',
         'Otp',

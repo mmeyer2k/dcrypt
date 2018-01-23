@@ -3,7 +3,7 @@
 /**
  * Rc4.php
  * 
- * PHP version 5
+ * PHP version 7
  * 
  * @category Dcrypt
  * @package  Dcrypt
@@ -37,7 +37,7 @@ class Spritz extends Rc4
      *
      * @return string
      */
-    public static function crypt($str, $key)
+    public static function crypt(string $str, string $key): string
     {
         $s = self::initializeState($key);
         $i = $j = $k = $z = 0;

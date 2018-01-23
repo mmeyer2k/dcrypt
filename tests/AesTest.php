@@ -5,20 +5,6 @@ use Dcrypt\Mcrypt;
 
 class AesTest extends TestSupport
 {
-    public function testCrossCompatability()
-    {
-        // If PHP 7.1, skip this test
-        if (self::mcryptDeprecated()) {
-            $this->assertTrue(true);
-            return;
-        }
-
-        $k = 'asdf';
-        $p = '1234';
-        $c = Aes::encrypt($p, $k);
-        $this->assertEquals($p, Mcrypt::decrypt($c, $k));
-    }
-
     /**
      * @expectedException InvalidArgumentException
      */

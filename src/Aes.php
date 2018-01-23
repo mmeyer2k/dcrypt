@@ -3,7 +3,7 @@
 /**
  * Aes.php
  * 
- * PHP version 5
+ * PHP version 7
  * 
  * @category Dcrypt
  * @package  Dcrypt
@@ -62,7 +62,7 @@ class Aes extends Cryptobase
      * 
      * @return string
      */
-    public static function decrypt($cyphertext, $password, $cost = 0)
+    public static function decrypt(string $cyphertext, string $password, int $cost = 0): string
     {
         // Find the IV at the beginning of the cypher text
         $iv = Str::substr($cyphertext, 0, self::IVSIZE);
@@ -95,7 +95,7 @@ class Aes extends Cryptobase
      * 
      * @return string 
      */
-    public static function encrypt($plaintext, $password, $cost = 0)
+    public static function encrypt(string $plaintext, string $password, int $cost = 0): string
     {
         // Generate IV of appropriate size.
         $iv = Random::bytes(self::IVSIZE);
@@ -123,7 +123,7 @@ class Aes extends Cryptobase
      * 
      * @return string
      */
-    protected static function mode()
+    protected static function mode(): string
     {
         return substr(static::CIPHER, -3);
     }

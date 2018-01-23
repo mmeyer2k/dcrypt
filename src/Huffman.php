@@ -27,12 +27,13 @@ namespace Dcrypt;
 final class Huffman
 {
     /**
-     * Compress data
+     * Compress data with Huffman's algo
      *
-     * @param string $data
+     * @param string $data Data to compress
+     *
      * @return string
      */
-    public static function encode($data)
+    public static function encode(string $data): string
     {
         $dictionary = self::frequencyMap($data);
 
@@ -68,12 +69,13 @@ final class Huffman
     }
 
     /**
-     * Decompress data
+     * Decompress Huffman string.
      *
-     * @param string $data
+     * @param string $data String to decompress.
+     *
      * @return string
      */
-    public static function decode($data)
+    public static function decode(string $data): string
     {
         $dictionary = self::unpackDictionary($data);
 
