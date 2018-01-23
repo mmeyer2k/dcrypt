@@ -194,7 +194,7 @@ The latest API documentation can be found [here](https://mmeyer2k.github.io/dcry
 Developing dcrypt has been a labor of love for many years. If you find dcrypt useful, please consider donating some cryptocurrency.
 
 Litecoin: `LN97LrLCNiv14V6fntp247H2pj9UiFzUQZ`
-
- [Other cryptos are cool too...](https://freewallet.org/id/1f01979d/ltc/).
  
  ![litecoin address](https://rawgit.com/mmeyer2k/dcrypt/master/litecoin.png)
+
+ [Other cryptos are cool too...](https://freewallet.org/id/1f01979d/ltc/).
