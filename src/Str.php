@@ -32,28 +32,6 @@ namespace Dcrypt;
 final class Str
 {
     /**
-     * Private constant-time strcmp method to use when hash_equals is unavailable.
-     *
-     * @param string $knownHash Hash of the known string
-     * @param string $givenHash Hash of the given string
-     *
-     * @return bool true if the two strings are the same, false otherwise
-     */
-    private static function strcmp(string $knownHash, string $givenHash): bool
-    {
-        $result = 0;
-
-        // XOR the bytes of the 2 input hashes and loop over them.
-        // Each byte value is then added to a running total...
-        foreach (\str_split($knownHash ^ $givenHash) as $xbyte) {
-            $result += \ord($xbyte);
-        }
-
-        // Strings are equal if the final result is exactly zero
-        return 0 === $result;
-    }
-
-    /**
      * Compares two strings in constant time. Strings are hashed before 
      * comparison so information is not leaked when strings are not of
      * equal length.
@@ -73,11 +51,7 @@ final class Str
         $known = \hash_hmac('sha256', (string) $known, $nonce, true);
         $given = \hash_hmac('sha256', (string) $given, $nonce, true);
 
-        if (\function_exists('hash_equals')) {
-            return \hash_equals($known, $given); // @codeCoverageIgnore
-        }
-
-        return self::strcmp($known, $given);
+        return \hash_equals($known, $given);
     }
 
     /**
