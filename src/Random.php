@@ -59,7 +59,7 @@ final class Random
         $seed = Str::substr(\hash('sha256', $seed, true), 0, PHP_INT_SIZE);
 
         // Convert bytes to an int
-        $seed = \unpack("L", $seed);
+        $seed = \unpack('L', $seed);
 
         if (\version_compare(PHP_VERSION, '7.1.0') >= 0 && $secure === false) {
             // Handle PHP 7.1+ calls requiring the old implementation which has broken implementation
@@ -79,6 +79,10 @@ final class Random
             $array[$b] = $v;
         }
 
+        // Re-seed with a pseudorandom int to return RNG to unpredictable state
+        $seed = \unpack('L', \Random::get(PHP_INT_SIZE));
+        \mt_srand($seed[1]);
+        
         return $array;
     }
 }
