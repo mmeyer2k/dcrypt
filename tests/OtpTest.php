@@ -29,7 +29,7 @@ class OtpTest extends \PHPUnit\Framework\TestCase
     {
         $input = 'hello world';
         $pass = 'password';
-        $vector = base64_decode('6+a66+lQT4atW4E=');
+        $vector = base64_decode('Cf6ULwbiZEbJr1w=');
 
         $this->assertEquals($input, Otp::crypt($vector, $pass));
     }
