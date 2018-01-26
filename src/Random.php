@@ -80,7 +80,7 @@ final class Random
         }
 
         // Re-seed with a pseudorandom int to return RNG to unpredictable state
-        $seed = \unpack('L', \Random::get(PHP_INT_SIZE));
+        $seed = \unpack('L', self::bytes(PHP_INT_SIZE));
         \mt_srand($seed[1]);
         
         return $array;
