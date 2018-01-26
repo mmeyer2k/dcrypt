@@ -69,10 +69,9 @@ $encrypted = \Dcrypt\Aes::encrypt($plaintext, $password, 10000);
 
 $plaintext = \Dcrypt\Aes::decrypt($encrypted, $password, 10000);
 ```
-`$cost` can also be passed into the third parameter of `\Dcrypt\Mcrypt`'s functions.
 
 ### Tamper Protection
-By default, `\Dcrypt\Aes`, `\Dcrypt\AesCtr` and `\Dcrypt\Mcrypt` will throw an `InvalidArgumentException` 
+By default, `\Dcrypt\Aes` and `\Dcrypt\AesCtr` will throw an `InvalidArgumentException` 
 *before* decryption if the supplied checksum is not valid.
 ```php
 try {
