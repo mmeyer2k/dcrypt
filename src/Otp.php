@@ -53,7 +53,7 @@ class Otp
         $length = Str::strlen($input);
         
         foreach ($chunks as $i => &$chunk) {
-            $chunk = $chunk ^ \hash($algo, $password . $i . $length, true);
+            $chunk = $chunk ^ \hash_hmac($algo, $password . $length, $i, true);
         }
 
         return \implode($chunks);
