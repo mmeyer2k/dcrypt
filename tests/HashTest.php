@@ -49,7 +49,7 @@ class HashTest extends TestSupport
     {
         $input = 'hello world';
         $key = 'password';
-        $vector = base64_decode('37asLTXkkqdIepEis8OvvTn5aOtnaenFZP52RsIcbBo0lT+T8SYOkepK9akTvb7dO60mHvCSaN/omlkpXaB+ww==');
+        $vector = base64_decode('dvvWMEFPCo9EV+l+htGGcoK5Uj8zrh6bfxCh16NOjJxuugObuidTQ3+R3qiyZLnHl7zRxSmfHRasEJQpTymZDw==');
         $this->assertTrue(Hash::verify($input, $vector, $key));
     }
 
