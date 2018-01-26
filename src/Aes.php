@@ -65,25 +65,25 @@ class Aes extends Cryptobase
     public static function decrypt(string $cyphertext, string $password, int $cost = 0): string
     {
         // Find the IV at the beginning of the cypher text
-        $iv = Str::substr($cyphertext, 0, self::IVSIZE);
-
-        // Gather the checksum portion of the cypher text
-        $chksum = Str::substr($cyphertext, self::IVSIZE, self::CKSIZE);
-
-        // Gather message portion of cyphertext after iv and checksum
-        $message = Str::substr($cyphertext, self::IVSIZE + self::CKSIZE);
+        $ivr = Str::substr($cyphertext, 0, self::IVSIZE);
 
         // Derive key from password
-        $key = self::key($password, $iv, $cost, self::RIJNDA, self::mode());
+        $key = self::key($password, $ivr, $cost, self::RIJNDA, self::mode());
+
+        // Gather the checksum portion of the cypher text
+        $sum = Str::substr($cyphertext, self::IVSIZE, self::CKSIZE);
+
+        // Gather message portion of cyphertext after iv and checksum
+        $msg = Str::substr($cyphertext, self::IVSIZE + self::CKSIZE);
 
         // Calculate verification checksum
-        $verify = self::checksum($message, $iv, $key, self::RIJNDA, self::mode());
+        $chk = self::checksum($msg, $ivr, $key, self::RIJNDA, self::mode());
 
         // Verify HMAC before decrypting
-        self::checksumVerify($verify, $chksum);
+        self::checksumVerify($chk, $sum);
 
         // Decrypt message and return
-        return \openssl_decrypt($message, static::CIPHER, $key, 1, $iv);
+        return \openssl_decrypt($msg, static::CIPHER, $key, 1, $ivr);
     }
 
     /**
@@ -98,24 +98,24 @@ class Aes extends Cryptobase
     public static function encrypt(string $plaintext, string $password, int $cost = 0): string
     {
         // Generate IV of appropriate size.
-        $iv = Random::bytes(self::IVSIZE);
+        $ivr = Random::bytes(self::IVSIZE);
 
         // Derive key from password
-        $key = self::key($password, $iv, $cost, self::RIJNDA, self::mode());
+        $key = self::key($password, $ivr, $cost, self::RIJNDA, self::mode());
 
         // Encrypt the plaintext
-        $message = \openssl_encrypt($plaintext, static::CIPHER, $key, 1, $iv);
+        $msg = \openssl_encrypt($plaintext, static::CIPHER, $key, 1, $ivr);
         
         // If message could not be encrypted then throw an exception
-        if ($message === false) {
+        if ($msg === false) {
             throw new \exception('Could not encrypt the data.'); // @codeCoverageIgnore
         }
 
         // Create the cypher text prefix (iv + checksum)
-        $prefix = $iv . self::checksum($message, $iv, $key, self::RIJNDA, self::mode());
+        $prefix = $ivr . self::checksum($msg, $ivr, $key, self::RIJNDA, self::mode());
 
         // Return prefix + cyphertext
-        return $prefix . $message;
+        return $prefix . $msg;
     }
 
     /**
