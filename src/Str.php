@@ -94,11 +94,6 @@ final class Str
     public static function substr(string $string, int $start, int $length = null): string
     {
         if (\function_exists('mb_substr')) {
-            // Fix a weird quirk in PHP versions prior to 5.4.8
-            if ($length === null && \version_compare('5.4.8', PHP_VERSION)) {
-                $length = self::strlen($string);
-            }
-
             return \mb_substr($string, $start, $length, '8bit');
         }
 
