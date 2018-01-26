@@ -42,13 +42,13 @@ final class Random
     /**
      * Deterministic seeded array shuffle function. Does not keep keys.
      *
-     * @param array  $array  Array to shuffle
-     * @param string $seed   Seed to use 
-     * @param bool   $secure Whether to use secure RNG in PHP 7.1+. Use false to fall back to broken version for BC.
+     * @param array  $array   Array to shuffle
+     * @param string $seed    Seed to use 
+     * @param bool   $bestrng Whether to use secure RNG in PHP 7.1+. Use false to fall back to broken version for BC.
      *
      * @return array
      */
-    public static function shuffle(array $array, string $seed, bool $secure = true): array
+    public static function shuffle(array $array, string $seed, bool $bestrng = true): array
     {
         $count = \count($array);
 
@@ -60,12 +60,10 @@ final class Random
         // Convert bytes to an int
         $seed = \unpack('L', $seed);
 
-        if (\version_compare(PHP_VERSION, '7.1.0') >= 0 && $secure === false) {
-            // Handle PHP 7.1+ calls requiring the old implementation which has broken implementation
-            \mt_srand($seed[1], MT_RAND_PHP);
-        } else {
-            \mt_srand($seed[1]);
-        }
+        $fixedRng = \version_compare(PHP_VERSION, '7.1.0') >= 0;
+        
+        // If using a fixed version of php but need access to old rng for legacy data...
+        ($fixedRng && !$bestrng) ? \mt_srand($seed[1], MT_RAND_PHP) : \mt_srand($seed[1]);
 
         // Swap array values randomly
         foreach ($range as $a) {
