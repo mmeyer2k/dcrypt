@@ -16,8 +16,7 @@
 namespace Dcrypt;
 
 /**
- * Fail-safe wrapper for mcrypt_create_iv (preferably) and
- * openssl_random_pseudo_bytes (fallback).
+ * Stochastic functions
  *
  * @category Dcrypt
  * @package  Dcrypt
