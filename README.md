@@ -27,12 +27,12 @@ A petite library of essential encryption functions for PHP7. For PHP5 support, c
 Add the following to the require section of your `composer.json` file, then run `composer install`.
 ```json
 "require": {
-  "mmeyer2k/dcrypt": "~5.0"
+  "mmeyer2k/dcrypt": "~6.0"
 }
 ```
 Or using the command line...
 ```bash
-composer require "mmeyer2k/dcrypt=~5.0"
+composer require "mmeyer2k/dcrypt=~6.0"
 ```
 In environments where composer is not available, Dcrypt can be used by including `load.php`.
 ```php
