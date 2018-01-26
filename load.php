@@ -7,7 +7,7 @@
  * Including this file in your project will give you immediate access to the 
  * functionality of Dcrypt.
  * 
- * PHP version 5
+ * PHP version 7
  * 
  * @category Dcrypt
  * @package  Dcrypt
@@ -24,7 +24,6 @@ if (!class_exists('Dcrypt\Aes')) {
         'Support',
         'Cryptobase',
         'Hash',
-        'Huffman',
         'Aes',
         'AesCtr',
         'Otp',
