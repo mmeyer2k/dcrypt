@@ -45,7 +45,7 @@ final class Hash extends Support
      *
      * @return string
      */
-    private static function build(string $input, string $password, int $cost, $salt = null): string
+    private static function build(string $input, string $password, int $cost, string $salt = null): string
     {
         // Generate salt if needed
         $salt = $salt ?? Random::bytes(16);
