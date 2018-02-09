@@ -75,11 +75,7 @@ final class Str
      */
     public static function strlen(string $string): int
     {
-        if (\function_exists('mb_strlen')) {
-            return \mb_strlen($string, '8bit');
-        }
-
-        return \strlen($string); // @codeCoverageIgnore
+        return \mb_strlen($string, '8bit');
     }
 
     /**
@@ -93,10 +89,6 @@ final class Str
      */
     public static function substr(string $string, int $start, int $length = null): string
     {
-        if (\function_exists('mb_substr')) {
-            return \mb_substr($string, $start, $length, '8bit');
-        }
-
-        return \substr($string, $start, $length); // @codeCoverageIgnore
+        return \mb_substr($string, $start, $length, '8bit');
     }
 }
