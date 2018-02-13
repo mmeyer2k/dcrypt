@@ -28,7 +28,6 @@ if (!class_exists('Dcrypt\Aes')) {
         'AesCtr',
         'Otp',
         'Pkcs7',
-        'Random',
         'Rc4',
         'Spritz',
     );
