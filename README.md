@@ -166,7 +166,7 @@ $equals = \Dcrypt\Str::equal('known', 'given');
 # API Documentation
 The latest API documentation can be found [here](https://mmeyer2k.github.io/dcrypt/).
 
-# Show me some love
+# Show me some love :heart_eyes:
 Developing dcrypt has been a labor of love for many years. If you find dcrypt useful, please consider donating some cryptocurrency.
 
 Litecoin: `LN97LrLCNiv14V6fntp247H2pj9UiFzUQZ`
