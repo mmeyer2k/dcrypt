@@ -19,7 +19,7 @@ A petite library of essential encryption functions for PHP7. For PHP5 support, c
   - [Time-safe String Comparison](#time-safe-string-comparison)
 - [Usage Notes](#usage-notes)
 - [API Documentation](#api-documentation)
-- [Show me some love :heart_eyes:](#show-me-some-love)
+- [Show me some love](#show-me-some-love) :heart_eyes:
 
 # Install
 Add the following to the require section of your `composer.json` file, then run `composer install`.
