@@ -98,7 +98,7 @@ class Aes extends Cryptobase
     public static function encrypt(string $plaintext, string $password, int $cost = 0): string
     {
         // Generate IV of appropriate size.
-        $ivr = Random::bytes(self::IVSIZE);
+        $ivr = \random_bytes(self::IVSIZE);
 
         // Derive key from password
         $key = self::key($password, $ivr, $cost, self::RIJNDA, self::mode());

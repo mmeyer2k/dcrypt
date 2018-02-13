@@ -15,24 +15,22 @@ A petite library of essential encryption functions for PHP7. For PHP5 support, c
   - [Block Ciphers](#block-ciphers)
   - [Stream Ciphers](#stream-ciphers)
   - [PKCS #7 Padding](#pkcs-7-padding)
-  - [Seeded Array Shuffling](#seeded-array-shuffling)
   - [Key Derivation Function](#key-derivation-function)
   - [Time-safe String Comparison](#time-safe-string-comparison)
-  - [Secure Random Byte Generator](#secure-random-byte-generator)
 - [Usage Notes](#usage-notes)
 - [API Documentation](#api-documentation)
-- [Show me some love](#show-me-some-love)
+- [Show me some love](#show-me-some-love-heart_eyes) :heart_eyes:
 
 # Install
 Add the following to the require section of your `composer.json` file, then run `composer install`.
 ```json
 "require": {
-  "mmeyer2k/dcrypt": "~6.0"
+  "mmeyer2k/dcrypt": "~7.0"
 }
 ```
 Or using the command line...
 ```bash
-composer require "mmeyer2k/dcrypt=~6.0"
+composer require "mmeyer2k/dcrypt=~7.0"
 ```
 In environments where composer is not available, Dcrypt can be used by including `load.php`.
 ```php
@@ -42,7 +40,7 @@ require 'path/to/dcrypt/load.php';
 
 ## Block Ciphers
 
-### AES-256-CBC Encryption (via OpenSSL)
+### AES-256-CBC Encryption
 Quickly access AES-256-CBC encryption with `\Dcrypt\Aes`. **When in doubt, use this class!** All of the most secure options are the default. Naturally, strongly random initialization vectors are generated upon encryption and standard HMAC (SHA-256) checksums are verified in a time-safe manner before decryption.
 ```php
 $encrypted = \Dcrypt\Aes::encrypt($plaintext, $password);
@@ -50,7 +48,7 @@ $encrypted = \Dcrypt\Aes::encrypt($plaintext, $password);
 $plaintext = \Dcrypt\Aes::decrypt($encrypted, $password);
 ```
 
-### AES-256-CTR Encryption (via OpenSSL)
+### AES-256-CTR Encryption
 If the `CTR` mode is preferred, `\Dcrypt\AesCtr` can be used.
 ```php
 $encrypted = \Dcrypt\AesCtr::encrypt($plaintext, $password);
@@ -132,21 +130,6 @@ PKCS#7 style padding is available via the `Pkcs7::pad()` and `Pkcs7::unpad()` fu
 \Dcrpyt\Pkcs7::unpad("aaaabbbb\x04\x04\x04\x04"); # = aaaabbbb
 ```
 
-## Seeded Array Shuffling
-`Random::shuffle()` creates a deterministically shuffled array based on a seed. 
-```php
-$array = ['a', 'b', 'c', 'd'];
-
-$array = \Dcrypt\Random::shuffle($array, 'seed string can be any length because it is hashed before use');
-
-# returned array will always be ['b', 'a', 'c', 'd']
-```
-
-**NOTE**: This function works by seeding PHP's internal random number generator which has a maximum seed value
-of 64 or 32 bits, and therefore does not provide strong cryptographic security.
-
-**NOTE**: Versions of PHP prior to 7.1 have a broken PRNG implementation. For backwards compatibility in fixed PHP versions, pass `false` to the third parameter.
-
 ## Key Derivation Function
 `Dcrypt\Hash` is an opaque 512 bit iterative hash function. First, SHA-256 is 
 used to hash a 16 byte initialization vector with your secret password to create
@@ -169,18 +152,11 @@ Dcrypt uses time-safe string comparisons in all sensitive areas. The same functi
 $equals = \Dcrypt\Str::equal('known', 'given');
 ```
 
-## Secure Random Byte Generator
-When you absolutely **must** have cryptographically secure random bytes `\Dcrypt\Random` will give them to you or throw an exception. As of PHP7, this function is now just a wrapper for `random_bytes()`.
-```php
-$iv = \Dcrypt\Random::bytes(8); # get 8 random bytes
-```
-
 # Usage Notes
 1. All encryption functions and `\Dcrypt\Hash::make()` output raw binary data.
 1. All encryption functions and `\Dcrypt\Hash::make()` accept any binary data of arbitrary length as `$input` and `$password`.
   1. Dcrypt takes special steps to avoid frivolus concatenations of potentially large `$input` type parameters.
-  1. `$password` type parameters are freqently concatentated. Therefore, avoid using excessively large passwords when memory is an issue. 
-1. Dcrypt is safe to use on systems that have `mbstring.func_overload` enabled.
+  1. `$password` type parameters are freqently concatentated. Therefore, avoid using excessively large passwords when memory is an issue.
 1. Dcrypt's block ciphers and `Hash::make()` output very space efficient blobs. Every bit is used to its fullest potential. 
   1. Known offset + length is how the components of the cyphertexts are parsed. No serialization, marker bytes, encoding schemes or any other nonsense is used. Because of this, the output size of the block ciphers is easily predictable.
   1. The output size of `Aes::encrypt` on a 10 byte plaintext would be: IV (16 bytes) + SHA-256 HMAC (32 bytes) + encrypted plaintext and padding bytes (16 bytes) = 64 bytes.
@@ -189,7 +165,7 @@ $iv = \Dcrypt\Random::bytes(8); # get 8 random bytes
 # API Documentation
 The latest API documentation can be found [here](https://mmeyer2k.github.io/dcrypt/).
 
-# Show me some love
+# Show me some love :heart_eyes:
 Developing dcrypt has been a labor of love for many years. If you find dcrypt useful, please consider donating some cryptocurrency.
 
 Litecoin: `LN97LrLCNiv14V6fntp247H2pj9UiFzUQZ`
