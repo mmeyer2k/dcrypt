@@ -33,6 +33,7 @@ final class Random
      * @param int  $bytes  Number of bytes to get
      * 
      * @return string
+     * @deprecated
      */
     public static function bytes(int $bytes): string
     {        
@@ -47,6 +48,7 @@ final class Random
      * @param bool   $bestrng Whether to use secure RNG in PHP 7.1+. Use false to fall back to broken version for BC.
      *
      * @return array
+     * @deprecated
      */
     public static function shuffle(array $array, string $seed, bool $bestrng = true): array
     {
