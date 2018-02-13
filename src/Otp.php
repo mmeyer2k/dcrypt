@@ -15,17 +15,7 @@
 namespace Dcrypt;
 
 /**
- * A simple one time pad encryption class designed to provide moderate security and 
- * high performance with low memory usage. Uses simple XOR operations to encrypt 
- * data with a key. The Otp::crypt() function is safer to run on pseuro-random
- * input that needs to be obscured.
- * 
- * Details of OTP's operation:
- * - output is in binary format
- * - does NOT chain cypher blocks, instead uses a form of block counter feedback
- * - does NOT generate IVs
- * - as with all stream ciphers, never use the same key more than once
- *   and never assume the authenticity of a message when decrypting
+ * A one time pad stream encryption class.
  * 
  * @category Dcrypt
  * @package  Dcrypt
