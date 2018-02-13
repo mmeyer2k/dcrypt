@@ -15,10 +15,8 @@ A petite library of essential encryption functions for PHP7. For PHP5 support, c
   - [Block Ciphers](#block-ciphers)
   - [Stream Ciphers](#stream-ciphers)
   - [PKCS #7 Padding](#pkcs-7-padding)
-  - [Seeded Array Shuffling](#seeded-array-shuffling)
   - [Key Derivation Function](#key-derivation-function)
   - [Time-safe String Comparison](#time-safe-string-comparison)
-  - [Secure Random Byte Generator](#secure-random-byte-generator)
 - [Usage Notes](#usage-notes)
 - [API Documentation](#api-documentation)
 - [Show me some love](#show-me-some-love)
@@ -132,21 +130,6 @@ PKCS#7 style padding is available via the `Pkcs7::pad()` and `Pkcs7::unpad()` fu
 \Dcrpyt\Pkcs7::unpad("aaaabbbb\x04\x04\x04\x04"); # = aaaabbbb
 ```
 
-## Seeded Array Shuffling
-`Random::shuffle()` creates a deterministically shuffled array based on a seed. 
-```php
-$array = ['a', 'b', 'c', 'd'];
-
-$array = \Dcrypt\Random::shuffle($array, 'seed string can be any length because it is hashed before use');
-
-# returned array will always be ['b', 'a', 'c', 'd']
-```
-
-**NOTE**: This function works by seeding PHP's internal random number generator which has a maximum seed value
-of 64 or 32 bits, and therefore does not provide strong cryptographic security.
-
-**NOTE**: Versions of PHP prior to 7.1 have a broken PRNG implementation. For backwards compatibility in fixed PHP versions, pass `false` to the third parameter.
-
 ## Key Derivation Function
 `Dcrypt\Hash` is an opaque 512 bit iterative hash function. First, SHA-256 is 
 used to hash a 16 byte initialization vector with your secret password to create
@@ -167,12 +150,6 @@ $bool = \Dcrypt\Hash::verify($plaintext, $hash, $password);
 Dcrypt uses time-safe string comparisons in all sensitive areas. The same function that is used internally is also exposed for use in your projects.
 ```php
 $equals = \Dcrypt\Str::equal('known', 'given');
-```
-
-## Secure Random Byte Generator
-When you absolutely **must** have cryptographically secure random bytes `\Dcrypt\Random` will give them to you or throw an exception. As of PHP7, this function is now just a wrapper for `random_bytes()`.
-```php
-$iv = \Dcrypt\Random::bytes(8); # get 8 random bytes
 ```
 
 # Usage Notes
