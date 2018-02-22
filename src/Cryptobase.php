@@ -54,30 +54,6 @@ class Cryptobase
     }
 
     /**
-     * This will normalize a hash to a certain length by extending it if
-     * too short and truncating it if too long. This ensures that any
-     * hash algo will work with any combination of other settings. However,
-     * it is probably best to make sure that the keysize and algo size
-     * are identical so that the input hash passes through unchanged.
-     *
-     * @param string $hash Hash to be normalized
-     * @param int    $size Size of the desired output hash, in bytes
-     * @param string $algo Hashing algorithm to use for internal operations
-     *
-     * @return string
-     */
-    private static function hashNormalize(string $hash, int $size, string $algo): string
-    {
-        // Extend hash if too short
-        while (Str::strlen($hash) < $size) {
-            $hash .= \hash($algo, $hash, true);
-        }
-
-        // Truncate to specified number of bytes (if needed) and return
-        return Str::substr($hash, 0, $size);
-    }
-
-    /**
      * Transform password into key and perform iterative HMAC (if specified)
      *
      * @param string $password Encryption key
