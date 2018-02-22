@@ -91,19 +91,8 @@ class Cryptobase
      */
     protected static function key(string $password, string $iv, int $cost, string $cipher = 'rijndael-128', string $mode = 'cbc', string $algo = 'sha256'): string
     {
-        // This if statement allows the usage of the Openssl library without
-        // the need to have the mcrypt plugin installed at all.
-        if ($cipher === Aes::RIJNDA) {
-            $keysize = 32;
-        } else {
-            $keysize = \mcrypt_get_key_size($cipher, $mode);
-        }
-
         // Perform key derivation
-        $key = Hash::ihmac($iv . $cipher . $mode, $password, $cost, $algo);
-
-        // Return hash normalized to key length
-        return self::hashNormalize($key, $keysize, $algo);
+        return Hash::ihmac($iv . $cipher . $mode, $password, $cost, $algo);
     }
 
     /**
