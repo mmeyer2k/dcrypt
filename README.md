@@ -59,9 +59,6 @@ $plaintext = \Dcrypt\AesCtr::decrypt($encrypted, $password);
 ### Iterative HMAC Key Hardening
 To reduce the effectiveness of brute-force cracking on your encrypted blobs, you can provide an integer `$cost` parameter
 in your encryption/decryption calls. This integer will cause dcrypt to perform `$cost` number of extra HMAC operations on the key before passing it off to the underlying encryption system.
-
-All keys are hashed at least once with the initialization vector as an extra layer of protection.
-
 ```php
 $encrypted = \Dcrypt\Aes::encrypt($plaintext, $password, 10000);
 
@@ -74,7 +71,7 @@ By default, `\Dcrypt\Aes` and `\Dcrypt\AesCtr` will throw an `InvalidArgumentExc
 ```php
 try {
   $decrypted = \Dcrypt\Aes::decrypt($badInput, $password);
-} catch (\Exception $ex) {
+} catch (\InvalidArgumentException $ex) {
   # do something
 }
 ```
