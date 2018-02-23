@@ -9,7 +9,6 @@ php:
 branches:
   only:
     - master
-    - 8.0.0
 
 before_script:
   - pear install PHP_CodeSniffer
