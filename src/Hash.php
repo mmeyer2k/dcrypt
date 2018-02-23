@@ -78,7 +78,7 @@ final class Hash extends Support
     private static function costHash(int $cost, string $salt, string $password): string
     {
         // Hash and return first 12 bytes
-        $hash = Str::substr(\hash_hmac(self::ALGO, $cost, $salt, true), 0, 12);
+        $hash = Str::substr(self::hmac($cost, $salt, self::ALGO), 0, 12);
 
         // Convert cost to base 256 then encrypt with OTP stream cipher
         $cost = Otp::crypt(self::dec2bin($cost), $password);
