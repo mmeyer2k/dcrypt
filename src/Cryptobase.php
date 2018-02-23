@@ -52,7 +52,7 @@ class Cryptobase
     {
         // Prevent potentially large string concat by hmac-ing the cyphertext
         // by itself...
-        $sum = \hash_hmac($algo, $cyphertext, $key, true);
+        $sum = \hash_hmac(self::ALGO, $cyphertext, $key, true);
         
         // If algo is unknown, throw an exception
         if ($sum === false) {
