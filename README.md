@@ -24,7 +24,7 @@ A petite library of essential encryption functions for PHP7. For PHP5 support, c
 # Install
 Add `dcrypt` to your composer.json file requirements.
 ```bash
-composer require "mmeyer2k/dcrypt=~7.0"
+composer require "mmeyer2k/dcrypt=~8.0"
 ```
 In environments where composer is not available, Dcrypt can be used by including `load.php`.
 ```php
