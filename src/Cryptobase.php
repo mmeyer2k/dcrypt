@@ -92,4 +92,14 @@ class Cryptobase
             throw new \InvalidArgumentException($e);
         }
     }
+    
+    /**
+     * Return the encryption mode string. "cbc" or "ctr"
+     * 
+     * @return string
+     */
+    protected static function mode(): string
+    {
+        return substr(static::CIPHER, -3);
+    }
 }
