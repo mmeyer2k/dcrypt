@@ -27,6 +27,13 @@ namespace Dcrypt;
 class Cryptobase
 {
     /**
+     * This string is used when hashing to ensure cross compatibility between
+     * dcrypt\mcrypt and dcrypt\aes. Since v7, this is only needed for backwards
+     * compatibility with older versions
+     */
+    const RIJNDA = 'rijndael-128';
+    
+    /**
      * Create a message authentication checksum.
      *
      * @param string $cyphertext Cyphertext that needs a checksum.
@@ -50,7 +57,7 @@ class Cryptobase
         }
 
         // ... then hash other elements with previous hmac and return
-        return \hash_hmac($algo, $sum . $iv . $mode . $cipher, $key, true);
+        return \hash_hmac($algo, $sum . $iv . $mode . self::RIJNDA, $key, true);
     }
 
     /**
@@ -68,7 +75,7 @@ class Cryptobase
     protected static function key(string $password, string $iv, int $cost, string $cipher = 'rijndael-128', string $mode = 'cbc', string $algo = 'sha256'): string
     {
         // Perform key derivation
-        return Hash::ihmac($iv . $cipher . $mode, $password, $cost, $algo);
+        return Hash::ihmac($iv . self::RIJNDA . $mode, $password, $cost, $algo);
     }
 
     /**
