@@ -34,26 +34,12 @@ class AesCbc extends Aes
     const CIPHER = 'aes-256-cbc';
 
     /**
-     * Size of initialization vector in bytes
-     * 
-     * @var int
-     */
-    const IVSIZE = 16;
-
-    /**
-     * Size of checksum in bytes
-     * 
-     * @var int
-     */
-    const CKSIZE = 32;
-
-    /**
      * Decrypt cyphertext
-     * 
+     *
      * @param string $cyphertext Cyphertext to decrypt
      * @param string $password   Password that should be used to decrypt input data
      * @param int    $cost       Number of extra HMAC iterations to perform on key
-     * 
+     *
      * @return string
      */
     public static function decrypt(string $cyphertext, string $password, int $cost = 0): string
@@ -82,12 +68,12 @@ class AesCbc extends Aes
 
     /**
      * Encrypt plaintext
-     * 
+     *
      * @param string $plaintext Plaintext string to encrypt.
      * @param string $password  Password used to encrypt data.
      * @param int    $cost      Number of extra HMAC iterations to perform on key
-     * 
-     * @return string 
+     *
+     * @return string
      */
     public static function encrypt(string $plaintext, string $password, int $cost = 0): string
     {
@@ -99,7 +85,7 @@ class AesCbc extends Aes
 
         // Encrypt the plaintext
         $msg = \openssl_encrypt($plaintext, static::CIPHER, $key, 1, $ivr);
-        
+
         // If message could not be encrypted then throw an exception
         if ($msg === false) {
             throw new \exception('Could not encrypt the data.'); // @codeCoverageIgnore

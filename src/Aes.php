@@ -39,6 +39,20 @@ class Aes
     const ALGO = 'sha256';
 
     /**
+     * Size of initialization vector in bytes
+     *
+     * @var int
+     */
+    const IVSIZE = 16;
+
+    /**
+     * Size of checksum in bytes
+     *
+     * @var int
+     */
+    const CKSIZE = 32;
+
+    /**
      * Create a message authentication checksum.
      *
      * @param string $cyphertext Cyphertext that needs a checksum.
@@ -95,6 +109,6 @@ class Aes
      */
     protected static function mode(): string
     {
-        return substr(static::CIPHER, -3);
+        return Str::substr(static::CIPHER, -3);
     }
 }
