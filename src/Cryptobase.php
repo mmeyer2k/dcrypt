@@ -34,6 +34,11 @@ class Cryptobase
     const RIJNDA = 'rijndael-128';
     
     /**
+     * Hardcoded hashing algo string.
+     */
+    const ALGO = 'sha256';
+    
+    /**
      * Create a message authentication checksum.
      *
      * @param string $cyphertext Cyphertext that needs a checksum.
@@ -44,7 +49,7 @@ class Cryptobase
      *
      * @return string
      */
-    protected static function checksum(string $cyphertext, string $iv, string $key, string $mode = 'cbc', string $algo = 'sha256'): string
+    protected static function checksum(string $cyphertext, string $iv, string $key, string $mode = 'cbc'): string
     {
         // Prevent potentially large string concat by hmac-ing the cyphertext
         // by itself...
@@ -56,7 +61,7 @@ class Cryptobase
         }
 
         // ... then hash other elements with previous hmac and return
-        return \hash_hmac($algo, $sum . $iv . $mode . self::RIJNDA, $key, true);
+        return \hash_hmac(self::ALGO, $sum . $iv . $mode . self::RIJNDA, $key, true);
     }
 
     /**
@@ -66,14 +71,13 @@ class Cryptobase
      * @param string $iv       Initialization vector
      * @param int    $cost     Number of HMAC iterations to perform on key
      * @param string $mode     Mcrypt block mode
-     * @param string $algo     Hashing algorithm to use for internal operations
      *
      * @return string
      */
-    protected static function key(string $password, string $iv, int $cost, string $mode = 'cbc', string $algo = 'sha256'): string
+    protected static function key(string $password, string $iv, int $cost, string $mode): string
     {
         // Perform key derivation
-        return Hash::ihmac($iv . self::RIJNDA . $mode, $password, $cost, $algo);
+        return Hash::ihmac($iv . self::RIJNDA . $mode, $password, $cost, self::ALGO);
     }
 
     /**
