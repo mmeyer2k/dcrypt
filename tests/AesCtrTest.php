@@ -40,5 +40,4 @@ class AesCtrTest extends TestSupport
         $vector = \base64_decode('Vpbd71CIVcRPALeSg126DhRKYozXlbusn/eSSxrQPtzj/U7hOhlN8D21Y0gmlmUKorpoXuDS6bklvD8=');
         $this->assertEquals($input, AesCtr::decrypt($vector, $pass));
     }
-
 }

@@ -32,12 +32,12 @@ class Aes
      * compatibility with older versions
      */
     const RIJNDA = 'rijndael-128';
-    
+
     /**
      * Hardcoded hashing algo string.
      */
     const ALGO = 'sha256';
-    
+
     /**
      * Create a message authentication checksum.
      *
@@ -53,11 +53,6 @@ class Aes
         // Prevent potentially large string concat by hmac-ing the cyphertext
         // by itself...
         $sum = \hash_hmac(self::ALGO, $cyphertext, $key, true);
-        
-        // If algo is unknown, throw an exception
-        if ($sum === false) {
-            throw new \exception("$algo is not supported by hash_hmac"); // @codeCoverageIgnore
-        }
 
         // ... then hash other elements with previous hmac and return
         return \hash_hmac(self::ALGO, $sum . $iv . $mode . self::RIJNDA, $key, true);
@@ -92,10 +87,10 @@ class Aes
             throw new \InvalidArgumentException($e);
         }
     }
-    
+
     /**
      * Return the encryption mode string. "cbc" or "ctr"
-     * 
+     *
      * @return string
      */
     protected static function mode(): string
