@@ -22,13 +22,7 @@ A petite library of essential encryption functions for PHP7. For PHP5 support, c
 - [Show me some love](#show-me-some-love-heart_eyes) :heart_eyes:
 
 # Install
-Add the following to the require section of your `composer.json` file, then run `composer install`.
-```json
-"require": {
-  "mmeyer2k/dcrypt": "~7.0"
-}
-```
-Or using the command line...
+Add `dcrypt` to your composer.json file requirements.
 ```bash
 composer require "mmeyer2k/dcrypt=~7.0"
 ```
