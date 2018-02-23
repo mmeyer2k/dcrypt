@@ -111,14 +111,4 @@ class Aes extends Cryptobase
         // Return prefix + cyphertext
         return $prefix . $msg;
     }
-
-    /**
-     * Return the encryption mode string. "cbc" or "ctr"
-     * 
-     * @return string
-     */
-    protected static function mode(): string
-    {
-        return substr(static::CIPHER, -3);
-    }
 }
