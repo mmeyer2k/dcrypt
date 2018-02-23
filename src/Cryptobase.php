@@ -27,18 +27,28 @@ namespace Dcrypt;
 class Cryptobase
 {
     /**
+     * This string is used when hashing to ensure cross compatibility between
+     * dcrypt\mcrypt and dcrypt\aes. Since v7, this is only needed for backwards
+     * compatibility with older versions
+     */
+    const RIJNDA = 'rijndael-128';
+    
+    /**
+     * Hardcoded hashing algo string.
+     */
+    const ALGO = 'sha256';
+    
+    /**
      * Create a message authentication checksum.
      *
      * @param string $cyphertext Cyphertext that needs a checksum.
      * @param string $iv         Initialization vector.
      * @param string $key        HMAC key
-     * @param string $cipher     Cipher string
-     * @param string $mode       Cipher mode string
-     * @param string $algo       Hashing algorithm to use for internal operations
+     * @param string $mode       Cipher mode (cbc, ctr)
      *
      * @return string
      */
-    protected static function checksum(string $cyphertext, string $iv, string $key, string $cipher = 'rijndael-128', string $mode = 'cbc', string $algo = 'sha256'): string
+    protected static function checksum(string $cyphertext, string $iv, string $key, string $mode): string
     {
         // Prevent potentially large string concat by hmac-ing the cyphertext
         // by itself...
@@ -50,7 +60,7 @@ class Cryptobase
         }
 
         // ... then hash other elements with previous hmac and return
-        return \hash_hmac($algo, $sum . $iv . $mode . $cipher, $key, true);
+        return \hash_hmac(self::ALGO, $sum . $iv . $mode . self::RIJNDA, $key, true);
     }
 
     /**
@@ -59,16 +69,14 @@ class Cryptobase
      * @param string $password Encryption key
      * @param string $iv       Initialization vector
      * @param int    $cost     Number of HMAC iterations to perform on key
-     * @param string $cipher   Mcrypt cipher
-     * @param string $mode     Mcrypt block mode
-     * @param string $algo     Hashing algorithm to use for internal operations
+     * @param string $mode     Cipher mode (cbc, ctr)
      *
      * @return string
      */
-    protected static function key(string $password, string $iv, int $cost, string $cipher = 'rijndael-128', string $mode = 'cbc', string $algo = 'sha256'): string
+    protected static function key(string $password, string $iv, int $cost, string $mode): string
     {
         // Perform key derivation
-        return Hash::ihmac($iv . $cipher . $mode, $password, $cost, $algo);
+        return Hash::ihmac($iv . self::RIJNDA . $mode, $password, $cost, self::ALGO);
     }
 
     /**
