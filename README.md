@@ -35,7 +35,7 @@ require 'path/to/dcrypt/load.php';
 ## Block Ciphers
 
 ### AES-256-CBC Encryption
-Quickly access AES-256-CBC encryption with `\Dcrypt\AesCbc`. **When in doubt, use this class!** All of the most secure options are the default. Naturally, strongly random initialization vectors are generated upon encryption and standard HMAC (SHA-256) checksums are verified in a time-safe manner before decryption.
+Quickly access AES-256-CBC encryption with `\Dcrypt\AesCbc`. All of the most secure options are the default. Naturally, strongly random initialization vectors are generated upon encryption and standard HMAC (SHA-256) checksums are verified in a time-safe manner before decryption.
 ```php
 $encrypted = \Dcrypt\AesCbc::encrypt($plaintext, $password);
 
@@ -49,7 +49,7 @@ $encrypted = \Dcrypt\AesCtr::encrypt($plaintext, $password);
 
 $plaintext = \Dcrypt\AesCtr::decrypt($encrypted, $password);
 ```
-
+[Definitive StackExchange thread on CBC vs CTR](https://security.stackexchange.com/questions/27776/block-chaining-modes-to-avoid/27780#27780)
 ### Iterative HMAC Key Hardening
 To reduce the effectiveness of brute-force cracking on your encrypted blobs, you can provide an integer `$cost` parameter
 in your encryption/decryption calls. This integer will cause dcrypt to perform `$cost` number of extra HMAC operations on the key before passing it off to the underlying encryption system.
