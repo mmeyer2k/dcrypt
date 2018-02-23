@@ -22,9 +22,9 @@ if (!class_exists('Dcrypt\Aes')) {
     $files = array(
         'Str',
         'Support',
-        'Cryptobase',
-        'Hash',
         'Aes',
+        'Hash',
+        'AesCbc',
         'AesCtr',
         'Otp',
         'Pkcs7',

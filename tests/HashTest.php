@@ -30,6 +30,17 @@ class HashTest extends TestSupport
         $this->assertTrue(Hash::verify($input, $hash, $key));
     }
 
+    public function testHmacAlgoFailure()
+    {
+        try {
+            // This should always throw an exception
+            Hash::hmac('test', '1234', 'an algo that does not exist');
+            $this->assertTrue(false);
+        } catch (\Exception $e) {
+            $this->assertTrue(true);
+        }
+    }
+
     public function testFail()
     {
         $input = str_repeat('A', rand(0, 10000));

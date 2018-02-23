@@ -24,7 +24,7 @@ A petite library of essential encryption functions for PHP7. For PHP5 support, c
 # Install
 Add `dcrypt` to your composer.json file requirements.
 ```bash
-composer require "mmeyer2k/dcrypt=~7.0"
+composer require "mmeyer2k/dcrypt=~8.0"
 ```
 In environments where composer is not available, Dcrypt can be used by including `load.php`.
 ```php
@@ -35,11 +35,11 @@ require 'path/to/dcrypt/load.php';
 ## Block Ciphers
 
 ### AES-256-CBC Encryption
-Quickly access AES-256-CBC encryption with `\Dcrypt\Aes`. **When in doubt, use this class!** All of the most secure options are the default. Naturally, strongly random initialization vectors are generated upon encryption and standard HMAC (SHA-256) checksums are verified in a time-safe manner before decryption.
+Quickly access AES-256-CBC encryption with `\Dcrypt\AesCbc`. All of the most secure options are the default. Naturally, strongly random initialization vectors are generated upon encryption and standard HMAC (SHA-256) checksums are verified in a time-safe manner before decryption.
 ```php
-$encrypted = \Dcrypt\Aes::encrypt($plaintext, $password);
+$encrypted = \Dcrypt\AesCbc::encrypt($plaintext, $password);
 
-$plaintext = \Dcrypt\Aes::decrypt($encrypted, $password);
+$plaintext = \Dcrypt\AesCbc::decrypt($encrypted, $password);
 ```
 
 ### AES-256-CTR Encryption
@@ -49,22 +49,22 @@ $encrypted = \Dcrypt\AesCtr::encrypt($plaintext, $password);
 
 $plaintext = \Dcrypt\AesCtr::decrypt($encrypted, $password);
 ```
-
+[Definitive StackExchange thread on CBC vs CTR](https://security.stackexchange.com/questions/27776/block-chaining-modes-to-avoid/27780#27780)
 ### Iterative HMAC Key Hardening
 To reduce the effectiveness of brute-force cracking on your encrypted blobs, you can provide an integer `$cost` parameter
 in your encryption/decryption calls. This integer will cause dcrypt to perform `$cost` number of extra HMAC operations on the key before passing it off to the underlying encryption system.
 ```php
-$encrypted = \Dcrypt\Aes::encrypt($plaintext, $password, 10000);
+$encrypted = \Dcrypt\AesCbc::encrypt($plaintext, $password, 10000);
 
-$plaintext = \Dcrypt\Aes::decrypt($encrypted, $password, 10000);
+$plaintext = \Dcrypt\AesCbc::decrypt($encrypted, $password, 10000);
 ```
 
 ### Tamper Protection
-By default, `\Dcrypt\Aes` and `\Dcrypt\AesCtr` will throw an `InvalidArgumentException` 
+By default, `AesCbc` and `AesCtr` will throw an `InvalidArgumentException` 
 *before* decryption if the supplied checksum is not valid.
 ```php
 try {
-  $decrypted = \Dcrypt\Aes::decrypt($badInput, $password);
+  $decrypted = \Dcrypt\AesCtr::decrypt($badInput, $password);
 } catch (\InvalidArgumentException $ex) {
   # do something
 }

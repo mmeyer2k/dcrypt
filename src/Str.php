@@ -48,8 +48,8 @@ final class Str
         // Inputs are also cast to string like in symfony stringutils.
         $nonce = \random_bytes(32);
 
-        $known = \hash_hmac('sha256', (string) $known, $nonce, true);
-        $given = \hash_hmac('sha256', (string) $given, $nonce, true);
+        $known = Hash::hmac($known, $nonce, 'sha256');
+        $given = Hash::hmac($given, $nonce, 'sha256');
 
         return \hash_equals($known, $given);
     }
