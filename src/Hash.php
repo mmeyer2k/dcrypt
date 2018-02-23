@@ -54,7 +54,7 @@ final class Hash extends Support
         $cost = self::cost($cost);
 
         // Create key to use for hmac operations
-        $key = \hash_hmac(self::ALGO, $salt, $password, true);
+        $key = self::hmac($salt, $password, self::ALGO);
 
         // Perform hash iterations. Get a 32 byte output value
         $hash = self::ihmac($input, $key, $cost, self::ALGO);
