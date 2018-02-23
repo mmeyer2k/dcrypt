@@ -44,7 +44,7 @@ class Cryptobase
      * @param string $cyphertext Cyphertext that needs a checksum.
      * @param string $iv         Initialization vector.
      * @param string $key        HMAC key
-     * @param string $mode       Cipher mode (cbc, ctr)\
+     * @param string $mode       Cipher mode (cbc, ctr)
      *
      * @return string
      */
