@@ -2,9 +2,9 @@
 
 /**
  * Hash.php
- * 
+ *
  * PHP version 7
- * 
+ *
  * @category Dcrypt
  * @package  Dcrypt
  * @author   Michael Meyer (mmeyer2k) <m.meyer2k@gmail.com>
@@ -16,14 +16,14 @@ namespace Dcrypt;
 
 /**
  * An opaque 512 bit iterative hash function.
- * 
+ *
  * 16 bytes => iv
  * 12 bytes => cost checksum
  *  4 bytes => cost
  * 32 bytes => hmac
- * 
+ *
  * ivivivivivivivivsssssssssssscosthmachmachmachmachmachmachmachmac
- * 
+ *
  * @category Dcrypt
  * @package  Dcrypt
  * @author   Michael Meyer (mmeyer2k) <m.meyer2k@gmail.com>
@@ -37,7 +37,7 @@ final class Hash extends Support
 
     /**
      * Internal function used to build the actual hash.
-     *  
+     *
      * @param string       $input    Data to hash
      * @param string       $password Password to use in HMAC call
      * @param int          $cost     Number of iterations to use
@@ -65,9 +65,9 @@ final class Hash extends Support
 
     /**
      * Return a normalized cost value.
-     * 
+     *
      * @param int $cost Number of iterations to use.
-     * 
+     *
      * @return int
      */
     private static function cost(int $cost): int
@@ -88,39 +88,50 @@ final class Hash extends Support
 
     /**
      * Perform a raw iterative HMAC operation with a configurable algo.
-     * 
+     *
      * This class always performs at least one hash to prevent the input from
      * being passed back unchanged if bad parameters are set.
-     * 
+     *
      * @param string  $data Data to hash.
      * @param string  $key  Key to use to authenticate the hash.
      * @param int     $iter Number of times to iteratate the hash
      * @param string  $algo Name of algo (sha256 or sha512 recommended)
-     * 
+     *
      * @return string
      */
     public static function ihmac(string $data, string $key, int $iter, string $algo = 'sha256'): string
     {
         $iter = abs($iter);
-        
+
         for ($i = 0; $i <= $iter; $i++) {
-            $data = \hash_hmac($algo, $data . $i . $iter, $key, true);
-        }
-        
-        if ($data === false) {
-            throw new \exception("$algo is not supported by hash_hmac"); // @codeCoverageIgnore
+            $data = self::hmac($data . $i . $iter, $key, $algo);
         }
 
         return $data;
     }
 
     /**
+     * Perform a single hmac iteration. This adds an extra layer of safety because hash_hmac can return false if algo
+     * is not valid. Return type hint will throw an exception if this happens.
+     *
+     * @param string  $data Data to hash.
+     * @param string  $key  Key to use to authenticate the hash.
+     * @param string  $algo Name of algo (sha256 is default)
+     *
+     * @return string
+     */
+    public static function hmac(string $data, string $key, string $algo): string
+    {
+        return \hash_hmac($algo, $data, $key, true);
+    }
+
+    /**
      * Hash an input string into a salted 512 byte hash.
-     * 
+     *
      * @param string  $input    Data to hash.
      * @param string  $password HMAC validation password.
      * @param int     $cost     Cost value of the hash.
-     * 
+     *
      * @return string
      */
     public static function make(string $input, string $password, int $cost = 250000): string
@@ -130,11 +141,11 @@ final class Hash extends Support
 
     /**
      * Check the validity of a hash.
-     * 
+     *
      * @param string $input    Input to test.
      * @param string $hash     Known hash to validate against.
-     * @param string $password HMAC password to use during iterative hash. 
-     * 
+     * @param string $password HMAC password to use during iterative hash.
+     *
      * @return boolean
      */
     public static function verify(string $input, string $hash, string $password): bool
