@@ -9,7 +9,6 @@ php:
 branches:
   only:
     - master
-    - refinements
 
 before_script:
   - pear install PHP_CodeSniffer
