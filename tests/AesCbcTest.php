@@ -13,7 +13,7 @@ class AesCbcTest extends TestSupport
         $input = 'AAAAAAAA';
         $key = 'AAAAAAAA';
         $encrypted = AesCbc::encrypt($input, $key, 10);
-        $this->assertEquals($input, Aes::decrypt($encrypted, $key, 10));
+        $this->assertEquals($input, AesCbc::decrypt($encrypted, $key, 10));
 
         $corrupt = self::swaprandbyte($encrypted);
         AesCbc::decrypt($corrupt, $key, 10);
