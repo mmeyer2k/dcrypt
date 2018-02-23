@@ -24,7 +24,7 @@ namespace Dcrypt;
  * @link     https://github.com/mmeyer2k/dcrypt
  * @link     https://apigen.ci/github/mmeyer2k/dcrypt/namespace-Dcrypt.html
  */
-class Aes extends Cryptobase
+class AesCbc extends Aes
 {
     /**
      * AES-256 cipher identifier that will be passed to openssl
