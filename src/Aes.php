@@ -46,12 +46,6 @@ class Aes extends Cryptobase
      * @var int
      */
     const CKSIZE = 32;
-    
-    /**
-     * This string is used when hashing to ensure cross compatibility between
-     * dcrypt\mcrypt and dcrypt\aes.
-     */
-    const RIJNDA = 'rijndael-128';
 
     /**
      * Decrypt cyphertext
@@ -68,7 +62,7 @@ class Aes extends Cryptobase
         $ivr = Str::substr($cyphertext, 0, self::IVSIZE);
 
         // Derive key from password
-        $key = self::key($password, $ivr, $cost, self::RIJNDA, self::mode());
+        $key = self::key($password, $ivr, $cost, self::mode());
 
         // Gather the checksum portion of the cypher text
         $sum = Str::substr($cyphertext, self::IVSIZE, self::CKSIZE);
@@ -77,7 +71,7 @@ class Aes extends Cryptobase
         $msg = Str::substr($cyphertext, self::IVSIZE + self::CKSIZE);
 
         // Calculate verification checksum
-        $chk = self::checksum($msg, $ivr, $key, self::RIJNDA, self::mode());
+        $chk = self::checksum($msg, $ivr, $key, self::mode());
 
         // Verify HMAC before decrypting
         self::checksumVerify($chk, $sum);
@@ -101,7 +95,7 @@ class Aes extends Cryptobase
         $ivr = \random_bytes(self::IVSIZE);
 
         // Derive key from password
-        $key = self::key($password, $ivr, $cost, self::RIJNDA, self::mode());
+        $key = self::key($password, $ivr, $cost, self::mode());
 
         // Encrypt the plaintext
         $msg = \openssl_encrypt($plaintext, static::CIPHER, $key, 1, $ivr);
@@ -112,7 +106,7 @@ class Aes extends Cryptobase
         }
 
         // Create the cypher text prefix (iv + checksum)
-        $prefix = $ivr . self::checksum($msg, $ivr, $key, self::RIJNDA, self::mode());
+        $prefix = $ivr . self::checksum($msg, $ivr, $key, self::mode());
 
         // Return prefix + cyphertext
         return $prefix . $msg;
