@@ -15,7 +15,7 @@
 namespace Dcrypt;
 
 /**
- * Provides functionality common to the dcrypt AES ciphers.
+ * Provides functionality common to the dcrypt AES block ciphers.
  *
  * @category Dcrypt
  * @package  Dcrypt

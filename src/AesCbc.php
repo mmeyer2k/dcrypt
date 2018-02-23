@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Aes.php
+ * AesCbc.php
  * 
  * PHP version 7
  * 
