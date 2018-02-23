@@ -39,13 +39,12 @@ class Cryptobase
      * @param string $cyphertext Cyphertext that needs a checksum.
      * @param string $iv         Initialization vector.
      * @param string $key        HMAC key
-     * @param string $cipher     Cipher string
      * @param string $mode       Cipher mode string
      * @param string $algo       Hashing algorithm to use for internal operations
      *
      * @return string
      */
-    protected static function checksum(string $cyphertext, string $iv, string $key, string $cipher = 'rijndael-128', string $mode = 'cbc', string $algo = 'sha256'): string
+    protected static function checksum(string $cyphertext, string $iv, string $key, string $mode = 'cbc', string $algo = 'sha256'): string
     {
         // Prevent potentially large string concat by hmac-ing the cyphertext
         // by itself...
@@ -66,13 +65,12 @@ class Cryptobase
      * @param string $password Encryption key
      * @param string $iv       Initialization vector
      * @param int    $cost     Number of HMAC iterations to perform on key
-     * @param string $cipher   Mcrypt cipher
      * @param string $mode     Mcrypt block mode
      * @param string $algo     Hashing algorithm to use for internal operations
      *
      * @return string
      */
-    protected static function key(string $password, string $iv, int $cost, string $cipher = 'rijndael-128', string $mode = 'cbc', string $algo = 'sha256'): string
+    protected static function key(string $password, string $iv, int $cost, string $mode = 'cbc', string $algo = 'sha256'): string
     {
         // Perform key derivation
         return Hash::ihmac($iv . self::RIJNDA . $mode, $password, $cost, $algo);
