@@ -89,9 +89,6 @@ final class Hash extends Support
     /**
      * Perform a raw iterative HMAC operation with a configurable algo.
      *
-     * This class always performs at least one hash to prevent the input from
-     * being passed back unchanged if bad parameters are set.
-     *
      * @param string  $data Data to hash.
      * @param string  $key  Key to use to authenticate the hash.
      * @param int     $iter Number of times to iteratate the hash
@@ -101,8 +98,11 @@ final class Hash extends Support
      */
     public static function ihmac(string $data, string $key, int $iter, string $algo = 'sha256'): string
     {
+        // Can't perform negative iterations
         $iter = abs($iter);
 
+        // Perform iterative hmac calls
+        // Make sure $iter value of 0 is handled
         for ($i = 0; $i <= $iter; $i++) {
             $data = self::hmac($data . $i . $iter, $key, $algo);
         }
