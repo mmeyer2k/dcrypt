@@ -64,9 +64,9 @@ By default, `AesCbc` and `AesCtr` will throw an `InvalidArgumentException`
 *before* decryption if the supplied checksum is not valid.
 ```php
 try {
-  $decrypted = \Dcrypt\AesCtr::decrypt($badInput, $password);
+    $decrypted = \Dcrypt\AesCtr::decrypt($badInput, $password);
 } catch (\InvalidArgumentException $ex) {
-  # do something
+    # do something
 }
 ```
 
