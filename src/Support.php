@@ -45,7 +45,7 @@ class Support
      * 
      * @return string
      */
-    protected static function bin2dec($bin)
+    protected static function bin2dec(string $bin): string
     {
         return \hexdec(\bin2hex($bin));
     }
