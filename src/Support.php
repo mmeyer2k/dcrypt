@@ -35,7 +35,7 @@ class Support
      */
     protected static function dec2bin(int $dec): string
     {
-        return self::hex2bin(\str_pad(\dechex($dec), 8, '0', STR_PAD_LEFT));
+        return hex2bin(\str_pad(\dechex($dec), 8, '0', STR_PAD_LEFT));
     }
 
     /**
@@ -48,31 +48,5 @@ class Support
     protected static function bin2dec($bin)
     {
         return \hexdec(\bin2hex($bin));
-    }
-
-    /**
-     * An internal hex2bin implementation for PHP 5.3
-     * 
-     * @param string $hexstr
-     * @return string
-     * @codeCoverageIgnore
-     */
-    protected static function hex2bin(string $hexstr): string
-    {
-        if (\function_exists('hex2bin')) {
-            return \hex2bin($hexstr);
-        }
-
-        $n = \strlen($hexstr);
-        $sbin = '';
-        $i = 0;
-        while ($i < $n) {
-            $a = \substr($hexstr, $i, 2);
-            $c = \pack('H*', $a);
-            $sbin.= $c;
-            $i+=2;
-        }
-
-        return $sbin;
     }
 }
