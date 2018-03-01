@@ -21,7 +21,6 @@ if (!class_exists('Dcrypt\Aes')) {
     // Source files must be in correct order to honor inheritance
     $files = array(
         'Str',
-        'Support',
         'Aes',
         'Hash',
         'AesCbc',
