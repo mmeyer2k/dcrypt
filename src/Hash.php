@@ -31,7 +31,7 @@ namespace Dcrypt;
  * @link     https://github.com/mmeyer2k/dcrypt
  * @link     https://apigen.ci/github/mmeyer2k/dcrypt/namespace-Dcrypt.html
  */
-final class Hash extends Support
+final class Hash
 {
     const ALGO = 'sha256';
 
@@ -165,5 +165,29 @@ final class Hash extends Support
 
         // Return the boolean equivalence
         return Str::equal($hash, self::build($input, $password, $cost, $salt));
+    }
+
+    /**
+     * Turns an integer into a 4 byte binary representation
+     *
+     * @param int $dec Integer to convert to binary
+     *
+     * @return string
+     */
+    private static function dec2bin(int $dec): string
+    {
+        return hex2bin(\str_pad(\dechex($dec), 8, '0', STR_PAD_LEFT));
+    }
+
+    /**
+     * Reverses dec2bin
+     *
+     * @param string $bin Binary string to convert to decimal
+     *
+     * @return string
+     */
+    private static function bin2dec(string $bin): string
+    {
+        return \hexdec(\bin2hex($bin));
     }
 }
