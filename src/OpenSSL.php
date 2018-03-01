@@ -27,7 +27,11 @@ class OpenSSL
      */
     protected static function openssl_encrypt(string $data, string $method, string $key, string $iv): string
     {
-        return \openssl_encrypt($data, $method, $key, 1, $iv);
+        $ret = \openssl_encrypt($data, $method, $key, 1, $iv);
+
+        self::exceptionIfFalse($ret);
+
+        return $ret;
     }
 
     /**
@@ -41,6 +45,23 @@ class OpenSSL
      */
     protected static function openssl_decrypt(string $data, string $method, string $key, string $iv): string
     {
-        return \openssl_decrypt($data, $method, $key, 1, $iv);
+        $ret = \openssl_decrypt($data, $method, $key, 1, $iv);
+
+        self::exceptionIfFalse($ret);
+
+        return $ret;
+    }
+
+    /**
+     * Throw an exception if openssl function returns false
+     *
+     * @param string $data
+     * @throws \Exception
+     */
+    private static function exceptionIfFalse(string $data)
+    {
+        if ($data === false) {
+            throw new \Exception('OpenSSL failed to encrypt/decrypt message.');
+        }
     }
 }
