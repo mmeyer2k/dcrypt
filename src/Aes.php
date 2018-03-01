@@ -24,7 +24,7 @@ namespace Dcrypt;
  * @link     https://github.com/mmeyer2k/dcrypt
  * @link     https://apigen.ci/github/mmeyer2k/dcrypt/namespace-Dcrypt.html
  */
-class Aes
+class Aes extends OpenSSL
 {
     /**
      * This string is used when hashing to ensure cross compatibility between

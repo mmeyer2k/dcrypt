@@ -2,9 +2,9 @@
 
 /**
  * AesCbc.php
- * 
+ *
  * PHP version 7
- * 
+ *
  * @category Dcrypt
  * @package  Dcrypt
  * @author   Michael Meyer (mmeyer2k) <m.meyer2k@gmail.com>
@@ -16,7 +16,7 @@ namespace Dcrypt;
 
 /**
  * Symmetric AES-256-CBC encryption functions powered by OpenSSL.
- * 
+ *
  * @category Dcrypt
  * @package  Dcrypt
  * @author   Michael Meyer (mmeyer2k) <m.meyer2k@gmail.com>
@@ -28,7 +28,7 @@ class AesCbc extends Aes
 {
     /**
      * AES-256 cipher identifier that will be passed to openssl
-     * 
+     *
      * @var string
      */
     const CIPHER = 'aes-256-cbc';
@@ -63,7 +63,7 @@ class AesCbc extends Aes
         self::checksumVerify($chk, $sum);
 
         // Decrypt message and return
-        return \openssl_decrypt($msg, static::CIPHER, $key, 1, $ivr);
+        return self::openssl_decrypt($msg, static::CIPHER, $key, $ivr);
     }
 
     /**
@@ -84,12 +84,7 @@ class AesCbc extends Aes
         $key = self::key($password, $ivr, $cost, self::mode());
 
         // Encrypt the plaintext
-        $msg = \openssl_encrypt($plaintext, static::CIPHER, $key, 1, $ivr);
-
-        // If message could not be encrypted then throw an exception
-        if ($msg === false) {
-            throw new \exception('Could not encrypt the data.'); // @codeCoverageIgnore
-        }
+        $msg = self::openssl_encrypt($plaintext, static::CIPHER, $key, $ivr);
 
         // Create the cypher text prefix (iv + checksum)
         $prefix = $ivr . self::checksum($msg, $ivr, $key, self::mode());
