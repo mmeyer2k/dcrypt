@@ -33,7 +33,6 @@ class Rc4
      * 
      * @param string $str String to be encrypted
      * @param string $key Key to use for encryption
-     * 
      * @return string
      */
     public static function crypt(string $str, string $key): string
@@ -59,7 +58,6 @@ class Rc4
      * is identical between RC4 and Spritz.
      * 
      * @param string $key
-     * 
      * @return array
      */
     protected static function initializeState(string $key): array

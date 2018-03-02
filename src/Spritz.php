@@ -34,7 +34,6 @@ class Spritz extends Rc4
      *
      * @param string $str String to be encrypted
      * @param string $key Key to use for encryption
-     *
      * @return string
      */
     public static function crypt(string $str, string $key): string

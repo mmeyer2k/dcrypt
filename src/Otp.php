@@ -33,7 +33,6 @@ final class Otp
      * @param string $input    Input data to encrypt
      * @param string $password Encryption/decryption key to use on input
      * @param string $algo     Hashing algo to generate keystream
-     * 
      * @return string
      */
     public static function crypt(string $input, string $password, string $algo = 'sha512'): string

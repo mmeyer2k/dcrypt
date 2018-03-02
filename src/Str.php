@@ -38,7 +38,6 @@ final class Str
      *
      * @param string $known       The string of known length to compare against
      * @param string $given       The string that the user can control
-     *
      * @return bool
      */
     public static function equal(string $known, string $given): bool
@@ -58,7 +57,6 @@ final class Str
      * Determine the length of the output of a given hash algorithm in bytes.
      * 
      * @param string $algo Name of algorithm to look up
-     * 
      * @return int
      */
     public static function hashSize(string $algo): int
@@ -70,7 +68,6 @@ final class Str
      * Returns the number of bytes in a string.
      *
      * @param string $string The string whose length we wish to obtain
-     *
      * @return int
      */
     public static function strlen(string $string): int

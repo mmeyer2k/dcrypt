@@ -25,7 +25,7 @@ class OpenSsl
      * @param string $iv     Initialization vector
      * @return string
      */
-    protected static function openssl_encrypt(string $data, string $method, string $key, string $iv): string
+    protected static function opensslEncrypt(string $data, string $method, string $key, string $iv): string
     {
         $ret = \openssl_encrypt($data, $method, $key, 1, $iv);
 
@@ -41,7 +41,7 @@ class OpenSsl
      * @param string $iv     Initialization vector
      * @return string
      */
-    protected static function openssl_decrypt(string $data, string $method, string $key, string $iv): string
+    protected static function opensslDecrypt(string $data, string $method, string $key, string $iv): string
     {
         $ret = \openssl_decrypt($data, $method, $key, 1, $iv);
 

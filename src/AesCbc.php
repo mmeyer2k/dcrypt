@@ -39,7 +39,6 @@ class AesCbc extends Aes
      * @param string $cyphertext Cyphertext to decrypt
      * @param string $password   Password that should be used to decrypt input data
      * @param int    $cost       Number of extra HMAC iterations to perform on key
-     *
      * @return string
      */
     public static function decrypt(string $cyphertext, string $password, int $cost = 0): string
@@ -72,7 +71,6 @@ class AesCbc extends Aes
      * @param string $plaintext Plaintext string to encrypt.
      * @param string $password  Password used to encrypt data.
      * @param int    $cost      Number of extra HMAC iterations to perform on key
-     *
      * @return string
      */
     public static function encrypt(string $plaintext, string $password, int $cost = 0): string

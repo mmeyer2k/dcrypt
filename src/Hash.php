@@ -38,11 +38,10 @@ final class Hash
     /**
      * Internal function used to build the actual hash.
      *
-     * @param string       $input    Data to hash
-     * @param string       $password Password to use in HMAC call
-     * @param int          $cost     Number of iterations to use
-     * @param string|null  $salt     Initialization vector to use in HMAC calls
-     *
+     * @param string      $input    Data to hash
+     * @param string      $password Password to use in HMAC call
+     * @param int         $cost     Number of iterations to use
+     * @param string|null $salt     Initialization vector to use in HMAC calls
      * @return string
      */
     private static function build(string $input, string $password, int $cost, string $salt = null): string
@@ -67,7 +66,6 @@ final class Hash
      * Return a normalized cost value.
      *
      * @param int $cost Number of iterations to use.
-     *
      * @return int
      */
     private static function cost(int $cost): int
@@ -75,6 +73,14 @@ final class Hash
         return $cost % \pow(2, 32);
     }
 
+    /**
+     * Performs hashing functions
+     *
+     * @param int    $cost
+     * @param string $salt
+     * @param string $password
+     * @return string
+     */
     private static function costHash(int $cost, string $salt, string $password): string
     {
         // Hash and return first 12 bytes
@@ -89,11 +95,10 @@ final class Hash
     /**
      * Perform a raw iterative HMAC operation with a configurable algo.
      *
-     * @param string  $data Data to hash.
-     * @param string  $key  Key to use to authenticate the hash.
-     * @param int     $iter Number of times to iteratate the hash
-     * @param string  $algo Name of algo (sha256 or sha512 recommended)
-     *
+     * @param string $data Data to hash.
+     * @param string $key  Key to use to authenticate the hash.
+     * @param int    $iter Number of times to iteratate the hash
+     * @param string $algo Name of algo (sha256 or sha512 recommended)
      * @return string
      */
     public static function ihmac(string $data, string $key, int $iter, string $algo = 'sha256'): string
@@ -114,10 +119,9 @@ final class Hash
      * Perform a single hmac iteration. This adds an extra layer of safety because hash_hmac can return false if algo
      * is not valid. Return type hint will throw an exception if this happens.
      *
-     * @param string  $data Data to hash.
-     * @param string  $key  Key to use to authenticate the hash.
-     * @param string  $algo Name of algo
-     *
+     * @param string $data Data to hash.
+     * @param string $key  Key to use to authenticate the hash.
+     * @param string $algo Name of algo
      * @return string
      */
     public static function hmac(string $data, string $key, string $algo): string
@@ -128,10 +132,9 @@ final class Hash
     /**
      * Hash an input string into a salted 512 byte hash.
      *
-     * @param string  $input    Data to hash.
-     * @param string  $password HMAC validation password.
-     * @param int     $cost     Cost value of the hash.
-     *
+     * @param string $input    Data to hash.
+     * @param string $password HMAC validation password.
+     * @param int    $cost     Cost value of the hash.
      * @return string
      */
     public static function make(string $input, string $password, int $cost = 250000): string
@@ -145,7 +148,6 @@ final class Hash
      * @param string $input    Input to test.
      * @param string $hash     Known hash to validate against.
      * @param string $password HMAC password to use during iterative hash.
-     *
      * @return boolean
      */
     public static function verify(string $input, string $hash, string $password): bool
@@ -171,7 +173,6 @@ final class Hash
      * Turns an integer into a 4 byte binary representation
      *
      * @param int $dec Integer to convert to binary
-     *
      * @return string
      */
     private static function dec2bin(int $dec): string
@@ -183,7 +184,6 @@ final class Hash
      * Reverses dec2bin
      *
      * @param string $bin Binary string to convert to decimal
-     *
      * @return string
      */
     private static function bin2dec(string $bin): string

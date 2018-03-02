@@ -55,18 +55,17 @@ class Aes extends OpenSsl
     /**
      * Create a message authentication checksum.
      *
-     * @param string $cyphertext Cyphertext that needs a checksum.
+     * @param string $cyphertext Ciphertext that needs a checksum.
      * @param string $iv         Initialization vector.
      * @param string $key        HMAC key
      * @param string $mode       Cipher mode (cbc, ctr)
-     *
      * @return string
      */
-    protected static function checksum(string $cyphertext, string $iv, string $key, string $mode): string
+    protected static function checksum(string $data, string $iv, string $key, string $mode): string
     {
-        // Prevent potentially multiple large string concats by hmac-ing the cyphertext
+        // Prevent potentially multiple large string concats by hmac-ing the input data
         // by itself first...
-        $sum = Hash::hmac($cyphertext, $key, self::ALGO);
+        $sum = Hash::hmac($data, $key, self::ALGO);
 
         // Add the other elements together before performing the final hash
         $sum = $sum . $iv . $mode . self::RIJNDA;
@@ -82,7 +81,6 @@ class Aes extends OpenSsl
      * @param string $iv       Initialization vector
      * @param int    $cost     Number of HMAC iterations to perform on key
      * @param string $mode     Cipher mode (cbc, ctr)
-     *
      * @return string
      */
     protected static function key(string $password, string $iv, int $cost, string $mode): string
@@ -96,6 +94,7 @@ class Aes extends OpenSsl
      *
      * @param string $calculated
      * @param string $supplied
+     * @throws \InvalidArgumentException
      */
     protected static function checksumVerify(string $calculated, string $supplied)
     {

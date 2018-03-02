@@ -31,7 +31,6 @@ final class Pkcs7
      * 
      * @param string  $input     String to pad
      * @param int     $blocksize Block size in bytes
-     * 
      * @return string
      */
     public static function pad(string $input, int $blocksize): string
@@ -48,7 +47,6 @@ final class Pkcs7
      * 
      * @param int $inputsize Size of the input in bytes
      * @param int $blocksize Blocksize in bytes
-     * 
      * @return string
      */
     private static function paddingString(int $inputsize, int $blocksize): string
@@ -64,7 +62,6 @@ final class Pkcs7
      * PKCS #7 unpadding function.
      * 
      * @param string $input Padded string to unpad
-     * 
      * @return string
      */
     public static function unpad(string $input): string
