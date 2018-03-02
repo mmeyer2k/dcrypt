@@ -29,7 +29,7 @@ class OpenSSL
     {
         $ret = \openssl_encrypt($data, $method, $key, 1, $iv);
 
-        return self::returnOpensslOutput($ret);
+        return self::returnOrException($ret);
     }
 
     /**
@@ -45,7 +45,7 @@ class OpenSSL
     {
         $ret = \openssl_decrypt($data, $method, $key, 1, $iv);
 
-        return self::returnOpensslOutput($ret);
+        return self::returnOrException($ret);
     }
 
     /**
@@ -55,7 +55,7 @@ class OpenSSL
      * @return string
      * @throws \Exception
      */
-    private static function returnOpensslOutput($data): string
+    private static function returnOrException($data): string
     {
         if ($data === false) {
             throw new \Exception('OpenSSL failed to encrypt/decrypt message.');
