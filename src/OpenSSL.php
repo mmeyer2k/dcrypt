@@ -55,7 +55,7 @@ class OpenSSL
      * @return string
      * @throws \Exception
      */
-    private static function returnOpensslOutput(string $data): string
+    private static function returnOpensslOutput($data): string
     {
         if ($data === false) {
             throw new \Exception('OpenSSL failed to encrypt/decrypt message.');
