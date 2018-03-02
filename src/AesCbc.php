@@ -62,7 +62,7 @@ class AesCbc extends Aes
         self::checksumVerify($chk, $sum);
 
         // Decrypt message and return
-        return self::openssl_decrypt($msg, static::CIPHER, $key, $ivr);
+        return self::opensslDecrypt($msg, static::CIPHER, $key, $ivr);
     }
 
     /**
@@ -82,7 +82,7 @@ class AesCbc extends Aes
         $key = self::key($password, $ivr, $cost, self::mode());
 
         // Encrypt the plaintext
-        $msg = self::openssl_encrypt($plaintext, static::CIPHER, $key, $ivr);
+        $msg = self::opensslEncrypt($plaintext, static::CIPHER, $key, $ivr);
 
         // Create the cypher text prefix (iv + checksum)
         $prefix = $ivr . self::checksum($msg, $ivr, $key, self::mode());
