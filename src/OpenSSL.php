@@ -14,7 +14,7 @@
 
 namespace Dcrypt;
 
-class OpenSSL
+class OpenSsl
 {
     /**
      * OpenSSL encrypt wrapper function
