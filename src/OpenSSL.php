@@ -19,10 +19,10 @@ class OpenSSL
     /**
      * OpenSSL encrypt wrapper function
      *
-     * @param string $data
-     * @param string $method
-     * @param string $key
-     * @param string $iv
+     * @param string $data   Data to decrypt
+     * @param string $method Cipher method to use
+     * @param string $key    Key string
+     * @param string $iv     Initialization vector
      * @return string
      */
     protected static function openssl_encrypt(string $data, string $method, string $key, string $iv): string
@@ -35,10 +35,10 @@ class OpenSSL
     /**
      * OpenSSL decrypt wrapper function
      *
-     * @param string $data
-     * @param string $method
-     * @param string $key
-     * @param string $iv
+     * @param string $data   Data to decrypt
+     * @param string $method Cipher method to use
+     * @param string $key    Key string
+     * @param string $iv     Initialization vector
      * @return string
      */
     protected static function openssl_decrypt(string $data, string $method, string $key, string $iv): string
@@ -51,7 +51,8 @@ class OpenSSL
     /**
      * Throw an exception if openssl function returns false
      *
-     * @param string $data
+     * @param string|bool $data
+     * @return string
      * @throws \Exception
      */
     private static function returnOpensslOutput(string $data): string
