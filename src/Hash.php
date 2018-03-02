@@ -116,7 +116,7 @@ final class Hash
      *
      * @param string  $data Data to hash.
      * @param string  $key  Key to use to authenticate the hash.
-     * @param string  $algo Name of algo (sha256 is default)
+     * @param string  $algo Name of algo
      *
      * @return string
      */
