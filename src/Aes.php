@@ -55,10 +55,10 @@ class Aes extends OpenSsl
     /**
      * Create a message authentication checksum.
      *
-     * @param string $cyphertext Ciphertext that needs a checksum.
-     * @param string $iv         Initialization vector.
-     * @param string $key        HMAC key
-     * @param string $mode       Cipher mode (cbc, ctr)
+     * @param string $data Ciphertext that needs a checksum.
+     * @param string $iv   Initialization vector.
+     * @param string $key  HMAC key
+     * @param string $mode Cipher mode (cbc, ctr)
      * @return string
      */
     protected static function checksum(string $data, string $iv, string $key, string $mode): string
