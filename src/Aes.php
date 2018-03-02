@@ -85,7 +85,6 @@ class Aes extends OpenSsl
      */
     protected static function key(string $password, string $iv, int $cost, string $mode): string
     {
-        // Perform key derivation
         return Hash::ihmac($iv . self::RIJNDA . $mode, $password, $cost, self::ALGO);
     }
 
