@@ -36,18 +36,18 @@ class AesCbc extends Aes
     /**
      * Decrypt cyphertext
      *
-     * @param string $data     Cyphertext to decrypt
-     * @param string $password Password that should be used to decrypt input data
-     * @param int    $cost     Number of extra HMAC iterations to perform on key
+     * @param string $data Cyphertext to decrypt
+     * @param string $pass Password that should be used to decrypt input data
+     * @param int    $cost Number of extra HMAC iterations to perform on key
      * @return string
      */
-    public static function decrypt(string $data, string $password, int $cost = 0): string
+    public static function decrypt(string $data, string $pass, int $cost = 0): string
     {
         // Find the IV at the beginning of the cypher text
         $ivr = Str::substr($data, 0, self::IVSIZE);
 
         // Derive key from password
-        $key = self::key($password, $ivr, $cost, self::mode());
+        $key = self::key($pass, $ivr, $cost, self::mode());
 
         // Gather the checksum portion of the ciphertext
         $sum = Str::substr($data, self::IVSIZE, self::CKSIZE);
@@ -68,18 +68,18 @@ class AesCbc extends Aes
     /**
      * Encrypt plaintext
      *
-     * @param string $data     Plaintext string to encrypt.
-     * @param string $password Password used to encrypt data.
-     * @param int    $cost     Number of extra HMAC iterations to perform on key
+     * @param string $data Plaintext string to encrypt.
+     * @param string $pass Password used to encrypt data.
+     * @param int    $cost Number of extra HMAC iterations to perform on key
      * @return string
      */
-    public static function encrypt(string $data, string $password, int $cost = 0): string
+    public static function encrypt(string $data, string $pass, int $cost = 0): string
     {
         // Generate IV of appropriate size.
         $ivr = \random_bytes(self::IVSIZE);
 
         // Derive key from password
-        $key = self::key($password, $ivr, $cost, self::mode());
+        $key = self::key($pass, $ivr, $cost, self::mode());
 
         // Encrypt the plaintext
         $msg = self::opensslEncrypt($data, static::CIPHER, $key, $ivr);
