@@ -36,24 +36,24 @@ class AesCbc extends Aes
     /**
      * Decrypt cyphertext
      *
-     * @param string $cyphertext Cyphertext to decrypt
-     * @param string $password   Password that should be used to decrypt input data
-     * @param int    $cost       Number of extra HMAC iterations to perform on key
+     * @param string $data     Cyphertext to decrypt
+     * @param string $password Password that should be used to decrypt input data
+     * @param int    $cost     Number of extra HMAC iterations to perform on key
      * @return string
      */
-    public static function decrypt(string $cyphertext, string $password, int $cost = 0): string
+    public static function decrypt(string $data, string $password, int $cost = 0): string
     {
         // Find the IV at the beginning of the cypher text
-        $ivr = Str::substr($cyphertext, 0, self::IVSIZE);
+        $ivr = Str::substr($data, 0, self::IVSIZE);
 
         // Derive key from password
         $key = self::key($password, $ivr, $cost, self::mode());
 
         // Gather the checksum portion of the cypher text
-        $sum = Str::substr($cyphertext, self::IVSIZE, self::CKSIZE);
+        $sum = Str::substr($data, self::IVSIZE, self::CKSIZE);
 
         // Gather message portion of cyphertext after iv and checksum
-        $msg = Str::substr($cyphertext, self::IVSIZE + self::CKSIZE);
+        $msg = Str::substr($data, self::IVSIZE + self::CKSIZE);
 
         // Calculate verification checksum
         $chk = self::checksum($msg, $ivr, $key, self::mode());
@@ -68,12 +68,12 @@ class AesCbc extends Aes
     /**
      * Encrypt plaintext
      *
-     * @param string $plaintext Plaintext string to encrypt.
-     * @param string $password  Password used to encrypt data.
-     * @param int    $cost      Number of extra HMAC iterations to perform on key
+     * @param string $data     Plaintext string to encrypt.
+     * @param string $password Password used to encrypt data.
+     * @param int    $cost     Number of extra HMAC iterations to perform on key
      * @return string
      */
-    public static function encrypt(string $plaintext, string $password, int $cost = 0): string
+    public static function encrypt(string $data, string $password, int $cost = 0): string
     {
         // Generate IV of appropriate size.
         $ivr = \random_bytes(self::IVSIZE);
@@ -82,7 +82,7 @@ class AesCbc extends Aes
         $key = self::key($password, $ivr, $cost, self::mode());
 
         // Encrypt the plaintext
-        $msg = self::opensslEncrypt($plaintext, static::CIPHER, $key, $ivr);
+        $msg = self::opensslEncrypt($data, static::CIPHER, $key, $ivr);
 
         // Create the cypher text prefix (iv + checksum)
         $prefix = $ivr . self::checksum($msg, $ivr, $key, self::mode());
