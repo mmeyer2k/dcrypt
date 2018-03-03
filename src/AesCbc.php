@@ -49,10 +49,10 @@ class AesCbc extends Aes
         // Derive key from password
         $key = self::key($password, $ivr, $cost, self::mode());
 
-        // Gather the checksum portion of the cypher text
+        // Gather the checksum portion of the ciphertext
         $sum = Str::substr($data, self::IVSIZE, self::CKSIZE);
 
-        // Gather message portion of cyphertext after iv and checksum
+        // Gather message portion of ciphertext after iv and checksum
         $msg = Str::substr($data, self::IVSIZE + self::CKSIZE);
 
         // Calculate verification checksum
