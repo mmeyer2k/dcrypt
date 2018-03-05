@@ -63,11 +63,11 @@ class Aes extends OpenSsl
      */
     protected static function checksum(string $data, string $iv, string $key, string $mode): string
     {
-        // Prevent potentially multiple large string concats by hmac-ing the input data
+        // Prevent multiple potentially large string concats by hmac-ing the input data
         // by itself first...
         $sum = Hash::hmac($data, $key, self::ALGO);
 
-        // Add the other elements together before performing the final hash
+        // Then add the other input elements together before performing the final hash
         $sum = $sum . $iv . $mode . self::RIJNDA;
 
         // ... then hash other elements with previous hmac and return
