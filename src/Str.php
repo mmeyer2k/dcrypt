@@ -36,8 +36,8 @@ final class Str
      * comparison so information is not leaked when strings are not of
      * equal length.
      *
-     * @param string $known       The string of known length to compare against
-     * @param string $given       The string that the user can control
+     * @param string $known The string of known length to compare against
+     * @param string $given The string that the user can control
      * @return bool
      */
     public static function equal(string $known, string $given): bool
