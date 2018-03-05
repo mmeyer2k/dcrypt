@@ -77,15 +77,15 @@ class Aes extends OpenSsl
     /**
      * Transform password into key and perform iterative HMAC (if specified)
      *
-     * @param string $password Encryption key
-     * @param string $iv       Initialization vector
-     * @param int    $cost     Number of HMAC iterations to perform on key
-     * @param string $mode     Cipher mode (cbc, ctr)
+     * @param string $pass Encryption key
+     * @param string $iv   Initialization vector
+     * @param int    $cost Number of HMAC iterations to perform on key
+     * @param string $mode Cipher mode (cbc, ctr)
      * @return string
      */
-    protected static function key(string $password, string $iv, int $cost, string $mode): string
+    protected static function key(string $pass, string $iv, int $cost, string $mode): string
     {
-        return Hash::ihmac($iv . self::RIJNDA . $mode, $password, $cost, self::ALGO);
+        return Hash::ihmac($iv . self::RIJNDA . $mode, $pass, $cost, self::ALGO);
     }
 
     /**
