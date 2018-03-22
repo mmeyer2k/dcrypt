@@ -46,14 +46,14 @@ class AesCbc extends Aes
         // Find the IV at the beginning of the cypher text
         $ivr = Str::substr($data, 0, self::IVSIZE);
 
-        // Derive key from password
-        $key = self::key($pass, $ivr, $cost, self::mode());
-
         // Gather the checksum portion of the ciphertext
         $sum = Str::substr($data, self::IVSIZE, self::CKSIZE);
 
         // Gather message portion of ciphertext after iv and checksum
         $msg = Str::substr($data, self::IVSIZE + self::CKSIZE);
+
+        // Derive key from password
+        $key = self::key($pass, $ivr, $cost, self::mode());
 
         // Calculate verification checksum
         $chk = self::checksum($msg, $ivr, $key, self::mode());
