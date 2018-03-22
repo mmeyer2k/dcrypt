@@ -42,11 +42,12 @@ final class Str
      */
     public static function equal(string $known, string $given): bool
     {
+        // Create some entropy
+        $nonce = \random_bytes(32);
+
         // We hash the 2 inputs at this point because hash_equals is still 
         // vulnerable to timing attacks when the inputs have different sizes.
         // Inputs are also cast to string like in symfony stringutils.
-        $nonce = \random_bytes(32);
-
         $known = Hash::hmac($known, $nonce, 'sha256');
         $given = Hash::hmac($given, $nonce, 'sha256');
 
