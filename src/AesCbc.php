@@ -85,9 +85,9 @@ class AesCbc extends Aes
         $msg = self::opensslEncrypt($data, static::CIPHER, $key, $ivr);
 
         // Create the cypher text prefix (iv + checksum)
-        $prefix = $ivr . self::checksum($msg, $ivr, $key, self::mode());
+        $pre = $ivr . self::checksum($msg, $ivr, $key, self::mode());
 
         // Return prefix + cyphertext
-        return $prefix . $msg;
+        return $pre . $msg;
     }
 }
