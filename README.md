@@ -1,5 +1,6 @@
 :closed_lock_with_key:dcrypt
 ======
+[![Total Downloads](https://poser.pugx.org/mmeyer2k/phpunit/dcrypt)](https://packagist.org/packages/mmeyer2k/dcrypt)
 [![Build Status](https://travis-ci.org/mmeyer2k/dcrypt.png)](https://travis-ci.org/mmeyer2k/dcrypt)
 [![Code Coverage](https://scrutinizer-ci.com/g/mmeyer2k/dcrypt/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/mmeyer2k/dcrypt/?branch=master)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/mmeyer2k/dcrypt/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/mmeyer2k/dcrypt/?branch=master)
