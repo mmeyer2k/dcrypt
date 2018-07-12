@@ -53,16 +53,16 @@ class AesCbc extends Aes
         $msg = Str::substr($data, static::IVSIZE + static::CKSIZE);
 
         // Derive key from password
-        $key = self::key($pass, $ivr, $cost, self::mode());
+        $key = static::key($pass, $ivr, $cost, static::mode());
 
         // Calculate verification checksum
-        $chk = self::checksum($msg, $ivr, $key, self::mode());
+        $chk = static::checksum($msg, $ivr, $key, static::mode());
 
         // Verify HMAC before decrypting
-        self::checksumVerify($chk, $sum);
+        static::checksumVerify($chk, $sum);
 
         // Decrypt message and return
-        return self::opensslDecrypt($msg, static::CIPHER, $key, $ivr);
+        return static::opensslDecrypt($msg, static::CIPHER, $key, $ivr);
     }
 
     /**
@@ -79,13 +79,13 @@ class AesCbc extends Aes
         $ivr = \random_bytes(static::IVSIZE);
 
         // Derive key from password
-        $key = self::key($pass, $ivr, $cost, self::mode());
+        $key = self::key($pass, $ivr, $cost, static::mode());
 
         // Encrypt the plaintext
-        $msg = self::opensslEncrypt($data, static::CIPHER, $key, $ivr);
+        $msg = static::opensslEncrypt($data, static::CIPHER, $key, $ivr);
 
         // Create the cypher text prefix (iv + checksum)
-        $pre = $ivr . self::checksum($msg, $ivr, $key, self::mode());
+        $pre = $ivr . static::checksum($msg, $ivr, $key, static::mode());
 
         // Return prefix + cyphertext
         return $pre . $msg;
