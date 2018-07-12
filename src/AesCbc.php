@@ -44,13 +44,13 @@ class AesCbc extends Aes
     public static function decrypt(string $data, string $pass, int $cost = 0): string
     {
         // Find the IV at the beginning of the cypher text
-        $ivr = Str::substr($data, 0, self::IVSIZE);
+        $ivr = Str::substr($data, 0, static::IVSIZE);
 
         // Gather the checksum portion of the ciphertext
-        $sum = Str::substr($data, self::IVSIZE, self::CKSIZE);
+        $sum = Str::substr($data, static::IVSIZE, static::CKSIZE);
 
         // Gather message portion of ciphertext after iv and checksum
-        $msg = Str::substr($data, self::IVSIZE + self::CKSIZE);
+        $msg = Str::substr($data, static::IVSIZE + static::CKSIZE);
 
         // Derive key from password
         $key = self::key($pass, $ivr, $cost, self::mode());
@@ -76,7 +76,7 @@ class AesCbc extends Aes
     public static function encrypt(string $data, string $pass, int $cost = 0): string
     {
         // Generate IV of appropriate size.
-        $ivr = \random_bytes(self::IVSIZE);
+        $ivr = \random_bytes(static::IVSIZE);
 
         // Derive key from password
         $key = self::key($pass, $ivr, $cost, self::mode());

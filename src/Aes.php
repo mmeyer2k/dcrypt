@@ -65,13 +65,13 @@ class Aes extends OpenSsl
     {
         // Prevent multiple potentially large string concats by hmac-ing the input data
         // by itself first...
-        $sum = Hash::hmac($data, $key, self::ALGO);
+        $sum = Hash::hmac($data, $key, static::ALGO);
 
         // Then add the other input elements together before performing the final hash
         $sum = $sum . $iv . $mode . self::RIJNDA;
 
         // ... then hash other elements with previous hmac and return
-        return Hash::hmac($sum, $key, self::ALGO);
+        return Hash::hmac($sum, $key, static::ALGO);
     }
 
     /**
@@ -85,7 +85,7 @@ class Aes extends OpenSsl
      */
     protected static function key(string $pass, string $iv, int $cost, string $mode): string
     {
-        return Hash::ihmac($iv . self::RIJNDA . $mode, $pass, $cost, self::ALGO);
+        return Hash::ihmac($iv . self::RIJNDA . $mode, $pass, $cost, static::ALGO);
     }
 
     /**
