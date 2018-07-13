@@ -86,7 +86,7 @@ class TinyFish extends \Dcrypt\OpensslBridge
 ```
 
 **NOTE**:
-Only `` and `` are tested by this library. If you roll your own, write some tests!
+Only `\Dcrypt\AesCbc` and `\Dcrypt\AesCtr` are tested by this library. If you roll your own, write some tests!
 
 ### Iterative HMAC Key Hardening
 To reduce the effectiveness of brute-force cracking on your encrypted blobs, you can provide an integer `$cost` parameter in your encryption/decryption calls. 
