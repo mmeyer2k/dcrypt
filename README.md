@@ -20,7 +20,6 @@ For PHP5 support, check out the legacy branch [here](https://github.com/mmeyer2k
   - [Key Derivation Function](#key-derivation-function)
   - [Time-safe String Comparison](#time-safe-string-comparison)
 - [Usage Notes](#usage-notes)
-- [API Documentation](#api-documentation)
 - [Show me some love](#show-me-some-love-heart_eyes) :heart_eyes:
 
 # Install
@@ -194,9 +193,6 @@ $equals = \Dcrypt\Str::equal('known', 'given');
   1. Known offset + length is how the components of the cyphertexts are parsed. No serialization, marker bytes, encoding schemes or any other nonsense is used. Because of this, the output size of the block ciphers is easily predictable.
   1. The output size of `AesCbc::encrypt` on a 10 byte plaintext would be: IV (16 bytes) + SHA-256 HMAC (32 bytes) + encrypted plaintext and padding bytes (16 bytes) = 64 bytes.
 1. Dcrypt is built entirely with static functions. If you are using the `new` keyword on any Dcrypt classes, you are doing it wrong!
-
-# API Documentation
-The latest API documentation can be found [here](https://mmeyer2k.github.io/dcrypt/).
 
 # Show me some love :heart_eyes:
 Developing dcrypt has been a labor of love for many years. 
