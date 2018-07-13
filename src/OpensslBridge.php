@@ -97,7 +97,6 @@ class OpensslBridge
      * @param string $data Ciphertext that needs a checksum.
      * @param string $iv   Initialization vector.
      * @param string $key  HMAC key
-     * @param string $mode Cipher mode (cbc, ctr)
      * @return string
      */
     private static function checksum(string $data, string $iv, string $key): string
