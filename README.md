@@ -57,7 +57,8 @@ $plaintext = \Dcrypt\AesCtr::decrypt($encrypted, $password);
 [Definitive StackExchange thread on CBC vs CTR](https://security.stackexchange.com/questions/27776/block-chaining-modes-to-avoid/27780#27780)
 
 ### Custom Encryption Suites
-`dcrypt`'s internal functions are easily extendable by overloading the `OpensslBridge` class.
+`dcrypt`'s internal functions are easily extendable by overloading the `OpensslBridge` class. 
+Use `openssl_get_cipher_method()` and `hash_algos()` to gather available options.
 
 ```php
 <?php
@@ -83,6 +84,9 @@ class TinyFish extends \Dcrypt\OpensslBridge
     const CHKSUM = 'crc32';
 }
 ```
+
+**NOTE**:
+Only `` and `` are tested by this library. If you roll your own, write some tests!
 
 ### Iterative HMAC Key Hardening
 To reduce the effectiveness of brute-force cracking on your encrypted blobs, you can provide an integer `$cost` parameter in your encryption/decryption calls. 
