@@ -56,8 +56,8 @@ $plaintext = \Dcrypt\AesCtr::decrypt($encrypted, $password);
 ```
 [Definitive StackExchange thread on CBC vs CTR](https://security.stackexchange.com/questions/27776/block-chaining-modes-to-avoid/27780#27780)
 ### Iterative HMAC Key Hardening
-To reduce the effectiveness of brute-force cracking on your encrypted blobs, you can provide an integer `$cost` parameter
-in your encryption/decryption calls. This integer will cause dcrypt to perform `$cost` number of extra HMAC operations on the key before passing it off to the underlying encryption system.
+To reduce the effectiveness of brute-force cracking on your encrypted blobs, you can provide an integer `$cost` parameter in your encryption/decryption calls. 
+This integer will cause dcrypt to perform `$cost` number of extra HMAC operations on the key before passing it off to the underlying encryption system.
 ```php
 $encrypted = \Dcrypt\AesCbc::encrypt($plaintext, $password, 10000);
 
@@ -166,7 +166,8 @@ $equals = \Dcrypt\Str::equal('known', 'given');
 The latest API documentation can be found [here](https://mmeyer2k.github.io/dcrypt/).
 
 # Show me some love :heart_eyes:
-Developing dcrypt has been a labor of love for many years. If you find dcrypt useful, please consider donating some Litecoin to `LN97LrLCNiv14V6fntp247H2pj9UiFzUQZ`.
+Developing dcrypt has been a labor of love for many years. 
+If you find dcrypt useful, please consider donating some Litecoin to `LN97LrLCNiv14V6fntp247H2pj9UiFzUQZ`.
  
  ![litecoin address](https://rawgit.com/mmeyer2k/dcrypt/master/litecoin.png)
 
