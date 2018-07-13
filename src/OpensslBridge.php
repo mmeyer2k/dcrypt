@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Aes.php
+ * OpensslBridge.php
  *
  * PHP version 7
  *
@@ -24,7 +24,7 @@ namespace Dcrypt;
  * @link     https://github.com/mmeyer2k/dcrypt
  * @link     https://apigen.ci/github/mmeyer2k/dcrypt/namespace-Dcrypt.html
  */
-class Aes
+class OpensslBridge
 {
     /**
      * This string is used when hashing to ensure cross compatibility between
@@ -62,7 +62,7 @@ class Aes
         static::checksumVerify($chk, $sum);
 
         // Decrypt message and return
-        return OpenSsl::decrypt($msg, static::CIPHER, $key, $ivr);
+        return OpensslWrapper::decrypt($msg, static::CIPHER, $key, $ivr);
     }
 
     /**
@@ -82,7 +82,7 @@ class Aes
         $key = self::key($pass, $ivr, $cost);
 
         // Encrypt the plaintext
-        $msg = OpenSsl::encrypt($data, static::CIPHER, $key, $ivr);
+        $msg = OpensslWrapper::encrypt($data, static::CIPHER, $key, $ivr);
 
         // Create the cypher text prefix (iv + checksum)
         $pre = $ivr . static::checksum($msg, $ivr, $key);

@@ -1,7 +1,7 @@
 <?php
 
 /**
- * OpenSSL.php
+ * OpenSslWrapper.php
  *
  * PHP version 7
  *
@@ -14,7 +14,7 @@
 
 namespace Dcrypt;
 
-class OpenSsl
+class OpensslWrapper
 {
 
     /**
