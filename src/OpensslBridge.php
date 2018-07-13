@@ -44,19 +44,19 @@ class OpensslBridge
     public static function decrypt(string $data, string $pass, int $cost = 0): string
     {
         // Find the IV at the beginning of the cypher text
-        $ivr = Str::substr($data, 0, static::ivsize());
+        $ivr = Str::substr($data, 0, self::ivsize());
 
         // Gather the checksum portion of the ciphertext
-        $sum = Str::substr($data, static::ivsize(), static::cksize());
+        $sum = Str::substr($data, self::ivsize(), self::cksize());
 
         // Gather message portion of ciphertext after iv and checksum
-        $msg = Str::substr($data, static::ivsize() + static::cksize());
+        $msg = Str::substr($data, self::ivsize() + self::cksize());
 
         // Derive key from password
-        $key = static::key($pass, $ivr, $cost);
+        $key = self::key($pass, $ivr, $cost);
 
         // Calculate verification checksum
-        $chk = static::checksum($msg, $ivr, $key);
+        $chk = self::checksum($msg, $ivr, $key);
 
         // Verify HMAC before decrypting
         static::checksumVerify($chk, $sum);
@@ -76,7 +76,7 @@ class OpensslBridge
     public static function encrypt(string $data, string $pass, int $cost = 0): string
     {
         // Generate IV of appropriate size.
-        $ivr = \random_bytes(static::ivsize());
+        $ivr = \random_bytes(self::ivsize());
 
         // Derive key from password
         $key = self::key($pass, $ivr, $cost);
