@@ -59,7 +59,7 @@ class OpensslBridge
         $chk = self::checksum($msg, $ivr, $key);
 
         // Verify HMAC before decrypting
-        static::checksumVerify($chk, $sum);
+        self::checksumVerify($chk, $sum);
 
         // Decrypt message and return
         return OpensslWrapper::decrypt($msg, static::CIPHER, $key, $ivr);
@@ -85,7 +85,7 @@ class OpensslBridge
         $msg = OpensslWrapper::encrypt($data, static::CIPHER, $key, $ivr);
 
         // Create the cypher text prefix (iv + checksum)
-        $pre = $ivr . static::checksum($msg, $ivr, $key);
+        $pre = $ivr . self::checksum($msg, $ivr, $key);
 
         // Return prefix + cyphertext
         return $pre . $msg;
@@ -107,7 +107,7 @@ class OpensslBridge
         $sum = Hash::hmac($data, $key, static::CHKSUM);
 
         // Then add the other input elements together before performing the final hash
-        $sum = $sum . $iv . static::mode() . self::RIJNDA;
+        $sum = $sum . $iv . self::mode() . self::RIJNDA;
 
         // ... then hash other elements with previous hmac and return
         return Hash::hmac($sum, $key, static::CHKSUM);
@@ -123,7 +123,7 @@ class OpensslBridge
      */
     private static function key(string $pass, string $iv, int $cost): string
     {
-        $data = $iv . self::RIJNDA . static::mode();
+        $data = $iv . self::RIJNDA . self::mode();
 
         return Hash::ihmac($data, $pass, $cost, static::CHKSUM);
     }
