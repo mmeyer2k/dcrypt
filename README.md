@@ -55,6 +55,35 @@ $encrypted = \Dcrypt\AesCtr::encrypt($plaintext, $password);
 $plaintext = \Dcrypt\AesCtr::decrypt($encrypted, $password);
 ```
 [Definitive StackExchange thread on CBC vs CTR](https://security.stackexchange.com/questions/27776/block-chaining-modes-to-avoid/27780#27780)
+
+### Custom Encryption Suites
+`dcrypt`'s internal functions are easily extendable by overloading the `OpensslBridge` class.
+
+```php
+<?php
+
+/**
+ * Use blowfish64 + crc32 to create smaller output sizes. 
+ * This is useful for medium security situations where minimal space consumption is important.
+ */
+class TinyFish extends \Dcrypt\OpensslBridge 
+{
+    /**
+     * Specify using blowfish ofb cipher method
+     *
+     * @var string
+     */
+    const CIPHER = 'bf-ofb';
+    
+    /**
+     * Use crc32 hashing algo to authenticate messages
+     *
+     * @var string
+     */
+    const CHKSUM = 'crc32';
+}
+```
+
 ### Iterative HMAC Key Hardening
 To reduce the effectiveness of brute-force cracking on your encrypted blobs, you can provide an integer `$cost` parameter in your encryption/decryption calls. 
 This integer will cause dcrypt to perform `$cost` number of extra HMAC operations on the key before passing it off to the underlying encryption system.

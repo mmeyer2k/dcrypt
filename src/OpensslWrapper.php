@@ -1,7 +1,7 @@
 <?php
 
 /**
- * OpenSslWrapper.php
+ * OpensslWrapper.php
  *
  * PHP version 7
  *
