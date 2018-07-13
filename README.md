@@ -9,7 +9,8 @@
 [![Latest Stable Version](https://poser.pugx.org/mmeyer2k/dcrypt/version)](https://packagist.org/packages/mmeyer2k/dcrypt)
 [![SensioLabsInsight](https://insight.sensiolabs.com/projects/c48adefc-874e-4d14-88dc-05f7f407f968/mini.png)](https://insight.sensiolabs.com/projects/c48adefc-874e-4d14-88dc-05f7f407f968)
 
-A petite library of essential encryption functions for PHP7. For PHP5 support, check out the legacy branch [here](https://github.com/mmeyer2k/dcrypt/tree/4.0.2).
+A petite library of essential encryption functions for PHP7.
+For PHP5 support, check out the legacy branch [here](https://github.com/mmeyer2k/dcrypt/tree/4.0.2).
 
 - [Install](#install)
 - [Features](#features)
@@ -19,11 +20,11 @@ A petite library of essential encryption functions for PHP7. For PHP5 support, c
   - [Key Derivation Function](#key-derivation-function)
   - [Time-safe String Comparison](#time-safe-string-comparison)
 - [Usage Notes](#usage-notes)
-- [API Documentation](#api-documentation)
 - [Show me some love](#show-me-some-love-heart_eyes) :heart_eyes:
 
 # Install
 Add `dcrypt` to your composer.json file requirements.
+Don't worry, `dcrypt` does not have any dependencies of its own.
 ```bash
 composer require "mmeyer2k/dcrypt=~8.0"
 ```
@@ -36,7 +37,9 @@ require 'path/to/dcrypt/load.php';
 ## Block Ciphers
 
 ### AES-256-CBC Encryption
-Quickly access AES-256-CBC encryption with `\Dcrypt\AesCbc`. All of the most secure options are the default. Naturally, strongly random initialization vectors are generated upon encryption and standard HMAC (SHA-256) checksums are verified in a time-safe manner before decryption.
+Quickly access AES-256-CBC encryption with `\Dcrypt\AesCbc`.
+All of the most secure options are the default. 
+Naturally, strongly random initialization vectors are generated upon encryption and standard HMAC (SHA-256) checksums are verified in a time-safe manner before decryption.
 ```php
 $encrypted = \Dcrypt\AesCbc::encrypt($plaintext, $password);
 
@@ -51,9 +54,42 @@ $encrypted = \Dcrypt\AesCtr::encrypt($plaintext, $password);
 $plaintext = \Dcrypt\AesCtr::decrypt($encrypted, $password);
 ```
 [Definitive StackExchange thread on CBC vs CTR](https://security.stackexchange.com/questions/27776/block-chaining-modes-to-avoid/27780#27780)
+
+### Custom Encryption Suites
+`dcrypt`'s internal functions are easily extendable by overloading the `OpensslBridge` class. 
+Use `openssl_get_cipher_method()` and `hash_algos()` to gather available options.
+
+```php
+<?php
+
+/**
+ * Use blowfish64 + crc32 to create smaller output sizes. 
+ * This is useful for medium security situations where minimal space consumption is important.
+ */
+class TinyFish extends \Dcrypt\OpensslBridge 
+{
+    /**
+     * Specify using blowfish ofb cipher method
+     *
+     * @var string
+     */
+    const CIPHER = 'bf-ofb';
+    
+    /**
+     * Use crc32 hashing algo to authenticate messages
+     *
+     * @var string
+     */
+    const CHKSUM = 'crc32';
+}
+```
+
+**NOTE**:
+Only `\Dcrypt\AesCbc` and `\Dcrypt\AesCtr` are tested by this library. If you roll your own, write some tests!
+
 ### Iterative HMAC Key Hardening
-To reduce the effectiveness of brute-force cracking on your encrypted blobs, you can provide an integer `$cost` parameter
-in your encryption/decryption calls. This integer will cause dcrypt to perform `$cost` number of extra HMAC operations on the key before passing it off to the underlying encryption system.
+To reduce the effectiveness of brute-force cracking on your encrypted blobs, you can provide an integer `$cost` parameter in your encryption/decryption calls. 
+This integer will cause dcrypt to perform `$cost` number of extra HMAC operations on the key before passing it off to the underlying encryption system.
 ```php
 $encrypted = \Dcrypt\AesCbc::encrypt($plaintext, $password, 10000);
 
@@ -103,10 +139,15 @@ $encrypted = \Dcrypt\Spritz::crypt($plaintext, $password);
 $plaintext = \Dcrypt\Spritz::crypt($encrypted, $password);
 ```
 
-**NOTE**: These implementations are for reference only. The RC4 cipher in general has many known security problems, and the Spirtz implementation provided here has not been verified against known test vectors. 
-Both are very slow and inefficient. This was just for fun. Use block ciphers for anything important.
+**NOTE**: 
+These implementations are for reference only. 
+The RC4 cipher in general has many known security problems, and the Spirtz implementation provided here has not been verified against known test vectors. 
+Both are very slow and inefficient. 
+This was just for fun. 
+Use block ciphers for anything important.
 
-**NOTE**: Backwards compatibility breaking changes to these classes will not result in an incremented major version number.
+**NOTE**: 
+Backwards compatibility breaking changes to these classes will not result in an incremented major version number.
 
 ## PKCS #7 Padding
 PKCS#7 style padding is available via the `Pkcs7::pad()` and `Pkcs7::unpad()` functions.
@@ -123,10 +164,9 @@ PKCS#7 style padding is available via the `Pkcs7::pad()` and `Pkcs7::unpad()` fu
 ```
 
 ## Key Derivation Function
-`Dcrypt\Hash` is an opaque 512 bit iterative hash function. First, SHA-256 is 
-used to hash a 16 byte initialization vector with your secret password to create
-a unique key. Then `$cost` number of HMAC iterations are performed on the input
-using the unique key.
+`Dcrypt\Hash` is an opaque 512 bit iterative hash function. 
+First, SHA-256 is used to hash a 16 byte initialization vector with your secret password to create a unique key.
+Then `$cost` number of HMAC iterations are performed on the input using the unique key.
 
 The `$cost` parameter can be any integer between 0 and 2<sup>32</sup> - 1. This
 `$cost` value is stored as 4 encrypted bytes in the output. A `$cost` value of 
@@ -154,11 +194,9 @@ $equals = \Dcrypt\Str::equal('known', 'given');
   1. The output size of `AesCbc::encrypt` on a 10 byte plaintext would be: IV (16 bytes) + SHA-256 HMAC (32 bytes) + encrypted plaintext and padding bytes (16 bytes) = 64 bytes.
 1. Dcrypt is built entirely with static functions. If you are using the `new` keyword on any Dcrypt classes, you are doing it wrong!
 
-# API Documentation
-The latest API documentation can be found [here](https://mmeyer2k.github.io/dcrypt/).
-
 # Show me some love :heart_eyes:
-Developing dcrypt has been a labor of love for many years. If you find dcrypt useful, please consider donating some Litecoin to `LN97LrLCNiv14V6fntp247H2pj9UiFzUQZ`.
+Developing dcrypt has been a labor of love for many years. 
+If you find dcrypt useful, please consider donating some Litecoin to `LN97LrLCNiv14V6fntp247H2pj9UiFzUQZ`.
  
  ![litecoin address](https://rawgit.com/mmeyer2k/dcrypt/master/litecoin.png)
 

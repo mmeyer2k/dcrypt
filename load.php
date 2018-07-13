@@ -20,9 +20,9 @@ if (!class_exists('Dcrypt\Aes')) {
     
     // Source files must be in correct order to honor inheritance
     $files = array(
-        'OpenSSL',
+        'OpensslWrapper',
+        'OpensslBridge',
         'Str',
-        'Aes',
         'Hash',
         'AesCbc',
         'AesCtr',
