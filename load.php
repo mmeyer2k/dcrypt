@@ -26,6 +26,7 @@ if (!class_exists('Dcrypt\Aes')) {
         'Hash',
         'AesCbc',
         'AesCtr',
+        'TinyFish',
         'Otp',
         'Pkcs7',
         'Rc4',

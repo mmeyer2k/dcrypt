@@ -15,7 +15,7 @@
 namespace Dcrypt;
 
 /**
- * Provides functionality common to the dcrypt AES block ciphers.
+ * Provides functionality common to the dcrypt AES block ciphers. Extend this class to customize your cipher suite.
  *
  * @category Dcrypt
  * @package  Dcrypt
@@ -24,7 +24,7 @@ namespace Dcrypt;
  * @link     https://github.com/mmeyer2k/dcrypt
  * @link     https://apigen.ci/github/mmeyer2k/dcrypt/namespace-Dcrypt.html
  */
-class Aes extends OpenSsl
+class Aes
 {
     /**
      * This string is used when hashing to ensure cross compatibility between
@@ -34,23 +34,62 @@ class Aes extends OpenSsl
     const RIJNDA = 'rijndael-128';
 
     /**
-     * Hardcoded hashing algo string.
+     * Decrypt cyphertext
+     *
+     * @param string $data Cyphertext to decrypt
+     * @param string $pass Password that should be used to decrypt input data
+     * @param int    $cost Number of extra HMAC iterations to perform on key
+     * @return string
      */
-    const ALGO = 'sha256';
+    public static function decrypt(string $data, string $pass, int $cost = 0): string
+    {
+        // Find the IV at the beginning of the cypher text
+        $ivr = Str::substr($data, 0, static::ivsize());
+
+        // Gather the checksum portion of the ciphertext
+        $sum = Str::substr($data, static::ivsize(), static::cksize());
+
+        // Gather message portion of ciphertext after iv and checksum
+        $msg = Str::substr($data, static::ivsize() + static::cksize());
+
+        // Derive key from password
+        $key = static::key($pass, $ivr, $cost);
+
+        // Calculate verification checksum
+        $chk = static::checksum($msg, $ivr, $key);
+
+        // Verify HMAC before decrypting
+        static::checksumVerify($chk, $sum);
+
+        // Decrypt message and return
+        return OpenSsl::decrypt($msg, static::CIPHER, $key, $ivr);
+    }
 
     /**
-     * Size of initialization vector in bytes
+     * Encrypt plaintext
      *
-     * @var int
+     * @param string $data Plaintext string to encrypt.
+     * @param string $pass Password used to encrypt data.
+     * @param int    $cost Number of extra HMAC iterations to perform on key
+     * @return string
      */
-    const IVSIZE = 16;
+    public static function encrypt(string $data, string $pass, int $cost = 0): string
+    {
+        // Generate IV of appropriate size.
+        $ivr = \random_bytes(static::ivsize());
 
-    /**
-     * Size of checksum in bytes
-     *
-     * @var int
-     */
-    const CKSIZE = 32;
+        // Derive key from password
+        $key = self::key($pass, $ivr, $cost);
+
+        // Encrypt the plaintext
+        $msg = OpenSsl::encrypt($data, static::CIPHER, $key, $ivr);
+
+        // Create the cypher text prefix (iv + checksum)
+        $pre = $ivr . static::checksum($msg, $ivr, $key);
+
+        // Return prefix + cyphertext
+        return $pre . $msg;
+    }
 
     /**
      * Create a message authentication checksum.
@@ -61,17 +100,17 @@ class Aes extends OpenSsl
      * @param string $mode Cipher mode (cbc, ctr)
      * @return string
      */
-    protected static function checksum(string $data, string $iv, string $key, string $mode): string
+    private static function checksum(string $data, string $iv, string $key): string
     {
         // Prevent multiple potentially large string concats by hmac-ing the input data
         // by itself first...
-        $sum = Hash::hmac($data, $key, static::ALGO);
+        $sum = Hash::hmac($data, $key, static::CHKSUM);
 
         // Then add the other input elements together before performing the final hash
-        $sum = $sum . $iv . $mode . self::RIJNDA;
+        $sum = $sum . $iv . static::mode() . self::RIJNDA;
 
         // ... then hash other elements with previous hmac and return
-        return Hash::hmac($sum, $key, static::ALGO);
+        return Hash::hmac($sum, $key, static::CHKSUM);
     }
 
     /**
@@ -80,12 +119,13 @@ class Aes extends OpenSsl
      * @param string $pass Encryption key
      * @param string $iv   Initialization vector
      * @param int    $cost Number of HMAC iterations to perform on key
-     * @param string $mode Cipher mode (cbc, ctr)
      * @return string
      */
-    protected static function key(string $pass, string $iv, int $cost, string $mode): string
+    private static function key(string $pass, string $iv, int $cost): string
     {
-        return Hash::ihmac($iv . self::RIJNDA . $mode, $pass, $cost, static::ALGO);
+        $data = $iv . self::RIJNDA . static::mode();
+
+        return Hash::ihmac($data, $pass, $cost, static::CHKSUM);
     }
 
     /**
@@ -95,7 +135,7 @@ class Aes extends OpenSsl
      * @param string $supplied
      * @throws \InvalidArgumentException
      */
-    protected static function checksumVerify(string $calculated, string $supplied)
+    private static function checksumVerify(string $calculated, string $supplied)
     {
         if (!Str::equal($calculated, $supplied)) {
             $e = 'Decryption can not proceed due to invalid cyphertext checksum.';
@@ -104,12 +144,47 @@ class Aes extends OpenSsl
     }
 
     /**
-     * Return the encryption mode string. "cbc" or "ctr"
+     * Return the encryption mode string. This function is really only needed for backwards
+     * compatibility.
      *
      * @return string
      */
-    protected static function mode(): string
+    private static function mode(): string
     {
-        return Str::substr(static::CIPHER, -3);
+        // To prevent legacy blobs from not decoding, these ciphers (which were implemented before 8.3) have hard coded
+        // return values. Luckily, this integrates gracefully with overloading.
+        $legacy = [
+            'bf-ofb' => 'ofb',
+            'aes-256-cbc' => 'cbc',
+            'aes-256-ctr' => 'ctr',
+        ];
+
+        $cipher = \strtolower(static::CIPHER);
+
+        if (isset($legacy[$cipher])) {
+            return $legacy[$cipher];
+        }
+
+        return $cipher;
+    }
+
+    /**
+     * Calculate checksum size
+     *
+     * @return int
+     */
+    private static function cksize(): int
+    {
+        return Str::hashSize(static::CHKSUM);
+    }
+
+    /**
+     * Get iv size
+     *
+     * @return int
+     */
+    private static function ivsize(): int
+    {
+        return \openssl_cipher_iv_length(static::CIPHER);
     }
 }
