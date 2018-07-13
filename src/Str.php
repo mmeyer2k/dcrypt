@@ -29,7 +29,7 @@ namespace Dcrypt;
  * @link     https://php.net/manual/en/mbstring.overload.php
  * @link     https://apigen.ci/github/mmeyer2k/dcrypt/namespace-Dcrypt.html
  */
-final class Str
+class Str
 {
     /**
      * Compares two strings in constant time. Strings are hashed before 

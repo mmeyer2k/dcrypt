@@ -25,7 +25,7 @@ namespace Dcrypt;
  * @link     http://en.wikipedia.org/wiki/Stream_cipher
  * @link     https://apigen.ci/github/mmeyer2k/dcrypt/namespace-Dcrypt.html
  */
-final class Otp
+class Otp
 {
     /**
      * Encrypt or decrypt a binary input string.

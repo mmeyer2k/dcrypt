@@ -24,7 +24,7 @@ namespace Dcrypt;
  * @link     https://github.com/mmeyer2k/dcrypt
  * @link     https://apigen.ci/github/mmeyer2k/dcrypt/namespace-Dcrypt.html
  */
-final class Pkcs7
+class Pkcs7
 {
     /**
      * PKCS #7 padding function.
