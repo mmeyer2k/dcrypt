@@ -13,7 +13,6 @@
         "php": ">=7.0.0"
     },
     "require-dev": {
-        "mmeyer2k/retro": "dev-master"
     },
     "autoload": {
         "psr-4": {
