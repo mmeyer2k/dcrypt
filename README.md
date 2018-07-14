@@ -185,7 +185,7 @@ $equals = \Dcrypt\Str::equal('known', 'given');
 ```
 
 # Usage Notes
-1. All functions input/put raw binary strings.
+1. All functions input/output raw binary strings.
 1. All functions accept any string of arbitrary length for `$input` and `$password` type parameters.
   1. Dcrypt takes special steps to avoid frivolus concatenations of potentially large `$input` type parameters.
   1. `$password` type parameters are freqently concatentated. Therefore, avoid using excessively large passwords when memory is an issue.
