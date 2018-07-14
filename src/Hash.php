@@ -104,7 +104,7 @@ class Hash
     public static function ihmac(string $data, string $key, int $iter, string $algo = 'sha256'): string
     {
         // Can't perform negative iterations
-        $iter = abs($iter);
+        $iter = \abs($iter);
 
         // Perform iterative hmac calls
         // Make sure $iter value of 0 is handled
@@ -177,7 +177,7 @@ class Hash
      */
     private static function dec2bin(int $dec): string
     {
-        return hex2bin(\str_pad(\dechex($dec), 8, '0', STR_PAD_LEFT));
+        return \hex2bin(\str_pad(\dechex($dec), 8, '0', STR_PAD_LEFT));
     }
 
     /**
