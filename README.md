@@ -185,12 +185,12 @@ $equals = \Dcrypt\Str::equal('known', 'given');
 ```
 
 # Usage Notes
-1. All encryption functions and `\Dcrypt\Hash::make()` output raw binary data.
-1. All encryption functions and `\Dcrypt\Hash::make()` accept any binary data of arbitrary length as `$input` and `$password`.
+1. All functions input/put raw binary strings.
+1. All functions accept any string of arbitrary length for `$input` and `$password` type parameters.
   1. Dcrypt takes special steps to avoid frivolus concatenations of potentially large `$input` type parameters.
   1. `$password` type parameters are freqently concatentated. Therefore, avoid using excessively large passwords when memory is an issue.
 1. Dcrypt's block ciphers and `Hash::make()` output very space efficient blobs. Every bit is used to its fullest potential. 
-  1. Known offset + length is how the components of the cyphertexts are parsed. No serialization, marker bytes, encoding schemes or any other nonsense is used. Because of this, the output size of the block ciphers is easily predictable.
+  1. Known offset + length is how the components of the cyphertexts are parsed. No serialization, marker bytes, encoding schemes or any other nonsense is used. Because of this, the output size of the block ciphers is easily predictable and is as compact as possible.
   1. The output size of `AesCbc::encrypt` on a 10 byte plaintext would be: IV (16 bytes) + SHA-256 HMAC (32 bytes) + encrypted plaintext and padding bytes (16 bytes) = 64 bytes.
 1. Dcrypt is built entirely with static functions. If you are using the `new` keyword on any Dcrypt classes, you are doing it wrong!
 

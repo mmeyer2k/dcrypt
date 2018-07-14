@@ -122,6 +122,7 @@ class OpensslBridge
      */
     private static function key(string $pass, string $iv, int $cost): string
     {
+        // Create the authentication string to be hashed
         $data = $iv . self::RIJNDA . self::mode();
 
         return Hash::ihmac($data, $pass, $cost, static::CHKSUM);
@@ -178,7 +179,7 @@ class OpensslBridge
     }
 
     /**
-     * Get iv size
+     * Get IV size
      *
      * @return int
      */
