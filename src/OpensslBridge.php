@@ -154,6 +154,7 @@ class OpensslBridge
         // To prevent legacy blobs from not decoding, these ciphers (which were implemented before 8.3) have hard coded
         // return values. Luckily, this integrates gracefully with overloading.
         $legacy = [
+            'bf-cbc' => 'cbc',
             'bf-ofb' => 'ofb',
             'aes-256-cbc' => 'cbc',
             'aes-256-ctr' => 'ctr',
