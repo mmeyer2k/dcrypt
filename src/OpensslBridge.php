@@ -27,13 +27,6 @@ namespace Dcrypt;
 class OpensslBridge
 {
     /**
-     * This string is used when hashing to ensure cross compatibility between
-     * dcrypt\mcrypt and dcrypt\aes. Since v7, this is only needed for backwards
-     * compatibility with older versions
-     */
-    const RIJNDA = 'rijndael-128';
-
-    /**
      * Decrypt cyphertext
      *
      * @param string $data Cyphertext to decrypt
@@ -106,7 +99,7 @@ class OpensslBridge
         $sum = Hash::hmac($data, $key, static::CHKSUM);
 
         // Then add the other input elements together before performing the final hash
-        $sum = $sum . $iv . self::mode() . self::RIJNDA;
+        $sum = $sum . $iv . static::CIPHER;
 
         // ... then hash other elements with previous hmac and return
         return Hash::hmac($sum, $key, static::CHKSUM);
@@ -123,7 +116,7 @@ class OpensslBridge
     private static function key(string $pass, string $iv, int $cost): string
     {
         // Create the authentication string to be hashed
-        $data = $iv . self::RIJNDA . self::mode();
+        $data = $iv . self::RIJNDA . static::CIPHER;
 
         return Hash::ihmac($data, $pass, $cost, static::CHKSUM);
     }
@@ -141,32 +134,6 @@ class OpensslBridge
             $e = 'Decryption can not proceed due to invalid cyphertext checksum.';
             throw new \InvalidArgumentException($e);
         }
-    }
-
-    /**
-     * Return the encryption mode string. This function is really only needed for backwards
-     * compatibility.
-     *
-     * @return string
-     */
-    private static function mode(): string
-    {
-        // To prevent legacy blobs from not decoding, these ciphers (which were implemented before 8.3) have hard coded
-        // return values. Luckily, this integrates gracefully with overloading.
-        $legacy = [
-            'bf-cbc' => 'cbc',
-            'bf-ofb' => 'ofb',
-            'aes-256-cbc' => 'cbc',
-            'aes-256-ctr' => 'ctr',
-        ];
-
-        $cipher = \strtolower(static::CIPHER);
-
-        if (isset($legacy[$cipher])) {
-            return $legacy[$cipher];
-        }
-
-        return $cipher;
     }
 
     /**
