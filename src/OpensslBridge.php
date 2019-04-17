@@ -31,10 +31,9 @@ class OpensslBridge
      *
      * @param string $data Cyphertext to decrypt
      * @param string $pass Password that should be used to decrypt input data
-     * @param int    $cost Number of extra HMAC iterations to perform on key
      * @return string
      */
-    public static function decrypt(string $data, string $pass, int $cost = 0): string
+    public static function decrypt(string $data, string $pass): string
     {
         // Find the IV at the beginning of the cypher text
         $ivr = Str::substr($data, 0, self::ivsize());
