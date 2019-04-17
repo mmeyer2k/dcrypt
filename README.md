@@ -26,7 +26,7 @@ For PHP5 support, check out the legacy branch [here](https://github.com/mmeyer2k
 Add `dcrypt` to your composer.json file requirements.
 Don't worry, `dcrypt` does not have any dependencies of its own.
 ```bash
-composer require "mmeyer2k/dcrypt=~8.0"
+composer require "mmeyer2k/dcrypt=~9.0"
 ```
 In environments where composer is not available, Dcrypt can be used by including `load.php`.
 ```php
