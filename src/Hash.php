@@ -50,7 +50,7 @@ class Hash
         $salt = $salt ?? \random_bytes(16);
 
         // Generate a deterministic hash of the password
-        $hash = \hash_pbkdf2('sha256', $password, $salt, $cost, 0, true);
+        $hash = \hash_pbkdf2(self::ALGO, $password, $salt, $cost, 0, true);
 
         // Return the salt + cost blob + hmac
         return $salt . self::costEncrypt($cost, $salt, $password) . $hash;
@@ -66,9 +66,11 @@ class Hash
      */
     private static function costEncrypt(int $cost, string $salt, string $password): string
     {
+        // Pack the cost value into a 4 byte string
         $packed = pack('L*', $cost);
 
-        return Otp::crypt($packed, ($password . $salt), 'sha256');
+        // Encrypt the string with the Otp stream cipher
+        return Otp::crypt($packed, ($password . $salt), self::ALGO);
     }
 
     /**
@@ -97,9 +99,13 @@ class Hash
         // Get the salt value from the decrypted prefix
         $salt = Str::substr($hash, 0, 16);
 
-        // Get the encrypted cost bytes
+        // Get the encrypted cost bytes out of the blob
         $cost = Str::substr($hash, 16, 4);
-        $cost = Otp::crypt($cost, ($password . $salt), 'sha256');
+
+        // Decrypt the cost value stored in the 32bit int
+        $cost = Otp::crypt($cost, ($password . $salt), self::ALGO);
+
+        // Unpack the value back to an integer
         $cost = unpack('L*', $cost)[1];
 
         // Return the boolean equivalence
