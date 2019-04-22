@@ -70,7 +70,11 @@ class Hash
      */
     private static function cost(int $cost): int
     {
-        return $cost % \pow(2, 32);
+		if ($cost < 0 || $cost > \pow(2, 32)) {
+			throw new \InvalidArgumentException("Hashing cost parameter must between 0 and 2^32");
+		}
+		
+        return $cost;
     }
 
     /**

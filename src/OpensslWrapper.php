@@ -64,4 +64,20 @@ class OpensslWrapper
 
         return $data;
     }
+
+    /**
+     * Get IV size for specified CIPHER.
+     *
+     * @return int
+     */
+    private static function ivsize(): int
+    {
+        $ret = \openssl_cipher_iv_length(static::CIPHER);
+		
+		if ($ret === false) {
+			throw new \Exception("Failed to determine correct IV size.");
+		}
+		
+		return $ret;
+    }
 }

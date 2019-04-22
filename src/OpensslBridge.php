@@ -35,20 +35,29 @@ class OpensslBridge
      */
     public static function decrypt(string $data, string $pass): string
     {
+		// Calculate the hash checksum size in bytes for the specified algo
+		$hsz = Str::hashSize(static::CHKSUM);
+		
+		// Ask openssl for the IV size needed for specified cipher
+		$isz = self::ivsize();
+		
         // Find the IV at the beginning of the cypher text
-        $ivr = Str::substr($data, 0, self::ivsize());
+        $ivr = Str::substr($data, 0, $isz);
 
         // Gather the checksum portion of the ciphertext
-        $sum = Str::substr($data, self::ivsize(), self::cksize());
+        $sum = Str::substr($data, $isz, $hsz);
+
+		// Gather the iterations portion of the cipher text as packed/encrytped unsigned long
+		$itr = Str::substr($data, $isz + $hsz, 4);
 
         // Gather message portion of ciphertext after iv and checksum
-        $msg = Str::substr($data, self::ivsize() + self::cksize());
+        $msg = Str::substr($data, $isz + $hsz + 4);
 
         // Derive key from password
-        $key = self::key($pass, $ivr, $cost);
+        $key = \hash_pbkdf2(static::CHKSUM, $pass, $ivr, $cost, 0, true);
 
         // Calculate verification checksum
-        $chk = self::checksum($msg, $ivr, $key);
+        $chk = \hash_hmac(static::CHKSUM, $msg, $key, true);
 
         // Verify HMAC before decrypting
         self::checksumVerify($chk, $sum);
@@ -65,43 +74,25 @@ class OpensslBridge
      * @param int    $cost Number of extra HMAC iterations to perform on key
      * @return string
      */
-    public static function encrypt(string $data, string $pass, int $cost = 0): string
-    {
+    public static function encrypt(string $data, string $pass, int $cost = 1): string
+    {		
         // Generate IV of appropriate size.
         $ivr = \random_bytes(self::ivsize());
 
         // Derive key from password
-        $key = self::key($pass, $ivr, $cost);
+        $key = \hash_pbkdf2(static::CHKSUM, $pass, $ivr, $cost, 0, true);
 
         // Encrypt the plaintext
         $msg = OpensslWrapper::encrypt($data, static::CIPHER, $key, $ivr);
 
-        // Create the cypher text prefix (iv + checksum)
-        $pre = $ivr . self::checksum($msg, $ivr, $key);
+		// Convert cost integer into 4 byte string and XOR it with the derived key
+		$itr = pack('L*', $cost) ^ $key;
+		
+		// Generate the ciphertext checksum
+		$chk = \hash_hmac(static::CHKSUM, $msg, $key, true);
 
-        // Return prefix + cyphertext
-        return $pre . $msg;
-    }
-
-    /**
-     * Create a message authentication checksum.
-     *
-     * @param string $data Ciphertext that needs a checksum.
-     * @param string $iv   Initialization vector.
-     * @param string $key  HMAC key
-     * @return string
-     */
-    private static function checksum(string $data, string $iv, string $key): string
-    {
-        // Prevent multiple potentially large string concats by hmac-ing the input data
-        // by itself first...
-        $sum = Hash::hmac($data, $key, static::CHKSUM);
-
-        // Then add the other input elements together before performing the final hash
-        $sum = $sum . $iv . static::CIPHER;
-
-        // ... then hash other elements with previous hmac and return
-        return Hash::hmac($sum, $key, static::CHKSUM);
+        // Return iv + checksum + iterations + cyphertext
+        return $ivr . $chk . $itr . $msg;
     }
 
     /**
@@ -133,25 +124,5 @@ class OpensslBridge
             $e = 'Decryption can not proceed due to invalid cyphertext checksum.';
             throw new \InvalidArgumentException($e);
         }
-    }
-
-    /**
-     * Calculate checksum size
-     *
-     * @return int
-     */
-    private static function cksize(): int
-    {
-        return Str::hashSize(static::CHKSUM);
-    }
-
-    /**
-     * Get IV size
-     *
-     * @return int
-     */
-    private static function ivsize(): int
-    {
-        return \openssl_cipher_iv_length(static::CIPHER);
     }
 }
