@@ -20,10 +20,10 @@ class OpensslWrapper
     /**
      * OpenSSL encrypt wrapper function
      *
-     * @param string $data   Data to decrypt
+     * @param string $data Data to decrypt
      * @param string $method Cipher method to use
-     * @param string $key    Key string
-     * @param string $iv     Initialization vector
+     * @param string $key Key string
+     * @param string $iv Initialization vector
      * @return string
      */
     public static function encrypt(string $data, string $method, string $key, string $iv): string
@@ -36,10 +36,10 @@ class OpensslWrapper
     /**
      * OpenSSL decrypt wrapper function
      *
-     * @param string $data   Data to decrypt
+     * @param string $data Data to decrypt
      * @param string $method Cipher method to use
-     * @param string $key    Key string
-     * @param string $iv     Initialization vector
+     * @param string $key Key string
+     * @param string $iv Initialization vector
      * @return string
      */
     public static function decrypt(string $data, string $method, string $key, string $iv): string
@@ -73,11 +73,11 @@ class OpensslWrapper
     private static function ivsize(): int
     {
         $ret = \openssl_cipher_iv_length(static::CIPHER);
-		
-		if ($ret === false) {
-			throw new \Exception("Failed to determine correct IV size.");
-		}
-		
-		return $ret;
+
+        if ($ret === false) {
+            throw new \Exception("Failed to determine correct IV size.");
+        }
+
+        return $ret;
     }
 }

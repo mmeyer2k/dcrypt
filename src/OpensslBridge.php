@@ -35,26 +35,29 @@ class OpensslBridge
      */
     public static function decrypt(string $data, string $pass): string
     {
-		// Calculate the hash checksum size in bytes for the specified algo
-		$hsz = Str::hashSize(static::CHKSUM);
-		
-		// Ask openssl for the IV size needed for specified cipher
-		$isz = self::ivsize();
-		
+        // Calculate the hash checksum size in bytes for the specified algo
+        $hsz = Str::hashSize(static::CHKSUM);
+
+        // Ask openssl for the IV size needed for specified cipher
+        $isz = self::ivsize();
+
         // Find the IV at the beginning of the cypher text
         $ivr = Str::substr($data, 0, $isz);
 
         // Gather the checksum portion of the ciphertext
         $sum = Str::substr($data, $isz, $hsz);
 
-		// Gather the iterations portion of the cipher text as packed/encrytped unsigned long
-		$itr = Str::substr($data, $isz + $hsz, 4);
+        // Gather the iterations portion of the cipher text as packed/encrytped unsigned long
+        $itr = Str::substr($data, $isz + $hsz, 4);
 
         // Gather message portion of ciphertext after iv and checksum
         $msg = Str::substr($data, $isz + $hsz + 4);
 
+        // Decrypt and unpack the cost parameter so that it can be used
+        $cost = unpack('L*', $itr) ^ \hash_hmac(static::CHKSUM, $ivr, $pass, true);
+
         // Derive key from password
-        $key = \hash_pbkdf2(static::CHKSUM, $pass, $ivr, $cost, 0, true);
+        $key = \hash_pbkdf2(static::CHKSUM, ($pass . static::CIPHER), $ivr, $cost, 0, true);
 
         // Calculate verification checksum
         $chk = \hash_hmac(static::CHKSUM, $msg, $key, true);
@@ -71,44 +74,28 @@ class OpensslBridge
      *
      * @param string $data Plaintext string to encrypt.
      * @param string $pass Password used to encrypt data.
-     * @param int    $cost Number of extra HMAC iterations to perform on key
+     * @param int $cost Number of extra HMAC iterations to perform on key
      * @return string
      */
     public static function encrypt(string $data, string $pass, int $cost = 1): string
-    {		
+    {
         // Generate IV of appropriate size.
         $ivr = \random_bytes(self::ivsize());
 
         // Derive key from password
-        $key = \hash_pbkdf2(static::CHKSUM, $pass, $ivr, $cost, 0, true);
+        $key = \hash_pbkdf2(static::CHKSUM, ($pass . static::CIPHER), $ivr, $cost, 0, true);
 
         // Encrypt the plaintext
         $msg = OpensslWrapper::encrypt($data, static::CIPHER, $key, $ivr);
 
-		// Convert cost integer into 4 byte string and XOR it with the derived key
-		$itr = pack('L*', $cost) ^ $key;
-		
-		// Generate the ciphertext checksum
-		$chk = \hash_hmac(static::CHKSUM, $msg, $key, true);
+        // Convert cost integer into 4 byte string and XOR it with a derived key
+        $itr = pack('L*', $cost) ^ \hash_hmac(static::CHKSUM, $ivr, $pass, true);
+
+        // Generate the ciphertext checksum
+        $chk = \hash_hmac(static::CHKSUM, $msg, $key, true);
 
         // Return iv + checksum + iterations + cyphertext
         return $ivr . $chk . $itr . $msg;
-    }
-
-    /**
-     * Transform password into key and perform iterative HMAC (if specified)
-     *
-     * @param string $pass Encryption key
-     * @param string $iv   Initialization vector
-     * @param int    $cost Number of HMAC iterations to perform on key
-     * @return string
-     */
-    private static function key(string $pass, string $iv, int $cost): string
-    {
-        // Create the authentication string to be hashed
-        $data = $iv . self::RIJNDA . static::CIPHER;
-
-        return Hash::ihmac($data, $pass, $cost, static::CHKSUM);
     }
 
     /**
