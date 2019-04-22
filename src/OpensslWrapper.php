@@ -70,9 +70,9 @@ class OpensslWrapper
      *
      * @return int
      */
-    private static function ivsize(): int
+    public static function ivsize(string $cipher): int
     {
-        $ret = \openssl_cipher_iv_length(static::CIPHER);
+        $ret = \openssl_cipher_iv_length($cipher);
 
         if ($ret === false) {
             throw new \Exception("Failed to determine correct IV size.");

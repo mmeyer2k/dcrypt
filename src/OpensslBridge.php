@@ -39,7 +39,7 @@ class OpensslBridge
         $hsz = Str::hashSize(static::CHKSUM);
 
         // Ask openssl for the IV size needed for specified cipher
-        $isz = self::ivsize();
+        $isz = OpensslWrapper::ivsize(static::CIPHER);
 
         // Find the IV at the beginning of the cypher text
         $ivr = Str::substr($data, 0, $isz);
@@ -54,7 +54,7 @@ class OpensslBridge
         $msg = Str::substr($data, $isz + $hsz + 4);
 
         // Decrypt and unpack the cost parameter so that it can be used
-        $cost = unpack('L*', $itr) ^ \hash_hmac(static::CHKSUM, $ivr, $pass, true);
+        $cost = \unpack('L*', $itr ^ \hash_hmac(static::CHKSUM, $ivr, $pass, true))[1];
 
         // Derive key from password
         $key = \hash_pbkdf2(static::CHKSUM, ($pass . static::CIPHER), $ivr, $cost, 0, true);
@@ -74,13 +74,13 @@ class OpensslBridge
      *
      * @param string $data Plaintext string to encrypt.
      * @param string $pass Password used to encrypt data.
-     * @param int $cost Number of extra HMAC iterations to perform on key
+     * @param int    $cost Number of extra HMAC iterations to perform on key
      * @return string
      */
     public static function encrypt(string $data, string $pass, int $cost = 1): string
     {
         // Generate IV of appropriate size.
-        $ivr = \random_bytes(self::ivsize());
+        $ivr = \random_bytes(OpensslWrapper::ivsize(static::CIPHER));
 
         // Derive key from password
         $key = \hash_pbkdf2(static::CHKSUM, ($pass . static::CIPHER), $ivr, $cost, 0, true);
@@ -88,10 +88,10 @@ class OpensslBridge
         // Encrypt the plaintext
         $msg = OpensslWrapper::encrypt($data, static::CIPHER, $key, $ivr);
 
-        // Convert cost integer into 4 byte string and XOR it with a derived key
-        $itr = pack('L*', $cost) ^ \hash_hmac(static::CHKSUM, $ivr, $pass, true);
+        // Convert cost integer into 4 byte string and XOR it with a derived newly key
+        $itr = \pack('L*', $cost) ^ \hash_hmac(static::CHKSUM, $ivr, $pass, true);
 
-        // Generate the ciphertext checksum
+        // Generate the ciphertext checksum to prevent bit tampering
         $chk = \hash_hmac(static::CHKSUM, $msg, $key, true);
 
         // Return iv + checksum + iterations + cyphertext

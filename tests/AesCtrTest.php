@@ -6,6 +6,15 @@ class AesCtrTest extends TestSupport
 {
     private $input = 'AAAAAAAA', $key = 'BBBBBBBB';
 
+    public function testEngine1()
+    {
+        $input = 'AAAAAAAA';
+        $key = 'AAAAAAAA';
+        $encrypted = AesCtr::encrypt($input, $key, 100);
+        $decrypted = AesCtr::decrypt($encrypted, $key);
+        $this->assertEquals($input, $decrypted);
+    }
+
     public function testPbkdf()
     {
         $encrypted = AesCtr::encrypt($this->input, $this->key, 10);
