@@ -84,10 +84,11 @@ class OpensslBridge
         // Generate IV of appropriate size.
         $ivr = \random_bytes(OpensslWrapper::ivsize(static::CIPHER));
 
-        // Derive key from password
+        // Derive key from password with hash_pbkdf2 function.
+        // Append CIPHER to password beforehand so that cross-method decryptions will fail at checksum step
         $key = \hash_pbkdf2(static::CHKSUM, ($pass . static::CIPHER), $ivr, $cost, 0, true);
 
-        // Encrypt the plaintext
+        // Encrypt the plaintext data
         $msg = OpensslWrapper::encrypt($data, static::CIPHER, $key, $ivr);
 
         // Convert cost integer into 4 byte string and XOR it with a newly derived key

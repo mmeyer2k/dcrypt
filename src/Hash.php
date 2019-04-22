@@ -15,14 +15,14 @@
 namespace Dcrypt;
 
 /**
- * An opaque 512 bit iterative hash function.
+ * An opaque 416 bit / 52 byte iterative hash function.
  *
  * 16 bytes => iv
- * 12 bytes => cost checksum
  *  4 bytes => cost
  * 32 bytes => hmac
- *
- * ivivivivivivivivsssssssssssscosthmachmachmachmachmachmachmachmac
+ *                  cost
+ * ||||||||||||||||||||||||||||||||||||||||||||||||||||
+ * iviviviviviviviv     machmachmachmachmachmachmachmac
  *
  * @category Dcrypt
  * @package  Dcrypt
@@ -49,88 +49,26 @@ class Hash
         // Generate salt if needed
         $salt = $salt ?? \random_bytes(16);
 
-        // Verify and normalize cost value
-        $cost = self::cost($cost);
-
-        // Create key to use for hmac operations
-        $key = self::hmac($salt, $password, self::ALGO);
-
-        // Perform hash iterations. Get a 32 byte output value
-        $hash = self::ihmac($input, $key, $cost, self::ALGO);
+        // Generate a deterministic hash of the password
+        $hash = \hash_pbkdf2('sha256', $password, $salt, $cost, 0, true);
 
         // Return the salt + cost blob + hmac
-        return $salt . self::costHash($cost, $salt, $password) . $hash;
+        return $salt . self::costEncrypt($cost, $salt, $password) . $hash;
     }
 
     /**
-     * Return a normalized cost value.
-     *
-     * @param int $cost Number of iterations to use.
-     * @return int
-     */
-    private static function cost(int $cost): int
-    {
-		if ($cost < 0 || $cost > \pow(2, 32)) {
-			throw new \InvalidArgumentException("Hashing cost parameter must between 0 and 2^32");
-		}
-		
-        return $cost;
-    }
-
-    /**
-     * Performs hashing functions
+     * Encrypts the cost value so that it can be added to the output hash discretely
      *
      * @param int    $cost
      * @param string $salt
      * @param string $password
      * @return string
      */
-    private static function costHash(int $cost, string $salt, string $password): string
+    private static function costEncrypt(int $cost, string $salt, string $password): string
     {
-        // Hash and return first 12 bytes
-        $hash = Str::substr(self::hmac($cost, $salt, self::ALGO), 0, 12);
+        $packed = pack('L*', $cost);
 
-        // Convert cost to base 256 then encrypt with OTP stream cipher
-        $cost = Otp::crypt(self::dec2bin($cost), $password);
-
-        return $hash . $cost;
-    }
-
-    /**
-     * Perform a raw iterative HMAC operation with a configurable algo.
-     *
-     * @param string $data Data to hash.
-     * @param string $key  Key to use to authenticate the hash.
-     * @param int    $iter Number of times to iteratate the hash
-     * @param string $algo Name of algo (sha256 or sha512 recommended)
-     * @return string
-     */
-    public static function ihmac(string $data, string $key, int $iter, string $algo = 'sha256'): string
-    {
-        // Can't perform negative iterations
-        $iter = \abs($iter);
-
-        // Perform iterative hmac calls
-        // Make sure $iter value of 0 is handled
-        for ($i = 0; $i <= $iter; $i++) {
-            $data = self::hmac($data . $i . $iter, $key, $algo);
-        }
-
-        return $data;
-    }
-
-    /**
-     * Perform a single hmac iteration. This adds an extra layer of safety because hash_hmac can return false if algo
-     * is not valid. Return type hint will throw an exception if this happens.
-     *
-     * @param string $data Data to hash.
-     * @param string $key  Key to use to authenticate the hash.
-     * @param string $algo Name of algo
-     * @return string
-     */
-    public static function hmac(string $data, string $key, string $algo): string
-    {
-        return \hash_hmac($algo, $data, $key, true);
+        return Otp::crypt($packed, ($password . $salt), 'sha256');
     }
 
     /**
@@ -160,38 +98,11 @@ class Hash
         $salt = Str::substr($hash, 0, 16);
 
         // Get the encrypted cost bytes
-        $cost = self::bin2dec(Otp::crypt(Str::substr($hash, 28, 4), $password));
-
-        // Get the entire cost+hash blob for comparison
-        $blob = Str::substr($hash, 16, 16);
-
-        if (!Str::equal(self::costHash($cost, $salt, $password), $blob)) {
-            return false;
-        }
+        $cost = Str::substr($hash, 16, 4);
+        $cost = Otp::crypt($cost, ($password . $salt), 'sha256');
+        $cost = unpack('L*', $cost)[1];
 
         // Return the boolean equivalence
         return Str::equal($hash, self::build($input, $password, $cost, $salt));
-    }
-
-    /**
-     * Turns an integer into a 4 byte binary representation
-     *
-     * @param int $dec Integer to convert to binary
-     * @return string
-     */
-    private static function dec2bin(int $dec): string
-    {
-        return \hex2bin(\str_pad(\dechex($dec), 8, '0', STR_PAD_LEFT));
-    }
-
-    /**
-     * Reverses dec2bin
-     *
-     * @param string $bin Binary string to convert to decimal
-     * @return string
-     */
-    private static function bin2dec(string $bin): string
-    {
-        return \hexdec(\bin2hex($bin));
     }
 }
