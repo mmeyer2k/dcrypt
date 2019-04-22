@@ -50,10 +50,16 @@ class Hash
         $salt = $salt ?? \random_bytes(16);
 
         // Generate a deterministic hash of the password
-        $hash = \hash_pbkdf2(self::ALGO, $password, $salt, $cost, 0, true);
+        $key = \hash_pbkdf2(self::ALGO, $password, $salt, $cost, 0, true);
 
-        // Return the salt + cost blob + hmac
-        return $salt . self::costEncrypt($cost, $salt, $password) . $hash;
+        // HMAC the input parameter with the generated key
+        $hash = \hash_hmac(self::ALGO, $input, $key, true);
+
+        // Covert cost value to byte array and encrypt
+        $cost = self::costEncrypt($cost, $salt, $password);
+
+        // Return the salt + cost + hmac as a single string
+        return $salt . $cost . $hash;
     }
 
     /**
@@ -61,20 +67,37 @@ class Hash
      *
      * @param int    $cost
      * @param string $salt
-     * @param string $password
+     * @param string $passw
      * @return string
      */
-    private static function costEncrypt(int $cost, string $salt, string $password): string
+    private static function costEncrypt(int $cost, string $salt, string $pass): string
     {
         // Pack the cost value into a 4 byte string
         $packed = pack('L*', $cost);
 
         // Encrypt the string with the Otp stream cipher
-        return Otp::crypt($packed, ($password . $salt), self::ALGO);
+        return Otp::crypt($packed, ($pass . $salt), self::ALGO);
     }
 
     /**
-     * Hash an input string into a salted 512 byte hash.
+     * Decrypts the cost string back into an int
+     *
+     * @param string $pack
+     * @param string $salt
+     * @param string $pass
+     * @return int
+     */
+    private static function costDecrypt(string $pack, string $salt, string $pass): int
+    {
+        // Decrypt the cost value stored in the 32bit int
+        $cost = Otp::crypt($pack, ($pass . $salt), self::ALGO);
+
+        // Unpack the value back to an integer and return to caller
+        return unpack('L*', $cost)[1];
+    }
+
+    /**
+     * Hash an input string into a salted 52 bit hash.
      *
      * @param string $input    Data to hash.
      * @param string $password HMAC validation password.
@@ -103,12 +126,14 @@ class Hash
         $cost = Str::substr($hash, 16, 4);
 
         // Decrypt the cost value stored in the 32bit int
-        $cost = Otp::crypt($cost, ($password . $salt), self::ALGO);
+        $cost = self::costDecrypt($cost, $salt, $password);
 
-        // Unpack the value back to an integer
-        $cost = unpack('L*', $cost)[1];
+
+        $calc = self::build($input, $password, $cost, $salt);
+
+        throw new \Exception($cost);
 
         // Return the boolean equivalence
-        return Str::equal($hash, self::build($input, $password, $cost, $salt));
+        return Str::equal($input, self::build($input, $password, $cost, $salt));
     }
 }
