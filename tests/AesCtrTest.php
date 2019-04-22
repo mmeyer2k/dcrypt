@@ -1,7 +1,6 @@
 <?php
 
 use Dcrypt\AesCtr;
-use Dcrypt\AesCbc;
 
 class AesCtrTest extends TestSupport
 {

@@ -4,32 +4,30 @@ use Dcrypt\AesCbc;
 
 class AesCbcTest extends TestSupport
 {
-    public $vectors = [
-        '',
-        '',
-        '',
+
+    private static $input = 'AAAAAAAA';
+    private static $key = 'AAAAAAAA';
+
+    public static $vectors = [
+        'TRIvESkk/8xosd/o816kD1Ze0L0FGEA+40taUWRPvDiHJQQOubdZ2HJJz13AIdVmkI8ulG4S3RdDUQMZ6tpZZBaVE6I=',
+        'ff0kMENnnbyj0mXCcr90Yu5IF+7CM9nkbuBDJAfEq+i8qJ7qzcfqSj/1cHiA3H4eShroNGts+O+3SfQs/RdL2/hdPNs=',
+        'Hj2rPT+I1dfh23ejl4H7xJLTnuljI0GFMDWlQ4NQ8rPKEUWHzmcrZz1/WcA80M343St8SfiBpoQAdLq9Fn7oUDIC0jk=',
     ];
 
     public function testEngine1()
     {
-        $input = 'AAAAAAAA';
-        $key = 'AAAAAAAA';
+        $encrypted = AesCbc::encrypt(self::$input, self::$key, 10000);
+        $decrypted = AesCbc::decrypt($encrypted, self::$key);
 
-        $encrypted = AesCbc::encrypt($input, $key, 10000);
-        $decrypted = AesCbc::decrypt($encrypted, $key);
-
-        $this->assertEquals($input, $decrypted);
+        $this->assertEquals(self::$input, $decrypted);
     }
 
     public function testEngine2()
     {
-        $input = 'AAAAAAAA';
-        $key = 'AAAAAAAA';
+        $encrypted = AesCbc::encrypt(self::$input, self::$key);
+        $decrypted = AesCbc::decrypt($encrypted, self::$key);
 
-        $encrypted = AesCbc::encrypt($input, $key);
-        $decrypted = AesCbc::decrypt($encrypted, $key);
-
-        $this->assertEquals($input, $decrypted);
+        $this->assertEquals(self::$input, $decrypted);
     }
 
     public function testEngine3()
@@ -43,18 +41,24 @@ class AesCbcTest extends TestSupport
         $this->assertEquals($input, $decrypted);
     }
 
+    public function testVectors()
+    {
+        foreach (self::$vectors as $vector) {
+            #var_dump(base64_encode(AesCbc::encrypt(self::$input, self::$key)));
+            $decrypted = AesCbc::decrypt(base64_decode($vector), self::$key);
+            $this->assertEquals(self::$input, $decrypted);
+        }
+    }
+
     /**
      * @expectedException InvalidArgumentException
      */
     public function testCorrupt()
     {
-        $input = 'AAAAAAAA';
-        $key = 'AAAAAAAA';
-
-        $encrypted = AesCbc::encrypt($input, $key, 10000);
-        $this->assertEquals($input, AesCbc::decrypt($encrypted, $key));
+        $encrypted = AesCbc::encrypt(self::$input, self::$key, 10000);
+        $this->assertEquals(self::$input, AesCbc::decrypt($encrypted, self::$key));
 
         $corrupt = self::swaprandbyte($encrypted);
-        AesCbc::decrypt($corrupt, $key);
+        AesCbc::decrypt($corrupt, self::$key);
     }
 }

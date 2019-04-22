@@ -53,7 +53,7 @@ class OpensslBridge
         // Gather message portion of ciphertext after iv and checksum
         $msg = Str::substr($data, $isz + $hsz + 4);
 
-        // Decrypt and unpack the cost parameter so that it can be used
+        // Decrypt and unpack the cost parameter to match what was used during encryption
         $cost = \unpack('L*', $itr ^ \hash_hmac(static::CHKSUM, $ivr, $pass, true))[1];
 
         // Derive key from password
@@ -63,7 +63,9 @@ class OpensslBridge
         $chk = \hash_hmac(static::CHKSUM, $msg, $key, true);
 
         // Verify HMAC before decrypting
-        self::checksumVerify($chk, $sum);
+        if (!Str::equal($chk, $sum)) {
+            throw new \InvalidArgumentException('Decryption can not proceed due to invalid cyphertext checksum.');
+        }
 
         // Decrypt message and return
         return OpensslWrapper::decrypt($msg, static::CIPHER, $key, $ivr);
@@ -88,7 +90,7 @@ class OpensslBridge
         // Encrypt the plaintext
         $msg = OpensslWrapper::encrypt($data, static::CIPHER, $key, $ivr);
 
-        // Convert cost integer into 4 byte string and XOR it with a derived newly key
+        // Convert cost integer into 4 byte string and XOR it with a newly derived key
         $itr = \pack('L*', $cost) ^ \hash_hmac(static::CHKSUM, $ivr, $pass, true);
 
         // Generate the ciphertext checksum to prevent bit tampering
@@ -96,20 +98,5 @@ class OpensslBridge
 
         // Return iv + checksum + iterations + cyphertext
         return $ivr . $chk . $itr . $msg;
-    }
-
-    /**
-     * Verify checksum during decryption step and throw error if mismatching.
-     *
-     * @param string $calculated
-     * @param string $supplied
-     * @throws \InvalidArgumentException
-     */
-    private static function checksumVerify(string $calculated, string $supplied)
-    {
-        if (!Str::equal($calculated, $supplied)) {
-            $e = 'Decryption can not proceed due to invalid cyphertext checksum.';
-            throw new \InvalidArgumentException($e);
-        }
     }
 }

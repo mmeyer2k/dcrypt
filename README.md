@@ -28,14 +28,9 @@ Don't worry, `dcrypt` does not have any dependencies of its own.
 ```bash
 composer require "mmeyer2k/dcrypt=~9.0"
 ```
-In environments where composer is not available, Dcrypt can be used by including `load.php`.
-```php
-require 'path/to/dcrypt/load.php';
-```
+
 # Features
-
 ## Block Ciphers
-
 ### AES-256-CBC Encryption
 Quickly access AES-256-CBC encryption with `\Dcrypt\AesCbc`.
 All of the most secure options are the default. 
