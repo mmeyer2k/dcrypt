@@ -8,7 +8,9 @@ class HashTest extends \PHPUnit\Framework\TestCase
     private static $key = 'BBBBBBBBCCCCCCCC';
 
     public static $vectors = [
-        'NfX/5CuGPZu6YJUetAhpK7/8VTyhaKt6krIsqUPFxq3K4EcSyRL9Pj8VCj4oSjUAAAAD6N9fcLz676xz881zcE4qM2fIDOBdEVK3sOhraDV9qy7J',
+        'f1q8GdPqYfZsuXi8DoGT77/8VTyhaKt6AAAD6N7D09XWWzOSpRfm4EILjorgxgZ+sMqP/9XEhLYGvkcb',
+        'M7cCWrAuwo10HBC/UvMX87/8VTyhaKt6AAAD6KLVDKta4WVMUPA2/pale0JxnDQLNzFcOALbX/tfOZLr',
+        'cXqhFyGAJKKuMaoW85aKaL/8VTyhaKt6AAAD6D2aLd5jAEvme9r5hizmYsHP3KqazE0uYNWfysk3AoSJ',
     ];
 
     public function testBuild1()
@@ -43,13 +45,12 @@ class HashTest extends \PHPUnit\Framework\TestCase
         $this->assertFalse(Hash::verify('AAAA', $h, 'CCCC'));
     }
 
-    /*
     public function testVectors()
     {
+        #echo base64_encode(Hash::make(self::$input, self::$key, 1000));
         foreach (self::$vectors as $vector) {
-            #echo base64_encode(Hash::make(self::$input, self::$key, 1000));
-            #$this->assertTrue(Hash::verify(self::$input, base64_decode($vector), self::$key));
+            $vector = base64_decode($vector);
+            $this->assertTrue(Hash::verify(self::$input, $vector, self::$key));
         }
     }
-    */
 }
