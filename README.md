@@ -83,12 +83,12 @@ class TinyFish extends \Dcrypt\OpensslBridge
 Only `\Dcrypt\AesCbc` and `\Dcrypt\AesCtr` are tested by this library. If you roll your own, write some tests!
 
 ### Iterative HMAC Key Hardening
-To reduce the effectiveness of brute-force cracking on your encrypted blobs, you can provide an integer `$cost` parameter in your encryption/decryption calls. 
+To reduce the effectiveness of brute-force cracking on your encrypted blobs, you can provide an integer `$cost` parameter in your encryption call. 
 This integer will cause dcrypt to perform `$cost` number of extra HMAC operations on the key before passing it off to the underlying encryption system.
 ```php
 $encrypted = \Dcrypt\AesCbc::encrypt($plaintext, $password, 10000);
 
-$plaintext = \Dcrypt\AesCbc::decrypt($encrypted, $password, 10000);
+$plaintext = \Dcrypt\AesCbc::decrypt($encrypted, $password);
 ```
 
 ### Tamper Protection
