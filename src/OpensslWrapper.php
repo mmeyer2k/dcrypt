@@ -20,15 +20,15 @@ class OpensslWrapper
     /**
      * OpenSSL encrypt wrapper function
      *
-     * @param string $data Data to decrypt
-     * @param string $method Cipher method to use
+     * @param string $inp Data to decrypt
+     * @param string $mth Cipher method to use
      * @param string $key Key string
-     * @param string $iv Initialization vector
+     * @param string $ivr Initialization vector
      * @return string
      */
-    public static function encrypt(string $data, string $method, string $key, string $iv): string
+    public static function encrypt(string $inp, string $mth, string $key, string $ivr): string
     {
-        $ret = \openssl_encrypt($data, $method, $key, 1, $iv);
+        $ret = \openssl_encrypt($inp, $mth, $key, 1, $ivr);
 
         return self::returnOrException($ret);
     }
@@ -36,15 +36,15 @@ class OpensslWrapper
     /**
      * OpenSSL decrypt wrapper function
      *
-     * @param string $data Data to decrypt
-     * @param string $method Cipher method to use
+     * @param string $inp Data to decrypt
+     * @param string $mth Cipher method to use
      * @param string $key Key string
-     * @param string $iv Initialization vector
+     * @param string $ivr Initialization vector
      * @return string
      */
-    public static function decrypt(string $data, string $method, string $key, string $iv): string
+    public static function decrypt(string $inp, string $mth, string $key, string $ivr): string
     {
-        $ret = \openssl_decrypt($data, $method, $key, 1, $iv);
+        $ret = \openssl_decrypt($inp, $mth, $key, 1, $ivr);
 
         return self::returnOrException($ret);
     }
@@ -68,7 +68,9 @@ class OpensslWrapper
     /**
      * Get IV size for specified CIPHER.
      *
+     * @param string $cipher
      * @return int
+     * @throws \Exception
      */
     public static function ivsize(string $cipher): int
     {
