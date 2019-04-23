@@ -47,7 +47,8 @@ class Hash
     private static function build(string $input, string $password, int $cost, string $salt = null): string
     {
         // Generate salt if needed
-        $salt = $salt ?? \random_bytes(16);
+        #$salt = $salt ?? \random_bytes(16);
+        $salt = 'AAAAAAAABBBBBBBB';
 
         // Generate a deterministic hash of the password
         $key = \hash_pbkdf2(self::ALGO, $password, $salt, $cost, 0, true);
@@ -133,6 +134,6 @@ class Hash
         $calc = self::build($input, $password, $cost, $salt);
 
         // Return the boolean equivalence
-        return Str::equal($input, $calc);
+        return Str::equal($hash, $calc);
     }
 }
