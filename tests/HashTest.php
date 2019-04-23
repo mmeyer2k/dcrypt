@@ -45,6 +45,13 @@ class HashTest extends \PHPUnit\Framework\TestCase
         $this->assertFalse(Hash::verify('AAAA', $h, 'CCCC'));
     }
 
+    public function testBuildFail2()
+    {
+        $h = Hash::make(self::$input, self::$key);
+
+        $this->assertFalse(Hash::verify('not the same string', $h, self::$key));
+    }
+
     public function testVectors()
     {
         #echo base64_encode(Hash::make(self::$input, self::$key, 1000));

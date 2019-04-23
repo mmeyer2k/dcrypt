@@ -20,15 +20,15 @@ class OpensslWrapper
     /**
      * OpenSSL encrypt wrapper function
      *
-     * @param string $inp Data to decrypt
-     * @param string $mth Cipher method to use
-     * @param string $key Key string
-     * @param string $ivr Initialization vector
+     * @param string $input  Data to decrypt
+     * @param string $method Cipher method to use
+     * @param string $key    Key string
+     * @param string $iv     Initialization vector
      * @return string
      */
-    public static function encrypt(string $inp, string $mth, string $key, string $ivr): string
+    public static function encrypt(string $input, string $method, string $key, string $iv): string
     {
-        $ret = \openssl_encrypt($inp, $mth, $key, 1, $ivr);
+        $ret = \openssl_encrypt($input, $method, $key, 1, $iv);
 
         return self::returnOrException($ret);
     }
@@ -36,15 +36,15 @@ class OpensslWrapper
     /**
      * OpenSSL decrypt wrapper function
      *
-     * @param string $inp Data to decrypt
-     * @param string $mth Cipher method to use
-     * @param string $key Key string
-     * @param string $ivr Initialization vector
+     * @param string $input  Data to decrypt
+     * @param string $method Cipher method to use
+     * @param string $key    Key string
+     * @param string $iv     Initialization vector
      * @return string
      */
-    public static function decrypt(string $inp, string $mth, string $key, string $ivr): string
+    public static function decrypt(string $input, string $method, string $key, string $iv): string
     {
-        $ret = \openssl_decrypt($inp, $mth, $key, 1, $ivr);
+        $ret = \openssl_decrypt($input, $method, $key, 1, $iv);
 
         return self::returnOrException($ret);
     }

@@ -122,12 +122,12 @@ class Hash
     /**
      * Check the validity of a hash.
      *
-     * @param string $input    Input to test.
-     * @param string $hash     Known hash to validate against.
-     * @param string $password HMAC password to use during iterative hash.
+     * @param string $data Input to test.
+     * @param string $hash Known hash to validate against.
+     * @param string $pass HMAC password to use during iterative hash.
      * @return boolean
      */
-    public static function verify(string $input, string $hash, string $password): bool
+    public static function verify(string $data, string $hash, string $pass): bool
     {
         // Get the salt value from the decrypted prefix
         $salt = Str::substr($hash, 0, 16);
@@ -138,7 +138,7 @@ class Hash
         // Get the encrypted cost bytes out of the blob
         $cost = Str::substr($hash, 24, 4);
 
-        $costhashtest = Str::substr(\hash_hmac(self::ALGO, $cost, $password, true), 0, 8);
+        $costhashtest = Str::substr(\hash_hmac(self::ALGO, $cost, $pass, true), 0, 8);
 
         // If the provided cost hash does not calculate to be the same as the one provided then consider the hash invalid.
         if ($costhashtest !== $costhash) {
@@ -146,10 +146,10 @@ class Hash
         }
 
         // Decrypt the cost value stored in the 32bit int
-        $cost = self::costDecrypt($cost, $salt, $password);
+        $cost = self::costDecrypt($cost, $salt, $pass);
 
         // Build a hash from the input for comparison
-        $calc = self::build($input, $password, $cost, $salt);
+        $calc = self::build($data, $pass, $cost, $salt);
 
         // Return the boolean equivalence
         return Str::equal($hash, $calc);
