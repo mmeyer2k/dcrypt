@@ -4,7 +4,6 @@ use Dcrypt\AesCbc;
 
 class AesCbcTest extends \PHPUnit\Framework\TestCase
 {
-
     private static $input = 'AAAAAAAA';
     private static $key = 'BBBBBBBBCCCCCCCC';
 

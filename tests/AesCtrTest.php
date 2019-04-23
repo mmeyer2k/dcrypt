@@ -4,7 +4,6 @@ use Dcrypt\AesCtr;
 
 class AesCtrTest extends \PHPUnit\Framework\TestCase
 {
-
     private static $input = 'AAAAAAAA';
     private static $key = 'BBBBBBBBCCCCCCCC';
 
