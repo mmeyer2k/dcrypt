@@ -57,7 +57,7 @@ class OpensslBridge
         $cost = \unpack('N', $itr ^ \hash_hmac(static::CHKSUM, $ivr, $pass, true))[1];
 
         // Calculate verification checksum
-        $chk = \hash(static::CHKSUM, ($msg . $itr), true);
+        $chk = \hash_hmac(static::CHKSUM, ($msg . $itr . $ivr), $pass, true);
 
         // Verify HMAC before decrypting
         if (!Str::equal($chk, $sum)) {
@@ -95,7 +95,7 @@ class OpensslBridge
         $itr = \pack('N', $cost) ^ \hash_hmac(static::CHKSUM, $ivr, $pass, true);
 
         // Generate the ciphertext checksum to prevent bit tampering
-        $chk = \hash(static::CHKSUM, ($msg . $itr), true);
+        $chk = \hash_hmac(static::CHKSUM, ($msg . $itr . $ivr), $pass, true);
 
         // Return iv + checksum + iterations + cyphertext
         return $ivr . $chk . $itr . $msg;

@@ -8,9 +8,9 @@ class AesCbcTest extends \PHPUnit\Framework\TestCase
     private static $key = 'BBBBBBBBCCCCCCCC';
 
     public static $vectors = [
-        'C/drsZG/o8D2JEvGJFCE3F9opDEEoWiKsNiu6mupqIghorZokTyzn2VNUAbkLIhxX2+QdrwzJuqVQPih/DrAicMXiiY=',
-        'iluC2ip9nQZUpS9zdCfQ9OVvLrzx0OBKauv6FMu39tX8mhRCn4/dr3dDVcOJotMrC8xnxJBfOeImtqUGWEDaAS2EBws=',
-        'gyrSPnQTTKDiGX98C8MDcxfzB9AMEFFrRX27BUcfWsQbjlkjrVWg9WRsSeOicpkqXXNRV/QIAquWycfszPQh8dOIY48=',
+        'TBKxhZZceWusumsstOpaBV+RA26sb9S5CXF5bMM16fZ4fuJG0JU8wHBTcwRyX/8fu2ILrsKVfxbzuUeHRQ6GX6ad1ZI=',
+        'oNINffRHwsdox/XPs8HOGo1FvQx+0YylEmgYyQsQMCdm8TgeGC3b+D2uJKBxoBI2Z82/rn3PAgBhsbdeMYX/26z2nA0=',
+        'Dd8n0dRlRap79mkRBQVDwnHVhD3AdME19mSiRIiwgtgMfqXEiGjzCP2HU8F0weTLFTJlW2h1KyGQ6kjmu2Xm2s13Tx4=',
     ];
 
     public function testEngine1()
@@ -42,8 +42,8 @@ class AesCbcTest extends \PHPUnit\Framework\TestCase
 
     public function testVectors()
     {
+        //var_dump(base64_encode(AesCbc::encrypt(self::$input, self::$key)));
         foreach (self::$vectors as $vector) {
-            #var_dump(base64_encode(AesCbc::encrypt(self::$input, self::$key)));
             $decrypted = AesCbc::decrypt(base64_decode($vector), self::$key);
             $this->assertEquals(self::$input, $decrypted);
         }
