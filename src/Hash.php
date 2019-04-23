@@ -67,16 +67,17 @@ class Hash
      *
      * @param int    $cost
      * @param string $salt
-     * @param string $passw
+     * @param string $pass
      * @return string
      */
     private static function costEncrypt(int $cost, string $salt, string $pass): string
     {
         // Pack the cost value into a 4 byte string
-        $packed = pack('L*', $cost);
+        $packed = pack('N', $cost);
 
         // Encrypt the string with the Otp stream cipher
-        return Otp::crypt($packed, ($pass . $salt), self::ALGO);
+        #return Otp::crypt($packed, ($pass . $salt), self::ALGO);
+        return $packed;
     }
 
     /**
@@ -90,10 +91,10 @@ class Hash
     private static function costDecrypt(string $pack, string $salt, string $pass): int
     {
         // Decrypt the cost value stored in the 32bit int
-        $cost = Otp::crypt($pack, ($pass . $salt), self::ALGO);
+        #$cost = Otp::crypt($pack, ($pass . $salt), self::ALGO);
 
         // Unpack the value back to an integer and return to caller
-        return unpack('L*', $cost)[1];
+        return unpack('N', $pack)[1];
     }
 
     /**
@@ -128,12 +129,10 @@ class Hash
         // Decrypt the cost value stored in the 32bit int
         $cost = self::costDecrypt($cost, $salt, $password);
 
-
+        // Build a hash from the input for comparison
         $calc = self::build($input, $password, $cost, $salt);
 
-        throw new \Exception($cost);
-
         // Return the boolean equivalence
-        return Str::equal($input, self::build($input, $password, $cost, $salt));
+        return Str::equal($input, $calc);
     }
 }
