@@ -42,32 +42,32 @@ class Hash
     /**
      * Internal function used to build the actual hash.
      *
-     * @param string      $input    Data to hash
-     * @param string      $password Password to use in HMAC call
-     * @param int         $cost     Number of iterations to use
-     * @param string|null $salt     Initialization vector to use in HMAC calls
+     * @param string      $data Data to hash
+     * @param string      $pass Password to use in HMAC call
+     * @param int         $cost Number of iterations to use
+     * @param string|null $salt Initialization vector to use in HMAC calls
      * @return string
      */
-    private static function build(string $input, string $password, int $cost, string $salt = null): string
+    private static function build(string $data, string $pass, int $cost, string $salt = null): string
     {
         // Generate salt if needed
         $salt = $salt ?? \random_bytes(16);
 
         // Generate a deterministic hash of the password
-        $key = \hash_pbkdf2(self::ALGO, $password, $salt, $cost, 0, true);
+        $pkey = \hash_pbkdf2(self::ALGO, $pass, $salt, $cost, 0, true);
 
         // HMAC the input parameter with the generated key
-        $hash = \hash_hmac(self::ALGO, $input, $key, true);
+        $hash = \hash_hmac(self::ALGO, $data, $pkey, true);
 
         // Covert cost value to byte array and encrypt
-        $cost = self::costEncrypt($cost, $salt, $password);
+        $cost = self::costEncrypt($cost, $salt, $pass);
 
         // Create a hash of the cost to prevent DOS attacks caused by
-        // flipping bits in the cost area of the blob
-        $costhash = Str::substr(\hash_hmac(self::ALGO, $cost, $password, true), 0, 8);
+        // flipping bits in the cost area of the blob and then requesting validation
+        $chsh = self::costHash($cost, $pass);
 
         // Return the salt + cost + hmac as a single string
-        return $salt . $costhash . $cost . $hash;
+        return $salt . $chsh . $cost . $hash;
     }
 
     /**
@@ -131,15 +131,13 @@ class Hash
         $salt = Str::substr($hash, 0, 16);
 
         // Get the encrypted cost bytes out of the blob
-        $costhash = Str::substr($hash, 16, 8);
+        $chsh = Str::substr($hash, 16, 8);
 
         // Get the encrypted cost bytes out of the blob
         $cost = Str::substr($hash, 24, 4);
 
-        $costhashtest = Str::substr(\hash_hmac(self::ALGO, $cost, $pass, true), 0, 8);
-
         // If the provided cost hash does not calculate to be the same as the one provided then consider the hash invalid.
-        if ($costhashtest !== $costhash) {
+        if ($chsh !== self::costHash($cost, $pass)) {
             return false;
         }
 
@@ -151,5 +149,17 @@ class Hash
 
         // Return the boolean equivalence
         return Str::equal($hash, $calc);
+    }
+
+    /**
+     * Returns the correct hash for an encrypted cost value.
+     *
+     * @param string $cost
+     * @param string $pass
+     * @return string
+     */
+    private static function costHash(string $cost, string $pass): string
+    {
+        return Str::substr(\hash_hmac(self::ALGO, $cost, $pass, true), 0, 8);
     }
 }

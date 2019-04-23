@@ -179,17 +179,15 @@ $equals = \Dcrypt\Str::equal('known', 'given');
 # Usage Notes
 1. All functions input/output raw binary strings.
 1. All functions accept any string of arbitrary length for `$input` and `$password` type parameters.
-  1. Dcrypt takes special steps to avoid frivolus concatenations of potentially large `$input` type parameters.
-  1. `$password` type parameters are freqently concatentated. Therefore, avoid using excessively large passwords when memory is an issue.
 1. Dcrypt's block ciphers and `Hash::make()` output very space efficient blobs. Every bit is used to its fullest potential. 
-  1. Known offset + length is how the components of the cyphertexts are parsed. No serialization, marker bytes, encoding schemes or any other nonsense is used. Because of this, the output size of the block ciphers is easily predictable and is as compact as possible.
-  1. The output size of `AesCbc::encrypt` on a 10 byte plaintext would be: IV (16 bytes) + SHA-256 HMAC (32 bytes) + encrypted plaintext and padding bytes (16 bytes) = 64 bytes.
+  1. Known offset + length is how the components of the cyphertexts are parsed. No serialization, marker bytes, encoding schemes or any other nonsense is used. This allows the output size of the block ciphers is easily predictable.
+  1. The output size of `AesCtr::encrypt` on a 10 byte plaintext would be: IV (16 bytes) + SHA-256 HMAC (32 bytes) + iterations as unsigned long (4 bytes) + encrypted plaintext (10 bytes) = 62 bytes.
 1. Dcrypt is built entirely with static functions. If you are using the `new` keyword on any Dcrypt classes, you are doing it wrong!
 
 # Show me some love :heart_eyes:
 Developing dcrypt has been a labor of love for many years. 
-If you find dcrypt useful, please consider donating some Litecoin to `LN97LrLCNiv14V6fntp247H2pj9UiFzUQZ`.
+If you find dcrypt useful, please consider donating some Litecoin.
  
- ![litecoin address](https://rawgit.com/mmeyer2k/dcrypt/master/litecoin.png)
+`LN97LrLCNiv14V6fntp247H2pj9UiFzUQZ`
 
- [Other cryptos are cool too...](https://freewallet.org/id/1f01979d/ltc/).
+ ![litecoin address](https://rawgit.com/mmeyer2k/dcrypt/master/litecoin.png)
