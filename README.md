@@ -159,12 +159,10 @@ PKCS#7 style padding is available via the `Pkcs7::pad()` and `Pkcs7::unpad()` fu
 ```
 
 ## Key Derivation Function
-`Dcrypt\Hash` is an opaque 416 bit iterative hash function. 
+`Dcrypt\Hash` is an opaque 480 bit iterative hash function. 
 First, SHA-256 is used to hash a 16 byte initialization vector with your secret password to create a unique key.
-Then `$cost` number of HMAC iterations are performed on the input using the unique key.
-
-The `$cost` parameter can be any integer between 1 and 2<sup>32</sup>. This
-`$cost` value is stored as 4 encrypted bytes in the output.
+Then `$cost` number of are performed to on the password to create the final HMAC key.
+The `$cost` parameter can be any integer between 1 and 2<sup>32</sup> and is stored as 4 encrypted bytes within the output.
 
 ```php
 $hash = \Dcrypt\Hash::make($plaintext, $password, $cost);

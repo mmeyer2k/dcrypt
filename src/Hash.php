@@ -15,14 +15,18 @@
 namespace Dcrypt;
 
 /**
- * An opaque 416 bit / 52 byte iterative hash function.
+ * An opaque 480 bit / 60 byte iterative hash function.
  *
  * 16 bytes => iv
+ *  8 bytes => cost hash
  *  4 bytes => cost
  * 32 bytes => hmac
- *                  cost
- * ||||||||||||||||||||||||||||||||||||||||||||||||||||
- * iviviviviviviviv     machmachmachmachmachmachmachmac
+ *
+ * Byte format:
+ *
+ *                  costhash    hmachmachmachmachmachmachmachmac
+ * |||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+ * iviviviviviviviv         cost
  *
  * @category Dcrypt
  * @package  Dcrypt
@@ -47,8 +51,7 @@ class Hash
     private static function build(string $input, string $password, int $cost, string $salt = null): string
     {
         // Generate salt if needed
-        #$salt = $salt ?? \random_bytes(16);
-        $salt = 'AAAAAAAABBBBBBBB';
+        $salt = $salt ?? \random_bytes(16);
 
         // Generate a deterministic hash of the password
         $key = \hash_pbkdf2(self::ALGO, $password, $salt, $cost, 0, true);
@@ -59,8 +62,12 @@ class Hash
         // Covert cost value to byte array and encrypt
         $cost = self::costEncrypt($cost, $salt, $password);
 
+        // Create a hash of the cost to prevent DOS attacks caused by
+        // flipping bits in the cost area of the blob
+        $costhash = Str::substr(\hash_hmac(self::ALGO, $cost, $password, true), 0, 8);
+
         // Return the salt + cost + hmac as a single string
-        return $salt . $cost . $hash;
+        return $salt . $costhash . $cost . $hash;
     }
 
     /**
@@ -76,9 +83,10 @@ class Hash
         // Pack the cost value into a 4 byte string
         $packed = pack('N', $cost);
 
+        return $packed;
+
         // Encrypt the string with the Otp stream cipher
         #return Otp::crypt($packed, ($pass . $salt), self::ALGO);
-        return $packed;
     }
 
     /**
@@ -92,7 +100,7 @@ class Hash
     private static function costDecrypt(string $pack, string $salt, string $pass): int
     {
         // Decrypt the cost value stored in the 32bit int
-        #$cost = Otp::crypt($pack, ($pass . $salt), self::ALGO);
+        #$pack = Otp::crypt($pack, ($pass . $salt), self::ALGO);
 
         // Unpack the value back to an integer and return to caller
         return unpack('N', $pack)[1];
@@ -101,14 +109,14 @@ class Hash
     /**
      * Hash an input string into a salted 52 bit hash.
      *
-     * @param string $input    Data to hash.
-     * @param string $password HMAC validation password.
-     * @param int    $cost     Cost value of the hash.
+     * @param string $data Data to hash.
+     * @param string $pass HMAC validation password.
+     * @param int    $cost Cost value of the hash.
      * @return string
      */
-    public static function make(string $input, string $password, int $cost = 250000): string
+    public static function make(string $data, string $pass, int $cost = 250000): string
     {
-        return self::build($input, $password, $cost, null);
+        return self::build($data, $pass, $cost, null);
     }
 
     /**
@@ -125,7 +133,17 @@ class Hash
         $salt = Str::substr($hash, 0, 16);
 
         // Get the encrypted cost bytes out of the blob
-        $cost = Str::substr($hash, 16, 4);
+        $costhash = Str::substr($hash, 16, 8);
+
+        // Get the encrypted cost bytes out of the blob
+        $cost = Str::substr($hash, 24, 4);
+
+        $costhashtest = Str::substr(\hash_hmac(self::ALGO, $cost, $password, true), 0, 8);
+
+        // If the provided cost hash does not calculate to be the same as the one provided then consider the hash invalid.
+        if ($costhashtest !== $costhash) {
+            return false;
+        }
 
         // Decrypt the cost value stored in the 32bit int
         $cost = self::costDecrypt($cost, $salt, $password);
