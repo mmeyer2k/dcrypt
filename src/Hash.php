@@ -83,10 +83,8 @@ class Hash
         // Pack the cost value into a 4 byte string
         $packed = pack('N', $cost);
 
-        return $packed;
-
         // Encrypt the string with the Otp stream cipher
-        #return Otp::crypt($packed, ($pass . $salt), self::ALGO);
+        return Otp::crypt($packed, ($pass . $salt), self::ALGO);
     }
 
     /**
@@ -100,7 +98,7 @@ class Hash
     private static function costDecrypt(string $pack, string $salt, string $pass): int
     {
         // Decrypt the cost value stored in the 32bit int
-        #$pack = Otp::crypt($pack, ($pass . $salt), self::ALGO);
+        $pack = Otp::crypt($pack, ($pass . $salt), self::ALGO);
 
         // Unpack the value back to an integer and return to caller
         return unpack('N', $pack)[1];
