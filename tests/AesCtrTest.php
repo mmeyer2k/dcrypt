@@ -52,6 +52,14 @@ class AesCtrTest extends \PHPUnit\Framework\TestCase
     /**
      * @expectedException InvalidArgumentException
      */
+    public function testTooSmall()
+    {
+        $d = AesCtr::decrypt('A', self::$key);
+    }
+
+    /**
+     * @expectedException InvalidArgumentException
+     */
     public function testCorrupt()
     {
         $encrypted = AesCtr::encrypt(self::$input, self::$key, 1);

@@ -52,6 +52,14 @@ class AesCbcTest extends \PHPUnit\Framework\TestCase
     /**
      * @expectedException InvalidArgumentException
      */
+    public function testTooSmall()
+    {
+        $d = AesCbc::decrypt('A', self::$key);
+    }
+
+    /**
+     * @expectedException InvalidArgumentException
+     */
     public function testCorrupt()
     {
         $encrypted = AesCbc::encrypt(self::$input, self::$key, 10000);

@@ -53,9 +53,6 @@ class OpensslBridge
         // Gather message portion of ciphertext after iv and checksum
         $msg = Str::substr($data, $isz + $hsz + 4);
 
-        // Decrypt and unpack the cost parameter to match what was used during encryption
-        $cost = \unpack('N', $itr ^ \hash_hmac(static::CHKSUM, $ivr, $pass, true))[1];
-
         // Calculate verification checksum
         $chk = \hash_hmac(static::CHKSUM, ($msg . $itr . $ivr), $pass, true);
 
@@ -63,6 +60,9 @@ class OpensslBridge
         if (!Str::equal($chk, $sum)) {
             throw new \InvalidArgumentException('Decryption can not proceed due to invalid cyphertext checksum.');
         }
+
+        // Decrypt and unpack the cost parameter to match what was used during encryption
+        $cost = \unpack('N', $itr ^ \hash_hmac(static::CHKSUM, $ivr, $pass, true))[1];
 
         // Derive key from password
         $key = \hash_pbkdf2(static::CHKSUM, ($pass . static::CIPHER), $ivr, $cost, 0, true);
