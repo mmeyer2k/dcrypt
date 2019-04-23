@@ -19,10 +19,5 @@
             "Dcrypt\\": "src/"
         }
     },
-    "autoload-dev": {
-      "classmap": [
-        "tests/TestSupport.php"
-      ]
-    },
     "minimum-stability": "dev"
 }

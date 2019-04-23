@@ -2,14 +2,16 @@
 
 use Dcrypt\AesCtr;
 
-class AesCtrTest extends TestSupport
+class AesCtrTest
 {
 
     private static $input = 'AAAAAAAA';
-    private static $key = 'AAAAAAAA';
+    private static $key = 'BBBBBBBBCCCCCCCC';
 
     public static $vectors = [
-        'XFZwvXOd79A2Jvnog9eLaoPX7T8gXHFKJJ1GqDi1Mb3ZkyAy9BbnCawJyMyXySEJOWkTVrgf71yyN9MF',
+        'lar3oIJLYum+T38ap2CVEMvexQWEp3MFQ4MgiD7DcCi2uR1Up25M/4egtZ8G+gT0LYHR6BQ3QZyl915r',
+        'qiE1YpFpQxQvS0nb2OCnQUCn01CzzdgtSKWTgg7TT1sBvxKsTpF1Cjp8RITRda/9FmWUX5F8N5ToIHDq',
+        'XSLMlzlJo3WpFy4qxtsMYrGDy7IBMUJNbRXjxaz1IXzMhO/2P4Pa/C1qp5A6ZRl5NscxxL/5jK1sBsGH',
     ];
 
     public function testEngine1()
@@ -53,10 +55,8 @@ class AesCtrTest extends TestSupport
      */
     public function testCorrupt()
     {
-        $encrypted = AesCtr::encrypt(self::$input, self::$key, 10000);
+        $encrypted = AesCtr::encrypt(self::$input, self::$key, 1);
         $this->assertEquals(self::$input, AesCtr::decrypt($encrypted, self::$key));
-
-        $corrupt = self::swaprandbyte($encrypted);
-        AesCtr::decrypt($corrupt, self::$key);
+        AesCtr::decrypt($encrypted . 'A', self::$key);
     }
 }

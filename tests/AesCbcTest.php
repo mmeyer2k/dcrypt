@@ -2,16 +2,14 @@
 
 use Dcrypt\AesCbc;
 
-class AesCbcTest extends TestSupport
+class AesCbcTest
 {
 
     private static $input = 'AAAAAAAA';
-    private static $key = 'AAAAAAAA';
+    private static $key = 'BBBBBBBBCCCCCCCC';
 
     public static $vectors = [
-        '2MMJ9lAL6xdtyR8ZZeXEWR2nmzF7lzsgoSoGhSuO3dQ0nZjDwur4ade9kZCziJTOzbefdbuDCgrKhVqg1rgy844bJhk=',
-        'iXK0MZVImebouYol8FUXFmwr2VUAvx3AE7aAc6eWsCHbx5Okt3IeTlnAwYjbY8T/scxZYf0geIVZsyEaRIapHtbBu1E=',
-        'cgZygH85el9GcUSpD7ltADtI3aByO/uqIzKQD4mpxQWiHZkTopSVQIG0DdeDLtycib91LhtemLzLolH9SWKRoe19kro=',
+        '',
     ];
 
     public function testEngine1()
@@ -57,8 +55,6 @@ class AesCbcTest extends TestSupport
     {
         $encrypted = AesCbc::encrypt(self::$input, self::$key, 10000);
         $this->assertEquals(self::$input, AesCbc::decrypt($encrypted, self::$key));
-
-        $corrupt = self::swaprandbyte($encrypted);
-        AesCbc::decrypt($corrupt, self::$key);
+        AesCbc::decrypt($encrypted . 'A', self::$key);
     }
 }
