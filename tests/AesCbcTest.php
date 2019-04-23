@@ -9,9 +9,9 @@ class AesCbcTest extends TestSupport
     private static $key = 'AAAAAAAA';
 
     public static $vectors = [
-        'TRIvESkk/8xosd/o816kD1Ze0L0FGEA+40taUWRPvDiHJQQOubdZ2HJJz13AIdVmkI8ulG4S3RdDUQMZ6tpZZBaVE6I=',
-        'ff0kMENnnbyj0mXCcr90Yu5IF+7CM9nkbuBDJAfEq+i8qJ7qzcfqSj/1cHiA3H4eShroNGts+O+3SfQs/RdL2/hdPNs=',
-        'Hj2rPT+I1dfh23ejl4H7xJLTnuljI0GFMDWlQ4NQ8rPKEUWHzmcrZz1/WcA80M343St8SfiBpoQAdLq9Fn7oUDIC0jk=',
+        '2MMJ9lAL6xdtyR8ZZeXEWR2nmzF7lzsgoSoGhSuO3dQ0nZjDwur4ade9kZCziJTOzbefdbuDCgrKhVqg1rgy844bJhk=',
+        'iXK0MZVImebouYol8FUXFmwr2VUAvx3AE7aAc6eWsCHbx5Okt3IeTlnAwYjbY8T/scxZYf0geIVZsyEaRIapHtbBu1E=',
+        'cgZygH85el9GcUSpD7ltADtI3aByO/uqIzKQD4mpxQWiHZkTopSVQIG0DdeDLtycib91LhtemLzLolH9SWKRoe19kro=',
     ];
 
     public function testEngine1()

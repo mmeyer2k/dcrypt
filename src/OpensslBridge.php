@@ -54,7 +54,7 @@ class OpensslBridge
         $msg = Str::substr($data, $isz + $hsz + 4);
 
         // Decrypt and unpack the cost parameter to match what was used during encryption
-        $cost = \unpack('L', $itr ^ \hash_hmac(static::CHKSUM, $ivr, $pass, true))[1];
+        $cost = \unpack('N', $itr ^ \hash_hmac(static::CHKSUM, $ivr, $pass, true))[1];
 
         // Derive key from password
         $key = \hash_pbkdf2(static::CHKSUM, ($pass . static::CIPHER), $ivr, $cost, 0, true);
@@ -92,7 +92,7 @@ class OpensslBridge
         $msg = OpensslWrapper::encrypt($data, static::CIPHER, $key, $ivr);
 
         // Convert cost integer into 4 byte string and XOR it with a newly derived key
-        $itr = \pack('L', $cost) ^ \hash_hmac(static::CHKSUM, $ivr, $pass, true);
+        $itr = \pack('N', $cost) ^ \hash_hmac(static::CHKSUM, $ivr, $pass, true);
 
         // Generate the ciphertext checksum to prevent bit tampering
         $chk = \hash_hmac(static::CHKSUM, $msg, $key, true);
