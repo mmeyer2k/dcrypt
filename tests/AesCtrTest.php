@@ -2,7 +2,7 @@
 
 use Dcrypt\AesCtr;
 
-class AesCtrTest
+class AesCtrTest extends \PHPUnit\Framework\TestCase
 {
 
     private static $input = 'AAAAAAAA';

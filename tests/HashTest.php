@@ -2,7 +2,7 @@
 
 use Dcrypt\Hash;
 
-class HashTest
+class HashTest extends \PHPUnit\Framework\TestCase
 {
     public static $vectors = [
         '',

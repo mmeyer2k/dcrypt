@@ -2,14 +2,16 @@
 
 use Dcrypt\AesCbc;
 
-class AesCbcTest
+class AesCbcTest extends \PHPUnit\Framework\TestCase
 {
 
     private static $input = 'AAAAAAAA';
     private static $key = 'BBBBBBBBCCCCCCCC';
 
     public static $vectors = [
-        '',
+        'C/drsZG/o8D2JEvGJFCE3F9opDEEoWiKsNiu6mupqIghorZokTyzn2VNUAbkLIhxX2+QdrwzJuqVQPih/DrAicMXiiY=',
+        'iluC2ip9nQZUpS9zdCfQ9OVvLrzx0OBKauv6FMu39tX8mhRCn4/dr3dDVcOJotMrC8xnxJBfOeImtqUGWEDaAS2EBws=',
+        'gyrSPnQTTKDiGX98C8MDcxfzB9AMEFFrRX27BUcfWsQbjlkjrVWg9WRsSeOicpkqXXNRV/QIAquWycfszPQh8dOIY48=',
     ];
 
     public function testEngine1()
