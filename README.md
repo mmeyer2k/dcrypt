@@ -26,16 +26,11 @@ For PHP5 support, check out the legacy branch [here](https://github.com/mmeyer2k
 Add `dcrypt` to your composer.json file requirements.
 Don't worry, `dcrypt` does not have any dependencies of its own.
 ```bash
-composer require "mmeyer2k/dcrypt=~8.0"
+composer require "mmeyer2k/dcrypt=~9.0"
 ```
-In environments where composer is not available, Dcrypt can be used by including `load.php`.
-```php
-require 'path/to/dcrypt/load.php';
-```
+
 # Features
-
 ## Block Ciphers
-
 ### AES-256-CBC Encryption
 Quickly access AES-256-CBC encryption with `\Dcrypt\AesCbc`.
 All of the most secure options are the default. 
@@ -88,12 +83,12 @@ class TinyFish extends \Dcrypt\OpensslBridge
 Only `\Dcrypt\AesCbc` and `\Dcrypt\AesCtr` are tested by this library. If you roll your own, write some tests!
 
 ### Iterative HMAC Key Hardening
-To reduce the effectiveness of brute-force cracking on your encrypted blobs, you can provide an integer `$cost` parameter in your encryption/decryption calls. 
+To reduce the effectiveness of brute-force cracking on your encrypted blobs, you can provide an integer `$cost` parameter in your encryption call. 
 This integer will cause dcrypt to perform `$cost` number of extra HMAC operations on the key before passing it off to the underlying encryption system.
 ```php
 $encrypted = \Dcrypt\AesCbc::encrypt($plaintext, $password, 10000);
 
-$plaintext = \Dcrypt\AesCbc::decrypt($encrypted, $password, 10000);
+$plaintext = \Dcrypt\AesCbc::decrypt($encrypted, $password);
 ```
 
 ### Tamper Protection
@@ -164,13 +159,10 @@ PKCS#7 style padding is available via the `Pkcs7::pad()` and `Pkcs7::unpad()` fu
 ```
 
 ## Key Derivation Function
-`Dcrypt\Hash` is an opaque 512 bit iterative hash function. 
+`Dcrypt\Hash` is an opaque 480 bit iterative hash function. 
 First, SHA-256 is used to hash a 16 byte initialization vector with your secret password to create a unique key.
-Then `$cost` number of HMAC iterations are performed on the input using the unique key.
-
-The `$cost` parameter can be any integer between 0 and 2<sup>32</sup> - 1. This
-`$cost` value is stored as 4 encrypted bytes in the output. A `$cost` value of 
-`0` results in only a single hash being performed.
+Then `$cost` number of are performed to on the password to create the final HMAC key.
+The `$cost` parameter can be any integer between 1 and 2<sup>32</sup> and is stored as 4 encrypted bytes within the output.
 
 ```php
 $hash = \Dcrypt\Hash::make($plaintext, $password, $cost);
@@ -187,17 +179,15 @@ $equals = \Dcrypt\Str::equal('known', 'given');
 # Usage Notes
 1. All functions input/output raw binary strings.
 1. All functions accept any string of arbitrary length for `$input` and `$password` type parameters.
-  1. Dcrypt takes special steps to avoid frivolus concatenations of potentially large `$input` type parameters.
-  1. `$password` type parameters are freqently concatentated. Therefore, avoid using excessively large passwords when memory is an issue.
 1. Dcrypt's block ciphers and `Hash::make()` output very space efficient blobs. Every bit is used to its fullest potential. 
-  1. Known offset + length is how the components of the cyphertexts are parsed. No serialization, marker bytes, encoding schemes or any other nonsense is used. Because of this, the output size of the block ciphers is easily predictable and is as compact as possible.
-  1. The output size of `AesCbc::encrypt` on a 10 byte plaintext would be: IV (16 bytes) + SHA-256 HMAC (32 bytes) + encrypted plaintext and padding bytes (16 bytes) = 64 bytes.
+  1. Known offset + length is how the components of the cyphertexts are parsed. No serialization, marker bytes, encoding schemes or any other nonsense is used. This allows the output size of the block ciphers is easily predictable.
+  1. The output size of `AesCtr::encrypt` on a 10 byte plaintext would be: IV (16 bytes) + SHA-256 HMAC (32 bytes) + iterations as unsigned long (4 bytes) + encrypted plaintext (10 bytes) = 62 bytes.
 1. Dcrypt is built entirely with static functions. If you are using the `new` keyword on any Dcrypt classes, you are doing it wrong!
 
 # Show me some love :heart_eyes:
 Developing dcrypt has been a labor of love for many years. 
-If you find dcrypt useful, please consider donating some Litecoin to `LN97LrLCNiv14V6fntp247H2pj9UiFzUQZ`.
+If you find dcrypt useful, please consider donating some Litecoin.
  
- ![litecoin address](https://rawgit.com/mmeyer2k/dcrypt/master/litecoin.png)
+`LN97LrLCNiv14V6fntp247H2pj9UiFzUQZ`
 
- [Other cryptos are cool too...](https://freewallet.org/id/1f01979d/ltc/).
+ ![litecoin address](https://rawgit.com/mmeyer2k/dcrypt/master/litecoin.png)

@@ -1,49 +1,69 @@
 <?php
 
 use Dcrypt\AesCbc;
-use Dcrypt\Mcrypt;
 
-class AesCbcTest extends TestSupport
+class AesCbcTest extends \PHPUnit\Framework\TestCase
 {
-    /**
-     * @expectedException InvalidArgumentException
-     */
-    public function testPbkdf()
-    {
-        $input = 'AAAAAAAA';
-        $key = 'AAAAAAAA';
-        $encrypted = AesCbc::encrypt($input, $key, 10);
-        $this->assertEquals($input, AesCbc::decrypt($encrypted, $key, 10));
+    private static $input = 'AAAAAAAA';
+    private static $key = 'BBBBBBBBCCCCCCCC';
 
-        $corrupt = self::swaprandbyte($encrypted);
-        AesCbc::decrypt($corrupt, $key, 10);
+    public static $vectors = [
+        'TBKxhZZceWusumsstOpaBV+RA26sb9S5CXF5bMM16fZ4fuJG0JU8wHBTcwRyX/8fu2ILrsKVfxbzuUeHRQ6GX6ad1ZI=',
+        'oNINffRHwsdox/XPs8HOGo1FvQx+0YylEmgYyQsQMCdm8TgeGC3b+D2uJKBxoBI2Z82/rn3PAgBhsbdeMYX/26z2nA0=',
+        'Dd8n0dRlRap79mkRBQVDwnHVhD3AdME19mSiRIiwgtgMfqXEiGjzCP2HU8F0weTLFTJlW2h1KyGQ6kjmu2Xm2s13Tx4=',
+    ];
+
+    public function testEngine1()
+    {
+        $encrypted = AesCbc::encrypt(self::$input, self::$key, 10000);
+        $decrypted = AesCbc::decrypt($encrypted, self::$key);
+
+        $this->assertEquals(self::$input, $decrypted);
     }
 
-    /**
-     * @expectedException InvalidArgumentException
-     */
-    public function testEngine()
+    public function testEngine2()
     {
-        $input = 'AAAAAAAA';
-        $key = 'AAAAAAAA';
+        $encrypted = AesCbc::encrypt(self::$input, self::$key);
+        $decrypted = AesCbc::decrypt($encrypted, self::$key);
+
+        $this->assertEquals(self::$input, $decrypted);
+    }
+
+    public function testEngine3()
+    {
+        $input = \random_bytes(16);
+        $key = \random_bytes(256);
 
         $encrypted = AesCbc::encrypt($input, $key);
-        $this->assertEquals($input, AesCbc::decrypt($encrypted, $key));
+        $decrypted = AesCbc::decrypt($encrypted, $key);
 
-        // Perform a validation by replacing a random byte to make sure
-        // the decryption fails. After enough successful runs,
-        // all areas of the cypher text will have been tested
-        // for integrity
-        $corrupt = self::swaprandbyte($encrypted);
-        AesCbc::decrypt($corrupt, $key);
+        $this->assertEquals($input, $decrypted);
     }
 
-    public function testVector()
+    public function testVectors()
     {
-        $input = 'hello world';
-        $pass = 'password';
-        $vector = \base64_decode('eZu2DqB2gYhdA2YkjagLNJJVMVo1BbpJ75tW/PO2bGIY98XHD+Gp+YlO5cv/rHzo45LHMCxL2qOircdST1w5hg==');
+        //var_dump(base64_encode(AesCbc::encrypt(self::$input, self::$key)));
+        foreach (self::$vectors as $vector) {
+            $decrypted = AesCbc::decrypt(base64_decode($vector), self::$key);
+            $this->assertEquals(self::$input, $decrypted);
+        }
+    }
 
-        $this->assertEquals($input, AesCbc::decrypt($vector, $pass));
+    /**
+     * @expectedException InvalidArgumentException
+     */
+    public function testTooSmall()
+    {
+        $d = AesCbc::decrypt('A', self::$key);
+    }
+
+    /**
+     * @expectedException InvalidArgumentException
+     */
+    public function testCorrupt()
+    {
+        $encrypted = AesCbc::encrypt(self::$input, self::$key, 10000);
+        $this->assertEquals(self::$input, AesCbc::decrypt($encrypted, self::$key));
+        AesCbc::decrypt($encrypted . 'A', self::$key);
     }
 }

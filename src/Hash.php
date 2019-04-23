@@ -15,14 +15,18 @@
 namespace Dcrypt;
 
 /**
- * An opaque 512 bit iterative hash function.
+ * An opaque 480 bit / 60 byte iterative hash function.
  *
  * 16 bytes => iv
- * 12 bytes => cost checksum
+ *  8 bytes => cost hash
  *  4 bytes => cost
  * 32 bytes => hmac
  *
- * ivivivivivivivivsssssssssssscosthmachmachmachmachmachmachmachmac
+ * Byte format:
+ *
+ *                  costhash    hmachmachmachmachmachmachmachmac
+ * |||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+ * iviviviviviviviv         cost
  *
  * @category Dcrypt
  * @package  Dcrypt
@@ -38,156 +42,124 @@ class Hash
     /**
      * Internal function used to build the actual hash.
      *
-     * @param string      $input    Data to hash
-     * @param string      $password Password to use in HMAC call
-     * @param int         $cost     Number of iterations to use
-     * @param string|null $salt     Initialization vector to use in HMAC calls
+     * @param string      $data Data to hash
+     * @param string      $pass Password to use in HMAC call
+     * @param int         $cost Number of iterations to use
+     * @param string|null $salt Initialization vector to use in HMAC calls
      * @return string
      */
-    private static function build(string $input, string $password, int $cost, string $salt = null): string
+    private static function build(string $data, string $pass, int $cost, string $salt = null): string
     {
         // Generate salt if needed
         $salt = $salt ?? \random_bytes(16);
 
-        // Verify and normalize cost value
-        $cost = self::cost($cost);
+        // Generate a deterministic hash of the password
+        $pkey = \hash_pbkdf2(self::ALGO, $pass, $salt, $cost, 0, true);
 
-        // Create key to use for hmac operations
-        $key = self::hmac($salt, $password, self::ALGO);
+        // HMAC the input parameter with the generated key
+        $hash = \hash_hmac(self::ALGO, $data, $pkey, true);
 
-        // Perform hash iterations. Get a 32 byte output value
-        $hash = self::ihmac($input, $key, $cost, self::ALGO);
+        // Covert cost value to byte array and encrypt
+        $cost = self::costEncrypt($cost, $salt, $pass);
 
-        // Return the salt + cost blob + hmac
-        return $salt . self::costHash($cost, $salt, $password) . $hash;
+        // Create a hash of the cost to prevent DOS attacks caused by
+        // flipping bits in the cost area of the blob and then requesting validation
+        $chsh = self::costHash($cost, $pass);
+
+        // Return the salt + cost + hmac as a single string
+        return $salt . $chsh . $cost . $hash;
     }
 
     /**
-     * Return a normalized cost value.
-     *
-     * @param int $cost Number of iterations to use.
-     * @return int
-     */
-    private static function cost(int $cost): int
-    {
-        return $cost % \pow(2, 32);
-    }
-
-    /**
-     * Performs hashing functions
+     * Encrypts the cost value so that it can be added to the output hash discretely
      *
      * @param int    $cost
      * @param string $salt
-     * @param string $password
+     * @param string $pass
      * @return string
      */
-    private static function costHash(int $cost, string $salt, string $password): string
+    private static function costEncrypt(int $cost, string $salt, string $pass): string
     {
-        // Hash and return first 12 bytes
-        $hash = Str::substr(self::hmac($cost, $salt, self::ALGO), 0, 12);
+        // Pack the cost value into a 4 byte string
+        $packed = pack('N', $cost);
 
-        // Convert cost to base 256 then encrypt with OTP stream cipher
-        $cost = Otp::crypt(self::dec2bin($cost), $password);
-
-        return $hash . $cost;
+        // Encrypt the string with the Otp stream cipher
+        return Otp::crypt($packed, ($pass . $salt), self::ALGO);
     }
 
     /**
-     * Perform a raw iterative HMAC operation with a configurable algo.
+     * Decrypts the cost string back into an int
+     *
+     * @param string $pack
+     * @param string $salt
+     * @param string $pass
+     * @return int
+     */
+    private static function costDecrypt(string $pack, string $salt, string $pass): int
+    {
+        // Decrypt the cost value stored in the 32bit int
+        $pack = Otp::crypt($pack, ($pass . $salt), self::ALGO);
+
+        // Unpack the value back to an integer and return to caller
+        return unpack('N', $pack)[1];
+    }
+
+    /**
+     * Hash an input string into a salted 52 bit hash.
      *
      * @param string $data Data to hash.
-     * @param string $key  Key to use to authenticate the hash.
-     * @param int    $iter Number of times to iteratate the hash
-     * @param string $algo Name of algo (sha256 or sha512 recommended)
+     * @param string $pass HMAC validation password.
+     * @param int    $cost Cost value of the hash.
      * @return string
      */
-    public static function ihmac(string $data, string $key, int $iter, string $algo = 'sha256'): string
+    public static function make(string $data, string $pass, int $cost = 250000): string
     {
-        // Can't perform negative iterations
-        $iter = \abs($iter);
-
-        // Perform iterative hmac calls
-        // Make sure $iter value of 0 is handled
-        for ($i = 0; $i <= $iter; $i++) {
-            $data = self::hmac($data . $i . $iter, $key, $algo);
-        }
-
-        return $data;
-    }
-
-    /**
-     * Perform a single hmac iteration. This adds an extra layer of safety because hash_hmac can return false if algo
-     * is not valid. Return type hint will throw an exception if this happens.
-     *
-     * @param string $data Data to hash.
-     * @param string $key  Key to use to authenticate the hash.
-     * @param string $algo Name of algo
-     * @return string
-     */
-    public static function hmac(string $data, string $key, string $algo): string
-    {
-        return \hash_hmac($algo, $data, $key, true);
-    }
-
-    /**
-     * Hash an input string into a salted 512 byte hash.
-     *
-     * @param string $input    Data to hash.
-     * @param string $password HMAC validation password.
-     * @param int    $cost     Cost value of the hash.
-     * @return string
-     */
-    public static function make(string $input, string $password, int $cost = 250000): string
-    {
-        return self::build($input, $password, $cost, null);
+        return self::build($data, $pass, $cost, null);
     }
 
     /**
      * Check the validity of a hash.
      *
-     * @param string $input    Input to test.
-     * @param string $hash     Known hash to validate against.
-     * @param string $password HMAC password to use during iterative hash.
+     * @param string $data Input to test.
+     * @param string $hash Known hash to validate against.
+     * @param string $pass HMAC password to use during iterative hash.
      * @return boolean
      */
-    public static function verify(string $input, string $hash, string $password): bool
+    public static function verify(string $data, string $hash, string $pass): bool
     {
         // Get the salt value from the decrypted prefix
         $salt = Str::substr($hash, 0, 16);
 
-        // Get the encrypted cost bytes
-        $cost = self::bin2dec(Otp::crypt(Str::substr($hash, 28, 4), $password));
+        // Get the encrypted cost bytes out of the blob
+        $chsh = Str::substr($hash, 16, 8);
 
-        // Get the entire cost+hash blob for comparison
-        $blob = Str::substr($hash, 16, 16);
+        // Get the encrypted cost bytes out of the blob
+        $cost = Str::substr($hash, 24, 4);
 
-        if (!Str::equal(self::costHash($cost, $salt, $password), $blob)) {
+        // If the provided cost hash does not calculate to be the same as the one provided then consider the hash invalid.
+        if ($chsh !== self::costHash($cost, $pass)) {
             return false;
         }
 
+        // Decrypt the cost value stored in the 32bit int
+        $cost = self::costDecrypt($cost, $salt, $pass);
+
+        // Build a hash from the input for comparison
+        $calc = self::build($data, $pass, $cost, $salt);
+
         // Return the boolean equivalence
-        return Str::equal($hash, self::build($input, $password, $cost, $salt));
+        return Str::equal($hash, $calc);
     }
 
     /**
-     * Turns an integer into a 4 byte binary representation
+     * Returns the correct hash for an encrypted cost value.
      *
-     * @param int $dec Integer to convert to binary
+     * @param string $cost
+     * @param string $pass
      * @return string
      */
-    private static function dec2bin(int $dec): string
+    private static function costHash(string $cost, string $pass): string
     {
-        return \hex2bin(\str_pad(\dechex($dec), 8, '0', STR_PAD_LEFT));
-    }
-
-    /**
-     * Reverses dec2bin
-     *
-     * @param string $bin Binary string to convert to decimal
-     * @return string
-     */
-    private static function bin2dec(string $bin): string
-    {
-        return \hexdec(\bin2hex($bin));
+        return Str::substr(\hash_hmac(self::ALGO, $cost, $pass, true), 0, 8);
     }
 }

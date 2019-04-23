@@ -20,15 +20,15 @@ class OpensslWrapper
     /**
      * OpenSSL encrypt wrapper function
      *
-     * @param string $data   Data to decrypt
+     * @param string $input  Data to decrypt
      * @param string $method Cipher method to use
      * @param string $key    Key string
      * @param string $iv     Initialization vector
      * @return string
      */
-    public static function encrypt(string $data, string $method, string $key, string $iv): string
+    public static function encrypt(string $input, string $method, string $key, string $iv): string
     {
-        $ret = \openssl_encrypt($data, $method, $key, 1, $iv);
+        $ret = \openssl_encrypt($input, $method, $key, 1, $iv);
 
         return self::returnOrException($ret);
     }
@@ -36,15 +36,15 @@ class OpensslWrapper
     /**
      * OpenSSL decrypt wrapper function
      *
-     * @param string $data   Data to decrypt
+     * @param string $input  Data to decrypt
      * @param string $method Cipher method to use
      * @param string $key    Key string
      * @param string $iv     Initialization vector
      * @return string
      */
-    public static function decrypt(string $data, string $method, string $key, string $iv): string
+    public static function decrypt(string $input, string $method, string $key, string $iv): string
     {
-        $ret = \openssl_decrypt($data, $method, $key, 1, $iv);
+        $ret = \openssl_decrypt($input, $method, $key, 1, $iv);
 
         return self::returnOrException($ret);
     }
@@ -63,5 +63,23 @@ class OpensslWrapper
         }
 
         return $data;
+    }
+
+    /**
+     * Get IV size for specified CIPHER.
+     *
+     * @param string $cipher
+     * @return int
+     * @throws \Exception
+     */
+    public static function ivsize(string $cipher): int
+    {
+        $ret = \openssl_cipher_iv_length($cipher);
+
+        if ($ret === false) {
+            throw new \Exception("Failed to determine correct IV size.");
+        }
+
+        return $ret;
     }
 }

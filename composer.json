@@ -1,7 +1,7 @@
 {
     "name": "mmeyer2k/dcrypt",
     "description": "A petite library of encryption functionality for PHP",
-    "keywords": ["encryption", "hashing", "pbkdf", "aes", "otp", "pkcs7", "rc4", "spritz", "mcrypt", "openssl"],
+    "keywords": ["encryption", "hashing", "pbkdf", "aes", "otp", "pkcs7", "rc4", "spritz", "openssl"],
     "license": "MIT",
     "authors": [
         {
@@ -18,11 +18,6 @@
         "psr-4": {
             "Dcrypt\\": "src/"
         }
-    },
-    "autoload-dev": {
-      "classmap": [
-        "tests/TestSupport.php"
-      ]
     },
     "minimum-stability": "dev"
 }

@@ -27,39 +27,45 @@ namespace Dcrypt;
 class OpensslBridge
 {
     /**
-     * This string is used when hashing to ensure cross compatibility between
-     * dcrypt\mcrypt and dcrypt\aes. Since v7, this is only needed for backwards
-     * compatibility with older versions
-     */
-    const RIJNDA = 'rijndael-128';
-
-    /**
      * Decrypt cyphertext
      *
      * @param string $data Cyphertext to decrypt
      * @param string $pass Password that should be used to decrypt input data
-     * @param int    $cost Number of extra HMAC iterations to perform on key
      * @return string
      */
-    public static function decrypt(string $data, string $pass, int $cost = 0): string
+    public static function decrypt(string $data, string $pass): string
     {
+        // Calculate the hash checksum size in bytes for the specified algo
+        $hsz = Str::hashSize(static::CHKSUM);
+
+        // Ask openssl for the IV size needed for specified cipher
+        $isz = OpensslWrapper::ivsize(static::CIPHER);
+
         // Find the IV at the beginning of the cypher text
-        $ivr = Str::substr($data, 0, self::ivsize());
+        $ivr = Str::substr($data, 0, $isz);
 
         // Gather the checksum portion of the ciphertext
-        $sum = Str::substr($data, self::ivsize(), self::cksize());
+        $sum = Str::substr($data, $isz, $hsz);
+
+        // Gather the iterations portion of the cipher text as packed/encrytped unsigned long
+        $itr = Str::substr($data, $isz + $hsz, 4);
 
         // Gather message portion of ciphertext after iv and checksum
-        $msg = Str::substr($data, self::ivsize() + self::cksize());
-
-        // Derive key from password
-        $key = self::key($pass, $ivr, $cost);
+        $msg = Str::substr($data, $isz + $hsz + 4);
 
         // Calculate verification checksum
-        $chk = self::checksum($msg, $ivr, $key);
+        $chk = \hash_hmac(static::CHKSUM, ($msg . $itr . $ivr), $pass, true);
 
         // Verify HMAC before decrypting
-        self::checksumVerify($chk, $sum);
+        if (!Str::equal($chk, $sum)) {
+            throw new \InvalidArgumentException('Decryption can not proceed due to invalid cyphertext checksum.');
+        }
+
+        // Decrypt and unpack the cost parameter to match what was used during encryption
+        $cost = \unpack('N', $itr ^ \hash_hmac(static::CHKSUM, $ivr, $pass, true))[1];
+
+        // Derive key from password
+        $key = \hash_pbkdf2(static::CHKSUM, ($pass . static::CIPHER), $ivr, $cost, 0, true);
 
         // Decrypt message and return
         return OpensslWrapper::decrypt($msg, static::CIPHER, $key, $ivr);
@@ -73,119 +79,25 @@ class OpensslBridge
      * @param int    $cost Number of extra HMAC iterations to perform on key
      * @return string
      */
-    public static function encrypt(string $data, string $pass, int $cost = 0): string
+    public static function encrypt(string $data, string $pass, int $cost = 1): string
     {
         // Generate IV of appropriate size.
-        $ivr = \random_bytes(self::ivsize());
+        $ivr = \random_bytes(OpensslWrapper::ivsize(static::CIPHER));
 
-        // Derive key from password
-        $key = self::key($pass, $ivr, $cost);
+        // Derive key from password with hash_pbkdf2 function.
+        // Append CIPHER to password beforehand so that cross-method decryptions will fail at checksum step
+        $key = \hash_pbkdf2(static::CHKSUM, ($pass . static::CIPHER), $ivr, $cost, 0, true);
 
-        // Encrypt the plaintext
+        // Encrypt the plaintext data
         $msg = OpensslWrapper::encrypt($data, static::CIPHER, $key, $ivr);
 
-        // Create the cypher text prefix (iv + checksum)
-        $pre = $ivr . self::checksum($msg, $ivr, $key);
+        // Convert cost integer into 4 byte string and XOR it with a newly derived key
+        $itr = \pack('N', $cost) ^ \hash_hmac(static::CHKSUM, $ivr, $pass, true);
 
-        // Return prefix + cyphertext
-        return $pre . $msg;
-    }
+        // Generate the ciphertext checksum to prevent bit tampering
+        $chk = \hash_hmac(static::CHKSUM, ($msg . $itr . $ivr), $pass, true);
 
-    /**
-     * Create a message authentication checksum.
-     *
-     * @param string $data Ciphertext that needs a checksum.
-     * @param string $iv   Initialization vector.
-     * @param string $key  HMAC key
-     * @return string
-     */
-    private static function checksum(string $data, string $iv, string $key): string
-    {
-        // Prevent multiple potentially large string concats by hmac-ing the input data
-        // by itself first...
-        $sum = Hash::hmac($data, $key, static::CHKSUM);
-
-        // Then add the other input elements together before performing the final hash
-        $sum = $sum . $iv . self::mode() . self::RIJNDA;
-
-        // ... then hash other elements with previous hmac and return
-        return Hash::hmac($sum, $key, static::CHKSUM);
-    }
-
-    /**
-     * Transform password into key and perform iterative HMAC (if specified)
-     *
-     * @param string $pass Encryption key
-     * @param string $iv   Initialization vector
-     * @param int    $cost Number of HMAC iterations to perform on key
-     * @return string
-     */
-    private static function key(string $pass, string $iv, int $cost): string
-    {
-        // Create the authentication string to be hashed
-        $data = $iv . self::RIJNDA . self::mode();
-
-        return Hash::ihmac($data, $pass, $cost, static::CHKSUM);
-    }
-
-    /**
-     * Verify checksum during decryption step and throw error if mismatching.
-     *
-     * @param string $calculated
-     * @param string $supplied
-     * @throws \InvalidArgumentException
-     */
-    private static function checksumVerify(string $calculated, string $supplied)
-    {
-        if (!Str::equal($calculated, $supplied)) {
-            $e = 'Decryption can not proceed due to invalid cyphertext checksum.';
-            throw new \InvalidArgumentException($e);
-        }
-    }
-
-    /**
-     * Return the encryption mode string. This function is really only needed for backwards
-     * compatibility.
-     *
-     * @return string
-     */
-    private static function mode(): string
-    {
-        // To prevent legacy blobs from not decoding, these ciphers (which were implemented before 8.3) have hard coded
-        // return values. Luckily, this integrates gracefully with overloading.
-        $legacy = [
-            'bf-cbc' => 'cbc',
-            'bf-ofb' => 'ofb',
-            'aes-256-cbc' => 'cbc',
-            'aes-256-ctr' => 'ctr',
-        ];
-
-        $cipher = \strtolower(static::CIPHER);
-
-        if (isset($legacy[$cipher])) {
-            return $legacy[$cipher];
-        }
-
-        return $cipher;
-    }
-
-    /**
-     * Calculate checksum size
-     *
-     * @return int
-     */
-    private static function cksize(): int
-    {
-        return Str::hashSize(static::CHKSUM);
-    }
-
-    /**
-     * Get IV size
-     *
-     * @return int
-     */
-    private static function ivsize(): int
-    {
-        return \openssl_cipher_iv_length(static::CIPHER);
+        // Return iv + checksum + iterations + cyphertext
+        return $ivr . $chk . $itr . $msg;
     }
 }

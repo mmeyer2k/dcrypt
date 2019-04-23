@@ -2,66 +2,60 @@
 
 use Dcrypt\Hash;
 
-class HashTest extends TestSupport
+class HashTest extends \PHPUnit\Framework\TestCase
 {
+    private static $input = 'AAAAAAAA';
+    private static $key = 'BBBBBBBBCCCCCCCC';
 
-    public function testIhmacSanity()
+    public static $vectors = [
+        'u+zL1DMeZeZJ99WiKayy0ciKVJAUetQNoofv/xzCDlhnv+INgGrQ0klVyXSUl8+Yk5zgvZKPNY3nFB8T',
+    ];
+
+    public function testBuild1()
     {
-        // Make sure at least one hash always happens with any kind of crazy cost value
-        $this->assertNotEquals('aaaa', Hash::ihmac('aaaa', 'bbbb', 0));
-        $this->assertNotEquals('aaaa', Hash::ihmac('aaaa', 'bbbb', -1));
+        $h = Hash::make('AAAA', 'BBBB', 100);
+
+        $this->assertEquals(60, strlen($h));
+
+        $this->assertTrue(Hash::verify('AAAA', $h, 'BBBB'));
     }
 
-    public function testBadCost()
+    public function testBuild2()
     {
-        $this->assertEquals(64, strlen(Hash::make('test', '1234', 0)));
+        $h = Hash::make(self::$input, self::$key);
+
+        $this->assertEquals(60, strlen($h));
+
+        $this->assertTrue(Hash::verify(self::$input, $h, self::$key));
     }
 
-    public function testLength()
+    public function testBuild3()
     {
-        $this->assertEquals(64, strlen(Hash::make('test', '1234')));
+        $h = Hash::make(self::$input, self::$key, 100);
+
+        $this->assertEquals(60, strlen($h));
     }
 
-    public function testCycle()
+    public function testBuildFail1()
     {
-        $input = 'input test';
-        $key = 'key123';
-        $hash = Hash::make($input, $key, 1);
-        $this->assertTrue(Hash::verify($input, $hash, $key));
+        $h = Hash::make('AAAA', 'BBBB', 100);
+
+        $this->assertFalse(Hash::verify('AAAA', $h, 'CCCC'));
     }
 
-    public function testHmacAlgoFailure()
+    public function testBuildFail2()
     {
-        try {
-            // This should always throw an exception
-            Hash::hmac('test', '1234', 'an algo that does not exist');
-            $this->assertTrue(false);
-        } catch (\Exception $e) {
-            $this->assertTrue(true);
+        $h = Hash::make(self::$input, self::$key);
+
+        $this->assertFalse(Hash::verify('not the same string', $h, self::$key));
+    }
+
+    public function testVectors()
+    {
+        //echo base64_encode(Hash::make(self::$input, self::$key, 1000));
+        foreach (self::$vectors as $vector) {
+            $vector = base64_decode($vector);
+            $this->assertTrue(Hash::verify(self::$input, $vector, self::$key));
         }
     }
-
-    public function testFail()
-    {
-        $input = str_repeat('A', rand(0, 10000));
-        $key = str_repeat('A', rand(10, 100));
-        $cost = 1;
-
-        $output = Hash::make($input, $key, $cost);
-        $this->assertTrue(Hash::verify($input, $output, $key));
-
-        for ($i = 0; $i < 10; $i++) {
-            $corrupt = self::swaprandbyte($output);
-            $this->assertFalse(Hash::verify($input, $corrupt, $key));
-        }
-    }
-
-    public function testVector()
-    {
-        $input = 'hello world';
-        $key = 'password';
-        $vector = base64_decode('dvvWMEFPCo9EV+l+htGGcoK5Uj8zrh6bfxCh16NOjJxuugObuidTQ3+R3qiyZLnHl7zRxSmfHRasEJQpTymZDw==');
-        $this->assertTrue(Hash::verify($input, $vector, $key));
-    }
-
 }
