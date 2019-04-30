@@ -51,7 +51,10 @@ class AesGcmTest extends AesBase
 
         parent::testVectors();
     }
-
+    
+    /**
+     * @expectedException InvalidArgumentException
+     */
     public function testCorrupt()
     {
         if (strpos(PHP_VERSION, '7.0.') === 0) {
