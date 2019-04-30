@@ -29,9 +29,9 @@ class OpensslWrapper
     public static function encrypt(string $input, string $method, string $key, string $iv, string &$tag): string
     {
         if (OpensslStatic::tagRequired($method)) {
-            $ret = \openssl_encrypt($input, $method, $key, 1, $iv, $tag, "", 4);
+            $ret = \openssl_encrypt($input, $method, $key, OPENSSL_RAW_DATA, $iv, $tag, "", 4);
         } else {
-            $ret = \openssl_encrypt($input, $method, $key, 1, $iv);
+            $ret = \openssl_encrypt($input, $method, $key, OPENSSL_RAW_DATA, $iv);
         }
 
         return self::returnOrException($ret);
@@ -49,9 +49,9 @@ class OpensslWrapper
     public static function decrypt(string $input, string $method, string $key, string $iv, string $tag): string
     {
         if (OpensslStatic::tagRequired($method)) {
-            $ret = \openssl_decrypt($input, $method, $key, 1, $iv, $tag, "");
+            $ret = \openssl_decrypt($input, $method, $key, OPENSSL_RAW_DATA, $iv, $tag, "");
         } else {
-            $ret = \openssl_decrypt($input, $method, $key, 1, $iv);
+            $ret = \openssl_decrypt($input, $method, $key, OPENSSL_RAW_DATA, $iv);
         }
 
         return self::returnOrException($ret);

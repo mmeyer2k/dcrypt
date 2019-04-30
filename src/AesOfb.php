@@ -15,7 +15,7 @@
 namespace Dcrypt;
 
 /**
- * Symmetric AES-256-GCM encryption functions powered by OpenSSL.
+ * Symmetric AES-256-OFB encryption functions powered by OpenSSL.
  *
  * @category Dcrypt
  * @package  Dcrypt
