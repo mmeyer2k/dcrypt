@@ -52,7 +52,7 @@ $plaintext = \Dcrypt\AesCtr::decrypt($encrypted, $password);
 
 ### Custom Encryption Suites
 `dcrypt`'s internal functions are easily extendable by overloading the `OpensslBridge` class. 
-Use `openssl_get_cipher_method()` and `hash_algos()` to gather available options.
+Use `openssl_get_cipher_methods()` and `hash_algos()` to gather available options.
 
 ```php
 <?php
