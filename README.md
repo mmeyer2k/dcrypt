@@ -10,7 +10,7 @@
 [![SensioLabsInsight](https://insight.sensiolabs.com/projects/c48adefc-874e-4d14-88dc-05f7f407f968/mini.png)](https://insight.sensiolabs.com/projects/c48adefc-874e-4d14-88dc-05f7f407f968)
 
 A petite library of essential encryption functions for PHP 7.1+.
-For legacu PHP version support, look [here](https://github.com/mmeyer2k/dcrypt/blob/master/LEGACY.md).
+For legacy PHP version support, look [here](https://github.com/mmeyer2k/dcrypt/blob/master/LEGACY.md).
 
 - [Install](#install)
 - [Features](#features)
@@ -75,8 +75,19 @@ $plaintext = \Dcrypt\AesOfb::decrypt($encrypted, $password);
 ```
 
 ### Custom Encryption Suites
+#### Static Wrapper
+Use any cipher/algo combination by calling the `OpensslStatic` class.
+
+```php
+$encrypted = \Dcrypt\OpensslStatic::encrypt($plaintext, $password, 'des-ofb', 'md5');
+
+$plaintext = \Dcrypt\OpensslStatic::decrypt($encrypted, $password, 'des-ofb', 'md5');
+```
+
+To find supported options, `openssl_get_cipher_methods()` and `hash_algos()` are helpful.
+
+#### Class Overload
 Dcrypt's internal functions are easily extendable by overloading the `OpensslBridge` class. 
-Use `openssl_get_cipher_methods()` and `hash_algos()` to gather available options.
 
 ```php
 <?php
