@@ -58,9 +58,7 @@ class AesGcmTest extends AesBase
     public function testCorrupt()
     {
         if (strpos(PHP_VERSION, '7.0.') === 0) {
-            $this->assertTrue(true);
-
-            return;
+            throw new \InvalidArgumentException('fake error');
         }
 
         parent::testCorrupt();
