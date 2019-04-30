@@ -12,8 +12,6 @@
     "require": {
         "php": ">=7.0.0"
     },
-    "require-dev": {
-    },
     "autoload": {
         "psr-4": {
             "Dcrypt\\": "src/"

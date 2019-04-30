@@ -1,3 +1,6 @@
+# Upgrade from 9.x to 10.x
+Version 10 drops support for PHP 7.0.
+
 # Upgrade from 8.x to 9.x
 Version 9 is a MAJOR update to dcrypt and breaks almost all backword compatibility.
 It removes all legacy crutches and moves to use more a more modern design.

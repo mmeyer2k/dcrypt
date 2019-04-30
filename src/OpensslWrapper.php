@@ -26,9 +26,13 @@ class OpensslWrapper
      * @param string $iv     Initialization vector
      * @return string
      */
-    public static function encrypt(string $input, string $method, string $key, string $iv): string
+    public static function encrypt(string $input, string $method, string $key, string $iv, string &$tag): string
     {
-        $ret = \openssl_encrypt($input, $method, $key, 1, $iv);
+        if (OpensslStatic::tagRequired($method)) {
+            $ret = \openssl_encrypt($input, $method, $key, OPENSSL_RAW_DATA, $iv, $tag, "", 4);
+        } else {
+            $ret = \openssl_encrypt($input, $method, $key, OPENSSL_RAW_DATA, $iv);
+        }
 
         return self::returnOrException($ret);
     }
@@ -42,9 +46,13 @@ class OpensslWrapper
      * @param string $iv     Initialization vector
      * @return string
      */
-    public static function decrypt(string $input, string $method, string $key, string $iv): string
+    public static function decrypt(string $input, string $method, string $key, string $iv, string $tag): string
     {
-        $ret = \openssl_decrypt($input, $method, $key, 1, $iv);
+        if (OpensslStatic::tagRequired($method)) {
+            $ret = \openssl_decrypt($input, $method, $key, OPENSSL_RAW_DATA, $iv, $tag, "");
+        } else {
+            $ret = \openssl_decrypt($input, $method, $key, OPENSSL_RAW_DATA, $iv);
+        }
 
         return self::returnOrException($ret);
     }

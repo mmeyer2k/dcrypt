@@ -9,8 +9,8 @@
 [![Latest Stable Version](https://poser.pugx.org/mmeyer2k/dcrypt/version)](https://packagist.org/packages/mmeyer2k/dcrypt)
 [![SensioLabsInsight](https://insight.sensiolabs.com/projects/c48adefc-874e-4d14-88dc-05f7f407f968/mini.png)](https://insight.sensiolabs.com/projects/c48adefc-874e-4d14-88dc-05f7f407f968)
 
-A petite library of essential encryption functions for PHP7.
-For PHP5 support, check out the legacy branch [here](https://github.com/mmeyer2k/dcrypt/tree/4.0.2).
+A petite library of essential encryption functions for PHP 7.0+.
+For legacy PHP version support, look [here](https://github.com/mmeyer2k/dcrypt/blob/master/LEGACY.md).
 
 - [Install](#install)
 - [Features](#features)
@@ -23,18 +23,36 @@ For PHP5 support, check out the legacy branch [here](https://github.com/mmeyer2k
 - [Show me some love](#show-me-some-love-heart_eyes) :heart_eyes:
 
 # Install
-Add `dcrypt` to your composer.json file requirements.
-Don't worry, `dcrypt` does not have any dependencies of its own.
+Add dcrypt to your composer.json file requirements.
+Don't worry, dcrypt does not have any dependencies of its own.
 ```bash
-composer require "mmeyer2k/dcrypt=~9.0"
+composer require "mmeyer2k/dcrypt=~10.0"
 ```
 
 # Features
 ## Block Ciphers
+Dcrypt helps application developers to avoid common mistakes in crypto implementations that leave data at risk.
+The primary features of dcrypt's block ciphers are:
+- Elegent API helps keep your code readable, auditable and understandable
+- Allows custom combinations of encryption and hashing algorithms to fit different purposes
+- Cipher text, authentication tag (if present), IV and HMAC are all packed into a single string for simplicity
+- Naturally, strongly random initialization vectors are used
+- SHA256 (default) HMAC checksums are verified in a time-safe manner before decryption
+
+### AES-256-GCM Encryption (PHP 7.1+ Only)
+With PHP 7.1 comes support for AEAD encryption modes, GCM being considered the best of these.
+Small authentication tags are used because Dcrypt already provides strong HMAC based authentication.
+Using this mode essentially adds an extra 32 bit checksum to the cipher text.
+
+```php
+$encrypted = \Dcrypt\AesGcm::encrypt($plaintext, $password);
+
+$plaintext = \Dcrypt\AesGcm::decrypt($encrypted, $password);
+```
+
 ### AES-256-CBC Encryption
-Quickly access AES-256-CBC encryption with `\Dcrypt\AesCbc`.
-All of the most secure options are the default. 
-Naturally, strongly random initialization vectors are generated upon encryption and standard HMAC (SHA-256) checksums are verified in a time-safe manner before decryption.
+CBC mode is better for some usages since it uses padding and therefore leaks less information about plaintext length.
+
 ```php
 $encrypted = \Dcrypt\AesCbc::encrypt($plaintext, $password);
 
@@ -42,7 +60,8 @@ $plaintext = \Dcrypt\AesCbc::decrypt($encrypted, $password);
 ```
 
 ### AES-256-CTR Encryption
-If the `CTR` mode is preferred, `\Dcrypt\AesCtr` can be used.
+If the CTR mode is preferred, `\Dcrypt\AesCtr` can be used.
+
 ```php
 $encrypted = \Dcrypt\AesCtr::encrypt($plaintext, $password);
 
@@ -50,9 +69,29 @@ $plaintext = \Dcrypt\AesCtr::decrypt($encrypted, $password);
 ```
 [Definitive StackExchange thread on CBC vs CTR](https://security.stackexchange.com/questions/27776/block-chaining-modes-to-avoid/27780#27780)
 
+### AES-256-OFB Encryption
+OFB mode is supported even though it has mostly been superseded.
+
+```php
+$encrypted = \Dcrypt\AesOfb::encrypt($plaintext, $password);
+
+$plaintext = \Dcrypt\AesOfb::decrypt($encrypted, $password);
+```
+
 ### Custom Encryption Suites
-`dcrypt`'s internal functions are easily extendable by overloading the `OpensslBridge` class. 
-Use `openssl_get_cipher_method()` and `hash_algos()` to gather available options.
+#### Static Wrapper
+Use any cipher/algo combination by calling the `OpensslStatic` class.
+
+```php
+$encrypted = \Dcrypt\OpensslStatic::encrypt($plaintext, $password, 'des-ofb', 'md5');
+
+$plaintext = \Dcrypt\OpensslStatic::decrypt($encrypted, $password, 'des-ofb', 'md5');
+```
+
+To find supported options, `openssl_get_cipher_methods()` and `hash_algos()` are helpful.
+
+#### Class Overload
+Dcrypt's internal functions are easily extendable by overloading the `OpensslBridge` class. 
 
 ```php
 <?php
@@ -78,9 +117,6 @@ class TinyFish extends \Dcrypt\OpensslBridge
     const CHKSUM = 'crc32';
 }
 ```
-
-**NOTE**:
-Only `\Dcrypt\AesCbc` and `\Dcrypt\AesCtr` are tested by this library. If you roll your own, write some tests!
 
 ### Iterative HMAC Key Hardening
 To reduce the effectiveness of brute-force cracking on your encrypted blobs, you can provide an integer `$cost` parameter in your encryption call. 
