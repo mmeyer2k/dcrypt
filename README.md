@@ -23,8 +23,8 @@ For legacy PHP version support, look [here](https://github.com/mmeyer2k/dcrypt/b
 - [Show me some love](#show-me-some-love-heart_eyes) :heart_eyes:
 
 # Install
-Add `dcrypt` to your composer.json file requirements.
-Don't worry, `dcrypt` does not have any dependencies of its own.
+Add dcrypt to your composer.json file requirements.
+Don't worry, dcrypt does not have any dependencies of its own.
 ```bash
 composer require "mmeyer2k/dcrypt=~10.0"
 ```
@@ -32,7 +32,7 @@ composer require "mmeyer2k/dcrypt=~10.0"
 # Features
 ## Block Ciphers
 Dcrypt helps application developers to avoid common mistakes in crypto implementations that leave data at risk.
-The primary features of Dcrypt's block ciphers are:
+The primary features of dcrypt's block ciphers are:
 - Elegent API helps keep your code readable, auditable and understandable
 - Allows custom combinations of encryption and hashing algorithms to fit different purposes
 - Cipher text, authentication tag (if present), IV and HMAC are all packed into a single string for simplicity
