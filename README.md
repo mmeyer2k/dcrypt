@@ -9,8 +9,8 @@
 [![Latest Stable Version](https://poser.pugx.org/mmeyer2k/dcrypt/version)](https://packagist.org/packages/mmeyer2k/dcrypt)
 [![SensioLabsInsight](https://insight.sensiolabs.com/projects/c48adefc-874e-4d14-88dc-05f7f407f968/mini.png)](https://insight.sensiolabs.com/projects/c48adefc-874e-4d14-88dc-05f7f407f968)
 
-A petite library of essential encryption functions for PHP7.
-For PHP5 support, check out the legacy branch [here](https://github.com/mmeyer2k/dcrypt/tree/4.0.2).
+A petite library of essential encryption functions for PHP 7.1+.
+For legacu PHP version support, look [here](https://github.com/mmeyer2k/dcrypt/blob/master/LEGACY.md).
 
 - [Install](#install)
 - [Features](#features)
@@ -26,15 +26,26 @@ For PHP5 support, check out the legacy branch [here](https://github.com/mmeyer2k
 Add `dcrypt` to your composer.json file requirements.
 Don't worry, `dcrypt` does not have any dependencies of its own.
 ```bash
-composer require "mmeyer2k/dcrypt=~9.0"
+composer require "mmeyer2k/dcrypt=~10.0"
 ```
 
 # Features
 ## Block Ciphers
-### AES-256-CBC Encryption
-Quickly access AES-256-CBC encryption with `\Dcrypt\AesCbc`.
-All of the most secure options are the default. 
 Naturally, strongly random initialization vectors are generated upon encryption and standard HMAC (SHA-256) checksums are verified in a time-safe manner before decryption.
+
+### AES-256-GCM Encryption
+With PHP 7.1 comes support for AEAD encryption modes, GCM being considered the best of these.
+Small authentication tags are used because `dcrypt` already provides strong HMAC based authentication.
+Using this mode essentially adds an extra 32 bit checksum to the cipher text.
+```php
+$encrypted = \Dcrypt\AesGcm::encrypt($plaintext, $password);
+
+$plaintext = \Dcrypt\AesGcm::decrypt($encrypted, $password);
+```
+
+### AES-256-CBC Encryption
+CBC mode is better for some usages since it uses padding.
+
 ```php
 $encrypted = \Dcrypt\AesCbc::encrypt($plaintext, $password);
 
@@ -42,7 +53,7 @@ $plaintext = \Dcrypt\AesCbc::decrypt($encrypted, $password);
 ```
 
 ### AES-256-CTR Encryption
-If the `CTR` mode is preferred, `\Dcrypt\AesCtr` can be used.
+If the CTR mode is preferred, `\Dcrypt\AesCtr` can be used.
 ```php
 $encrypted = \Dcrypt\AesCtr::encrypt($plaintext, $password);
 
@@ -78,9 +89,6 @@ class TinyFish extends \Dcrypt\OpensslBridge
     const CHKSUM = 'crc32';
 }
 ```
-
-**NOTE**:
-Only `\Dcrypt\AesCbc` and `\Dcrypt\AesCtr` are tested by this library. If you roll your own, write some tests!
 
 ### Iterative HMAC Key Hardening
 To reduce the effectiveness of brute-force cracking on your encrypted blobs, you can provide an integer `$cost` parameter in your encryption call. 

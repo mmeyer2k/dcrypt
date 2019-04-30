@@ -16,11 +16,14 @@ namespace Dcrypt;
 
 class OpensslStatic
 {
-
     public static function decrypt(string $data, string $pass, string $cipher, string $algo): string
     {
         // Calculate the hash checksum size in bytes for the specified algo
         $hsz = Str::hashSize($algo);
+
+        // Find the tag size for this cipher mode
+        // Unless using GCM/CCM this will be zero
+        $tsz = self::tagRequired($cipher) ? 4 : 0;
 
         // Ask openssl for the IV size needed for specified cipher
         $isz = OpensslWrapper::ivsize($cipher);
@@ -31,11 +34,14 @@ class OpensslStatic
         // Gather the checksum portion of the ciphertext
         $sum = Str::substr($data, $isz, $hsz);
 
+        // Gather the GCM/CCM authentication tag
+        $tag = Str::substr($data, $isz + $hsz, $tsz);
+
         // Gather the iterations portion of the cipher text as packed/encrytped unsigned long
-        $itr = Str::substr($data, $isz + $hsz, 4);
+        $itr = Str::substr($data, $isz + $hsz + $tsz, 4);
 
         // Gather message portion of ciphertext after iv and checksum
-        $msg = Str::substr($data, $isz + $hsz + 4);
+        $msg = Str::substr($data, $isz + $hsz + $tsz + 4);
 
         // Calculate verification checksum
         $chk = \hash_hmac($algo, ($msg . $itr . $ivr), $pass, true);
@@ -52,7 +58,7 @@ class OpensslStatic
         $key = \hash_pbkdf2($algo, ($pass . $cipher), $ivr, $cost, 0, true);
 
         // Decrypt message and return
-        return OpensslWrapper::decrypt($msg, $cipher, $key, $ivr);
+        return OpensslWrapper::decrypt($msg, $cipher, $key, $ivr, $tag);
     }
 
     public static function encrypt(string $data, string $pass, string $cipher, string $algo, int $cost = 1): string
@@ -64,8 +70,11 @@ class OpensslStatic
         // Append CIPHER to password beforehand so that cross-method decryptions will fail at checksum step
         $key = \hash_pbkdf2($algo, ($pass . $cipher), $ivr, $cost, 0, true);
 
+        // Create a placeholder for the authentication tag to be passed by reference
+        $tag = '';
+
         // Encrypt the plaintext data
-        $msg = OpensslWrapper::encrypt($data, $cipher, $key, $ivr);
+        $msg = OpensslWrapper::encrypt($data, $cipher, $key, $ivr, $tag);
 
         // Convert cost integer into 4 byte string and XOR it with a newly derived key
         $itr = \pack('N', $cost) ^ \hash_hmac($algo, $ivr, $pass, true);
@@ -73,7 +82,31 @@ class OpensslStatic
         // Generate the ciphertext checksum to prevent bit tampering
         $chk = \hash_hmac($algo, ($msg . $itr . $ivr), $pass, true);
 
-        // Return iv + checksum + iterations + cyphertext
-        return $ivr . $chk . $itr . $msg;
+        // Return iv + checksum + iterations + cyphertext + tag
+        return $ivr . $chk . $tag . $itr . $msg;
+    }
+
+    /**
+     * Determines if the provided cipher requires a tag
+     *
+     * @param string $cipher
+     * @return bool
+     */
+    public static function tagRequired(string $cipher): bool
+    {
+        $cipher = strtolower($cipher);
+
+        $needle_tips = [
+            '-gcm',
+            '-ccm',
+        ];
+
+        foreach ($needle_tips as $needle) {
+            if (strpos($cipher, $needle)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }
