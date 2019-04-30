@@ -9,7 +9,7 @@
 [![Latest Stable Version](https://poser.pugx.org/mmeyer2k/dcrypt/version)](https://packagist.org/packages/mmeyer2k/dcrypt)
 [![SensioLabsInsight](https://insight.sensiolabs.com/projects/c48adefc-874e-4d14-88dc-05f7f407f968/mini.png)](https://insight.sensiolabs.com/projects/c48adefc-874e-4d14-88dc-05f7f407f968)
 
-A petite library of essential encryption functions for PHP 7.1+.
+A petite library of essential encryption functions for PHP 7.0+.
 For legacy PHP version support, look [here](https://github.com/mmeyer2k/dcrypt/blob/master/LEGACY.md).
 
 - [Install](#install)
