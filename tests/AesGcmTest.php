@@ -19,9 +19,6 @@ class AesGcmTest extends AesBase
         parent::testEngine1();
     }
 
-    /**
-     * @expectedException
-     */
     public function testEngine2()
     {
         if (strpos(PHP_VERSION, '7.0.') === 0) {
@@ -31,5 +28,38 @@ class AesGcmTest extends AesBase
         }
 
         parent::testEngine2();
+    }
+
+    public function testEngine3()
+    {
+        if (strpos(PHP_VERSION, '7.0.') === 0) {
+            $this->assertTrue(true);
+
+            return;
+        }
+
+        parent::testEngine3();
+    }
+
+    public function testVectors()
+    {
+        if (strpos(PHP_VERSION, '7.0.') === 0) {
+            $this->assertTrue(true);
+
+            return;
+        }
+
+        parent::testVectors();
+    }
+
+    public function testCorrupt()
+    {
+        if (strpos(PHP_VERSION, '7.0.') === 0) {
+            $this->assertTrue(true);
+
+            return;
+        }
+
+        parent::testCorrupt();
     }
 }
