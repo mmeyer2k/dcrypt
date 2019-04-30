@@ -46,7 +46,15 @@ class AesBase extends \PHPUnit\Framework\TestCase
      */
     public function testTooSmall()
     {
-        $d = static::$class::decrypt('A', self::$key);
+        static::$class::decrypt('A', self::$key);
+    }
+
+    /**
+     * @expectedException InvalidArgumentException
+     */
+    public function testWayyyyyyTooSmall()
+    {
+        static::$class::decrypt('', self::$key);
     }
 
     /**
