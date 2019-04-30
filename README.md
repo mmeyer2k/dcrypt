@@ -31,12 +31,15 @@ composer require "mmeyer2k/dcrypt=~10.0"
 
 # Features
 ## Block Ciphers
-Naturally, strongly random initialization vectors are generated upon encryption and standard HMAC (SHA-256) checksums are verified in a time-safe manner before decryption.
+The primary goal of Dcrypt is to provide a simple and secure way to symmetrically encrypt data.
+Naturally, strongly random initialization vectors are generated upon encryption.
+Standard HMAC (SHA-256) checksums are verified in a time-safe manner before decryption.
 
 ### AES-256-GCM Encryption
 With PHP 7.1 comes support for AEAD encryption modes, GCM being considered the best of these.
-Small authentication tags are used because `dcrypt` already provides strong HMAC based authentication.
+Small authentication tags are used because Dcrypt already provides strong HMAC based authentication.
 Using this mode essentially adds an extra 32 bit checksum to the cipher text.
+
 ```php
 $encrypted = \Dcrypt\AesGcm::encrypt($plaintext, $password);
 
@@ -44,7 +47,7 @@ $plaintext = \Dcrypt\AesGcm::decrypt($encrypted, $password);
 ```
 
 ### AES-256-CBC Encryption
-CBC mode is better for some usages since it uses padding.
+CBC mode is better for some usages since it uses padding and therefore leaks less information about plaintext length.
 
 ```php
 $encrypted = \Dcrypt\AesCbc::encrypt($plaintext, $password);
@@ -54,6 +57,7 @@ $plaintext = \Dcrypt\AesCbc::decrypt($encrypted, $password);
 
 ### AES-256-CTR Encryption
 If the CTR mode is preferred, `\Dcrypt\AesCtr` can be used.
+
 ```php
 $encrypted = \Dcrypt\AesCtr::encrypt($plaintext, $password);
 
@@ -61,8 +65,17 @@ $plaintext = \Dcrypt\AesCtr::decrypt($encrypted, $password);
 ```
 [Definitive StackExchange thread on CBC vs CTR](https://security.stackexchange.com/questions/27776/block-chaining-modes-to-avoid/27780#27780)
 
+### AES-256-OFB Encryption
+OFB mode is supported even though it has mostly been superseded.
+
+```php
+$encrypted = \Dcrypt\AesOfb::encrypt($plaintext, $password);
+
+$plaintext = \Dcrypt\AesOfb::decrypt($encrypted, $password);
+```
+
 ### Custom Encryption Suites
-`dcrypt`'s internal functions are easily extendable by overloading the `OpensslBridge` class. 
+Dcrypt's internal functions are easily extendable by overloading the `OpensslBridge` class. 
 Use `openssl_get_cipher_methods()` and `hash_algos()` to gather available options.
 
 ```php
