@@ -10,8 +10,6 @@ foreach (hash_algos() as $algo) {
         }
 
         try {
-
-            #echo str_pad(strlen($e), 10);
             echo str_pad("[$algo]", 20);
             echo str_pad("[$meth]", 40);
 
