@@ -26,7 +26,7 @@ For legacy PHP version support, look [here](https://github.com/mmeyer2k/dcrypt/b
 Add dcrypt to your composer.json file requirements.
 Don't worry, dcrypt does not have any dependencies of its own.
 ```bash
-composer require "mmeyer2k/dcrypt=~10.0"
+composer require "mmeyer2k/dcrypt=~9.1"
 ```
 
 # Features
