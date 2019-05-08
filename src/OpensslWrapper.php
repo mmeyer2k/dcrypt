@@ -26,7 +26,7 @@ class OpensslWrapper
      * @param string $iv     Initialization vector
      * @return string
      */
-    public static function encrypt(string $input, string $method, string $key, string $iv, string &$tag): string
+    protected static function openssl_encrypt(string $input, string $method, string $key, string $iv, string &$tag): string
     {
         if (OpensslStatic::tagRequired($method)) {
             $ret = \openssl_encrypt($input, $method, $key, OPENSSL_RAW_DATA, $iv, $tag, '', 4);
@@ -46,7 +46,7 @@ class OpensslWrapper
      * @param string $iv     Initialization vector
      * @return string
      */
-    public static function decrypt(string $input, string $method, string $key, string $iv, string $tag): string
+    protected static function openssl_decrypt(string $input, string $method, string $key, string $iv, string $tag): string
     {
         if (OpensslStatic::tagRequired($method)) {
             $ret = \openssl_decrypt($input, $method, $key, OPENSSL_RAW_DATA, $iv, $tag, '');
@@ -64,7 +64,7 @@ class OpensslWrapper
      * @return string
      * @throws \Exception
      */
-    private static function returnOrException($data): string
+    protected static function returnOrException($data): string
     {
         if ($data === false) {
             throw new \Exception('OpenSSL failed to encrypt/decrypt message.');
@@ -80,7 +80,7 @@ class OpensslWrapper
      * @return int
      * @throws \Exception
      */
-    public static function ivsize(string $cipher): int
+    protected static function ivsize(string $cipher): int
     {
         $ret = \openssl_cipher_iv_length($cipher);
 
@@ -89,5 +89,29 @@ class OpensslWrapper
         }
 
         return $ret;
+    }
+
+    /**
+     * Determines if the provided cipher requires a tag
+     *
+     * @param string $cipher
+     * @return bool
+     */
+    protected static function tagRequired(string $cipher): bool
+    {
+        $cipher = strtolower($cipher);
+
+        $needle_tips = [
+            '-gcm',
+            '-ccm',
+        ];
+
+        foreach ($needle_tips as $needle) {
+            if (strpos($cipher, $needle)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }
