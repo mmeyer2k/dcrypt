@@ -31,18 +31,18 @@ composer require "mmeyer2k/dcrypt=^9.0"
 
 # Features
 ## Block Ciphers
-Dcrypt helps application developers to avoid common mistakes in crypto implementations that leave data at risk.
-The primary features of dcrypt's block ciphers are:
+Dcrypt helps application developers avoid common mistakes in crypto implementations that leave data at risk.
+The primary features of dcrypt's block cipher engine are:
 - Elegent API helps keep your code readable, auditable and understandable
 - Allows custom combinations of encryption and hashing algorithms to fit different purposes
-- Cipher text, authentication tag (if present), IV and HMAC are all packed into a single string for simplicity
-- Naturally, strongly random initialization vectors are used
+- Ciphertext, authentication tag (if present), IV and HMAC are all packed into a single string for simplicity
+- Strongly random initialization vectors are generated with `random_bytes()`
 - SHA256 (default) HMAC checksums are verified in a time-safe manner before decryption
 
 ### AES-256-GCM Encryption (PHP 7.1+ Only)
 With PHP 7.1 comes support for AEAD encryption modes, GCM being considered the best of these.
-Small authentication tags are used because Dcrypt already provides strong HMAC based authentication.
-Using this mode essentially adds an extra 32 bit checksum to the cipher text.
+Small authentication tags are selected because dcrypt already provides SHA-256 HMAC based authentication.
+Using this mode adds an extra 32 bit checksum to the ciphertext.
 
 ```php
 $encrypted = \Dcrypt\AesGcm::encrypt($plaintext, $password);

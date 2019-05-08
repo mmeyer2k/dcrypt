@@ -43,13 +43,13 @@ class Str
     public static function equal(string $known, string $given): bool
     {
         // Create some entropy
-        $nonce = \random_bytes(32);
+        $nonce = \random_bytes(16);
 
         // We hash the 2 inputs at this point because hash_equals is still 
         // vulnerable to timing attacks when the inputs have different sizes.
         // Inputs are also cast to string like in symfony stringutils.
-        $known = \hash_hmac('sha256', $known, $nonce, true);
-        $given = \hash_hmac('sha256', $given, $nonce, true);
+        $known = \hash_hmac('sha256', (string)$known, $nonce, true);
+        $given = \hash_hmac('sha256', (string)$given, $nonce, true);
 
         return \hash_equals($known, $given);
     }
