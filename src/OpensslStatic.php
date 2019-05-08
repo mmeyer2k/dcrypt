@@ -14,7 +14,7 @@
 
 namespace Dcrypt;
 
-class OpensslStatic
+class OpensslStatic extends OpensslWrapper
 {
     public static function decrypt(string $data, string $pass, string $cipher, string $algo): string
     {
@@ -26,7 +26,7 @@ class OpensslStatic
         $tsz = self::tagRequired($cipher) ? 4 : 0;
 
         // Ask openssl for the IV size needed for specified cipher
-        $isz = OpensslWrapper::ivsize($cipher);
+        $isz = parent::ivsize($cipher);
 
         // Find the IV at the beginning of the cypher text
         $ivr = Str::substr($data, 0, $isz);
@@ -58,13 +58,13 @@ class OpensslStatic
         $key = \hash_pbkdf2($algo, ($pass . $cipher), $ivr, $cost, 0, true);
 
         // Decrypt message and return
-        return OpensslWrapper::decrypt($msg, $cipher, $key, $ivr, $tag);
+        return parent::openssl_decrypt($msg, $cipher, $key, $ivr, $tag);
     }
 
     public static function encrypt(string $data, string $pass, string $cipher, string $algo, int $cost = 1): string
     {
         // Generate IV of appropriate size.
-        $ivr = \random_bytes(OpensslWrapper::ivsize($cipher));
+        $ivr = \random_bytes(parent::ivsize($cipher));
 
         // Derive key from password with hash_pbkdf2 function.
         // Append CIPHER to password beforehand so that cross-method decryptions will fail at checksum step
@@ -74,7 +74,7 @@ class OpensslStatic
         $tag = '';
 
         // Encrypt the plaintext data
-        $msg = OpensslWrapper::encrypt($data, $cipher, $key, $ivr, $tag);
+        $msg = parent::openssl_encrypt($data, $cipher, $key, $ivr, $tag);
 
         // Convert cost integer into 4 byte string and XOR it with a newly derived key
         $itr = \pack('N', $cost) ^ \hash_hmac($algo, $ivr, $pass, true);
@@ -84,29 +84,5 @@ class OpensslStatic
 
         // Return iv + checksum + iterations + cyphertext + tag
         return $ivr . $chk . $tag . $itr . $msg;
-    }
-
-    /**
-     * Determines if the provided cipher requires a tag
-     *
-     * @param string $cipher
-     * @return bool
-     */
-    public static function tagRequired(string $cipher): bool
-    {
-        $cipher = strtolower($cipher);
-
-        $needle_tips = [
-            '-gcm',
-            '-ccm',
-        ];
-
-        foreach ($needle_tips as $needle) {
-            if (strpos($cipher, $needle)) {
-                return true;
-            }
-        }
-
-        return false;
     }
 }
