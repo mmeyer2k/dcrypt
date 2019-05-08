@@ -37,7 +37,7 @@ The primary features of dcrypt's block cipher engine are:
 - Allows custom combinations of encryption and hashing algorithms to fit different purposes
 - Ciphertext, authentication tag (if present), IV and HMAC are all packed into a single string for simplicity
 - Strongly random initialization vectors are generated with `random_bytes()`
-- SHA256 (default) HMAC checksums are verified in a time-safe manner before decryption
+- SHA256 (default) HMAC checksums are verified before decryption using a time-safe equivalence function
 
 ### AES-256-GCM Encryption (PHP 7.1+ Only)
 With PHP 7.1 comes support for AEAD encryption modes, GCM being considered the best of these.
