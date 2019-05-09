@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 /**
  * Otp.php
  * 
@@ -40,7 +42,7 @@ class Otp
         $chunks = \str_split($input, Str::hashSize($algo));
 
         $length = Str::strlen($input);
-        
+
         foreach ($chunks as $i => &$chunk) {
             $chunk = $chunk ^ \hash_hmac($algo, $password . $length, $i, true);
         }
