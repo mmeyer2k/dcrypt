@@ -1,7 +1,0 @@
-parameters:
-  visibility_levels: [public, protected]
-  annotation_groups: [todo, deprecated]
-  title: "Dcrypt API Reference"
-  base_url: "http://apigen.org/api"
-  overwrite: true
-  

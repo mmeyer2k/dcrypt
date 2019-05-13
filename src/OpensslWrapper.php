@@ -1,6 +1,4 @@
-<?php
-
-declare(strict_types = 1);
+<?php declare(strict_types=1);
 
 /**
  * OpensslWrapper.php
@@ -82,7 +80,7 @@ class OpensslWrapper
      * @return int
      * @throws \Exception
      */
-    protected static function ivsize(string $cipher): int
+    protected static function ivSize(string $cipher): int
     {
         $ret = \openssl_cipher_iv_length($cipher);
 

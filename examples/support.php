@@ -1,6 +1,6 @@
 <?php
 
-require __DIR__ . '/vendor/autoload.php';
+require __DIR__ . '/../vendor/autoload.php';
 
 foreach (hash_algos() as $algo) {
     foreach (openssl_get_cipher_methods() as $meth) {

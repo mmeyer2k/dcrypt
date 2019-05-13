@@ -1,6 +1,4 @@
-<?php
-
-declare(strict_types = 1);
+<?php declare(strict_types=1);
 
 /**
  * OpensslStatic.php
@@ -23,12 +21,11 @@ class OpensslStatic extends OpensslWrapper
         // Calculate the hash checksum size in bytes for the specified algo
         $hsz = Str::hashSize($algo);
 
-        // Find the tag size for this cipher mode
-        // Unless using GCM/CCM this will be zero
-        $tsz = self::tagRequired($cipher) ? 4 : 0;
+        // Find the tag size for this cipher mode. Unless using GCM/CCM this will be zero.
+        $tsz = parent::tagRequired($cipher) ? 4 : 0;
 
         // Ask openssl for the IV size needed for specified cipher
-        $isz = parent::ivsize($cipher);
+        $isz = parent::ivSize($cipher);
 
         // Find the IV at the beginning of the cypher text
         $ivr = Str::substr($data, 0, $isz);
@@ -56,7 +53,7 @@ class OpensslStatic extends OpensslWrapper
         // Decrypt and unpack the cost parameter to match what was used during encryption
         $cost = \unpack('N', $itr ^ \hash_hmac($algo, $ivr, $pass, true))[1];
 
-        // Derive key from password
+        // Derive key from password using pbkdf2
         $key = \hash_pbkdf2($algo, ($pass . $cipher), $ivr, $cost, 0, true);
 
         // Decrypt message and return
@@ -66,7 +63,7 @@ class OpensslStatic extends OpensslWrapper
     public static function encrypt(string $data, string $pass, string $cipher, string $algo, int $cost = 1): string
     {
         // Generate IV of appropriate size.
-        $ivr = \random_bytes(parent::ivsize($cipher));
+        $ivr = \random_bytes(parent::ivSize($cipher));
 
         // Derive key from password with hash_pbkdf2 function.
         // Append CIPHER to password beforehand so that cross-method decryptions will fail at checksum step

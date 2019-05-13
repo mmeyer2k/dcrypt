@@ -18,7 +18,6 @@ For legacy PHP version support, look [here](https://github.com/mmeyer2k/dcrypt/b
   - [PKCS #7 Padding](#pkcs-7-padding)
   - [Key Derivation Function](#key-derivation-function)
   - [Time-safe String Comparison](#time-safe-string-comparison)
-- [Usage Notes](#usage-notes)
 - [Show me some love](#show-me-some-love-heart_eyes) :heart_eyes:
 
 # Install
@@ -211,13 +210,13 @@ Dcrypt uses time-safe string comparisons in all sensitive areas. The same functi
 $equals = \Dcrypt\Str::equal('known', 'given');
 ```
 
-# Usage Notes
-1. All functions input/output raw binary strings.
-1. All functions accept any string of arbitrary length for `$input` and `$password` type parameters.
-1. Dcrypt's block ciphers and `Hash::make()` output very space efficient blobs. Every bit is used to its fullest potential. 
-  1. Known offset + length is how the components of the cyphertexts are parsed. No serialization, marker bytes, encoding schemes or any other nonsense is used. This allows the output size of the block ciphers is easily predictable.
-  1. The output size of `AesCtr::encrypt` on a 10 byte plaintext would be: IV (16 bytes) + SHA-256 HMAC (32 bytes) + iterations as unsigned long (4 bytes) + encrypted plaintext (10 bytes) = 62 bytes.
-1. Dcrypt is built entirely with static functions. If you are using the `new` keyword on any Dcrypt classes, you are doing it wrong!
+## Rot-128 Encoder
+Just because I felt like it!
+This function works like ROT-13 but uses entire bytes.
+```php
+$rotated = \Dcrypt\Rot128::flip("some data to rotate");
+$original = \Dcrypt\Rot128::flip($rotated);
+```
 
 # Show me some love :heart_eyes:
 Developing dcrypt has been a labor of love for many years. 
