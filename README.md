@@ -77,6 +77,9 @@ $plaintext = \Dcrypt\AesOfb::decrypt($encrypted, $password);
 ```
 
 ### Custom Encryption Suites
+Often it use useful to customize the encryption and authentication algorithms to fit a specific purpose.
+Dcrypt offers two ways to extend the core encryption functionality.
+
 #### Static Wrapper
 Use any cipher/algo combination by calling the `OpensslStatic` class.
 
@@ -88,7 +91,7 @@ $plaintext = \Dcrypt\OpensslStatic::decrypt($encrypted, $password, 'des-ofb', 'm
 
 To find supported options, `openssl_get_cipher_methods()` and `hash_algos()` are helpful.
 
-#### Class Overload
+#### Class Overloading
 Dcrypt's internal functions are easily extendable by overloading the `OpensslBridge` class. 
 
 ```php
@@ -114,6 +117,12 @@ class TinyFish extends \Dcrypt\OpensslBridge
      */
     const CHKSUM = 'crc32';
 }
+```
+
+```php
+$encrypted = \TinyFish::encrypt($plaintext, $password, 10000);
+
+$plaintext = \TinyFish::decrypt($encrypted, $password);
 ```
 
 ### Iterative HMAC Key Hardening
@@ -210,11 +219,12 @@ Dcrypt uses time-safe string comparisons in all sensitive areas. The same functi
 $equals = \Dcrypt\Str::equal('known', 'given');
 ```
 
-## Rot-128 Encoder
+## ROT-128 Encoder
 Just because I felt like it!
 This function works like ROT-13 but uses entire bytes.
 ```php
 $rotated = \Dcrypt\Rot128::flip("some data to rotate");
+
 $original = \Dcrypt\Rot128::flip($rotated);
 ```
 
