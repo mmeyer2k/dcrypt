@@ -16,13 +16,12 @@ namespace Dcrypt;
 
 /**
  * Symmetric AES-256-CTR encryption functions powered by OpenSSL.
- * 
+ *
  * @category Dcrypt
  * @package  Dcrypt
  * @author   Michael Meyer (mmeyer2k) <m.meyer2k@gmail.com>
  * @license  http://opensource.org/licenses/MIT The MIT License (MIT)
  * @link     https://github.com/mmeyer2k/dcrypt
- * @link     https://apigen.ci/github/mmeyer2k/dcrypt/namespace-Dcrypt.html
  */
 class AesCtr extends AesCbc
 {

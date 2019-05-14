@@ -14,6 +14,15 @@
 
 namespace Dcrypt;
 
+/**
+ * A basic ROT-128 string encoder class.
+ *
+ * @category Dcrypt
+ * @package  Dcrypt
+ * @author   Michael Meyer (mmeyer2k) <m.meyer2k@gmail.com>
+ * @license  http://opensource.org/licenses/MIT The MIT License (MIT)
+ * @link     https://github.com/mmeyer2k/dcrypt
+ */
 class Rot128
 {
     /**
@@ -27,9 +36,9 @@ class Rot128
         $translation = [];
 
         foreach (\range(0, 255) as $r) {
-            $translation[chr($r)] = chr($r + 128);
+            $translation[\chr($r)] = \chr($r + 128);
         }
 
-        return strtr($input, $translation);
+        return \strtr($input, $translation);
     }
 }
