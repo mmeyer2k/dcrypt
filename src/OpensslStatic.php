@@ -111,7 +111,7 @@ class OpensslStatic extends OpensslWrapper
         // Generate the ciphertext checksum to prevent bit tampering
         $chk = \hash_hmac($algo, ($msg . $itr . $ivr), $pass, true);
 
-        // Return iv + checksum + iterations + cyphertext + tag
+        // Return iv + checksum + tag + iterations + cyphertext
         return $ivr . $chk . $tag . $itr . $msg;
     }
 }

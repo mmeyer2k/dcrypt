@@ -135,8 +135,7 @@ $plaintext = \Dcrypt\AesCbc::decrypt($encrypted, $password);
 ```
 
 ### Tamper Protection
-By default, `AesCbc` and `AesCtr` will throw an `InvalidArgumentException` 
-*before* decryption if the supplied checksum is not valid.
+By default, a `InvalidArgumentException` will be thrown *before* decryption if the supplied checksum is not valid.
 ```php
 try {
     $decrypted = \Dcrypt\AesCtr::decrypt($badInput, $password);

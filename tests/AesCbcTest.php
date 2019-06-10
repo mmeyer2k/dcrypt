@@ -8,6 +8,5 @@ class AesCbcTest extends AesBase
         'Dd8n0dRlRap79mkRBQVDwnHVhD3AdME19mSiRIiwgtgMfqXEiGjzCP2HU8F0weTLFTJlW2h1KyGQ6kjmu2Xm2s13Tx4=',
     ];
 
-
     public static $class = '\\Dcrypt\\AesCbc';
 }
