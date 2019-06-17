@@ -62,7 +62,7 @@ final class OpensslStatic extends OpensslWrapper
         $msg = Str::substr($data, $isz + $hsz + $tsz + 4);
 
         // Calculate verification checksum
-        $chk = \hash_hmac($algo, ($msg . $itr . $ivr), $pass, true);
+        $chk = \hash_hmac($algo, ($msg . $itr . $ivr . $cipher), $pass, true);
 
         // Verify HMAC before decrypting
         if (!Str::equal($chk, $sum)) {
@@ -73,7 +73,7 @@ final class OpensslStatic extends OpensslWrapper
         $cost = \unpack('N', $itr ^ \hash_hmac($algo, $ivr, $pass, true))[1];
 
         // Derive key from password using pbkdf2
-        $key = \hash_pbkdf2($algo, ($pass . $cipher), $ivr, $cost, 0, true);
+        $key = \hash_pbkdf2($algo, $pass, $ivr, $cost, 0, true);
 
         // Decrypt message and return
         return parent::openssl_decrypt($msg, $cipher, $key, $ivr, $tag);
@@ -97,7 +97,7 @@ final class OpensslStatic extends OpensslWrapper
 
         // Derive key from password with hash_pbkdf2 function.
         // Append CIPHER to password beforehand so that cross-method decryptions will fail at checksum step
-        $key = \hash_pbkdf2($algo, ($pass . $cipher), $ivr, $cost, 0, true);
+        $key = \hash_pbkdf2($algo, $pass, $ivr, $cost, 0, true);
 
         // Create a placeholder for the authentication tag to be passed by reference
         $tag = '';
@@ -109,7 +109,7 @@ final class OpensslStatic extends OpensslWrapper
         $itr = \pack('N', $cost) ^ \hash_hmac($algo, $ivr, $pass, true);
 
         // Generate the ciphertext checksum to prevent bit tampering
-        $chk = \hash_hmac($algo, ($msg . $itr . $ivr), $pass, true);
+        $chk = \hash_hmac($algo, ($msg . $itr . $ivr . $cipher), $pass, true);
 
         // Return iv + checksum + tag + iterations + cyphertext
         return $ivr . $chk . $tag . $itr . $msg;
