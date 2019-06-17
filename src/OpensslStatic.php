@@ -23,7 +23,7 @@ namespace Dcrypt;
  * @license  http://opensource.org/licenses/MIT The MIT License (MIT)
  * @link     https://github.com/mmeyer2k/dcrypt
  */
-class OpensslStatic extends OpensslWrapper
+final class OpensslStatic extends OpensslWrapper
 {
     /**
      * Decrypt raw data string
