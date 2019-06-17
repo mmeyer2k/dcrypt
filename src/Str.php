@@ -28,7 +28,7 @@ namespace Dcrypt;
  * @link     https://github.com/symfony/Security/blob/master/Core/Util/StringUtils.php
  * @link     https://php.net/manual/en/mbstring.overload.php
  */
-class Str
+final class Str
 {
     /**
      * Compares two strings in constant time. Strings are hashed before 
