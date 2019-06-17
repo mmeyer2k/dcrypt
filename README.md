@@ -77,7 +77,7 @@ $plaintext = \Dcrypt\AesOfb::decrypt($encrypted, $password);
 ```
 
 ### Custom Encryption Suites
-Often it use useful to customize the encryption and authentication algorithms to fit a specific purpose.
+Often it is useful to customize the encryption and authentication algorithms to fit a specific purpose.
 Dcrypt offers two ways to extend the core encryption functionality.
 
 #### Static Wrapper
