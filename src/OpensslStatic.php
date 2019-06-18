@@ -37,6 +37,9 @@ final class OpensslStatic extends OpensslWrapper
      */
     public static function decrypt(string $data, string $pass, string $cipher, string $algo): string
     {
+        // Prehash the password to prevent DoS attacks caused by long passwords reaching hash_pbkdf2
+        $pass = \hash($algo, $pass, true);
+
         // Calculate the hash checksum size in bytes for the specified algo
         $hsz = Str::hashSize($algo);
 
@@ -92,6 +95,9 @@ final class OpensslStatic extends OpensslWrapper
      */
     public static function encrypt(string $data, string $pass, string $cipher, string $algo, int $cost = 1): string
     {
+        // Prehash the password to prevent DoS attacks caused by long passwords reaching hash_pbkdf2
+        $pass = \hash($algo, $pass, true);
+
         // Generate IV of appropriate size.
         $ivr = \random_bytes(parent::ivSize($cipher));
 
