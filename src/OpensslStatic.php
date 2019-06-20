@@ -35,11 +35,8 @@ final class OpensslStatic extends OpensslWrapper
      * @return string
      * @throws \Exception
      */
-    public static function decrypt(string $data, string $pass, string $cipher, string $algo): string
+    public static function decrypt(string $data, string $pass, string $cipher, string $algo, int $cost = 1): string
     {
-        // Prehash the password to prevent DoS attacks caused by long passwords reaching hash_pbkdf2
-        $pass = \hash($algo, $pass, true);
-
         // Calculate the hash checksum size in bytes for the specified algo
         $hsz = Str::hashSize($algo);
 
@@ -58,28 +55,22 @@ final class OpensslStatic extends OpensslWrapper
         // Gather the GCM/CCM authentication tag
         $tag = Str::substr($data, $isz + $hsz, $tsz);
 
-        // Gather the iterations portion of the cipher text as packed/encrytped unsigned long
-        $itr = Str::substr($data, $isz + $hsz + $tsz, 4);
-
         // Gather message portion of ciphertext after iv and checksum
-        $msg = Str::substr($data, $isz + $hsz + $tsz + 4);
+        $msg = Str::substr($data, $isz + $hsz + $tsz);
+
+        // Create password derivation object
+        $key = new OpensslKeyGenerator($algo, $pass, $cipher, $ivr, $cost);
 
         // Calculate verification checksum
-        $chk = \hash_hmac($algo, ($msg . $itr . $ivr . $cipher), $pass, true);
+        $chk = \hash_hmac($algo, $msg, $key->authenticationKey(), true);
 
         // Verify HMAC before decrypting
         if (!Str::equal($chk, $sum)) {
             throw new \InvalidArgumentException('Decryption can not proceed due to invalid cyphertext checksum.');
         }
 
-        // Decrypt and unpack the cost parameter to match what was used during encryption
-        $cost = \unpack('N', $itr ^ \hash_hmac($algo, $ivr, $pass, true))[1];
-
-        // Derive key from password using pbkdf2
-        $key = \hash_pbkdf2($algo, $pass, $ivr, $cost, 0, true);
-
         // Decrypt message and return
-        return parent::openssl_decrypt($msg, $cipher, $key, $ivr, $tag);
+        return parent::openssl_decrypt($msg, $cipher, $key->encryptionKey(), $ivr, $tag);
     }
 
     /**
@@ -95,29 +86,22 @@ final class OpensslStatic extends OpensslWrapper
      */
     public static function encrypt(string $data, string $pass, string $cipher, string $algo, int $cost = 1): string
     {
-        // Prehash the password to prevent DoS attacks caused by long passwords reaching hash_pbkdf2
-        $pass = \hash($algo, $pass, true);
-
         // Generate IV of appropriate size.
         $ivr = \random_bytes(parent::ivSize($cipher));
 
-        // Derive key from password with hash_pbkdf2 function.
-        // Append CIPHER to password beforehand so that cross-method decryptions will fail at checksum step
-        $key = \hash_pbkdf2($algo, $pass, $ivr, $cost, 0, true);
+        // Create password derivation object
+        $key = new OpensslKeyGenerator($algo, $pass, $cipher, $ivr, $cost);
 
         // Create a placeholder for the authentication tag to be passed by reference
         $tag = '';
 
         // Encrypt the plaintext data
-        $msg = parent::openssl_encrypt($data, $cipher, $key, $ivr, $tag);
-
-        // Convert cost integer into 4 byte string and XOR it with a newly derived key
-        $itr = \pack('N', $cost) ^ \hash_hmac($algo, $ivr, $pass, true);
+        $msg = parent::openssl_encrypt($data, $cipher, $key->encryptionKey(), $ivr, $tag);
 
         // Generate the ciphertext checksum to prevent bit tampering
-        $chk = \hash_hmac($algo, ($msg . $itr . $ivr . $cipher), $pass, true);
+        $chk = \hash_hmac($algo, $msg, $key->authenticationKey(), true);
 
-        // Return iv + checksum + tag + iterations + cyphertext
-        return $ivr . $chk . $tag . $itr . $msg;
+        // Return iv + checksum + tag + cyphertext
+        return $ivr . $chk . $tag . $msg;
     }
 }

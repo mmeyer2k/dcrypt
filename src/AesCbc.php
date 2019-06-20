@@ -37,5 +37,12 @@ class AesCbc extends OpensslBridge
      *
      * @var string
      */
-    const CHKSUM = 'sha256';
+    const ALGO = 'sha256';
+
+    /**
+     * Computational difficulty setting
+     *
+     * @var int
+     */
+    const COST = 1;
 }

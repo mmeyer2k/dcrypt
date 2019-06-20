@@ -34,7 +34,7 @@ class OpensslBridge
      */
     public static function decrypt(string $data, string $pass): string
     {
-        return OpensslStatic::decrypt($data, $pass, static::CIPHER, static::CHKSUM);
+        return OpensslStatic::decrypt($data, $pass, static::CIPHER, static::ALGO, static::COST);
     }
 
     /**
@@ -42,11 +42,10 @@ class OpensslBridge
      *
      * @param string $data Plaintext string to encrypt.
      * @param string $pass Password used to encrypt data.
-     * @param int    $cost Number of extra HMAC iterations to perform on key
      * @return string
      */
-    public static function encrypt(string $data, string $pass, int $cost = 1): string
+    public static function encrypt(string $data, string $pass): string
     {
-        return OpensslStatic::encrypt($data, $pass, static::CIPHER, static::CHKSUM, $cost);
+        return OpensslStatic::encrypt($data, $pass, static::CIPHER, static::ALGO, static::COST);
     }
 }
