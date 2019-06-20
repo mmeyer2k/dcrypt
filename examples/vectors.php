@@ -49,6 +49,8 @@ $algos = [
 
 $ciphers = [
     "aes-128-cbc",
+    "aes-128-cbc-hmac-sha1",
+    "aes-128-cbc-hmac-sha256",
     "aes-128-ccm",
     "aes-128-cfb",
     "aes-128-cfb1",
@@ -67,6 +69,8 @@ $ciphers = [
     "aes-192-gcm",
     "aes-192-ofb",
     "aes-256-cbc",
+    "aes-256-cbc-hmac-sha1",
+    "aes-256-cbc-hmac-sha256",
     "aes-256-ccm",
     "aes-256-cfb",
     "aes-256-cfb1",
