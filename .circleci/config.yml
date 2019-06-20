@@ -1,0 +1,24 @@
+version: 2
+jobs:
+  build:
+    parallelism: 1
+    docker:
+      - image: circleci/php:7.0
+    steps:
+      - run: git clone https://github.com/mmeyer2k/dcrypt .
+      - run: composer --no-interaction --no-scripts --no-ansi --prefer-dist -a install
+      - run: php vendor/phpunit/phpunit/phpunit
+
+  build-71:
+    parallelism: 1
+    docker:
+      - image: circleci/php:7.1
+    steps:
+      - run: git clone https://github.com/mmeyer2k/dcrypt .
+      - run: composer --no-interaction --no-scripts --no-ansi --prefer-dist -a install
+      - run: php vendor/phpunit/phpunit/phpunit
+
+workflows:
+  version: 2
+  build-test-all:
+    - build-71
