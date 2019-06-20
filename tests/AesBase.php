@@ -32,13 +32,13 @@ class AesBase extends \PHPUnit\Framework\TestCase
         $this->assertEquals($input, $decrypted);
     }
 
-    /**
-     * @expectedException InvalidArgumentException
-     */
     public function testCorrupt()
     {
         $encrypted = static::$class::encrypt(self::$input, self::$key, 10000);
+
+        // Validate that the blob will decrypt
         $this->assertEquals(self::$input, static::$class::decrypt($encrypted, self::$key));
-        static::$class::decrypt($encrypted . 'A', self::$key);
+
+        $this->expectException(static::$class::decrypt($encrypted . 'A', self::$key));
     }
 }
