@@ -32,15 +32,6 @@ class AesBase extends \PHPUnit\Framework\TestCase
         $this->assertEquals($input, $decrypted);
     }
 
-    public function testVectors()
-    {
-        //var_dump(base64_encode(AesCbc::encrypt(self::$input, self::$key)));
-        foreach (static::$vectors as $vector) {
-            $decrypted = static::$class::decrypt(base64_decode($vector), self::$key);
-            $this->assertEquals(self::$input, $decrypted);
-        }
-    }
-
     /**
      * @expectedException InvalidArgumentException
      */

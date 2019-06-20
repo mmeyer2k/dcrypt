@@ -58,7 +58,6 @@ $ciphers = [
     "aes-128-ctr",
     "aes-128-ecb",
     "aes-128-gcm",
-    "aes-128-ocb",
     "aes-128-ofb",
     "aes-192-cbc",
     "aes-192-ccm",
@@ -68,7 +67,6 @@ $ciphers = [
     "aes-192-ctr",
     "aes-192-ecb",
     "aes-192-gcm",
-    "aes-192-ocb",
     "aes-192-ofb",
     "aes-256-cbc",
     "aes-256-cbc-hmac-sha1",
@@ -80,7 +78,6 @@ $ciphers = [
     "aes-256-ctr",
     "aes-256-ecb",
     "aes-256-gcm",
-    "aes-256-ocb",
     "aes-256-ofb",
     "bf-cbc",
     "bf-cfb",
@@ -161,4 +158,8 @@ foreach ($ciphers as $cipher) {
     $out1[$cipher] = $out2;
 }
 
-echo json_encode($out1, JSON_PRETTY_PRINT);
+$echo = json_encode($out1, JSON_PRETTY_PRINT);
+
+file_put_contents(__DIR__ . '/../tests/vectors.txt', $echo);
+
+echo $echo;
