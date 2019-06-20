@@ -13,7 +13,7 @@ branches:
 before_script:
   - pear install PHP_CodeSniffer
   - phpenv rehash
-  - composer require "phpunit/phpunit:^7.0"
+  - composer require phpunit/phpunit
 
 script: phpunit --coverage-clover=coverage.clover
 
