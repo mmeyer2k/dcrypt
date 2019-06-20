@@ -2,15 +2,6 @@ version: 2
 jobs:
   build:
     docker:
-      - image: circleci/php:7.0
-    steps:
-      - checkout
-      - run: composer install
-      - run: composer require phpunit/phpunit
-      - run: php vendor/phpunit/phpunit/phpunit
-
-  build-71:
-    docker:
       - image: circleci/php:7.1
     steps:
       - checkout
@@ -32,9 +23,6 @@ workflows:
   build-test-all:
     jobs:
       - build
-      - build-71:
-          requires:
-            - build
       - build-72:
           requires:
-            - build-71
+            - build

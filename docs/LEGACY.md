@@ -1,13 +1,19 @@
 # Legacy PHP Version Support
 
 ## PHP 7.1+
-Use current version.
+```
+composer require "mmeyer2k/dcrypt:^10.0"
+```
 
-## PHP 5.3 to PHP 5.7
-Use version `4.0.2`.
+## PHP 7.0
+```
+composer require "mmeyer2k/dcrypt:^9.0"
+```
+
+## PHP 5.4 - 5.7
 ```
 composer require "mmeyer2k/dcrypt:4.0.2"
 ```
 
-## PHP less than 5.3
+## PHP before 5.3
 Not supported.

@@ -8,8 +8,8 @@
 [![License](https://poser.pugx.org/mmeyer2k/dcrypt/license.svg)](https://packagist.org/packages/mmeyer2k/dcrypt)
 [![Latest Stable Version](https://poser.pugx.org/mmeyer2k/dcrypt/version)](https://packagist.org/packages/mmeyer2k/dcrypt)
 
-A petite library of essential encryption functions for PHP 7.0+.
-For legacy PHP version support, look [here](https://github.com/mmeyer2k/dcrypt/blob/master/LEGACY.md).
+A petite library of essential encryption functions for PHP 7.1+.
+For legacy PHP version support, look [here](https://github.com/mmeyer2k/dcrypt/blob/master/docs/LEGACY.md).
 
 - [Install](#install)
 - [Features](#features)
@@ -37,7 +37,7 @@ The primary features of dcrypt's block cipher engine are:
 - Strongly random initialization vectors are generated with `random_bytes()`
 - SHA256 (default) HMAC checksums are verified before decryption using a time-safe equivalence function
 
-### AES-256-GCM Encryption (PHP 7.1+ Only)
+### AES-256-GCM Encryption
 With PHP 7.1 comes support for AEAD encryption modes, GCM being considered the best of these.
 Small authentication tags are selected because dcrypt already provides SHA-256 HMAC based authentication.
 Using this mode adds an extra 32 bit checksum to the ciphertext.
