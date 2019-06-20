@@ -31,6 +31,7 @@ workflows:
   version: 2
   build-test-all:
     jobs:
+      - build
       - build-71:
           requires:
             - build
