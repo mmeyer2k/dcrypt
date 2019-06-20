@@ -1,7 +1,7 @@
 :closed_lock_with_key:dcrypt
 ======
 [![Total Downloads](https://poser.pugx.org/mmeyer2k/dcrypt/downloads)](https://packagist.org/packages/mmeyer2k/dcrypt)
-[![Build Status](https://travis-ci.org/mmeyer2k/dcrypt.png)](https://travis-ci.org/mmeyer2k/dcrypt)
+[![Build Status](https://circleci.com/gh/mmeyer2k/dcrypt/tree/master.svg?style=shield)](https://travis-ci.org/mmeyer2k/dcrypt)
 [![Code Coverage](https://scrutinizer-ci.com/g/mmeyer2k/dcrypt/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/mmeyer2k/dcrypt/?branch=master)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/mmeyer2k/dcrypt/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/mmeyer2k/dcrypt/?branch=master)
 [![Code Climate GPA](https://codeclimate.com/github/mmeyer2k/dcrypt/badges/gpa.svg)](https://codeclimate.com/github/mmeyer2k/dcrypt)
@@ -38,9 +38,9 @@ The primary features of dcrypt's block cipher engine are:
 - SHA256 (default) HMAC checksums are verified before decryption using a time-safe equivalence function
 
 ### AES-256-GCM Encryption
-With PHP 7.1 comes support for AEAD encryption modes, GCM being considered the best of these.
+PHP 7.1 comes with support for new AEAD encryption modes, GCM being considered the best of these.
 Small authentication tags are selected because dcrypt already provides SHA-256 HMAC based authentication.
-Using this mode adds an extra 32 bit checksum to the ciphertext.
+Using this mode essentially adds an extra 32 bit checksum to the ciphertext.
 
 ```php
 $encrypted = \Dcrypt\AesGcm::encrypt($plaintext, $password);
@@ -122,7 +122,7 @@ class TinyFish extends \Dcrypt\OpensslBridge
 ```php
 $encrypted = \TinyFish::encrypt($plaintext, $password, 10000);
 
-$plaintext = \TinyFish::decrypt($encrypted, $password);
+$plaintext = \TinyFish::decrypt($encrypted, $password, 10000);
 ```
 
 ### Iterative HMAC Key Hardening
@@ -131,7 +131,7 @@ This integer will cause dcrypt to perform `$cost` number of extra HMAC operation
 ```php
 $encrypted = \Dcrypt\AesCbc::encrypt($plaintext, $password, 10000);
 
-$plaintext = \Dcrypt\AesCbc::decrypt($encrypted, $password);
+$plaintext = \Dcrypt\AesCbc::decrypt($encrypted, $password, 10000);
 ```
 
 ### Tamper Protection
