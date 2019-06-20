@@ -6,7 +6,9 @@ jobs:
     steps:
       - checkout
       - run: composer require phpunit/phpunit
-      - run: php vendor/phpunit/phpunit/phpunit
+      - run: php vendor/phpunit/phpunit/phpunit --coverage-clover=coverage.clover
+      - run: wget https://scrutinizer-ci.com/ocular.phar
+      - run: php ocular.phar code-coverage:upload --format=php-clover coverage.clover
 
   build-72:
     docker:
