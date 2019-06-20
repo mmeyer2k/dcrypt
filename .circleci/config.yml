@@ -5,7 +5,6 @@ jobs:
       - image: circleci/php:7.1
     steps:
       - checkout
-      - run: composer install
       - run: composer require phpunit/phpunit
       - run: php vendor/phpunit/phpunit/phpunit
 
@@ -14,7 +13,6 @@ jobs:
       - image: circleci/php:7.2
     steps:
       - checkout
-      - run: composer install
       - run: composer require phpunit/phpunit
       - run: php vendor/phpunit/phpunit/phpunit
 
