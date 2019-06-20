@@ -10,7 +10,11 @@ class OpensslStaticTest extends \PHPUnit\Framework\TestCase
 
         foreach ($json as $cipher => $algos) {
             foreach ($algos as $algo => $data) {
-                $plaintext = \Dcrypt\OpensslStatic::decrypt(base64_decode($data), 'world', $cipher, $algo, 10);
+                try {
+                    $plaintext = \Dcrypt\OpensslStatic::decrypt(base64_decode($data), 'world', $cipher, $algo, 10);
+                } catch (\Exception $e) {
+                    throw new \Exception("Failure in [$cipher/$algo]:" . $e->getMessage());
+                }
                 $this->assertEquals('hello', $plaintext);
             }
         }
