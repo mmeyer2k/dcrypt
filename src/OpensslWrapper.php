@@ -100,6 +100,24 @@ class OpensslWrapper
     }
 
     /**
+     * Get a correctly sized IV for the specified cipher
+     *
+     * @param string $cipher
+     * @return string
+     * @throws \Exception
+     */
+    protected static function ivGenerate(string $cipher): string
+    {
+        $size = self::ivSize($cipher);
+
+        if ($size === 0) {
+            return '';
+        }
+
+        return \random_bytes($size);
+    }
+
+    /**
      * Determines if the provided cipher requires a tag
      *
      * @param string $cipher

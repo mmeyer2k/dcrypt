@@ -87,7 +87,7 @@ final class OpensslStatic extends OpensslWrapper
     public static function encrypt(string $data, string $pass, string $cipher, string $algo, int $cost = 1): string
     {
         // Generate IV of appropriate size.
-        $ivr = \random_bytes(parent::ivSize($cipher));
+        $ivr = parent::ivGenerate($cipher);
 
         // Create password derivation object
         $key = new OpensslKeyGenerator($algo, $pass, $cipher, $ivr, $cost);

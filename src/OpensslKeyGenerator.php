@@ -28,7 +28,7 @@ final class OpensslKeyGenerator
      * @param string $ivr
      * @param int $cost
      */
-    public function __construct(string $algo, string $pass, sting $cipher, string $ivr, int $cost)
+    public function __construct(string $algo, string $pass, string $cipher, string $ivr, int $cost)
     {
         //
         $this->hash = \hash_pbkdf2($algo, ($pass . $cipher), $ivr, $cost, 0, true);
