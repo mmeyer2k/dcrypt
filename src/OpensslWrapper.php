@@ -72,7 +72,7 @@ class OpensslWrapper
      * @return string
      * @throws \Exception
      */
-    protected static function returnOrException($data): string
+    private static function returnOrException($data): string
     {
         if ($data === false) {
             throw new \Exception('OpenSSL failed to encrypt/decrypt message.');
