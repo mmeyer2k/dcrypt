@@ -15,9 +15,6 @@ For legacy PHP version support, look [here](https://github.com/mmeyer2k/dcrypt/b
 - [Features](#features)
   - [Block Ciphers](#block-ciphers)
   - [Stream Ciphers](#stream-ciphers)
-  - [PKCS #7 Padding](#pkcs-7-padding)
-  - [Key Derivation Function](#key-derivation-function)
-  - [Time-safe String Comparison](#time-safe-string-comparison)
 - [Show me some love](#show-me-some-love-heart_eyes) :heart_eyes:
 
 # Install
@@ -48,33 +45,8 @@ $encrypted = \Dcrypt\AesGcm::encrypt($plaintext, $password);
 $plaintext = \Dcrypt\AesGcm::decrypt($encrypted, $password);
 ```
 
-### AES-256-CBC Encryption
-CBC mode is better for some usages since it uses padding and therefore leaks less information about plaintext length.
+Other AES-256 encryption modes can be used in a similar way by using these classes: `AesCtr`, `AesCbc`, `AesOfb`, `AesEcb`.
 
-```php
-$encrypted = \Dcrypt\AesCbc::encrypt($plaintext, $password);
-
-$plaintext = \Dcrypt\AesCbc::decrypt($encrypted, $password);
-```
-
-### AES-256-CTR Encryption
-If the CTR mode is preferred, `\Dcrypt\AesCtr` can be used.
-
-```php
-$encrypted = \Dcrypt\AesCtr::encrypt($plaintext, $password);
-
-$plaintext = \Dcrypt\AesCtr::decrypt($encrypted, $password);
-```
-[Definitive StackExchange thread on CBC vs CTR](https://security.stackexchange.com/questions/27776/block-chaining-modes-to-avoid/27780#27780)
-
-### AES-256-OFB Encryption
-OFB mode is supported even though it has mostly been superseded.
-
-```php
-$encrypted = \Dcrypt\AesOfb::encrypt($plaintext, $password);
-
-$plaintext = \Dcrypt\AesOfb::decrypt($encrypted, $password);
-```
 
 ### Custom Encryption Suites
 Often it is useful to customize the encryption and authentication algorithms to fit a specific purpose.
@@ -185,47 +157,6 @@ Use block ciphers for anything important.
 
 **NOTE**: 
 Backwards compatibility breaking changes to these classes will not result in an incremented major version number.
-
-## PKCS #7 Padding
-PKCS#7 style padding is available via the `Pkcs7::pad()` and `Pkcs7::unpad()` functions.
-```php
-\Dcrpyt\Pkcs7::pad('aaaabbbb', 3); # = aaaabbbb\x01
-
-\Dcrpyt\Pkcs7::pad('aaaabbbb', 4); # = aaaabbbb\x04\x04\x04\x04
-```
-
-```php
-\Dcrpyt\Pkcs7::unpad("aaaabbbb\x01"); # = aaaabbbb
-
-\Dcrpyt\Pkcs7::unpad("aaaabbbb\x04\x04\x04\x04"); # = aaaabbbb
-```
-
-## Key Derivation Function
-`Dcrypt\Hash` is an opaque 480 bit iterative hash function. 
-First, SHA-256 is used to hash a 16 byte initialization vector with your secret password to create a unique key.
-Then `$cost` number of are performed to on the password to create the final HMAC key.
-The `$cost` parameter can be any integer between 1 and 2<sup>32</sup> and is stored as 4 encrypted bytes within the output.
-
-```php
-$hash = \Dcrypt\Hash::make($plaintext, $password, $cost);
-
-$bool = \Dcrypt\Hash::verify($plaintext, $hash, $password);
-```
-
-## Time-safe String Comparison
-Dcrypt uses time-safe string comparisons in all sensitive areas. The same function that is used internally is also exposed for use in your projects.
-```php
-$equals = \Dcrypt\Str::equal('known', 'given');
-```
-
-## ROT-128 Encoder
-Just because I felt like it!
-This function works like ROT-13 but uses entire bytes.
-```php
-$rotated = \Dcrypt\Rot128::flip("some data to rotate");
-
-$original = \Dcrypt\Rot128::flip($rotated);
-```
 
 # Show me some love :heart_eyes:
 Developing dcrypt has been a labor of love for many years. 

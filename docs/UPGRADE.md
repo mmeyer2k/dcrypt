@@ -1,3 +1,11 @@
+# Upgrade from 9.x to 10.x
+This is a major refactor of the core of dcrypt to focus on the most important features.
+- Minimum PHP version is now 7.1 
+- `Hash` is removed in favor of PHP's `password_hash` and `password_verify` functions.
+- `Pkcs7` is removed since it is no longer needed internally.
+- `Str::equal` is no loger a documented feature.
+- **All data encrypted with Aes\*\*\* functions from prior versions will not be decryptable**
+
 # Upgrade from 8.x to 9.x
 Version 9 is a MAJOR update to dcrypt and breaks almost all backword compatibility.
 It removes all legacy crutches and moves to use more a more modern design.
