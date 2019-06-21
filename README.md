@@ -30,14 +30,16 @@ Dcrypt helps application developers avoid common mistakes in crypto implementati
 The primary features of dcrypt's block cipher engine are:
 - Elegent API helps keep your code readable, auditable and understandable
 - Allows custom combinations of encryption and hashing algorithms to fit different purposes
-- Ciphertext, authentication tag (if present), IV and HMAC are all packed into a single string for simplicity
+- Ciphertext, authentication tag, IV and HMAC are all packed into a single string for simplicity
 - Strongly random initialization vectors are generated with `random_bytes()`
+- Does not perform encoding of input/output for maximum flexibility
 - SHA256 (default) HMAC checksums are verified before decryption using a time-safe equivalence function
 
 ### AES-256-GCM Encryption
 PHP 7.1 comes with support for new AEAD encryption modes, GCM being considered the best of these.
 Small authentication tags are selected because dcrypt already provides SHA-256 HMAC based authentication.
 Using this mode essentially adds an extra 32 bit checksum to the ciphertext.
+**When in doubt, use this class**
 
 ```php
 $encrypted = \Dcrypt\AesGcm::encrypt($plaintext, $password);
@@ -45,8 +47,9 @@ $encrypted = \Dcrypt\AesGcm::encrypt($plaintext, $password);
 $plaintext = \Dcrypt\AesGcm::decrypt($encrypted, $password);
 ```
 
-Other AES-256 encryption modes can be used in a similar way by using these classes: `AesCtr`, `AesCbc`, `AesOfb`, `AesEcb`.
+### Other AES-256 Modes
 
+Other AES-256 encryption modes can be used in a similar way by using these classes: `AesCtr`, `AesCbc`, `AesOfb`, `AesEcb`.
 
 ### Custom Encryption Suites
 Often it is useful to customize the encryption and authentication algorithms to fit a specific purpose.
@@ -87,7 +90,14 @@ class TinyFish extends \Dcrypt\OpensslBridge
      *
      * @var string
      */
-    const CHKSUM = 'crc32';
+    const ALGO = 'crc32';
+    
+    /**
+     * Use crc32 hashing algo to authenticate messages
+     *
+     * @var string
+     */
+    const COST = 1000;
 }
 ```
 
@@ -164,4 +174,4 @@ If you find dcrypt useful, please consider donating some Litecoin.
  
 `LN97LrLCNiv14V6fntp247H2pj9UiFzUQZ`
 
- ![litecoin address](https://rawgit.com/mmeyer2k/dcrypt/master/litecoin.png)
+ ![litecoin address](https://mmeyer2k.github.io/images/litecoin-wallet.png)
