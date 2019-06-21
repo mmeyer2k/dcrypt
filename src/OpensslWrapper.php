@@ -13,6 +13,7 @@
  */
 
 namespace Dcrypt;
+
 /**
  * A wrapper around any openssl_* functions.
  *
