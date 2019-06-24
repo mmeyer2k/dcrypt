@@ -54,10 +54,10 @@ Only use these if you know what you are doing and have a specific reason!
 
 | Class Name           | OpenSSL Cipher   | Further Reading |
 | -------------------- | :--------------: | --------------- |
-| `\Dcrypt\Aes256Gcm`  |    `aes-256-gcm` |                 |
-| `\Dcrypt\Aes256Cbc`  |    `aes-256-cbc` |                 |
-| `\Dcrypt\Aes256Ctr`  |    `aes-256-ctr` |                 |
-| `\Dcrypt\Aes256Ecb`  |    `aes-256-ecb` |                 |
+| `\Dcrypt\Aes256Gcm`  |    `aes-256-gcm` | [wikipedia](https://en.wikipedia.org/wiki/Galois/Counter_Mode)               |
+| `\Dcrypt\Aes256Cbc`  |    `aes-256-cbc` | [wikipedia](https://en.wikipedia.org/wiki/Galois/Counter_Mode)                |
+| `\Dcrypt\Aes256Ctr`  |    `aes-256-ctr` | [wikipedia](https://en.wikipedia.org/wiki/Block_cipher_mode_of_operation#Counter_(CTR))                |
+| `\Dcrypt\Aes256Ecb`  |    `aes-256-ecb` | [wikipedia](https://en.wikipedia.org/wiki/Block_cipher_mode_of_operation#ECB)                |
 
 ### Custom Encryption Suites
 Often it is useful to customize the encryption and authentication algorithms to fit a specific purpose.
