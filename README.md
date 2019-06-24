@@ -42,14 +42,19 @@ Using this mode essentially adds an extra 32 bit checksum to the ciphertext.
 **When in doubt, use this class**
 
 ```php
-$encrypted = \Dcrypt\AesGcm::encrypt($plaintext, $password);
+$encrypted = \Dcrypt\Aes256Gcm::encrypt($plaintext, $password);
 
-$plaintext = \Dcrypt\AesGcm::decrypt($encrypted, $password);
+$plaintext = \Dcrypt\Aes256Gcm::decrypt($encrypted, $password);
 ```
 
 ### Other AES-256 Modes
 
-Other AES-256 encryption modes can be used in a similar way by using these classes: `AesCtr`, `AesCbc`, `AesOfb`, `AesEcb`.
+Other AES-256 encryption modes are supported out of the box.
+Only use these if you know what you are doing and have a specific reason!
+| Class Name | OpenSSL Cipher | Further Reading |
+| --- | --- | -- |
+| Aes256Cbc | aes-256-cbc | |
+
 
 ### Custom Encryption Suites
 Often it is useful to customize the encryption and authentication algorithms to fit a specific purpose.
@@ -93,7 +98,7 @@ class TinyFish extends \Dcrypt\OpensslBridge
     const ALGO = 'crc32';
     
     /**
-     * Use crc32 hashing algo to authenticate messages
+     * Cost value for hash_pbkdf2
      *
      * @var string
      */

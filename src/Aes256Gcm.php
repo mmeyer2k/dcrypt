@@ -1,7 +1,7 @@
 <?php declare(strict_types=1);
 
 /**
- * AesGcm.php
+ * Aes256Gcm.php
  *
  * PHP version 7
  *
@@ -23,7 +23,7 @@ namespace Dcrypt;
  * @license  http://opensource.org/licenses/MIT The MIT License (MIT)
  * @link     https://github.com/mmeyer2k/dcrypt
  */
-class AesGcm extends AesCbc
+class Aes256Gcm extends OpensslBridge
 {
     /**
      * AES-256 cipher identifier that will be passed to openssl
@@ -31,4 +31,18 @@ class AesGcm extends AesCbc
      * @var string
      */
     const CIPHER = 'aes-256-gcm';
+
+    /**
+     * Use crc32 hashing algo to authenticate messages
+     *
+     * @var string
+     */
+    const ALGO = 'sha256';
+
+    /**
+     * Use crc32 hashing algo to authenticate messages
+     *
+     * @var string
+     */
+    const COST = 1;
 }
