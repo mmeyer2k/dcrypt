@@ -51,9 +51,13 @@ $plaintext = \Dcrypt\Aes256Gcm::decrypt($encrypted, $password);
 
 Other AES-256 encryption modes are supported out of the box.
 Only use these if you know what you are doing and have a specific reason!
-| Class Name | OpenSSL Cipher | Further Reading |
-| --- | --- | -- |
-| Aes256Cbc | aes-256-cbc | |
+
+| Class Name   | OpenSSL Cipher | Further Reading |
+| ------------ | :------------: | --------------- |
+| `Aes256Cbc`  |    aes-256-cbc |                 |
+| `Aes256Ctr`  |    aes-256-ctr |                 |
+| `Aes256Cfb`  |    aes-256-cfb |                 |
+| `Aes256Ecm`  |    aes-256-ecm |                 |
 
 
 ### Custom Encryption Suites
