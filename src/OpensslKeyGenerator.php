@@ -22,6 +22,7 @@ final class OpensslKeyGenerator
 
     /**
      * OpensslKeyGenerator constructor.
+     *
      * @param string $algo
      * @param string $pass
      * @param string $cipher
@@ -45,7 +46,7 @@ final class OpensslKeyGenerator
      */
     public function authenticationKey(): string
     {
-        return \hash_hkdf($this->algo, $this->hash, 0, __FUNCTION__, $this->ivr);
+        return $this->deriveKey(__FUNCTION__);
     }
 
     /**
@@ -53,6 +54,17 @@ final class OpensslKeyGenerator
      */
     public function encryptionKey(): string
     {
-        return \hash_hkdf($this->algo, $this->hash, 0, __FUNCTION__, $this->ivr);
+        return $this->deriveKey(__FUNCTION__);
+    }
+
+    private function deriveKey(string $authinfo): string
+    {
+        $key = \hash_hkdf($this->algo, $this->hash, 0, $authinfo, $this->ivr);
+
+        if ($key === false) {
+            throw new \Exception("Hash algo $this->algo is not supported");
+        }
+
+        return $key;
     }
 }

@@ -4,7 +4,7 @@ class OpensslStaticTest extends \PHPUnit\Framework\TestCase
 {
     public function testVectorsFile()
     {
-        $json = file_get_contents(__DIR__ . '/vectors.txt');
+        $json = file_get_contents(__DIR__ . '/vectors/vectors.txt');
 
         $json = json_decode($json);
 

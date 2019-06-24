@@ -17,5 +17,10 @@
             "Dcrypt\\": "src/"
         }
     },
+    "autoload-dev": {
+        "classmap": [
+            "tests/helpers/"
+        ]
+    },
     "minimum-stability": "dev"
 }
