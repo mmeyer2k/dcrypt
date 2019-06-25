@@ -2,21 +2,20 @@
 
 class OpensslStaticTest extends \PHPUnit\Framework\TestCase
 {
-    public function testVectorsFile()
+    public function testVectorsAlgos()
     {
-        $json = file_get_contents(__DIR__ . '/vectors/vectors.txt');
+        $json = file_get_contents(__DIR__ . '/vectors/openssl-static-algos.json');
 
         $json = json_decode($json);
 
-        foreach ($json as $cipher => $algos) {
-            foreach ($algos as $algo => $data) {
-                try {
-                    $plaintext = \Dcrypt\OpensslStatic::decrypt(base64_decode($data), 'world', $cipher, $algo, 10);
-                } catch (\Exception $e) {
-                    throw new \Exception("Failure in [$cipher/$algo]:" . $e->getMessage());
-                }
-                $this->assertEquals('hello', $plaintext);
+        foreach ($json as $algo => $data) {
+            try {
+                $plaintext = \Dcrypt\OpensslStatic::decrypt(base64_decode($data), 'world', 'aes-256-gcm', $algo, 10);
+            } catch (\Exception|\Error $e) {
+                throw new \Exception("Failure in [$algo]:" . $e->getMessage());
             }
+
+            $this->assertEquals('hello', $plaintext);
         }
     }
 }
