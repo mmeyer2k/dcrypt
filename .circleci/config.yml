@@ -8,9 +8,11 @@ jobs:
       - run: composer require phpunit/phpunit infection/infection
       - run: mkdir -p coverage
       - run: php vendor/phpunit/phpunit/phpunit --coverage-clover=coverage.clover --coverage-html coverage
-      - run: php vendor/infection/infection/infection
+      - run: php vendor/infection/infection/bin/infection
       - run: wget https://scrutinizer-ci.com/ocular.phar
       - run: php ocular.phar code-coverage:upload --format=php-clover coverage.clover
+      - store_artifacts:
+          path: coverage
 
   build-72:
     docker:
@@ -19,7 +21,9 @@ jobs:
       - checkout
       - run: mkdir -p coverage
       - run: php vendor/phpunit/phpunit/phpunit --coverage-clover=coverage.clover --coverage-html coverage
-      - run: php vendor/infection/infection/infection
+      - run: php vendor/infection/infection/bin/infection
+      - store_artifacts:
+          path: coverage
 
 workflows:
   version: 2
