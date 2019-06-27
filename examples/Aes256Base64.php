@@ -14,27 +14,29 @@ class Aes256Base64 extends \Dcrypt\OpensslBridge
     const COST = 0;
 
     /**
-     * An example key generated with linux command:  head -c 128 /dev/urandom | base64 --wrap 64
+     * An example key generated with linux command:  head -c 256 /dev/urandom | base64 --wrap 64
      * DONT ACTUALLY USE THIS KEY
      *
      * @var string
      */
     const KEY = '
-        QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQU
-        FBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUE=
+        QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB
+        QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB
+        QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB
+        QUFBQQ==
     ';
 
     public static function decrypt(string $data): string
     {
-        $key = base64_decode(self::KEY);
+        $key = \base64_decode(self::KEY);
 
-        return parent::decrypt(base64_decode($data), $key);
+        return parent::decrypt(\base64_decode($data), $key);
     }
 
     public static function encrypt(string $data): string
     {
-        $key = base64_decode(self::KEY);
+        $key = \base64_decode(self::KEY);
 
-        return base64_encode(parent::encrypt($data, $key));
+        return \base64_encode(parent::encrypt($data, $key));
     }
 }

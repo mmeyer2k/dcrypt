@@ -74,7 +74,7 @@ Use any cipher/algo combination by calling the `OpensslStatic` class.
 
 ```php
 <?php
-$encrypted = \Dcrypt\OpensslStatic::encrypt($plaintext, $key, 'des-ofb', 'md5');
+$encrypted = \Dcrypt\OpensslStatic::encrypt("a secret", $key, 'des-ofb', 'md5');
 
 $plaintext = \Dcrypt\OpensslStatic::decrypt($encrypted, $key, 'des-ofb', 'md5');
 ```
@@ -135,7 +135,7 @@ In this example, the `$cost` value of `10000` overloads the default of `0`.
 <?php
 $password = 'password1234';
 
-$encrypted = \Dcrypt\Aes256Gcm::encrypt($plaintext, $password, 10000);
+$encrypted = \Dcrypt\Aes256Gcm::encrypt("a secret", $password, 10000);
 
 $plaintext = \Dcrypt\Aes256Gcm::decrypt($encrypted, $password, 10000);
 ```
@@ -143,16 +143,15 @@ $plaintext = \Dcrypt\Aes256Gcm::decrypt($encrypted, $password, 10000);
 ## Stream Ciphers
 
 ### One Time Pad Encryption
-Fast symmetric stream encryption is available with the `\Dcrypt\Otp` class.
-`\Dcrypt\Otp` uses SHA-512 (by default) to output a keystream that is ⊕'d with the input in 512 bit chunks. 
+Fast symmetric stream encryption is available with the `Otp` class.
+`Otp` uses SHA-512 (by default) to output a keystream that is ⊕'d with the input in 512 bit chunks. 
 ```php
 $encrypted = \Dcrypt\Otp::crypt($plaintext, $password);
 
 $plaintext = \Dcrypt\Otp::crypt($encrypted, $password);
 ```
 
-`\Dcrypt\Otp` can also be configured to use any other hashing algorithm to generate the
-pseudorandom keystream.
+`Otp` can also be configured to use any other hashing algorithm to generate the pseudorandom keystream.
 ```php
 $encrypted = \Dcrypt\Otp::crypt($plaintext, $password, 'whirlpool');
 

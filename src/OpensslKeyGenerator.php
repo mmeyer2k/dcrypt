@@ -52,13 +52,17 @@ final class OpensslKeyGenerator
      * @param string $passkey
      * @param string $cipher
      * @param string $ivr
-     * @param int $cost
+     * @param int    $cost
      */
     public function __construct(string $algo, string $passkey, string $cipher, string $ivr, int $cost)
     {
         if ($cost === 0) {
-            // If no cost value is specified, assume passkey is a key
             $this->key = $passkey;
+
+            // Make sure key meets minimum required length
+            if (Str::strlen($passkey) < 256) {
+                throw new Exceptions\InvalidKeyException("Key must be at least 2048 bits long.");
+            }
         } else {
             // Derive the key from the password and store in object
             $this->key = \hash_pbkdf2($algo, $passkey, $ivr, $cost, 0, true);
