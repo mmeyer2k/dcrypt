@@ -5,7 +5,7 @@ jobs:
       - image: circleci/php:7.1
     steps:
       - checkout
-      - run: composer require phpunit/phpunit
+      - run: composer require phpunit/phpunit infection/infection
       - run: php vendor/phpunit/phpunit/phpunit --coverage-clover=coverage.clover
       - run: wget https://scrutinizer-ci.com/ocular.phar
       - run: php ocular.phar code-coverage:upload --format=php-clover coverage.clover
@@ -15,7 +15,7 @@ jobs:
       - image: circleci/php:7.2
     steps:
       - checkout
-      - run: composer require phpunit/phpunit
+      - run: composer require phpunit/phpunit infection/infection
       - run: php vendor/phpunit/phpunit/phpunit
 
 workflows:

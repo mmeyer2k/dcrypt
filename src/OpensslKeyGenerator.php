@@ -14,6 +14,15 @@
 
 namespace Dcrypt;
 
+/**
+ * Provides key derivation functions
+ *
+ * @category Dcrypt
+ * @package  Dcrypt
+ * @author   Michael Meyer (mmeyer2k) <m.meyer2k@gmail.com>
+ * @license  http://opensource.org/licenses/MIT The MIT License (MIT)
+ * @link     https://github.com/mmeyer2k/dcrypt
+ */
 final class OpensslKeyGenerator
 {
     private $hash;
@@ -31,17 +40,19 @@ final class OpensslKeyGenerator
      */
     public function __construct(string $algo, string $pass, string $cipher, string $ivr, int $cost)
     {
-        //
+        // Derive the key from the password and store in object
         $this->hash = \hash_pbkdf2($algo, ($pass . $cipher), $ivr, $cost, 0, true);
 
-        //
+        // Store algo in object
         $this->algo = $algo;
 
-        //
+        // Store init vector in object
         $this->ivr = $ivr;
     }
 
     /**
+     * Generate the authentication key
+     *
      * @return string
      */
     public function authenticationKey(): string
@@ -50,6 +61,8 @@ final class OpensslKeyGenerator
     }
 
     /**
+     * Generate the encryption key
+     *
      * @return string
      */
     public function encryptionKey(): string
@@ -57,6 +70,13 @@ final class OpensslKeyGenerator
         return $this->deriveKey(__FUNCTION__);
     }
 
+    /**
+     * Derive a key with differing authinfo strings
+     *
+     * @param string $authinfo
+     * @return string
+     * @throws \Exception
+     */
     private function deriveKey(string $authinfo): string
     {
         $key = \hash_hkdf($this->algo, $this->hash, 0, $authinfo, $this->ivr);

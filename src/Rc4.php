@@ -29,7 +29,8 @@ class Rc4
 {
     /**
      * Perform (en/de)cryption
-     * 
+     *
+     * @deprecated
      * @param string $str String to be encrypted
      * @param string $key Key to use for encryption
      * @return string

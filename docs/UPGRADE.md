@@ -4,6 +4,8 @@ This is a major refactor of the core of dcrypt to focus on the most important fe
 - `Hash` is removed in favor of PHP's `password_hash` and `password_verify` functions.
 - `Pkcs7` is removed since it is no longer needed internally.
 - `Str::equal` is no loger a documented feature.
+- `Otp` now uses a different keystream generation algorithm, all previously decrypted blobs will be unreadable.
+- `Rc4` and `Spritz` are marked deprecated since they are just for fun
 - **All data encrypted with Aes\*\*\* functions from prior versions will not be decryptable**
 
 # Upgrade from 8.x to 9.x
@@ -19,5 +21,3 @@ It removes all legacy crutches and moves to use more a more modern design.
 # Upgrade from 7.x to 8.x
 The encryption function wrapper class `Aes` has been renamed to `AesCbc`.
 Rename all references in your code to the new class.
-
-# Upgrade from 6.x to 7.x

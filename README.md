@@ -80,44 +80,29 @@ Dcrypt's internal functions are easily extendable by overloading the `OpensslBri
 ```php
 <?php
 
-/**
- * Use blowfish64 + crc32 to create smaller output sizes. 
- * This is useful for medium security situations where minimal space consumption is important.
- */
-class TinyFish extends \Dcrypt\OpensslBridge 
+class BlowfishCrc extends \Dcrypt\OpensslBridge 
 {
-    /**
-     * Specify using blowfish ofb cipher method
-     *
-     * @var string
-     */
     const CIPHER = 'bf-ofb';
-    
-    /**
-     * Use crc32 hashing algo to authenticate messages
-     *
-     * @var string
-     */
+
     const ALGO = 'crc32';
-    
-    /**
-     * Cost value for hash_pbkdf2
-     *
-     * @var string
-     */
+
     const COST = 1000;
 }
 ```
 
 ```php
-$encrypted = \TinyFish::encrypt($plaintext, $password, 10000);
+$encrypted = \BlowfishCrc::encrypt($plaintext, $password, 10000);
 
-$plaintext = \TinyFish::decrypt($encrypted, $password, 10000);
+$plaintext = \BlowfishCrc::decrypt($encrypted, $password, 10000);
 ```
 
-### Iterative HMAC Key Hardening
-To reduce the effectiveness of brute-force cracking on your encrypted blobs, you can provide an integer `$cost` parameter in your encryption call. 
-This integer will cause dcrypt to perform `$cost` number of extra HMAC operations on the key before passing it off to the underlying encryption system.
+### PBKDF2 Key Hardening
+To reduce the effectiveness of brute-force cracking on your encrypted blobs, you can provide an integer `$cost` parameter in your encryption/decryption calls.
+This integer will be used by `hash_pbkdf2` to harden your password.
+By default, a cost value of 1 is selected which assumes the usage of a high entropy password.
+The lower the entropy of your password, the higher cost value should be.
+Extremely high cost values could lead to DoS attacks if used improperly, use caution when selecting this number.
+
 ```php
 $encrypted = \Dcrypt\AesCbc::encrypt($plaintext, $password, 10000);
 
@@ -125,11 +110,11 @@ $plaintext = \Dcrypt\AesCbc::decrypt($encrypted, $password, 10000);
 ```
 
 ### Tamper Protection
-By default, a `InvalidArgumentException` will be thrown *before* decryption if the supplied checksum is not valid.
+By default, a `\Dcrypt\Exceptions\InvalidChecksum` exception will be thrown before decryption if the supplied checksum is not valid.
 ```php
 try {
     $decrypted = \Dcrypt\AesCtr::decrypt($badInput, $password);
-} catch (\InvalidArgumentException $ex) {
+} catch (\Dcrypt\Exceptions\InvalidChecksum $ex) {
     # do something
 }
 ```

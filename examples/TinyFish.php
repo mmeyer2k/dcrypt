@@ -26,7 +26,7 @@ class TinyFish extends \Dcrypt\OpensslBridge
     /**
      * Cost value for hash_pbkdf2
      *
-     * @var string
+     * @var int
      */
     const COST = 1000;
 }
