@@ -7,10 +7,8 @@ jobs:
       - checkout
       - run: composer require phpunit/phpunit infection/infection
       - run: mkdir -p coverage
-      - run: php vendor/phpunit/phpunit/phpunit --coverage-clover=coverage.clover --coverage-html coverage
+      - run: php vendor/phpunit/phpunit/phpunit --coverage-html coverage
       - run: php vendor/infection/infection/bin/infection
-      - run: wget https://scrutinizer-ci.com/ocular.phar
-      - run: php ocular.phar code-coverage:upload --format=php-clover coverage.clover
       - store_artifacts:
           path: coverage
 
