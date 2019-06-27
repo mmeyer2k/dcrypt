@@ -6,12 +6,23 @@ class Aes256Base64 extends \Dcrypt\OpensslBridge
 
     const ALGO = 'sha256';
 
+    /**
+     * Cost value of zero because we are using a key.
+     *
+     * @var int
+     */
     const COST = 0;
 
     /**
-     * An example key generated with linux command:  head -c 128 /dev/urandom | base64 --wrap 0
+     * An example key generated with linux command:  head -c 128 /dev/urandom | base64 --wrap 64
+     * DONT ACTUALLY USE THIS KEY
+     *
+     * @var string
      */
-    const KEY = 'eXy/tXzysbiAqyLHnXnaFEJoTDl3faDVq148M5ACiavzgeiwXHw2QWDoBvLJ/nUV+hPaCqRzuwWmoxn4RsaA3RnnU0IQnumF4mLkb71d3PV/c7DcpJ935Mhd34uH9xaPmbkmy3ikl6Eakqix020nuHBPvR7RAiYrcZschUGlFYk=';
+    const KEY = '
+        QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQU
+        FBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUE=
+    ';
 
     public static function decrypt(string $data): string
     {

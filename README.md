@@ -26,21 +26,29 @@ composer require "mmeyer2k/dcrypt=^10.0"
 
 # Features
 ## Block Ciphers
-Dcrypt helps application developers avoid common mistakes in crypto implementations that leave data at risk.
+Dcrypt helps application developers avoid common mistakes in crypto implementations that leave data at risk while providing flexibility in its options.
+Dcrypt strives to make correct usage simple, but it is possible to use dcrypt incorrectly.
+Please read all of the instructions and the [crypto details document](https://github.com/mmeyer2k/dcrypt/blob/master/docs/CRYPTO.md) carefully!
 
 __NOTE__: Dcrypt's default configurations assume the usage of a high entropy key. 
 Be sure to read the section on key hardening and pay close attention to the diffences between `$key` and `$password`.
+To quickly generate a 1024 bit key run this on the linux command line:
+```bash
+head -c 128 /dev/urandom | base64 -w 0 | xargs echo
+```
 
 ### AES-256-GCM Encryption
 PHP 7.1 comes with support for new AEAD encryption modes, GCM being considered the best of these.
-Small authentication tags are selected because dcrypt already provides SHA-256 HMAC based authentication.
+Small authentication tags are selected because dcrypt already uses SHA-256-HMAC authentication.
 Using this mode essentially adds an extra 32 bit checksum to the ciphertext.
-**When in doubt, use this class**
+**When in doubt, use this class!**
 
 ```php
-$key = base64_decode("some high entropy base64 encoded keying material");
+<?php
+// Decode the high entropy key
+$key = base64_decode("replace this with the output of: head -c 128 /dev/urandom | base64 -w 0 | xargs echo");
 
-$encrypted = \Dcrypt\Aes256Gcm::encrypt($plaintext, $key);
+$encrypted = \Dcrypt\Aes256Gcm::encrypt("a secret", $key);
 
 $plaintext = \Dcrypt\Aes256Gcm::decrypt($encrypted, $key);
 ```
@@ -65,6 +73,7 @@ Dcrypt offers two ways to extend the core encryption functionality.
 Use any cipher/algo combination by calling the `OpensslStatic` class.
 
 ```php
+<?php
 $encrypted = \Dcrypt\OpensslStatic::encrypt($plaintext, $key, 'des-ofb', 'md5');
 
 $plaintext = \Dcrypt\OpensslStatic::decrypt($encrypted, $key, 'des-ofb', 'md5');
@@ -94,6 +103,21 @@ $encrypted = \BlowfishCrc::encrypt($plaintext, $password);
 $plaintext = \BlowfishCrc::decrypt($encrypted, $password);
 ```
 
+### Message Authenticity Checking
+By default, a `\Dcrypt\Exceptions\InvalidChecksum` exception will be thrown before decryption if the supplied checksum is not valid.
+```php
+<?php
+$encrypted = \Dcrypt\Aes256Gcm::encrypt("a secret", $key);
+
+$badInput = $encrypted . 'AAAA';
+
+try {
+    $decrypted = \Dcrypt\Aes256Gcm::decrypt($badInput, $key);
+} catch (\Dcrypt\Exceptions\InvalidChecksum $ex) {
+    // ...
+}
+```
+
 ### PBKDF2 Key Hardening
 When using a source of low entropy for the password/key (or "passkey") parameter, a `$cost` value of appropriate size should be chosen based on the requirements of the application.
 As a general rule, consider using a `$cost` number when the passkey contains less entropy than the selected hashing algorithm.
@@ -103,23 +127,17 @@ Extremely high cost values could lead to DoS attacks if used improperly, use cau
 
 Easily generate a new key on the command line with:
 ```bash
-
+head -c 128 /dev/urandom | base64 --wrap 0
 ```
 
+In this example, the `$cost` value of `10000` overloads the default of `0`.
 ```php
-$encrypted = \Dcrypt\Aes256Gcm::encrypt($plaintext, $password);
+<?php
+$password = 'password1234';
 
-$plaintext = \Dcrypt\Aes256Gcm::decrypt($encrypted, $password);
-```
+$encrypted = \Dcrypt\Aes256Gcm::encrypt($plaintext, $password, 10000);
 
-### Tamper Protection
-By default, a `\Dcrypt\Exceptions\InvalidChecksum` exception will be thrown before decryption if the supplied checksum is not valid.
-```php
-try {
-    $decrypted = \Dcrypt\AesCtr::decrypt($badInput, $key);
-} catch (\Dcrypt\Exceptions\InvalidChecksum $ex) {
-    // ...
-}
+$plaintext = \Dcrypt\Aes256Gcm::decrypt($encrypted, $password, 10000);
 ```
 
 ## Stream Ciphers
