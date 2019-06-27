@@ -67,9 +67,9 @@ Dcrypt offers two ways to extend the core encryption functionality.
 Use any cipher/algo combination by calling the `OpensslStatic` class.
 
 ```php
-$encrypted = \Dcrypt\OpensslStatic::encrypt($plaintext, $password, 'des-ofb', 'md5');
+$encrypted = \Dcrypt\OpensslStatic::encrypt($plaintext, $passkey, 'des-ofb', 'md5');
 
-$plaintext = \Dcrypt\OpensslStatic::decrypt($encrypted, $password, 'des-ofb', 'md5');
+$plaintext = \Dcrypt\OpensslStatic::decrypt($encrypted, $passkey, 'des-ofb', 'md5');
 ```
 
 To find supported options, `openssl_get_cipher_methods()` and `hash_algos()` are helpful.
