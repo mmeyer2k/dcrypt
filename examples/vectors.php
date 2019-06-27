@@ -3,7 +3,7 @@
 use \Dcrypt\OpensslStatic;
 
 require __DIR__ . '/../vendor/autoload.php';
-/*
+
 $out = [];
 
 foreach (\Dcrypt\OpensslSupported::ciphers() as $cipher) {
@@ -11,11 +11,16 @@ foreach (\Dcrypt\OpensslSupported::ciphers() as $cipher) {
     if (isset($out[$cipher])) {
         continue;
     }
-    $out[$cipher] = base64_encode(OpensslStatic::encrypt('hello', 'world', $cipher, 'sha256', 10));
+
+    try {
+        $out[$cipher] = base64_encode(OpensslStatic::encrypt('hello', 'world', $cipher, 'sha256', 10));
+    } catch (\Exception|\Error $e) {
+
+    }
 }
 
 file_put_contents(__DIR__ . '/../tests/vectors/openssl-static-ciphers.json', \json_encode($out, JSON_PRETTY_PRINT));
-*/
+
 $out = [];
 
 foreach (\Dcrypt\OpensslSupported::algos() as $algo) {

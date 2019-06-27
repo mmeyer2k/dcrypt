@@ -43,8 +43,11 @@ final class OpensslSupported
 
         foreach (\openssl_get_cipher_methods() as $cipher) {
             try {
-                OpensslStatic::encrypt('test', 'test', $cipher, 'sha256', 1);
-                $ciphers[] = $cipher;
+                $a = OpensslStatic::encrypt('test', 'test', $cipher, 'sha256', 1);
+                $b = OpensslStatic::decrypt($a, 'test', $cipher, 'sha256', 1);
+                if ($b === 'test') {
+                    $ciphers[] = $cipher;
+                }
             } catch(\Error|\Exception $e) {
 
             }
