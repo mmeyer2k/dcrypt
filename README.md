@@ -27,13 +27,9 @@ composer require "mmeyer2k/dcrypt=^10.0"
 # Features
 ## Block Ciphers
 Dcrypt helps application developers avoid common mistakes in crypto implementations that leave data at risk.
-The primary features of dcrypt's block cipher engine are:
-- Elegent API helps keep your code readable, auditable and understandable
-- Allows custom combinations of encryption and hashing algorithms to fit different purposes
-- Ciphertext, authentication tag, IV and HMAC are all packed into a single string for simplicity
-- Strongly random initialization vectors are generated with `random_bytes()`
-- Does not perform encoding of input/output for maximum flexibility
-- SHA256 (default) HMAC checksums are verified before decryption using a time-safe equivalence function
+
+__NOTE__: Dcrypt's default configurations assume the usage of a high entropy key. 
+Be sure to read the section on key hardening and pay close attention to the diffences between `$key` and `$password`.
 
 ### AES-256-GCM Encryption
 PHP 7.1 comes with support for new AEAD encryption modes, GCM being considered the best of these.
@@ -42,9 +38,11 @@ Using this mode essentially adds an extra 32 bit checksum to the ciphertext.
 **When in doubt, use this class**
 
 ```php
-$encrypted = \Dcrypt\Aes256Gcm::encrypt($plaintext, $password);
+$key = base64_decode("some high entropy base64 encoded keying material");
 
-$plaintext = \Dcrypt\Aes256Gcm::decrypt($encrypted, $password);
+$encrypted = \Dcrypt\Aes256Gcm::encrypt($plaintext, $key);
+
+$plaintext = \Dcrypt\Aes256Gcm::decrypt($encrypted, $key);
 ```
 
 ### Other AES-256 Modes
@@ -67,9 +65,9 @@ Dcrypt offers two ways to extend the core encryption functionality.
 Use any cipher/algo combination by calling the `OpensslStatic` class.
 
 ```php
-$encrypted = \Dcrypt\OpensslStatic::encrypt($plaintext, $passkey, 'des-ofb', 'md5');
+$encrypted = \Dcrypt\OpensslStatic::encrypt($plaintext, $key, 'des-ofb', 'md5');
 
-$plaintext = \Dcrypt\OpensslStatic::decrypt($encrypted, $passkey, 'des-ofb', 'md5');
+$plaintext = \Dcrypt\OpensslStatic::decrypt($encrypted, $key, 'des-ofb', 'md5');
 ```
 
 To find supported options, `openssl_get_cipher_methods()` and `hash_algos()` are helpful.
@@ -91,31 +89,36 @@ class BlowfishCrc extends \Dcrypt\OpensslBridge
 ```
 
 ```php
-$encrypted = \BlowfishCrc::encrypt($plaintext, $password, 10000);
+$encrypted = \BlowfishCrc::encrypt($plaintext, $password);
 
-$plaintext = \BlowfishCrc::decrypt($encrypted, $password, 10000);
+$plaintext = \BlowfishCrc::decrypt($encrypted, $password);
 ```
 
 ### PBKDF2 Key Hardening
-To reduce the effectiveness of brute-force cracking on your encrypted blobs, you can provide an integer `$cost` parameter in your encryption/decryption calls.
-This integer will be used by `hash_pbkdf2` to harden your password.
-By default, a cost value of 1 is selected which assumes the usage of a high entropy password.
-The lower the entropy of your password, the higher cost value should be.
+When using a source of low entropy for the password/key (or "passkey") parameter, a `$cost` value of appropriate size should be chosen based on the requirements of the application.
+As a general rule, consider using a `$cost` number when the passkey contains less entropy than the selected hashing algorithm.
+**A cost value of `0` is default, which assumes the usage of a high entropy password.**
+
 Extremely high cost values could lead to DoS attacks if used improperly, use caution when selecting this number.
 
-```php
-$encrypted = \Dcrypt\AesCbc::encrypt($plaintext, $password, 10000);
+Easily generate a new key on the command line with:
+```bash
 
-$plaintext = \Dcrypt\AesCbc::decrypt($encrypted, $password, 10000);
+```
+
+```php
+$encrypted = \Dcrypt\Aes256Gcm::encrypt($plaintext, $password);
+
+$plaintext = \Dcrypt\Aes256Gcm::decrypt($encrypted, $password);
 ```
 
 ### Tamper Protection
 By default, a `\Dcrypt\Exceptions\InvalidChecksum` exception will be thrown before decryption if the supplied checksum is not valid.
 ```php
 try {
-    $decrypted = \Dcrypt\AesCtr::decrypt($badInput, $password);
+    $decrypted = \Dcrypt\AesCtr::decrypt($badInput, $key);
 } catch (\Dcrypt\Exceptions\InvalidChecksum $ex) {
-    # do something
+    // ...
 }
 ```
 
@@ -152,7 +155,7 @@ $plaintext = \Dcrypt\Spritz::crypt($encrypted, $password);
 ```
 
 **NOTE**: 
-These implementations are for reference only. 
+These implementations are for reference only and are marked as `@deprecated`. 
 The RC4 cipher in general has many known security problems, and the Spirtz implementation provided here has not been verified against known test vectors. 
 Both are very slow and inefficient. 
 This was just for fun. 

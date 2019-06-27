@@ -29,13 +29,13 @@ final class OpensslStatic extends OpensslWrapper
      * Decrypt raw data string
      *
      * @param string $data
-     * @param string $pass
+     * @param string $passkey
      * @param string $cipher
      * @param string $algo
      * @return string
      * @throws \Exception
      */
-    public static function decrypt(string $data, string $passkey, string $cipher, string $algo, int $cost = 1): string
+    public static function decrypt(string $data, string $passkey, string $cipher, string $algo, int $cost = 0): string
     {
         // Calculate the hash checksum size in bytes for the specified algo
         $hsz = Str::hashSize($algo);
@@ -66,7 +66,7 @@ final class OpensslStatic extends OpensslWrapper
 
         // Verify HMAC before decrypting
         if (!Str::equal($chk, $sum)) {
-            throw new \InvalidArgumentException('Decryption can not proceed due to invalid cyphertext checksum.');
+            throw new Exceptions\InvalidChecksum('Decryption can not proceed due to invalid cyphertext checksum.');
         }
 
         // Decrypt message and return
@@ -84,7 +84,7 @@ final class OpensslStatic extends OpensslWrapper
      * @return string
      * @throws \Exception
      */
-    public static function encrypt(string $data, string $passkey, string $cipher, string $algo, int $cost = 1): string
+    public static function encrypt(string $data, string $passkey, string $cipher, string $algo, int $cost = 0): string
     {
         // Generate IV of appropriate size.
         $ivr = parent::ivGenerate($cipher);

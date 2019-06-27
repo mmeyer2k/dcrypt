@@ -25,9 +25,25 @@ namespace Dcrypt;
  */
 final class OpensslKeyGenerator
 {
+    /**
+     * @var string
+     */
     private $key;
+
+    /**
+     * @var string
+     */
     private $algo;
+
+    /**
+     * @var string
+     */
     private $ivr;
+
+    /**
+     * @var string
+     */
+    private $cipher;
 
     /**
      * OpensslKeyGenerator constructor.
@@ -45,8 +61,10 @@ final class OpensslKeyGenerator
             $this->key = $passkey;
         } else {
             // Derive the key from the password and store in object
-            $this->key = \hash_pbkdf2($algo, ($passkey . $cipher), $ivr, $cost, 0, true);
+            $this->key = \hash_pbkdf2($algo, $passkey, $ivr, $cost, 0, true);
         }
+
+        $this->cipher = $cipher;
 
         // Store algo in object
         $this->algo = $algo;
@@ -82,9 +100,9 @@ final class OpensslKeyGenerator
      * @return string
      * @throws \Exception
      */
-    private function deriveKey(string $authinfo): string
+    public function deriveKey(string $authinfo): string
     {
-        $key = \hash_hkdf($this->algo, $this->hash, 0, $authinfo, $this->ivr);
+        $key = \hash_hkdf($this->algo, $this->key, 0, ($authinfo . '|' . $this->cipher), $this->ivr);
 
         if ($key === false) {
             throw new \Exception("Hash algo $this->algo is not supported");
