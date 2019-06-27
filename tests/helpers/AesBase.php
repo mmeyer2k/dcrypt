@@ -10,7 +10,7 @@ class AesBase extends \PHPUnit\Framework\TestCase
         QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB
         QUFBQQ==
     ';
-    
+
     public function testEngineWithPassword()
     {
         $encrypted = static::$class::encrypt(self::$input, self::$password, 10000);
@@ -48,7 +48,7 @@ class AesBase extends \PHPUnit\Framework\TestCase
 
         $this->assertEquals(self::$input, static::$class::decrypt($encrypted, $key));
 
-        $this->expectException(\Dcrypt\Exceptions\InvalidChecksum::class);
+        $this->expectException(\Dcrypt\Exceptions\InvalidChecksumException::class);
 
         static::$class::decrypt($encrypted . 'A', $key);
     }
@@ -59,7 +59,7 @@ class AesBase extends \PHPUnit\Framework\TestCase
 
         $this->assertEquals(self::$input, static::$class::decrypt($encrypted, self::$key));
 
-        $this->expectException(\Dcrypt\Exceptions\InvalidChecksum::class);
+        $this->expectException(\Dcrypt\Exceptions\InvalidChecksumException::class);
 
         static::$class::decrypt($encrypted . 'A', self::$key);
     }

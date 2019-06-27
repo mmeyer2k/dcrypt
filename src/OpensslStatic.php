@@ -66,7 +66,7 @@ final class OpensslStatic extends OpensslWrapper
 
         // Verify HMAC before decrypting
         if (!Str::equal($chk, $sum)) {
-            throw new Exceptions\InvalidChecksum('Decryption can not proceed due to invalid cyphertext checksum.');
+            throw new Exceptions\InvalidChecksumException('Decryption can not proceed due to invalid cyphertext checksum.');
         }
 
         // Decrypt message and return

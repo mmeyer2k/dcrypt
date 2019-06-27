@@ -46,7 +46,7 @@ Using this mode essentially adds an extra 32 bit checksum to the ciphertext.
 ```php
 <?php
 // Decode the high entropy key
-$key = base64_decode("replace this with the output of: head -c 128 /dev/urandom | base64 -w 0 | xargs echo");
+$key = base64_decode("replace this with the output of: head -c 256 /dev/urandom | base64 -w 0 | xargs echo");
 
 $encrypted = \Dcrypt\Aes256Gcm::encrypt("a secret", $key);
 
@@ -96,9 +96,10 @@ class BlowfishCrc extends \Dcrypt\OpensslBridge
     const COST = 1000;
 }
 ```
-
+then...
 ```php
-$encrypted = \BlowfishCrc::encrypt($plaintext, $password);
+<?php
+$encrypted = \BlowfishCrc::encrypt("a secret", $password);
 
 $plaintext = \BlowfishCrc::decrypt($encrypted, $password);
 ```
@@ -113,7 +114,7 @@ $badInput = $encrypted . 'AAAA';
 
 try {
     $decrypted = \Dcrypt\Aes256Gcm::decrypt($badInput, $key);
-} catch (\Dcrypt\Exceptions\InvalidChecksum $ex) {
+} catch (\Dcrypt\Exceptions\InvalidChecksumException $ex) {
     // ...
 }
 ```
@@ -135,10 +136,13 @@ In this example, the `$cost` value of `10000` overloads the default of `0`.
 <?php
 $password = 'password1234';
 
-$encrypted = \Dcrypt\Aes256Gcm::encrypt("a secret", $password, 10000);
+$encrypted = \Dcrypt\Aes256Gcm::encrypt('a secret', $password, 10000);
 
 $plaintext = \Dcrypt\Aes256Gcm::decrypt($encrypted, $password, 10000);
 ```
+
+When using key mode, the passkey must be at least 2048 bits long.
+`\Dcrypt\Exceptions\InvalidKeyException` is thrown when passkey is less than the minimum length.
 
 ## Stream Ciphers
 
@@ -146,14 +150,16 @@ $plaintext = \Dcrypt\Aes256Gcm::decrypt($encrypted, $password, 10000);
 Fast symmetric stream encryption is available with the `Otp` class.
 `Otp` uses SHA-512 (by default) to output a keystream that is ⊕'d with the input in 512 bit chunks. 
 ```php
-$encrypted = \Dcrypt\Otp::crypt($plaintext, $password);
+<?php
+$encrypted = \Dcrypt\Otp::crypt("a secret", $password);
 
 $plaintext = \Dcrypt\Otp::crypt($encrypted, $password);
 ```
 
 `Otp` can also be configured to use any other hashing algorithm to generate the pseudorandom keystream.
 ```php
-$encrypted = \Dcrypt\Otp::crypt($plaintext, $password, 'whirlpool');
+<?php
+$encrypted = \Dcrypt\Otp::crypt('a secret', $password, 'whirlpool');
 
 $plaintext = \Dcrypt\Otp::crypt($encrypted, $password, 'whirlpool');
 ```
@@ -161,12 +167,14 @@ $plaintext = \Dcrypt\Otp::crypt($encrypted, $password, 'whirlpool');
 ### Rivest's Ciphers
 `\Dcrypt\Rc4` and `\Dcrypt\Spritz` are pure PHP implementations of the immortal [RC4](https://en.wikipedia.org/wiki/RC4) cipher and its successor [Spritz](https://people.csail.mit.edu/rivest/pubs/RS14.pdf).
 ```php
-$encrypted = \Dcrypt\Rc4::crypt($plaintext, $password);
+<?php
+$encrypted = \Dcrypt\Rc4::crypt('a secret', $password);
 
 $plaintext = \Dcrypt\Rc4::crypt($encrypted, $password);
 ```
 ```php
-$encrypted = \Dcrypt\Spritz::crypt($plaintext, $password);
+<?php
+$encrypted = \Dcrypt\Spritz::crypt('a secret', $password);
 
 $plaintext = \Dcrypt\Spritz::crypt($encrypted, $password);
 ```
