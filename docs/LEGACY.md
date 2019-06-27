@@ -1,4 +1,4 @@
-# Legacy PHP Version Support
+# PHP Version Support
 
 ## PHP 7.1+
 ```

@@ -1,5 +1,9 @@
 <?php declare(strict_types=1);
 
+/*
+ * Generates the openssl-related test vectors in tests/vectors
+ */
+
 use \Dcrypt\OpensslStatic;
 
 require __DIR__ . '/../vendor/autoload.php';

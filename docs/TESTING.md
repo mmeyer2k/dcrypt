@@ -6,5 +6,4 @@ To ensure that backwards compatibility is maintained across versions, dcrypt tes
 ## Unit testing
 Continuous unit testing on all supported PHP versions is performed using circle-ci with phpunit.
 
-
 ## Mutation testing
