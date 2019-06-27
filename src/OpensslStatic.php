@@ -35,7 +35,7 @@ final class OpensslStatic extends OpensslWrapper
      * @return string
      * @throws \Exception
      */
-    public static function decrypt(string $data, string $pass, string $cipher, string $algo, int $cost = 1): string
+    public static function decrypt(string $data, string $passkey, string $cipher, string $algo, int $cost = 1): string
     {
         // Calculate the hash checksum size in bytes for the specified algo
         $hsz = Str::hashSize($algo);
@@ -59,7 +59,7 @@ final class OpensslStatic extends OpensslWrapper
         $msg = Str::substr($data, $isz + $hsz + $tsz);
 
         // Create password derivation object
-        $key = new OpensslKeyGenerator($algo, $pass, $cipher, $ivr, $cost);
+        $key = new OpensslKeyGenerator($algo, $passkey, $cipher, $ivr, $cost);
 
         // Calculate verification checksum
         $chk = \hash_hmac($algo, $msg, $key->authenticationKey(), true);
@@ -77,20 +77,20 @@ final class OpensslStatic extends OpensslWrapper
      * Encrypt raw string
      *
      * @param string $data
-     * @param string $pass
+     * @param string $passkey
      * @param string $cipher
      * @param string $algo
      * @param int $cost
      * @return string
      * @throws \Exception
      */
-    public static function encrypt(string $data, string $pass, string $cipher, string $algo, int $cost = 1): string
+    public static function encrypt(string $data, string $passkey, string $cipher, string $algo, int $cost = 1): string
     {
         // Generate IV of appropriate size.
         $ivr = parent::ivGenerate($cipher);
 
         // Create password derivation object
-        $key = new OpensslKeyGenerator($algo, $pass, $cipher, $ivr, $cost);
+        $key = new OpensslKeyGenerator($algo, $passkey, $cipher, $ivr, $cost);
 
         // Create a placeholder for the authentication tag to be passed by reference
         $tag = '';

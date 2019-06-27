@@ -25,7 +25,7 @@ namespace Dcrypt;
  */
 final class OpensslKeyGenerator
 {
-    private $hash;
+    private $key;
     private $algo;
     private $ivr;
 
@@ -33,15 +33,20 @@ final class OpensslKeyGenerator
      * OpensslKeyGenerator constructor.
      *
      * @param string $algo
-     * @param string $pass
+     * @param string $passkey
      * @param string $cipher
      * @param string $ivr
      * @param int $cost
      */
-    public function __construct(string $algo, string $pass, string $cipher, string $ivr, int $cost)
+    public function __construct(string $algo, string $passkey, string $cipher, string $ivr, int $cost)
     {
-        // Derive the key from the password and store in object
-        $this->hash = \hash_pbkdf2($algo, ($pass . $cipher), $ivr, $cost, 0, true);
+        if ($cost === 0) {
+            // If no cost value is specified, assume passkey is a key
+            $this->key = $passkey;
+        } else {
+            // Derive the key from the password and store in object
+            $this->key = \hash_pbkdf2($algo, ($passkey . $cipher), $ivr, $cost, 0, true);
+        }
 
         // Store algo in object
         $this->algo = $algo;
