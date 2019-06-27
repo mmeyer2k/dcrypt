@@ -11,6 +11,8 @@ jobs:
       - run: php vendor/infection/infection/bin/infection
       - store_artifacts:
           path: coverage
+      - store_artifacts:
+          path: infection.log
 
   build-72:
     docker:
@@ -18,10 +20,12 @@ jobs:
     steps:
       - checkout
       - run: mkdir -p coverage
-      - run: php vendor/phpunit/phpunit/phpunit --coverage-clover=coverage.clover --coverage-html coverage
+      - run: php vendor/phpunit/phpunit/phpunit --coverage-html coverage
       - run: php vendor/infection/infection/bin/infection
       - store_artifacts:
           path: coverage
+      - store_artifacts:
+          path: infection.log
 
 workflows:
   version: 2
