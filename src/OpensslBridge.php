@@ -26,6 +26,13 @@ namespace Dcrypt;
 class OpensslBridge
 {
     /**
+     * Cost value to give to pbkdf2 when not using key mode, or 0 for key mode
+     *
+     * @var int
+     */
+    const COST = 0;
+
+    /**
      * Decrypt cyphertext
      *
      * @param string   $data    Cyphertext to decrypt

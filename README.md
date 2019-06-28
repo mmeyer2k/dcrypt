@@ -15,7 +15,7 @@ For legacy PHP version support, look [here](https://github.com/mmeyer2k/dcrypt/b
 - [Features](#features)
   - [Block Ciphers](#block-ciphers)
   - [Stream Ciphers](#stream-ciphers)
-- [Show me some love](#show-me-some-love-heart_eyes) :heart_eyes:
+- [Show me some love](#show-me-some-love-heart_eyes) :heart_eyes::beer:
 
 # Install
 Add dcrypt to your composer.json file requirements.
@@ -28,7 +28,6 @@ composer require "mmeyer2k/dcrypt=^10.0"
 ## Block Ciphers
 Dcrypt helps application developers avoid common mistakes in crypto implementations that leave data at risk while providing flexibility in its options.
 Dcrypt strives to make correct usage simple, but it is possible to use dcrypt incorrectly.
-Please read all of the instructions and the [crypto details document](https://github.com/mmeyer2k/dcrypt/blob/master/docs/CRYPTO.md) carefully!
 
 __NOTE__: Dcrypt's default configurations assume the usage of a base64 encoded high entropy key with a minimum of 2048 bits. 
 Be sure to read the section on key hardening and pay close attention to the diffences between `$key` and `$password`.
@@ -54,21 +53,25 @@ $plaintext = \Dcrypt\Aes256Gcm::decrypt($encrypted, $key);
 ```
 
 ### Other AES-256 Modes
-If you read to this point then you are a committed crypto nerd, congrats.
-Other AES-256 encryption modes are supported out of the box.
+
+If you read to this point then you are an experienced cryptonaut, congrats :metal::metal::metal:
+
+Other AES-256 encryption modes are supported out of the box via hardcoded classes.
 
 | Class Name           | OpenSSL Cipher   | Further Reading |
 | -------------------- | :--------------: | --------------- |
-| `\Dcrypt\Aes256Gcm`  |    `aes-256-gcm` | [wiki](https://en.wikipedia.org/wiki/Galois/Counter_Mode)               |
-| `\Dcrypt\Aes256Cbc`  |    `aes-256-cbc` | [wiki](https://en.wikipedia.org/wiki/Galois/Counter_Mode)                |
-| `\Dcrypt\Aes256Ctr`  |    `aes-256-ctr` | [wiki](https://en.wikipedia.org/wiki/Block_cipher_mode_of_operation#Counter_(CTR))              |
-| `\Dcrypt\Aes256Ecb`  |    `aes-256-ecb` | [wiki](https://en.wikipedia.org/wiki/Block_cipher_mode_of_operation#ECB)                |
+| `\Dcrypt\Aes256Gcm`  |    `aes-256-gcm` | [wiki](https://en.wikipedia.org/wiki/Galois/Counter_Mode) |
+| `\Dcrypt\Aes256Cbc`  |    `aes-256-cbc` | [wiki](https://en.wikipedia.org/wiki/Block_cipher_mode_of_operation) |
+| `\Dcrypt\Aes256Ctr`  |    `aes-256-ctr` | [wiki](https://en.wikipedia.org/wiki/Block_cipher_mode_of_operation#Counter_(CTR)) |
+| `\Dcrypt\Aes256Ecb`  |    `aes-256-ecb` | [wiki](https://en.wikipedia.org/wiki/Block_cipher_mode_of_operation#ECB) |
 
 ### Custom Encryption Suites
+
 Dcrypt is compatible with _most_ OpenSSL ciphers and hashing algorithms supported by PHP.
 
 
 #### Static Wrapper
+
 Use any cipher/algo combination by calling the `OpensslStatic` class.
 
 ```php
@@ -79,6 +82,7 @@ $plaintext = \Dcrypt\OpensslStatic::decrypt($encrypted, $key, 'des-ofb', 'md5');
 ```
 
 #### Class Overloading
+
 Dcrypt's internal functions are easily extendable by overloading the `OpensslBridge` class. 
 
 ```php
@@ -89,11 +93,11 @@ class BlowfishCrc extends \Dcrypt\OpensslBridge
     const CIPHER = 'bf-ofb';
 
     const ALGO = 'crc32';
-
-    const COST = 10000;
 }
 ```
+
 then...
+
 ```php
 <?php
 $encrypted = \BlowfishCrc::encrypt("a secret", $password);
@@ -119,13 +123,26 @@ try {
 ```
 
 ### PBKDF2 Key Hardening
-When using a source of low entropy for the password/key (or "passkey") parameter, a `$cost` value of appropriate size should be chosen based on the requirements of the application.
-As a general rule, consider using a `$cost` number when the passkey contains less entropy than the selected hashing algorithm.
-**A cost value of `0` is default, which assumes the usage of a high entropy password.**
 
-Extremely high cost values could lead to DoS attacks if used improperly, use caution when selecting this number.
+Key-based encryption mode is preferred because the iterative PBKDF2 hardening process can be skipped, reducing overhead.
+If using strong keys never use these options.
 
-In this example, the `$cost` value of `10000` overloads the default of `0`.
+When using a source of low entropy for the password/key (or "passkey") parameter, a `$cost` value of appropriate size _must_ be chosen based on the requirements of the application.
+High cost values could lead to DoS attacks if used improperly for your application, use caution when selecting this number.
+
+The PBKDF2 cost can be defined in a custom class...
+```php
+<?php
+
+class Aes256GcmWithCost extends \Dcrypt\OpensslBridge 
+{
+    const COST = 1000000;
+}
+```
+
+or by passing a third parameter to the (en|de)crypt calls.
+The `$cost` parameter always overloads any value stored in the class's `const COST`.
+
 ```php
 <?php
 $encrypted = \Dcrypt\Aes256Gcm::encrypt('a secret', $password, 10000);
@@ -133,7 +150,27 @@ $encrypted = \Dcrypt\Aes256Gcm::encrypt('a secret', $password, 10000);
 $plaintext = \Dcrypt\Aes256Gcm::decrypt($encrypted, $password, 10000);
 ```
 
-`\Dcrypt\Exceptions\InvalidKeyException` is thrown when passkey is less than the minimum length.
+### Layered Encryption Factory
+
+Feeling paranoid?
+Is the NSA monitoring your brainwaves?
+Not sure which cipher method you can trust?
+Why not try all of them?
+
+```php
+<?php
+$stack = (new \Dcrypt\OpensslStack($key))
+    ->add('aes-256-ecb', 'sha512')
+    ->add('aes-256-cfb', 'sha512')
+    ->add('aes-256-ofb', 'sha512')
+    ->add('aes-256-cbc', 'sha512')
+    ->add('aes-256-ctr', 'sha512')
+    ->add('aes-256-gcm', 'sha512');
+
+$encrypted = $stack->encrypt("a secret");
+
+$plaintext = $stack->decrypt($encrypted);
+```
 
 ## Stream Ciphers
 
@@ -185,7 +222,7 @@ This was just for fun.
 **NOTE**: 
 Backwards compatibility breaking changes to these classes will not result in an incremented major version number.
 
-# Show me some love :heart_eyes:
+# Show me some love :heart_eyes::beer:
 Developing dcrypt has been a great journey for many years.
 If you find dcrypt useful, please consider donating some Litecoin.
  

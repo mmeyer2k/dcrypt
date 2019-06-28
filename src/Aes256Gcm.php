@@ -38,11 +38,4 @@ class Aes256Gcm extends OpensslBridge
      * @var string
      */
     const ALGO = 'sha256';
-
-    /**
-     * Cost value to give to pbkdf2
-     *
-     * @var int
-     */
-    const COST = 0;
 }
