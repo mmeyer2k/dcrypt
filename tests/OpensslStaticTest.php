@@ -10,7 +10,7 @@ class OpensslStaticTest extends \PHPUnit\Framework\TestCase
 
         foreach ($json as $algo => $data) {
             try {
-                $plaintext = \Dcrypt\OpensslStatic::decrypt(base64_decode($data), 'world', 'aes-256-gcm', $algo, 10);
+                $plaintext = \Dcrypt\OpensslStatic::decrypt(base64_decode($data), 'world', 'aes-256-gcm', $algo, 1000);
             } catch (\Exception|\Error $e) {
                 throw new \Exception("Failure in [$algo]: " . $e->getMessage());
             }
@@ -27,7 +27,7 @@ class OpensslStaticTest extends \PHPUnit\Framework\TestCase
 
         foreach ($json as $cipher => $data) {
             try {
-                $plaintext = \Dcrypt\OpensslStatic::decrypt(base64_decode($data), 'world', $cipher, 'sha256', 10);
+                $plaintext = \Dcrypt\OpensslStatic::decrypt(base64_decode($data), 'world', $cipher, 'sha256', 1000);
             } catch (\Exception|\Error $e) {
                 throw new \Exception("Failure in [$cipher]: " . $e->getMessage());
             }

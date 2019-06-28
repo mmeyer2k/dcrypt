@@ -1,5 +1,7 @@
 <?php
 
+namespace Dcrypt\Examples;
+
 /**
  * A basic example of how to extend dcrypt by overloading the OpensslBridge class.
  *

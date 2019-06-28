@@ -1,5 +1,7 @@
 <?php
 
+namespace Dcrypt\Examples;
+
 class Aes256Base64 extends \Dcrypt\OpensslBridge
 {
     const CIPHER = 'aes-256-cfb';

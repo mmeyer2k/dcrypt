@@ -8,7 +8,7 @@ class OtpTest extends \PHPUnit\Framework\TestCase
     {
         foreach (range(1, 1000, 100) as $mult) {
             $input = str_repeat('A', 4 * $mult);
-            $key = openssl_random_pseudo_bytes(32);
+            $key = \random_bytes(32);
 
             /*
              * Test encryption

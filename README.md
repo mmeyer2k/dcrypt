@@ -34,7 +34,7 @@ __NOTE__: Dcrypt's default configurations assume the usage of a high entropy key
 Be sure to read the section on key hardening and pay close attention to the diffences between `$key` and `$password`.
 To quickly generate a 1024 bit key run this on the linux command line:
 ```bash
-head -c 128 /dev/urandom | base64 -w 0 | xargs echo
+head -c 256 /dev/urandom | base64 -w 0 | xargs echo
 ```
 
 ### AES-256-GCM Encryption
@@ -93,7 +93,7 @@ class BlowfishCrc extends \Dcrypt\OpensslBridge
 
     const ALGO = 'crc32';
 
-    const COST = 1000;
+    const COST = 10000;
 }
 ```
 then...
@@ -126,16 +126,9 @@ As a general rule, consider using a `$cost` number when the passkey contains les
 
 Extremely high cost values could lead to DoS attacks if used improperly, use caution when selecting this number.
 
-Easily generate a new key on the command line with:
-```bash
-head -c 128 /dev/urandom | base64 --wrap 0
-```
-
 In this example, the `$cost` value of `10000` overloads the default of `0`.
 ```php
 <?php
-$password = 'password1234';
-
 $encrypted = \Dcrypt\Aes256Gcm::encrypt('a secret', $password, 10000);
 
 $plaintext = \Dcrypt\Aes256Gcm::decrypt($encrypted, $password, 10000);

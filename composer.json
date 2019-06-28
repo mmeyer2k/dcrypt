@@ -19,7 +19,8 @@
     },
     "autoload-dev": {
         "classmap": [
-            "tests/helpers/"
+            "tests/helpers/",
+            "examples/"
         ]
     },
     "minimum-stability": "dev"

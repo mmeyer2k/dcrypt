@@ -17,7 +17,7 @@ foreach (\Dcrypt\OpensslSupported::ciphers() as $cipher) {
     }
 
     try {
-        $out[$cipher] = base64_encode(OpensslStatic::encrypt('hello', 'world', $cipher, 'sha256', 10));
+        $out[$cipher] = base64_encode(OpensslStatic::encrypt('hello', 'world', $cipher, 'sha256', 1000));
     } catch (\Exception|\Error $e) {
 
     }
@@ -32,7 +32,7 @@ foreach (\Dcrypt\OpensslSupported::algos() as $algo) {
     if (isset($out[$algo])) {
         continue;
     }
-    $out[$algo] = base64_encode(OpensslStatic::encrypt('hello', 'world', 'aes-256-gcm', $algo, 10));
+    $out[$algo] = base64_encode(OpensslStatic::encrypt('hello', 'world', 'aes-256-gcm', $algo, 1000));
 }
 
 file_put_contents(__DIR__ . '/../tests/vectors/openssl-static-algos.json', \json_encode($out, JSON_PRETTY_PRINT));
