@@ -54,9 +54,9 @@ $plaintext = \Dcrypt\Aes256Gcm::decrypt($encrypted, $key);
 
 ### Other AES-256 Modes
 
-If you read to this point then you are an experienced cryptonaut, congrats :metal::metal::metal:
+If you read to this point then you are an experienced cryptonaut, congrats :ok_hand: :metal:
 
-Other AES-256 encryption modes are supported out of the box via hardcoded classes.
+Several AES-256 encryption modes are supported out of the box via hardcoded classes.
 
 | Class Name           | OpenSSL Cipher   | Further Reading |
 | -------------------- | :--------------: | --------------- |
@@ -160,11 +160,11 @@ Why not try all of them?
 ```php
 <?php
 $stack = (new \Dcrypt\OpensslStack($key))
-    ->add('aes-256-ecb', 'sha512')
-    ->add('aes-256-cfb', 'sha512')
-    ->add('aes-256-ofb', 'sha512')
-    ->add('aes-256-cbc', 'sha512')
-    ->add('aes-256-ctr', 'sha512')
+    ->add('aes-256-ecb', 'snefru')
+    ->add('aes-256-cfb', 'snefru256')
+    ->add('aes-256-ofb', 'sha224')
+    ->add('aes-256-cbc', 'sha256')
+    ->add('aes-256-ctr', 'sha384')
     ->add('aes-256-gcm', 'sha512');
 
 $encrypted = $stack->encrypt("a secret");
@@ -177,6 +177,7 @@ $plaintext = $stack->decrypt($encrypted);
 Be sure you understand the risks and inherent issues of using a stream cipher before proceeding.
 
 ### One Time Pad Encryption
+
 A fast symmetric stream cipher is quickly accessible with the `Otp` class.
 `Otp` uses SHA-512 to output a keystream that is ⊕'d with the input in 512 bit chunks.
 

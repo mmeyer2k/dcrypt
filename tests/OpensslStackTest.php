@@ -59,8 +59,8 @@ class OpensslStackTest extends \PHPUnit\Framework\TestCase
             ->add('aes-256-ecb', 'sha512')
             ->add('aes-256-cbc', 'sha512')
             ->add('aes-256-gcm', 'sha512')
-            ->add('aes-256-ctr', 'sha512')
-            ->add('aes-256-cfb', 'sha512')
+            ->add('aes-256-ctr', 'sha256')
+            ->add('aes-256-cfb', 'sha384')
             ->add('aes-256-ofb', 'sha512');
 
         $encrypted = $stack->encrypt("a secret");
