@@ -98,7 +98,7 @@ final class OpensslStatic extends OpensslWrapper
         // Encrypt the plaintext data
         $msg = parent::openssl_encrypt($data, $cipher, $key->encryptionKey(), $ivr, $tag);
 
-        // Generate the ciphertext checksum to prevent bit tampering
+        // Generate the ciphertext checksum to prevent message forging
         $chk = \hash_hmac($algo, $msg, $key->authenticationKey(), true);
 
         // Return iv + checksum + tag + cyphertext

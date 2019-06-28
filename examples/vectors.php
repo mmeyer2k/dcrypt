@@ -36,3 +36,13 @@ foreach (\Dcrypt\OpensslSupported::algos() as $algo) {
 }
 
 file_put_contents(__DIR__ . '/../tests/vectors/openssl-static-algos.json', \json_encode($out, JSON_PRETTY_PRINT));
+
+$out = [];
+
+foreach (range(1, 10) as $r) {
+    $mult = $r * $r * 10;
+
+    $out[$mult] = \base64_encode(\Dcrypt\Otp::crypt(str_repeat('A', $mult), 'password', 1000));
+}
+
+file_put_contents(__DIR__ . '/../tests/vectors/otp.json', \json_encode($out, JSON_PRETTY_PRINT));

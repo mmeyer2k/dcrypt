@@ -17,7 +17,8 @@ class Aes256Base64 extends \Dcrypt\OpensslBridge
 
     /**
      * An example key generated with linux command:  head -c 256 /dev/urandom | base64 --wrap 64
-     * DONT ACTUALLY USE THIS KEY
+     *
+     * DO NOT ACTUALLY USE THIS KEY
      *
      * @var string
      */

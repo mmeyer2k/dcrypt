@@ -30,18 +30,18 @@ Dcrypt helps application developers avoid common mistakes in crypto implementati
 Dcrypt strives to make correct usage simple, but it is possible to use dcrypt incorrectly.
 Please read all of the instructions and the [crypto details document](https://github.com/mmeyer2k/dcrypt/blob/master/docs/CRYPTO.md) carefully!
 
-__NOTE__: Dcrypt's default configurations assume the usage of a high entropy key. 
+__NOTE__: Dcrypt's default configurations assume the usage of a high entropy key with a minimum of 2048 bits. 
 Be sure to read the section on key hardening and pay close attention to the diffences between `$key` and `$password`.
-To quickly generate a 1024 bit key run this on the linux command line:
+To quickly generate a strong key execute this command line:
 ```bash
 head -c 256 /dev/urandom | base64 -w 0 | xargs echo
 ```
 
-### AES-256-GCM Encryption
-PHP 7.1 comes with support for new AEAD encryption modes, GCM being considered the best of these.
-Small authentication tags are selected because dcrypt already uses SHA-256-HMAC authentication.
-Using this mode essentially adds an extra 32 bit checksum to the ciphertext.
-**When in doubt, use this class!**
+### AES-256 GCM Encryption
+PHP 7.1 ships with support for new AEAD encryption modes, GCM being considered the safest of these.
+Small (4 byte) authentication tags are selected because SHA-256 HMAC is already used.
+
+**When in doubt, use this example!**
 
 ```php
 <?php
@@ -56,18 +56,17 @@ $plaintext = \Dcrypt\Aes256Gcm::decrypt($encrypted, $key);
 ### Other AES-256 Modes
 
 Other AES-256 encryption modes are supported out of the box.
-Only use modes other than GCM if you have a specific reason!
 
 | Class Name           | OpenSSL Cipher   | Further Reading |
 | -------------------- | :--------------: | --------------- |
-| `\Dcrypt\Aes256Gcm`  |    `aes-256-gcm` | [wikipedia](https://en.wikipedia.org/wiki/Galois/Counter_Mode)               |
-| `\Dcrypt\Aes256Cbc`  |    `aes-256-cbc` | [wikipedia](https://en.wikipedia.org/wiki/Galois/Counter_Mode)                |
-| `\Dcrypt\Aes256Ctr`  |    `aes-256-ctr` | [wikipedia](https://en.wikipedia.org/wiki/Block_cipher_mode_of_operation#Counter_(CTR))                |
-| `\Dcrypt\Aes256Ecb`  |    `aes-256-ecb` | [wikipedia](https://en.wikipedia.org/wiki/Block_cipher_mode_of_operation#ECB)                |
+| `\Dcrypt\Aes256Gcm`  |    `aes-256-gcm` | [wiki](https://en.wikipedia.org/wiki/Galois/Counter_Mode)               |
+| `\Dcrypt\Aes256Cbc`  |    `aes-256-cbc` | [wiki](https://en.wikipedia.org/wiki/Galois/Counter_Mode)                |
+| `\Dcrypt\Aes256Ctr`  |    `aes-256-ctr` | [wiki](https://en.wikipedia.org/wiki/Block_cipher_mode_of_operation#Counter_(CTR)              |
+| `\Dcrypt\Aes256Ecb`  |    `aes-256-ecb` | [wiki](https://en.wikipedia.org/wiki/Block_cipher_mode_of_operation#ECB)                |
 
 ### Custom Encryption Suites
-Often it is useful to customize the encryption and authentication algorithms to fit a specific purpose.
-Dcrypt offers two ways to extend the core encryption functionality.
+Dcrypt is compatible with _most_ OpenSSL ciphers and hashing algorithms supported by PHP.
+
 
 #### Static Wrapper
 Use any cipher/algo combination by calling the `OpensslStatic` class.
@@ -78,8 +77,6 @@ $encrypted = \Dcrypt\OpensslStatic::encrypt("a secret", $key, 'des-ofb', 'md5');
 
 $plaintext = \Dcrypt\OpensslStatic::decrypt($encrypted, $key, 'des-ofb', 'md5');
 ```
-
-To find supported options, `openssl_get_cipher_methods()` and `hash_algos()` are helpful.
 
 #### Class Overloading
 Dcrypt's internal functions are easily extendable by overloading the `OpensslBridge` class. 
@@ -134,7 +131,6 @@ $encrypted = \Dcrypt\Aes256Gcm::encrypt('a secret', $password, 10000);
 $plaintext = \Dcrypt\Aes256Gcm::decrypt($encrypted, $password, 10000);
 ```
 
-When using key mode, the passkey must be at least 2048 bits long.
 `\Dcrypt\Exceptions\InvalidKeyException` is thrown when passkey is less than the minimum length.
 
 ## Stream Ciphers
