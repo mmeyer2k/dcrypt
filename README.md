@@ -102,15 +102,17 @@ $plaintext = \BlowfishCrc::decrypt($encrypted, $password);
 ```
 
 ### Message Authenticity Checking
-By default, a `\Dcrypt\Exceptions\InvalidChecksum` exception will be thrown before decryption if the supplied checksum is not valid.
+By default, a `\Dcrypt\Exceptions\InvalidChecksum` exception will be thrown before decryption is allowed to proceed when the supplied checksum is not valid.
+
 ```php
 <?php
 $encrypted = \Dcrypt\Aes256Gcm::encrypt("a secret", $key);
 
-$badInput = $encrypted . 'AAAA';
+// Mangle the encrypted data by adding a single character
+$encrypted = $encrypted . 'A';
 
 try {
-    $decrypted = \Dcrypt\Aes256Gcm::decrypt($badInput, $key);
+    $decrypted = \Dcrypt\Aes256Gcm::decrypt($encrypted, $key);
 } catch (\Dcrypt\Exceptions\InvalidChecksumException $ex) {
     // ...
 }
