@@ -56,18 +56,21 @@ final class OpensslKeyGenerator
      */
     public function __construct(string $algo, string $passkey, string $cipher, string $ivr, int $cost)
     {
+        // When cost is 0 then we are in key mode
         if ($cost === 0) {
-            $this->key = $passkey;
-
             // Make sure key meets minimum required length
             if (Str::strlen($passkey) < 256) {
                 throw new Exceptions\InvalidKeyException("Key must be at least 2048 bits long.");
             }
+
+            // Store the key as what was supplied
+            $this->key = $passkey;
         } else {
             // Derive the key from the password and store in object
             $this->key = \hash_pbkdf2($algo, $passkey, $ivr, $cost, 0, true);
         }
 
+        // Store the cipher string
         $this->cipher = $cipher;
 
         // Store algo in object
@@ -100,16 +103,18 @@ final class OpensslKeyGenerator
     /**
      * Derive a key with differing authinfo strings
      *
-     * @param string $authinfo
+     * @param string $info
      * @return string
      * @throws \Exception
      */
-    public function deriveKey(string $authinfo): string
+    public function deriveKey(string $info): string
     {
-        $key = \hash_hkdf($this->algo, $this->key, 0, ($authinfo . '|' . $this->cipher), $this->ivr);
+        $info = $info . '|' . $this->cipher;
+
+        $key = \hash_hkdf($this->algo, $this->key, 0, $info, $this->ivr);
 
         if ($key === false) {
-            throw new \Exception("Hash algo $this->algo is not supported");
+            throw new Exceptions\InvalidAlgoException("Hash algo $this->algo is not supported");
         }
 
         return $key;

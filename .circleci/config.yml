@@ -20,6 +20,7 @@ jobs:
     steps:
       - checkout
       - run: mkdir -p coverage
+      - run: composer require phpunit/phpunit infection/infection
       - run: php vendor/phpunit/phpunit/phpunit --coverage-html coverage
       - run: php vendor/infection/infection/bin/infection
       - store_artifacts:
