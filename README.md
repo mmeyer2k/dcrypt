@@ -30,7 +30,7 @@ Dcrypt helps application developers avoid common mistakes in crypto implementati
 Dcrypt strives to make correct usage simple, but it is possible to use dcrypt incorrectly.
 Please read all of the instructions and the [crypto details document](https://github.com/mmeyer2k/dcrypt/blob/master/docs/CRYPTO.md) carefully!
 
-__NOTE__: Dcrypt's default configurations assume the usage of a high entropy key with a minimum of 2048 bits. 
+__NOTE__: Dcrypt's default configurations assume the usage of a base64 encoded high entropy key with a minimum of 2048 bits. 
 Be sure to read the section on key hardening and pay close attention to the diffences between `$key` and `$password`.
 To quickly generate a strong key execute this command line:
 ```bash
@@ -39,14 +39,14 @@ head -c 256 /dev/urandom | base64 -w 0 | xargs echo
 
 ### AES-256 GCM Encryption
 PHP 7.1 ships with support for new AEAD encryption modes, GCM being considered the safest of these.
-Small (4 byte) authentication tags are selected because SHA-256 HMAC is already used.
+An AEAD authentication tag combined with SHA-256 HMAC ensures encrypted messages can not be forged or altered.
 
-**When in doubt, use this example!**
+**When in doubt, use this example and don't read any further!**
 
 ```php
 <?php
 // Decode the high entropy key
-$key = base64_decode("replace this with the output of: head -c 256 /dev/urandom | base64 -w 0 | xargs echo");
+$key = "replace this with the output of: head -c 256 /dev/urandom | base64 -w 0 | xargs echo";
 
 $encrypted = \Dcrypt\Aes256Gcm::encrypt("a secret", $key);
 
@@ -54,7 +54,7 @@ $plaintext = \Dcrypt\Aes256Gcm::decrypt($encrypted, $key);
 ```
 
 ### Other AES-256 Modes
-
+If you read to this point then you are a committed crypto nerd, congrats.
 Other AES-256 encryption modes are supported out of the box.
 
 | Class Name           | OpenSSL Cipher   | Further Reading |
@@ -137,26 +137,32 @@ $plaintext = \Dcrypt\Aes256Gcm::decrypt($encrypted, $password, 10000);
 
 ## Stream Ciphers
 
+Be sure you understand the risks and inherent issues of using a stream cipher before proceeding.
+
 ### One Time Pad Encryption
-Fast symmetric stream encryption is available with the `Otp` class.
-`Otp` uses SHA-512 (by default) to output a keystream that is ⊕'d with the input in 512 bit chunks. 
+A fast symmetric stream cipher is quickly accessible with the `Otp` class.
+`Otp` uses SHA-512 to output a keystream that is ⊕'d with the input in 512 bit chunks.
+
+
 ```php
 <?php
-$encrypted = \Dcrypt\Otp::crypt("a secret", $password);
+$encrypted = \Dcrypt\Otp::crypt("a secret", $key);
 
-$plaintext = \Dcrypt\Otp::crypt($encrypted, $password);
+$plaintext = \Dcrypt\Otp::crypt($encrypted, $key);
 ```
 
 `Otp` can also be configured to use any other hashing algorithm to generate the pseudorandom keystream.
 ```php
 <?php
-$encrypted = \Dcrypt\Otp::crypt('a secret', $password, 'whirlpool');
+$encrypted = \Dcrypt\Otp::crypt('a secret', $key, 'whirlpool');
 
-$plaintext = \Dcrypt\Otp::crypt($encrypted, $password, 'whirlpool');
+$plaintext = \Dcrypt\Otp::crypt($encrypted, $key, 'whirlpool');
 ```
 
 ### Rivest's Ciphers
+
 `\Dcrypt\Rc4` and `\Dcrypt\Spritz` are pure PHP implementations of the immortal [RC4](https://en.wikipedia.org/wiki/RC4) cipher and its successor [Spritz](https://people.csail.mit.edu/rivest/pubs/RS14.pdf).
+
 ```php
 <?php
 $encrypted = \Dcrypt\Rc4::crypt('a secret', $password);
@@ -171,17 +177,16 @@ $plaintext = \Dcrypt\Spritz::crypt($encrypted, $password);
 ```
 
 **NOTE**: 
-These implementations are for reference only and are marked as `@deprecated`. 
+These implementations are for reference only and are fully marked as `@deprecated`. 
 The RC4 cipher in general has many known security problems, and the Spirtz implementation provided here has not been verified against known test vectors. 
-Both are very slow and inefficient. 
-This was just for fun. 
-Use block ciphers for anything important.
+Both are very slow and inefficient.
+This was just for fun.
 
 **NOTE**: 
 Backwards compatibility breaking changes to these classes will not result in an incremented major version number.
 
 # Show me some love :heart_eyes:
-Developing dcrypt has been a labor of love for many years. 
+Developing dcrypt has been a great journey for many years.
 If you find dcrypt useful, please consider donating some Litecoin.
  
 `LN97LrLCNiv14V6fntp247H2pj9UiFzUQZ`

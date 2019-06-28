@@ -1,8 +1,11 @@
 # Testing Dcrypt
 
+Testing is an essential element of building trust in a library.
+Dcrypt tests code in many different ways to ensure high quality and reliability.
+
 ## Vector testing
-To ensure that backwards compatibility is maintained across versions, dcrypt tests new code against old encrypted data.
-Vectors are stored in [tests/vectors](https://github.com/mmeyer2k/dcrypt/tree/master/tests/vectors)
+To ensure that backwards compatibility is maintained across versions, dcrypt tests functional output against the output of older versions.
+Test vectors are stored in [tests/vectors](https://github.com/mmeyer2k/dcrypt/tree/master/tests/vectors)
 
 ## Unit testing
 Continuous unit testing on all supported PHP versions is performed using circle-ci with phpunit.

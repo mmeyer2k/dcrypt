@@ -21,10 +21,8 @@ class AesBase extends \PHPUnit\Framework\TestCase
 
     public function testEngineWithKey()
     {
-        $key = base64_decode(self::$key);
-
-        $encrypted = static::$class::encrypt(self::$input, $key);
-        $decrypted = static::$class::decrypt($encrypted, $key);
+        $encrypted = static::$class::encrypt(self::$input, self::$key);
+        $decrypted = static::$class::decrypt($encrypted, self::$key);
 
         $this->assertEquals(self::$input, $decrypted);
     }
@@ -32,25 +30,32 @@ class AesBase extends \PHPUnit\Framework\TestCase
     public function testEngineWithSomeRandomness()
     {
         $input = \random_bytes(256);
-        $key = \random_bytes(256);
+        $key = \Dcrypt\OpensslKeyGenerator::newKey();
 
         $encrypted = static::$class::encrypt($input, $key);
         $decrypted = static::$class::decrypt($encrypted, $key);
 
         $this->assertEquals($input, $decrypted);
     }
-    
+
     public function testCorruptDataUsingKey()
     {
-        $key = base64_decode(self::$key);
+        $encrypted = static::$class::encrypt(self::$input, self::$key);
 
-        $encrypted = static::$class::encrypt(self::$input, $key);
-
-        $this->assertEquals(self::$input, static::$class::decrypt($encrypted, $key));
+        $this->assertEquals(self::$input, static::$class::decrypt($encrypted, self::$key));
 
         $this->expectException(\Dcrypt\Exceptions\InvalidChecksumException::class);
 
-        static::$class::decrypt($encrypted . 'A', $key);
+        static::$class::decrypt($encrypted . 'A', self::$key);
+    }
+
+    public function testInvalidKeyEncoding()
+    {
+        $this->expectException(\Dcrypt\Exceptions\InvalidKeyException::class);
+
+        $crazyKey = str_repeat('?', 10000);
+
+        static::$class::encrypt(self::$input, $crazyKey);
     }
 
     public function testCorruptDataUsingPassword()

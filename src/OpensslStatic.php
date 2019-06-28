@@ -28,10 +28,11 @@ final class OpensslStatic extends OpensslWrapper
     /**
      * Decrypt raw data string
      *
-     * @param string $data
-     * @param string $passkey
-     * @param string $cipher
-     * @param string $algo
+     * @param string $data    Data to be decrypted
+     * @param string $passkey Password or key
+     * @param string $cipher  OpenSSL cipher name
+     * @param string $algo    Hashing and key derivation algo name
+     * @param int    $cost    Cost parameter for key derivation or 0 for raw key mode
      * @return string
      * @throws \Exception
      */
@@ -76,11 +77,11 @@ final class OpensslStatic extends OpensslWrapper
     /**
      * Encrypt raw string
      *
-     * @param string $data
-     * @param string $passkey
-     * @param string $cipher
-     * @param string $algo
-     * @param int $cost
+     * @param string $data    Data to be encrypted
+     * @param string $passkey Password or key
+     * @param string $cipher  OpenSSL cipher name
+     * @param string $algo    Hashing and key derivation algo name
+     * @param int    $cost    Cost parameter for key derivation or 0 for raw key mode
      * @return string
      * @throws \Exception
      */

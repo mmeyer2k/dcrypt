@@ -14,6 +14,8 @@
 
 namespace Dcrypt;
 
+use Dcrypt\Exceptions\InvalidKeyException;
+
 /**
  * Provides key derivation functions
  *
@@ -52,15 +54,18 @@ final class OpensslKeyGenerator
      * @param string $passkey
      * @param string $cipher
      * @param string $ivr
-     * @param int    $cost
+     * @param int $cost
      */
     public function __construct(string $algo, string $passkey, string $cipher, string $ivr, int $cost)
     {
         // When cost is 0 then we are in key mode
         if ($cost === 0) {
-            // Make sure key meets minimum required length
+            // Attempt to decode the passkey
+            $passkey = \base64_decode($passkey);
+
+            // Make sure key was properly decoded and meets minimum required length
             if (Str::strlen($passkey) < 256) {
-                throw new Exceptions\InvalidKeyException("Key must be at least 2048 bits long.");
+                throw new InvalidKeyException("Key must be at least 2048 bits long and base64 encoded.");
             }
 
             // Store the key as what was supplied
@@ -114,9 +119,29 @@ final class OpensslKeyGenerator
         $key = \hash_hkdf($this->algo, $this->key, 0, $info, $this->ivr);
 
         if ($key === false) {
-            throw new Exceptions\InvalidAlgoException("Hash algo $this->algo is not supported");
+            throw new Exceptions\InvalidAlgoException("Hash algo $this->algo is not supported by hash_hkdf.");
         }
 
         return $key;
+    }
+
+    /**
+     * Generate a new key that meets requirements for dcrypt
+     *
+     * @param int $size
+     * @return string
+     * @throws Exceptions\InvalidKeyException
+     */
+    public static function newKey(int $size = 2048): string
+    {
+        if ($size < 2048) {
+            throw new InvalidKeyException('Key must be at least 2048 bits long.');
+        }
+
+        if ($size % 8 !== 0) {
+            throw new InvalidKeyException('Key must be divisible by 8.');
+        }
+
+        return \base64_encode(\random_bytes($size / 8));
     }
 }

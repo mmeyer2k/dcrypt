@@ -4,7 +4,7 @@ namespace Dcrypt\Examples;
 
 class Aes256Base64 extends \Dcrypt\OpensslBridge
 {
-    const CIPHER = 'aes-256-cfb';
+    const CIPHER = 'aes-256-gcm';
 
     const ALGO = 'sha256';
 
@@ -31,15 +31,11 @@ class Aes256Base64 extends \Dcrypt\OpensslBridge
 
     public static function decrypt(string $data): string
     {
-        $key = \base64_decode(self::KEY);
-
-        return parent::decrypt(\base64_decode($data), $key);
+        return parent::decrypt(\base64_decode($data), self::KEY);
     }
 
     public static function encrypt(string $data): string
     {
-        $key = \base64_decode(self::KEY);
-
-        return \base64_encode(parent::encrypt($data, $key));
+        return \base64_encode(parent::encrypt($data, self::KEY));
     }
 }

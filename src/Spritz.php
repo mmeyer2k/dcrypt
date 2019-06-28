@@ -16,7 +16,8 @@ namespace Dcrypt;
 
 /**
  * An implementation of Spritz symmetric encryption.
- * 
+ *
+ * @deprecated
  * @category Dcrypt
  * @package  Dcrypt
  * @author   Michael Meyer (mmeyer2k) <m.meyer2k@gmail.com>
