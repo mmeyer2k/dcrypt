@@ -25,7 +25,6 @@ namespace Dcrypt;
  */
 class OpensslWrapper
 {
-
     /**
      * OpenSSL encrypt wrapper function
      *
