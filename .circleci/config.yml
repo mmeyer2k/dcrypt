@@ -70,7 +70,7 @@ workflows:
       - build
       - clover:
           requires:
-            - build-7.2
+            - build-72
       - build-72:
           requires:
             - build
