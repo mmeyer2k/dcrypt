@@ -2,7 +2,7 @@
 
 namespace Dcrypt\Exceptions;
 
-class InvalidKeyException extends \Exception
+class InvalidPasswordException extends \Exception
 {
 
 }

@@ -15,6 +15,7 @@
 namespace Dcrypt;
 
 use Dcrypt\Exceptions\InvalidKeyException;
+use Dcrypt\Exceptions\InvalidPasswordException;
 
 /**
  * Provides key derivation functions
@@ -71,6 +72,11 @@ final class OpensslKeyGenerator
             // Store the key as what was supplied
             $this->key = $passkey;
         } else {
+            // Make sure that the user is not attempting to use a key in password word mode
+            if (Str::strlen($passkey) >= 256) {
+                throw new InvalidPasswordException("Passwords must be less than 2048 bits (256 bytes) long.");
+            }
+
             // Derive the key from the password and store in object
             $this->key = \hash_pbkdf2($algo, $passkey, $ivr, $cost, 0, true);
         }

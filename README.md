@@ -124,13 +124,14 @@ try {
 
 ### PBKDF2 Key Hardening
 
-Key-based encryption mode is preferred because the iterative PBKDF2 hardening process can be skipped, reducing overhead.
+Key-based encryption mode is _highly_ preferred because the PBKDF2 hardening process can be skipped, reducing overhead.
 If using strong keys never use these options.
 
 When using a source of low entropy for the password/key (or "passkey") parameter, a `$cost` value of appropriate size _must_ be chosen based on the requirements of the application.
 High cost values could lead to DoS attacks if used improperly for your application, use caution when selecting this number.
 
 The PBKDF2 cost can be defined in a custom class...
+
 ```php
 <?php
 
@@ -152,7 +153,7 @@ $plaintext = \Dcrypt\Aes256Gcm::decrypt($encrypted, $password, 10000);
 
 ### Layered Encryption Factory
 
-Feeling paranoid?
+Feeling especially paranoid?
 Is the NSA monitoring your brainwaves?
 Not sure which cipher method you can trust?
 Why not try all of them?
@@ -161,7 +162,6 @@ Why not try all of them?
 <?php
 $stack = (new \Dcrypt\OpensslStack($key))
     ->add('aes-256-ecb', 'snefru')
-    ->add('aes-256-cfb', 'snefru256')
     ->add('aes-256-ofb', 'sha224')
     ->add('aes-256-cbc', 'sha256')
     ->add('aes-256-ctr', 'sha384')

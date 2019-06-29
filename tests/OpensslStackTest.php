@@ -53,15 +53,12 @@ class OpensslStackTest extends \PHPUnit\Framework\TestCase
     {
         $key = \Dcrypt\OpensslKeyGenerator::newKey();
 
-        // Test all AES 256 modes with sha512 a ton of times. DONT JUDGE ME =)
         $stack = (new \Dcrypt\OpensslStack($key))
-            ->add('aes-256-cbc', 'sha512')
-            ->add('aes-256-ecb', 'sha512')
-            ->add('aes-256-cbc', 'sha512')
-            ->add('aes-256-gcm', 'sha512')
-            ->add('aes-256-ctr', 'sha256')
-            ->add('aes-256-cfb', 'sha384')
-            ->add('aes-256-ofb', 'sha512');
+            ->add('aes-256-ecb', 'snefru')
+            ->add('aes-256-ofb', 'sha224')
+            ->add('aes-256-cbc', 'sha256')
+            ->add('aes-256-ctr', 'sha384')
+            ->add('aes-256-gcm', 'sha512');
 
         $encrypted = $stack->encrypt("a secret");
 
