@@ -1,7 +1,7 @@
 <?php declare(strict_types=1);
 
 /**
- * AesCtr.php
+ * Aes256Ctr.php
  * 
  * PHP version 7
  * 
@@ -23,7 +23,7 @@ namespace Dcrypt;
  * @license  http://opensource.org/licenses/MIT The MIT License (MIT)
  * @link     https://github.com/mmeyer2k/dcrypt
  */
-class AesCtr extends AesCbc
+class Aes256Ctr extends Aes256Gcm
 {
     /**
      * AES-256 cipher identifier that will be passed to openssl

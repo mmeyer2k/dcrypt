@@ -7,7 +7,7 @@ class SpritzTest extends \PHPUnit\Framework\TestCase
     public function testCrypt()
     {
         $input = 'AAAAAAAA';
-        $key = openssl_random_pseudo_bytes(32);
+        $key = \random_bytes(32);
 
         /*
          * Test encryption

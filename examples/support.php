@@ -4,23 +4,20 @@ require __DIR__ . '/../vendor/autoload.php';
 
 foreach (hash_algos() as $algo) {
     foreach (openssl_get_cipher_methods() as $meth) {
-        // Skip any unsupported ciphers
-        if (!\openssl_cipher_iv_length($meth)) {
-            continue;
-        }
+        echo str_pad("[$algo]", 20);
+        echo str_pad("[$meth]", 40);
 
         try {
-            echo str_pad("[$algo]", 20);
-            echo str_pad("[$meth]", 40);
-
-            $e = \Dcrypt\OpensslStatic::encrypt('AAAA', 'BBBB', $meth, $algo, 1);
+            $e = \Dcrypt\OpensslStatic::encrypt('AAAA', 'BBBB', $meth, $algo);
             $d = \Dcrypt\OpensslStatic::decrypt($e, 'BBBB', $meth, $algo);
 
             echo " [pass] ";
         } catch (\Exception $e) {
             $m = $e->getMessage();
             echo " [fail] [$m]";
-            continue;
+        } catch (\Error $e) {
+            $m = $e->getMessage();
+            echo " [fail] [$m]";
         } finally {
             echo "\n";
         }

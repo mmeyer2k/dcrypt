@@ -1,7 +1,7 @@
 <?php declare(strict_types=1);
 
 /**
- * AesCbc.php
+ * Aes256Gcm.php
  *
  * PHP version 7
  *
@@ -15,7 +15,7 @@
 namespace Dcrypt;
 
 /**
- * Symmetric AES-256-CBC encryption functions powered by OpenSSL.
+ * Symmetric AES-256-GCM encryption functions powered by OpenSSL.
  *
  * @category Dcrypt
  * @package  Dcrypt
@@ -23,19 +23,19 @@ namespace Dcrypt;
  * @license  http://opensource.org/licenses/MIT The MIT License (MIT)
  * @link     https://github.com/mmeyer2k/dcrypt
  */
-class AesCbc extends OpensslBridge
+class Aes256Gcm extends OpensslBridge
 {
     /**
      * AES-256 cipher identifier that will be passed to openssl
      *
      * @var string
      */
-    const CIPHER = 'aes-256-cbc';
+    const CIPHER = 'aes-256-gcm';
 
     /**
-     * Specify sha256 for message authentication
+     * Use SHA-256 hashing algo to authenticate messages
      *
      * @var string
      */
-    const CHKSUM = 'sha256';
+    const ALGO = 'sha256';
 }

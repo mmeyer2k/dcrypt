@@ -28,14 +28,15 @@ final class OpensslStatic extends OpensslWrapper
     /**
      * Decrypt raw data string
      *
-     * @param string $data
-     * @param string $pass
-     * @param string $cipher
-     * @param string $algo
+     * @param string $data    Data to be decrypted
+     * @param string $passkey Password or key
+     * @param string $cipher  OpenSSL cipher name
+     * @param string $algo    Hashing and key derivation algo name
+     * @param int    $cost    Cost parameter for key derivation or 0 for raw key mode
      * @return string
      * @throws \Exception
      */
-    public static function decrypt(string $data, string $pass, string $cipher, string $algo): string
+    public static function decrypt(string $data, string $passkey, string $cipher, string $algo, int $cost = 0): string
     {
         // Calculate the hash checksum size in bytes for the specified algo
         $hsz = Str::hashSize($algo);
@@ -55,63 +56,53 @@ final class OpensslStatic extends OpensslWrapper
         // Gather the GCM/CCM authentication tag
         $tag = Str::substr($data, $isz + $hsz, $tsz);
 
-        // Gather the iterations portion of the cipher text as packed/encrytped unsigned long
-        $itr = Str::substr($data, $isz + $hsz + $tsz, 4);
-
         // Gather message portion of ciphertext after iv and checksum
-        $msg = Str::substr($data, $isz + $hsz + $tsz + 4);
+        $msg = Str::substr($data, $isz + $hsz + $tsz);
+
+        // Create password derivation object
+        $key = new OpensslKeyGenerator($algo, $passkey, $cipher, $ivr, $cost);
 
         // Calculate verification checksum
-        $chk = \hash_hmac($algo, ($msg . $itr . $ivr), $pass, true);
+        $chk = \hash_hmac($algo, $msg, $key->authenticationKey(), true);
 
         // Verify HMAC before decrypting
         if (!Str::equal($chk, $sum)) {
-            throw new \InvalidArgumentException('Decryption can not proceed due to invalid cyphertext checksum.');
+            throw new Exceptions\InvalidChecksumException('Decryption can not proceed due to invalid cyphertext checksum.');
         }
 
-        // Decrypt and unpack the cost parameter to match what was used during encryption
-        $cost = \unpack('N', $itr ^ \hash_hmac($algo, $ivr, $pass, true))[1];
-
-        // Derive key from password using pbkdf2
-        $key = \hash_pbkdf2($algo, ($pass . $cipher), $ivr, $cost, 0, true);
-
         // Decrypt message and return
-        return parent::openssl_decrypt($msg, $cipher, $key, $ivr, $tag);
+        return parent::openssl_decrypt($msg, $cipher, $key->encryptionKey(), $ivr, $tag);
     }
 
     /**
      * Encrypt raw string
      *
-     * @param string $data
-     * @param string $pass
-     * @param string $cipher
-     * @param string $algo
-     * @param int $cost
+     * @param string $data    Data to be encrypted
+     * @param string $passkey Password or key
+     * @param string $cipher  OpenSSL cipher name
+     * @param string $algo    Hashing and key derivation algo name
+     * @param int    $cost    Cost parameter for key derivation or 0 for raw key mode
      * @return string
      * @throws \Exception
      */
-    public static function encrypt(string $data, string $pass, string $cipher, string $algo, int $cost = 1): string
+    public static function encrypt(string $data, string $passkey, string $cipher, string $algo, int $cost = 0): string
     {
         // Generate IV of appropriate size.
-        $ivr = \random_bytes(parent::ivSize($cipher));
+        $ivr = parent::ivGenerate($cipher);
 
-        // Derive key from password with hash_pbkdf2 function.
-        // Append CIPHER to password beforehand so that cross-method decryptions will fail at checksum step
-        $key = \hash_pbkdf2($algo, ($pass . $cipher), $ivr, $cost, 0, true);
+        // Create password derivation object
+        $key = new OpensslKeyGenerator($algo, $passkey, $cipher, $ivr, $cost);
 
         // Create a placeholder for the authentication tag to be passed by reference
         $tag = '';
 
         // Encrypt the plaintext data
-        $msg = parent::openssl_encrypt($data, $cipher, $key, $ivr, $tag);
+        $msg = parent::openssl_encrypt($data, $cipher, $key->encryptionKey(), $ivr, $tag);
 
-        // Convert cost integer into 4 byte string and XOR it with a newly derived key
-        $itr = \pack('N', $cost) ^ \hash_hmac($algo, $ivr, $pass, true);
+        // Generate the ciphertext checksum to prevent message forging
+        $chk = \hash_hmac($algo, $msg, $key->authenticationKey(), true);
 
-        // Generate the ciphertext checksum to prevent bit tampering
-        $chk = \hash_hmac($algo, ($msg . $itr . $ivr), $pass, true);
-
-        // Return iv + checksum + tag + iterations + cyphertext
-        return $ivr . $chk . $tag . $itr . $msg;
+        // Return iv + checksum + tag + cyphertext
+        return $ivr . $chk . $tag . $msg;
     }
 }

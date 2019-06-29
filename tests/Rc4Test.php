@@ -6,8 +6,8 @@ class Rc4Test extends \PHPUnit\Framework\TestCase
 {
     public function testCrypt()
     {
-        $input = openssl_random_pseudo_bytes(256);
-        $key = openssl_random_pseudo_bytes(32);
+        $input = \random_bytes(256);
+        $key = \random_bytes(32);
 
         /*
          * Test encryption

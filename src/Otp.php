@@ -29,19 +29,23 @@ class Otp
     /**
      * Encrypt or decrypt a binary input string.
      * 
-     * @param string $input    Input data to encrypt
-     * @param string $password Encryption/decryption key to use on input
-     * @param string $algo     Hashing algo to generate keystream
+     * @param string $input   Input data to encrypt
+     * @param string $passkey Encryption/decryption key to use on input
+     * @param int    $cost    Cost value to harden password with, or 0 if using a key
+     * @param string $algo    Hashing algo to generate keystream
      * @return string
      */
-    public static function crypt(string $input, string $password, string $algo = 'sha512'): string
+    public static function crypt(string $input, string $passkey, int $cost = 0, string $algo = 'sha512'): string
     {
         $chunks = \str_split($input, Str::hashSize($algo));
 
         $length = Str::strlen($input);
 
+        $key = new OpensslKeyGenerator($algo, $passkey, '', (string)$length, $cost);
+
         foreach ($chunks as $i => &$chunk) {
-            $chunk = $chunk ^ \hash_hmac($algo, $password . $length, (string)$i, true);
+            $info = $length . $i . $cost;
+            $chunk = $chunk ^ $key->deriveKey($info);
         }
 
         return \implode($chunks);

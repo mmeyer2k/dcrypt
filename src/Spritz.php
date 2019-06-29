@@ -16,7 +16,8 @@ namespace Dcrypt;
 
 /**
  * An implementation of Spritz symmetric encryption.
- * 
+ *
+ * @deprecated
  * @category Dcrypt
  * @package  Dcrypt
  * @author   Michael Meyer (mmeyer2k) <m.meyer2k@gmail.com>
@@ -31,6 +32,7 @@ class Spritz extends Rc4
     /**
      * Perform (en/de)cryption
      *
+     * @deprecated
      * @param string $str String to be encrypted
      * @param string $key Key to use for encryption
      * @return string

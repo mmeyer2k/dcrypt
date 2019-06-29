@@ -8,29 +8,31 @@ class OtpTest extends \PHPUnit\Framework\TestCase
     {
         foreach (range(1, 1000, 100) as $mult) {
             $input = str_repeat('A', 4 * $mult);
-            $key = openssl_random_pseudo_bytes(32);
+            $key = \random_bytes(32);
 
             /*
              * Test encryption
              */
-            $encrypted = Otp::crypt($input, $key);
+            $encrypted = Otp::crypt($input, $key, 1000);
             $this->assertEquals(strlen($input), strlen($encrypted));
             $this->assertNotEquals($input, $encrypted);
 
             /*
              * Test decryption
              */
-            $decrypted = Otp::crypt($encrypted, $key);
+            $decrypted = Otp::crypt($encrypted, $key, 1000);
             $this->assertEquals($input, $decrypted);
         }
     }
 
     public function testVector()
     {
-        $input = 'hello world';
-        $pass = 'password';
-        $vector = base64_decode('Cf6ULwbiZEbJr1w=');
+        $json = json_decode(file_get_contents(__DIR__ . '/vectors/otp.json'));
 
-        $this->assertEquals($input, Otp::crypt($vector, $pass));
+        foreach ($json as $mult => $data) {
+            $data = base64_decode($data);
+            $expected = str_repeat('A', (int)$mult);
+            $this->assertEquals($expected, Otp::crypt($data, 'password', 1000));
+        }
     }
 }

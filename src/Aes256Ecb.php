@@ -1,7 +1,7 @@
 <?php declare(strict_types=1);
 
 /**
- * Rot128.php
+ * Aes256Ecb.php
  *
  * PHP version 7
  *
@@ -15,7 +15,7 @@
 namespace Dcrypt;
 
 /**
- * A basic ROT-128 string encoder class.
+ * Symmetric AES-256-ECB encryption functions powered by OpenSSL.
  *
  * @category Dcrypt
  * @package  Dcrypt
@@ -23,22 +23,12 @@ namespace Dcrypt;
  * @license  http://opensource.org/licenses/MIT The MIT License (MIT)
  * @link     https://github.com/mmeyer2k/dcrypt
  */
-class Rot128
+class Aes256Ecb extends Aes256Gcm
 {
     /**
-     * Rot-128 encode a binary string with strtr.
+     * AES-256 cipher identifier that will be passed to openssl
      *
-     * @param string $input
-     * @return string
+     * @var string
      */
-    public static function flip(string $input): string
-    {
-        $translation = [];
-
-        foreach (\range(0, 255) as $r) {
-            $translation[\chr($r)] = \chr($r + 128);
-        }
-
-        return \strtr($input, $translation);
-    }
+    const CIPHER = 'aes-256-ecb';
 }

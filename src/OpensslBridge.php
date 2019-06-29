@@ -26,27 +26,35 @@ namespace Dcrypt;
 class OpensslBridge
 {
     /**
+     * Cost value to give to pbkdf2 when not using key mode, or 0 for key mode
+     *
+     * @var int
+     */
+    const COST = 0;
+
+    /**
      * Decrypt cyphertext
      *
-     * @param string $data Cyphertext to decrypt
-     * @param string $pass Password that should be used to decrypt input data
+     * @param string   $data    Cyphertext to decrypt
+     * @param string   $passkey Password or key which will be used to decrypt data
+     * @param int|null $cost    Override static cost value
      * @return string
      */
-    public static function decrypt(string $data, string $pass): string
+    public static function decrypt(string $data, string $passkey, ?int $cost = null): string
     {
-        return OpensslStatic::decrypt($data, $pass, static::CIPHER, static::CHKSUM);
+        return OpensslStatic::decrypt($data, $passkey, static::CIPHER, static::ALGO, $cost ?? static::COST);
     }
 
     /**
      * Encrypt plaintext
      *
-     * @param string $data Plaintext string to encrypt.
-     * @param string $pass Password used to encrypt data.
-     * @param int    $cost Number of extra HMAC iterations to perform on key
+     * @param string   $data    Plaintext string to encrypt.
+     * @param string   $passkey Password or key which will be used to encrypt data
+     * @param int|null $cost    Override static cost value
      * @return string
      */
-    public static function encrypt(string $data, string $pass, int $cost = 1): string
+    public static function encrypt(string $data, string $passkey, ?int $cost = null): string
     {
-        return OpensslStatic::encrypt($data, $pass, static::CIPHER, static::CHKSUM, $cost);
+        return OpensslStatic::encrypt($data, $passkey, static::CIPHER, static::ALGO, $cost ?? static::COST);
     }
 }
