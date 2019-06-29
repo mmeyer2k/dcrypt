@@ -61,6 +61,8 @@ class OpensslStack
     public function add(string $cipher, string $algo): self
     {
         $this->stack[] = [$cipher, $algo];
+
+        return $this;
     }
 
     /**
