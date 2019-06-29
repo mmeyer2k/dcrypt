@@ -56,9 +56,8 @@ jobs:
             - source-v1-{{ .Branch }}-{{ .Revision }}
             - source-v1-{{ .Branch }}-
             - source-v1-
-      - run: mkdir -p coverage
       - run: composer require phpunit/phpunit
-      - run: php vendor/phpunit/phpunit/phpunit --coverage-html coverage
+      - run: php vendor/phpunit/phpunit/phpunit --coverage-clover=coverage.clove
       - save_cache:
           key: source-v1-{{ .Branch }}-{{ .Revision }}
           paths:
@@ -69,7 +68,9 @@ workflows:
   build-test-all:
     jobs:
       - build
-      - clover
+      - clover:
+          requires:
+            - build-7.2
       - build-72:
           requires:
             - build
