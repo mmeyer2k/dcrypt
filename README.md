@@ -43,7 +43,7 @@ head -c 256 /dev/urandom | base64 -w 0 | xargs echo
 ### AES-256 GCM Encryption
 
 PHP 7.1 ships with support for new AEAD encryption modes, GCM being considered the safest of these.
-An AEAD authentication tag combined with SHA-256 HMAC ensures encrypted messages can not be forged or altered.
+Dcrypt will handle the 32 bit AEAD authentication tag, SHA-256 HMAC and initialization vector as a single string.
 
 ```php
 <?php
@@ -110,7 +110,7 @@ $plaintext = \BlowfishCrc::decrypt($encrypted, $password);
 ```
 
 ### Message Authenticity Checking
-By default, a `\Dcrypt\Exceptions\InvalidChecksum` exception will be thrown before decryption is allowed to proceed when the supplied checksum is not valid.
+By default, `\Dcrypt\Exceptions\InvalidChecksumException` exception will be raised before decryption is allowed to proceed when the supplied checksum is not valid.
 
 ```php
 <?php
@@ -171,7 +171,7 @@ $stack = (new \Dcrypt\OpensslStack($key))
     ->add('aes-256-ctr', 'sha384')
     ->add('aes-256-gcm', 'sha512');
 
-$encrypted = $stack->encrypt("a secret");
+$encrypted = $stack->encrypt('a secret');
 
 $plaintext = $stack->decrypt($encrypted);
 ```
@@ -188,7 +188,7 @@ A fast symmetric stream cipher is quickly accessible with the `Otp` class.
 
 ```php
 <?php
-$encrypted = \Dcrypt\Otp::crypt("a secret", $key);
+$encrypted = \Dcrypt\Otp::crypt('a secret', $key);
 
 $plaintext = \Dcrypt\Otp::crypt($encrypted, $key);
 ```

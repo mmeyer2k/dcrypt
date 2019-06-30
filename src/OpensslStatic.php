@@ -47,25 +47,25 @@ final class OpensslStatic extends OpensslWrapper
         // Ask openssl for the IV size needed for specified cipher
         $isz = parent::ivSize($cipher);
 
-        // Find the IV at the beginning of the cypher text
+        // Get the IV at the beginning of the ciphertext
         $ivr = Str::substr($data, 0, $isz);
 
-        // Gather the checksum portion of the ciphertext
+        // Get the checksum after the IV
         $sum = Str::substr($data, $isz, $hsz);
 
-        // Gather the GCM/CCM authentication tag
+        // Get the AEAD authentication tag (if present) after the checksum
         $tag = Str::substr($data, $isz + $hsz, $tsz);
 
-        // Gather message portion of ciphertext after iv and checksum
+        // Get the encrypted message payload
         $msg = Str::substr($data, $isz + $hsz + $tsz);
 
-        // Create password derivation object
+        // Create a new password derivation object
         $key = new OpensslKeyGenerator($algo, $passkey, $cipher, $ivr, $cost);
 
-        // Calculate verification checksum
+        // Calculate checksum of message payload for verification
         $chk = \hash_hmac($algo, $msg, $key->authenticationKey(), true);
 
-        // Verify HMAC before decrypting
+        // Compare given checksum against computed checksum using a time-safe function
         if (!Str::equal($chk, $sum)) {
             throw new Exceptions\InvalidChecksumException('Decryption can not proceed due to invalid cyphertext checksum.');
         }
@@ -87,7 +87,7 @@ final class OpensslStatic extends OpensslWrapper
      */
     public static function encrypt(string $data, string $passkey, string $cipher, string $algo, int $cost = 0): string
     {
-        // Generate IV of appropriate size.
+        // Generate IV of appropriate size
         $ivr = parent::ivGenerate($cipher);
 
         // Create password derivation object
@@ -96,13 +96,13 @@ final class OpensslStatic extends OpensslWrapper
         // Create a placeholder for the authentication tag to be passed by reference
         $tag = '';
 
-        // Encrypt the plaintext data
+        // Encrypt the plaintext
         $msg = parent::openssl_encrypt($data, $cipher, $key->encryptionKey(), $ivr, $tag);
 
-        // Generate the ciphertext checksum to prevent message forging
+        // Generate the ciphertext checksum
         $chk = \hash_hmac($algo, $msg, $key->authenticationKey(), true);
 
-        // Return iv + checksum + tag + cyphertext
+        // Return iv + checksum + tag + ciphertext
         return $ivr . $chk . $tag . $msg;
     }
 }

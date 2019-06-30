@@ -51,13 +51,13 @@ final class OpensslKeyGenerator
     /**
      * OpensslKeyGenerator constructor.
      *
-     * @param string $algo
-     * @param string $passkey
-     * @param string $cipher
-     * @param string $ivr
-     * @param int $cost
+     * @param string $algo    Algo to use for PBKDF2 and HKDF
+     * @param string $passkey Password or key
+     * @param string $cipher  Openssl cipher
+     * @param string $ivr     Initialization vactor
+     * @param int $cost       Cost value for PBKDF2
      */
-    public function __construct(string $algo, string $passkey, string $cipher, string $ivr, int $cost)
+    public function __construct(string $algo, string $passkey, string $cipher, string $ivr, int $cost = 0)
     {
         // When cost is 0 then we are in key mode
         if ($cost === 0) {
