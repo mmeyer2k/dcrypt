@@ -25,36 +25,40 @@ composer require "mmeyer2k/dcrypt=^10.0"
 ```
 
 # Features
-## Block Ciphers
-Dcrypt helps application developers avoid common mistakes in crypto implementations that leave data at risk while providing flexibility in its options.
-Dcrypt strives to make correct usage simple, but it is possible to use dcrypt incorrectly.
 
-__NOTE__: Dcrypt's default configurations assume the usage of a base64 encoded high entropy key with a minimum of 2048 bits. 
-Be sure to read the section on key hardening and pay close attention to the diffences between `$key` and `$password`.
-To quickly generate a strong key execute this command line:
+## Block Ciphers
+
+The dcrypt library helps application developers avoid common mistakes in crypto implementations that leave data at risk while still providing flexibility in its options for crypto enthusiasts.
+Dcrypt strives to make correct usage simple, but it _is_ possible to use dcrypt incorrectly.
+
+__NOTE__: Dcrypt's default configurations assume the usage of a base64 encoded high entropy key with a minimum of 256 bytes. 
+Be sure to read the section on key hardening and pay close attention to the differences between `$key` and `$password`.
+
+To generate a strong new key execute this command line:
+
 ```bash
 head -c 256 /dev/urandom | base64 -w 0 | xargs echo
 ```
 
 ### AES-256 GCM Encryption
+
 PHP 7.1 ships with support for new AEAD encryption modes, GCM being considered the safest of these.
 An AEAD authentication tag combined with SHA-256 HMAC ensures encrypted messages can not be forged or altered.
 
-**When in doubt, use this example and don't read any further!**
-
 ```php
 <?php
-// Decode the high entropy key
 $key = "replace this with the output of: head -c 256 /dev/urandom | base64 -w 0 | xargs echo";
 
-$encrypted = \Dcrypt\Aes256Gcm::encrypt("a secret", $key);
+$encrypted = \Dcrypt\Aes256Gcm::encrypt('a secret', $key);
 
 $plaintext = \Dcrypt\Aes256Gcm::decrypt($encrypted, $key);
 ```
 
+**If in doubt, use this example and don't read any further!**
+
 ### Other AES-256 Modes
 
-If you read to this point then you are an experienced cryptonaut, congrats :ok_hand: :metal:
+If you read to this point then you are an experienced cryptonaut, congrats! :ok_hand: :metal:
 
 Several AES-256 encryption modes are supported out of the box via hardcoded classes.
 
@@ -68,7 +72,7 @@ Several AES-256 encryption modes are supported out of the box via hardcoded clas
 ### Custom Encryption Suites
 
 Dcrypt is compatible with _most_ OpenSSL ciphers and hashing algorithms supported by PHP.
-
+Run `php examples/support.php` to view supported options.
 
 #### Static Wrapper
 
@@ -76,7 +80,7 @@ Use any cipher/algo combination by calling the `OpensslStatic` class.
 
 ```php
 <?php
-$encrypted = \Dcrypt\OpensslStatic::encrypt("a secret", $key, 'des-ofb', 'md5');
+$encrypted = \Dcrypt\OpensslStatic::encrypt('a secret', $key, 'des-ofb', 'md5');
 
 $plaintext = \Dcrypt\OpensslStatic::decrypt($encrypted, $key, 'des-ofb', 'md5');
 ```
@@ -100,7 +104,7 @@ then...
 
 ```php
 <?php
-$encrypted = \BlowfishCrc::encrypt("a secret", $password);
+$encrypted = \BlowfishCrc::encrypt('a secret', $password);
 
 $plaintext = \BlowfishCrc::decrypt($encrypted, $password);
 ```
@@ -110,7 +114,7 @@ By default, a `\Dcrypt\Exceptions\InvalidChecksum` exception will be thrown befo
 
 ```php
 <?php
-$encrypted = \Dcrypt\Aes256Gcm::encrypt("a secret", $key);
+$encrypted = \Dcrypt\Aes256Gcm::encrypt('a secret', $key);
 
 // Mangle the encrypted data by adding a single character
 $encrypted = $encrypted . 'A';
@@ -135,7 +139,7 @@ The PBKDF2 cost can be defined in a custom class...
 ```php
 <?php
 
-class Aes256GcmWithCost extends \Dcrypt\OpensslBridge 
+class Aes256GcmWithCost extends \Dcrypt\Aes256Gcm 
 {
     const COST = 1000000;
 }
@@ -155,8 +159,8 @@ $plaintext = \Dcrypt\Aes256Gcm::decrypt($encrypted, $password, 10000);
 
 Feeling especially paranoid?
 Is the NSA monitoring your brainwaves?
-Not sure which cipher method you can trust?
-Why not try all of them?
+Not sure which cipher methods and algos can be trusted?
+Why not try all of them.
 
 ```php
 <?php

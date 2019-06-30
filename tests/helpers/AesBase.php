@@ -2,32 +2,27 @@
 
 class AesBase extends \PHPUnit\Framework\TestCase
 {
-    public static $input = 'AAAAAAAA';
     public static $password = 'BBBBBBBBCCCCCCCC';
-    public static $key = '
-        QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB
-        QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB
-        QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB
-        QUFBQQ==
-    ';
 
-    public function testEngineWithPassword()
+    public function testEngineInPasswordMode()
     {
-        $encrypted = static::$class::encrypt(self::$input, self::$password, 10000);
+        $encrypted = static::$class::encrypt('a secret', self::$password, 10000);
         $decrypted = static::$class::decrypt($encrypted, self::$password, 10000);
 
-        $this->assertEquals(self::$input, $decrypted);
+        $this->assertEquals('a secret', $decrypted);
     }
 
-    public function testEngineWithKey()
+    public function testEngineInKeyMode()
     {
-        $encrypted = static::$class::encrypt(self::$input, self::$key);
-        $decrypted = static::$class::decrypt($encrypted, self::$key);
+        $key = \Dcrypt\OpensslKeyGenerator::newKey();
 
-        $this->assertEquals(self::$input, $decrypted);
+        $encrypted = static::$class::encrypt('a secret', $key);
+        $decrypted = static::$class::decrypt($encrypted, $key);
+
+        $this->assertEquals('a secret', $decrypted);
     }
 
-    public function testEngineWithSomeRandomness()
+    public function testEngineWithSomeRandomnessWhileInKeyMode()
     {
         $input = \random_bytes(256);
         $key = \Dcrypt\OpensslKeyGenerator::newKey();
@@ -38,15 +33,17 @@ class AesBase extends \PHPUnit\Framework\TestCase
         $this->assertEquals($input, $decrypted);
     }
 
-    public function testCorruptDataUsingKey()
+    public function testCorruptDataUsingKeyMode()
     {
-        $encrypted = static::$class::encrypt(self::$input, self::$key);
+        $key = \Dcrypt\OpensslKeyGenerator::newKey();
 
-        $this->assertEquals(self::$input, static::$class::decrypt($encrypted, self::$key));
+        $encrypted = static::$class::encrypt('a secret', $key);
+
+        $this->assertEquals('a secret', static::$class::decrypt($encrypted, $key));
 
         $this->expectException(\Dcrypt\Exceptions\InvalidChecksumException::class);
 
-        static::$class::decrypt($encrypted . 'A', self::$key);
+        static::$class::decrypt($encrypted . 'A', $key);
     }
 
     public function testInvalidKeyEncoding()
@@ -55,17 +52,19 @@ class AesBase extends \PHPUnit\Framework\TestCase
 
         $crazyKey = str_repeat('?', 10000);
 
-        static::$class::encrypt(self::$input, $crazyKey);
+        static::$class::encrypt('a secret', $crazyKey);
     }
 
     public function testCorruptDataUsingPassword()
     {
-        $encrypted = static::$class::encrypt(self::$input, self::$key);
+        $key = \Dcrypt\OpensslKeyGenerator::newKey();
 
-        $this->assertEquals(self::$input, static::$class::decrypt($encrypted, self::$key));
+        $encrypted = static::$class::encrypt('a secret', $key);
+
+        $this->assertEquals('a secret', static::$class::decrypt($encrypted, $key));
 
         $this->expectException(\Dcrypt\Exceptions\InvalidChecksumException::class);
 
-        static::$class::decrypt($encrypted . 'A', self::$key);
+        static::$class::decrypt($encrypted . 'A', $key);
     }
 }
