@@ -2,7 +2,6 @@
 
 use Dcrypt\Exceptions\InvalidKeyException;
 use Dcrypt\Exceptions\InvalidPasswordException;
-use Dcrypt\Exceptions\InvalidAlgoException;
 
 class OpensslKeyGeneratorTest extends \PHPUnit\Framework\TestCase
 {
@@ -26,10 +25,10 @@ class OpensslKeyGeneratorTest extends \PHPUnit\Framework\TestCase
 
     public function testInvalidAlgo()
     {
+        $this->expectException(\Error::class);
+
         $key = \Dcrypt\OpensslKeyGenerator::newKey(256);
 
-        $this->expectException(InvalidAlgoException::class);
-
-        new \Dcrypt\OpensslKeyGenerator('crc32', $key, 'aes-256-gcm', \random_bytes(128), 0);
+        \Dcrypt\OpensslStatic::encrypt('AAAA', 'BBBB', 'aes-256-gcm', 'crc32', 10000);
     }
 }
