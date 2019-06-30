@@ -1,5 +1,7 @@
 <?php declare(strict_types=1);
 
+error_reporting(0);
+
 /**
  * support.php
  *
@@ -10,15 +12,15 @@ require __DIR__ . '/../vendor/autoload.php';
 
 $key = \Dcrypt\OpensslKeyGenerator::newKey();
 
-echo "CIPHERS ----------------------------------------------------------------------------------------------" . PHP_EOL;
+echo "\nCIPHERS ----------------------------------------------------------------------------------------------\n";
 
 foreach (\openssl_get_cipher_methods() as $meth) {
     // Only process the lower case names
-    if (strtolower($meth) !== $meth) {
+    if (\strtolower($meth) !== $meth) {
         continue;
     }
 
-    echo str_pad("[$meth]", 40);
+    echo \str_pad("[$meth]", 40);
 
     try {
         $e = \Dcrypt\OpensslStatic::encrypt('AAAA', $key, $meth, 'sha256');
@@ -33,13 +35,15 @@ foreach (\openssl_get_cipher_methods() as $meth) {
     }
 }
 
-echo "ALGOS ------------------------------------------------------------------------------------------------" . PHP_EOL;
+echo "\nALGOS ------------------------------------------------------------------------------------------------\n";
 
-foreach (hash_algos() as $algo) {
+foreach (\hash_algos() as $algo) {
     // Only process the lower case names
-    if (strtolower($algo) !== $algo) {
+    if (\strtolower($algo) !== $algo) {
         continue;
     }
+
+    echo \str_pad("[$algo]", 40);
 
     try {
         $e = \Dcrypt\OpensslStatic::encrypt('AAAA', $key, 'aes-256-gcm', $algo);

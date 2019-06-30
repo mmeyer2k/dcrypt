@@ -5,6 +5,7 @@ jobs:
       - image: circleci/php:7.1
     steps:
       - checkout
+      - run: php examples/support.php
       - run: composer require phpunit/phpunit infection/infection
       - run: mkdir -p coverage
       - run: php vendor/phpunit/phpunit/phpunit --coverage-html coverage
@@ -19,6 +20,7 @@ jobs:
       - image: circleci/php:7.2
     steps:
       - checkout
+      - run: php examples/support.php
       - run: mkdir -p coverage
       - run: composer require phpunit/phpunit infection/infection
       - run: php vendor/phpunit/phpunit/phpunit --coverage-html coverage
