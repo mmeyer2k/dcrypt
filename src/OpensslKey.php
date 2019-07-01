@@ -1,7 +1,7 @@
 <?php declare(strict_types=1);
 
 /**
- * OpensslKeyGenerator.php
+ * OpensslKey.php
  *
  * PHP version 7
  *
@@ -25,7 +25,7 @@ use Dcrypt\Exceptions\InvalidKeyException;
  * @license  http://opensource.org/licenses/MIT The MIT License (MIT)
  * @link     https://github.com/mmeyer2k/dcrypt
  */
-final class OpensslKeyGenerator
+final class OpensslKey
 {
     /**
      * @var string

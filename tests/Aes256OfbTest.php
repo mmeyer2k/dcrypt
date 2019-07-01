@@ -2,7 +2,7 @@
 
 namespace Dcrypt\Tests;
 
-class Aes256OfbTest extends \Dcrypt\Tests\AesBase
+class Aes256OfbTest extends AesBase
 {
     public static $class = '\\Dcrypt\\Aes256Ofb';
 }

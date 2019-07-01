@@ -40,7 +40,7 @@ class Otp
 
         $length = Str::strlen($input);
 
-        $key = new OpensslKeyGenerator($algo, $key, '', (string)$length);
+        $key = new OpensslKey($algo, $key, '', (string)$length);
 
         foreach ($chunks as $i => &$chunk) {
             $info = $length . $i;

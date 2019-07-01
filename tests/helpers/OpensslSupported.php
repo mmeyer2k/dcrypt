@@ -25,7 +25,7 @@ final class OpensslSupported
     {
         $algos = [];
 
-        $key = \Dcrypt\OpensslKeyGenerator::newKey();
+        $key = \Dcrypt\OpensslKey::newKey();
 
         foreach (\hash_algos() as $algo) {
             try {
@@ -47,7 +47,7 @@ final class OpensslSupported
     {
         $ciphers = [];
 
-        $key = \Dcrypt\OpensslKeyGenerator::newKey();
+        $key = \Dcrypt\OpensslKey::newKey();
 
         foreach (\openssl_get_cipher_methods() as $cipher) {
             try {

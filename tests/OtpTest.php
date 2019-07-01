@@ -8,7 +8,7 @@ class OtpTest extends \PHPUnit\Framework\TestCase
 {
     public function testCrypt()
     {
-        $key = \Dcrypt\OpensslKeyGenerator::newKey();
+        $key = \Dcrypt\OpensslKey::newKey();
 
         foreach (range(1, 1000, 100) as $mult) {
             $input = str_repeat('A', 4 * $mult);

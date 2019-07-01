@@ -10,7 +10,7 @@ error_reporting(0);
 
 require __DIR__ . '/../vendor/autoload.php';
 
-$key = \Dcrypt\OpensslKeyGenerator::newKey();
+$key = \Dcrypt\OpensslKey::newKey();
 
 echo "\nCIPHERS ----------------------------------------------------------------------------------------------\n";
 

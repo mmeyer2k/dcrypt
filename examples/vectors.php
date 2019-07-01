@@ -8,7 +8,7 @@ use \Dcrypt\OpensslStatic;
 
 require __DIR__ . '/../vendor/autoload.php';
 
-$key = \Dcrypt\OpensslKeyGenerator::newKey();
+$key = \Dcrypt\OpensslKey::newKey();
 
 file_put_contents(__DIR__ . '/../tests/vectors/.testkey', $key);
 

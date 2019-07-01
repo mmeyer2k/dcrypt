@@ -6,7 +6,7 @@ class AesBase extends \PHPUnit\Framework\TestCase
 {
     public function testEngineInKeyMode()
     {
-        $key = \Dcrypt\OpensslKeyGenerator::newKey();
+        $key = \Dcrypt\OpensslKey::newKey();
 
         $encrypted = static::$class::encrypt('a secret', $key);
         $decrypted = static::$class::decrypt($encrypted, $key);
@@ -17,7 +17,7 @@ class AesBase extends \PHPUnit\Framework\TestCase
     public function testEngineWithSomeRandomnessWhileInKeyMode()
     {
         $input = \random_bytes(256);
-        $key = \Dcrypt\OpensslKeyGenerator::newKey();
+        $key = \Dcrypt\OpensslKey::newKey();
 
         $encrypted = static::$class::encrypt($input, $key);
         $decrypted = static::$class::decrypt($encrypted, $key);
@@ -27,7 +27,7 @@ class AesBase extends \PHPUnit\Framework\TestCase
 
     public function testCorruptDataUsingKeyMode()
     {
-        $key = \Dcrypt\OpensslKeyGenerator::newKey();
+        $key = \Dcrypt\OpensslKey::newKey();
 
         $encrypted = static::$class::encrypt('a secret', $key);
 
