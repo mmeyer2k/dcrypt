@@ -54,7 +54,7 @@ class AesBase extends \PHPUnit\Framework\TestCase
         $testname1 = strtolower(str_replace('-', '', static::$class::CIPHER));
         $testname2 = strtolower(static::$class);
 
-        $this->assertContains($testname1, $testname2);
+        $this->assertStringContainsString($testname1, $testname2);
     }
 
     public function testKnownVector()

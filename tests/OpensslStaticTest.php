@@ -2,6 +2,8 @@
 
 namespace Dcrypt\Tests;
 
+use Dcrypt\OpensslStatic;
+
 class OpensslStaticTest extends \PHPUnit\Framework\TestCase
 {
     public function testVectorsAlgos()
@@ -36,5 +38,14 @@ class OpensslStaticTest extends \PHPUnit\Framework\TestCase
 
             $this->assertEquals('a secret', $plaintext);
         }
+    }
+
+    public function testBadCipherException()
+    {
+        $key = \Dcrypt\OpensslKey::newKey();
+
+        $this->expectException(\Dcrypt\Exceptions\OpensslException::class);
+
+        OpensslStatic::encrypt('a secret', $key, 'lol this cipher doesnt exist', 'sha3-256');
     }
 }

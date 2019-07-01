@@ -39,12 +39,10 @@ class OpensslWrapper
     protected static function openssl_encrypt(string $input, string $method, string $key, string $iv, string &$tag): string
     {
         if (OpensslStatic::tagRequired($method)) {
-            $ret = \openssl_encrypt($input, $method, $key, OPENSSL_RAW_DATA, $iv, $tag, '', 4);
+            return \openssl_encrypt($input, $method, $key, OPENSSL_RAW_DATA, $iv, $tag, '', 4);
         } else {
-            $ret = \openssl_encrypt($input, $method, $key, OPENSSL_RAW_DATA, $iv);
+            return \openssl_encrypt($input, $method, $key, OPENSSL_RAW_DATA, $iv);
         }
-
-        return self::returnOrException($ret);
     }
 
     /**
@@ -59,28 +57,10 @@ class OpensslWrapper
     protected static function openssl_decrypt(string $input, string $method, string $key, string $iv, string $tag): string
     {
         if (OpensslStatic::tagRequired($method)) {
-            $ret = \openssl_decrypt($input, $method, $key, OPENSSL_RAW_DATA, $iv, $tag, '');
+            return \openssl_decrypt($input, $method, $key, OPENSSL_RAW_DATA, $iv, $tag, '');
         } else {
-            $ret = \openssl_decrypt($input, $method, $key, OPENSSL_RAW_DATA, $iv);
+            return \openssl_decrypt($input, $method, $key, OPENSSL_RAW_DATA, $iv);
         }
-
-        return self::returnOrException($ret);
-    }
-
-    /**
-     * Throw an exception if openssl function returns false
-     *
-     * @param string|bool $data
-     * @return string
-     * @throws OpensslException
-     */
-    private static function returnOrException($data): string
-    {
-        if ($data === false) {
-            throw new OpensslException('OpenSSL failed to encrypt/decrypt message.');
-        }
-
-        return $data;
     }
 
     /**
@@ -93,10 +73,6 @@ class OpensslWrapper
     protected static function ivSize(string $cipher): int
     {
         $ret = \openssl_cipher_iv_length($cipher);
-
-        if ($ret === false) {
-            throw new OpensslException("Failed to determine correct IV size.");
-        }
 
         return $ret;
     }
