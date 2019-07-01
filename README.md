@@ -16,7 +16,7 @@ For legacy PHP version support, look [here](https://github.com/mmeyer2k/dcrypt/b
   - [Block Ciphers](#block-ciphers)
     - [AES-256 GCM Encryption](#aes-256-gcm-encryption)
     - [Other AES-256 Modes](#other-aes-256-modes)
-    - [Custom Encryption Suites](#sustom-encryption-suites)
+    - [Custom Encryption Suites](#custom-encryption-suites)
       - [Static Wrapper](#static-wrapper)
       - [Class Overloading](#class-overloading)
       - [Layered Encryption Factory](#layered-encryption-factory)
