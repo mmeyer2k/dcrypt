@@ -4,7 +4,7 @@ namespace Dcrypt\Tests;
 
 class OpensslStackTest extends \PHPUnit\Framework\TestCase
 {
-    public function testAes256StackWithPassword()
+    public function testAes256StackWithKey()
     {
         $key = \Dcrypt\OpensslKey::newKey();
 

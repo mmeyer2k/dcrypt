@@ -48,12 +48,13 @@ final class OpensslKey
     private $cipher;
 
     /**
-     * OpensslKeyGenerator constructor.
+     * OpensslKey constructor.
      *
-     * @param string $algo   Algo to use for PBKDF2 and HKDF
-     * @param string $key    Password or key
+     * @param string $algo   Algo to use for HKDF
+     * @param string $key    Key
      * @param string $cipher Openssl cipher
      * @param string $ivr    Initialization vactor
+     * @throws Exceptions\InvalidKeyException
      */
     public function __construct(string $algo, string $key, string $cipher, string $ivr)
     {
@@ -98,19 +99,14 @@ final class OpensslKey
     /**
      * Derive a key with differing authinfo strings
      *
-     * @param string $info
+     * @param string $info Info parameter to provide to hash_hkdf
      * @return string
-     * @throws \Exception
      */
     public function deriveKey(string $info): string
     {
         $info = $info . '|' . $this->cipher;
 
         $key = \hash_hkdf($this->algo, $this->key, 0, $info, $this->ivr);
-
-        if ($key === false) {
-            throw new Exceptions\InvalidAlgoException("Hash algo $this->algo is not supported by hash_hkdf.");
-        }
 
         return $key;
     }
@@ -125,7 +121,7 @@ final class OpensslKey
     public static function newKey(int $bytes = 256): string
     {
         if ($bytes < 256) {
-            throw new InvalidKeyException('Key must be at least 256 bytes long.');
+            throw new InvalidKeyException('Keys must be at least 256 bytes long.');
         }
 
         return \base64_encode(\random_bytes($bytes));

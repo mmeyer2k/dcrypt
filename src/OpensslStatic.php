@@ -14,6 +14,8 @@
 
 namespace Dcrypt;
 
+use \Dcrypt\Exceptions\InvalidChecksumException;
+
 /**
  * Static functions that handle encryption/decryption with openssl.
  *
@@ -66,7 +68,7 @@ final class OpensslStatic extends OpensslWrapper
 
         // Compare given checksum against computed checksum using a time-safe function
         if (!Str::equal($chk, $sum)) {
-            throw new Exceptions\InvalidChecksumException('Decryption can not proceed due to invalid cyphertext checksum.');
+            throw new InvalidChecksumException('Decryption can not proceed due to invalid cyphertext checksum.');
         }
 
         // Decrypt message and return
@@ -88,7 +90,7 @@ final class OpensslStatic extends OpensslWrapper
         // Generate IV of appropriate size
         $ivr = parent::ivGenerate($cipher);
 
-        // Create password derivation object
+        // Create key derivation object
         $key = new OpensslKey($algo, $key, $cipher, $ivr);
 
         // Create a placeholder for the authentication tag to be passed by reference

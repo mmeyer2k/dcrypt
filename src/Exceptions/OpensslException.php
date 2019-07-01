@@ -2,7 +2,7 @@
 
 namespace Dcrypt\Exceptions;
 
-class InvalidAlgoException extends \Exception
+class OpensslException extends \Exception
 {
 
 }

@@ -14,6 +14,8 @@
 
 namespace Dcrypt;
 
+use Dcrypt\Exceptions\OpensslException;
+
 /**
  * A wrapper around any openssl_* functions.
  *
@@ -70,12 +72,12 @@ class OpensslWrapper
      *
      * @param string|bool $data
      * @return string
-     * @throws \Exception
+     * @throws OpensslException
      */
     private static function returnOrException($data): string
     {
         if ($data === false) {
-            throw new \Exception('OpenSSL failed to encrypt/decrypt message.');
+            throw new OpensslException('OpenSSL failed to encrypt/decrypt message.');
         }
 
         return $data;
@@ -86,14 +88,14 @@ class OpensslWrapper
      *
      * @param string $cipher
      * @return int
-     * @throws \Exception
+     * @throws OpensslException
      */
     protected static function ivSize(string $cipher): int
     {
         $ret = \openssl_cipher_iv_length($cipher);
 
         if ($ret === false) {
-            throw new \Exception("Failed to determine correct IV size.");
+            throw new OpensslException("Failed to determine correct IV size.");
         }
 
         return $ret;

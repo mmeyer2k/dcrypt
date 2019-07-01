@@ -46,8 +46,10 @@ class OpensslStack
     }
 
     /**
-     * @param string $cipher
-     * @param string $algo
+     * Add a new cipher/algo combo to the execution stack
+     *
+     * @param string $cipher Cipher mode to use
+     * @param string $algo   Hashing algo to use
      * @return OpensslStack
      */
     public function add(string $cipher, string $algo): self

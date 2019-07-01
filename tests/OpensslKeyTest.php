@@ -4,7 +4,7 @@ namespace Dcrypt\Tests;
 
 use Dcrypt\Exceptions\InvalidKeyException;
 
-class OpensslKeyGeneratorTest extends \PHPUnit\Framework\TestCase
+class OpensslKeyTest extends \PHPUnit\Framework\TestCase
 {
     public function testNewKeyTooShort()
     {
