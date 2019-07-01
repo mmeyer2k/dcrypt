@@ -159,7 +159,6 @@ Be sure you understand the risks and inherent issues of using a stream cipher be
 A fast symmetric stream cipher is quickly accessible with the `Otp` class.
 `Otp` uses SHA3-512 to output a keystream that is ⊕'d with the input in 512 bit chunks.
 
-
 ```php
 <?php
 $encrypted = \Dcrypt\Otp::crypt('a secret', $key);
@@ -174,32 +173,6 @@ $encrypted = \Dcrypt\Otp::crypt('a secret', $key, 'whirlpool');
 
 $plaintext = \Dcrypt\Otp::crypt($encrypted, $key, 'whirlpool');
 ```
-
-### Rivest's Ciphers
-
-`\Dcrypt\Rc4` and `\Dcrypt\Spritz` are pure PHP implementations of the immortal [RC4](https://en.wikipedia.org/wiki/RC4) cipher and its successor [Spritz](https://people.csail.mit.edu/rivest/pubs/RS14.pdf).
-
-```php
-<?php
-$encrypted = \Dcrypt\Rc4::crypt('a secret', $key);
-
-$plaintext = \Dcrypt\Rc4::crypt($encrypted, $key);
-```
-```php
-<?php
-$encrypted = \Dcrypt\Spritz::crypt('a secret', $key);
-
-$plaintext = \Dcrypt\Spritz::crypt($encrypted, $key);
-```
-
-**NOTE**: 
-These implementations are for reference only and are fully marked as `@deprecated`. 
-The RC4 cipher in general has many known security problems, and the Spirtz implementation provided here has not been verified against known test vectors. 
-Both are very slow and inefficient.
-This was just for fun.
-
-**NOTE**: 
-Backwards compatibility breaking changes to these classes will not result in an incremented major version number.
 
 # Show me some love :heart_eyes::beer:
 Developing dcrypt has been a great journey for many years.
