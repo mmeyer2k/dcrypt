@@ -33,9 +33,9 @@ class Aes256Gcm extends OpensslBridge
     const CIPHER = 'aes-256-gcm';
 
     /**
-     * Use SHA-256 hashing algo to authenticate messages
+     * Use SHA3-256 hashing algo to authenticate messages
      *
      * @var string
      */
-    const ALGO = 'sha256';
+    const ALGO = 'sha3-256';
 }

@@ -33,29 +33,23 @@ class OpensslStack
     /**
      * @var string
      */
-    private $passkey;
-
-    /**
-     * @var int
-     */
-    private $cost;
+    private $key;
 
     /**
      * OpensslStack constructor.
      *
      * @param string $passkey Password or key
-     * @param int    $cost    Cost when using password mode
      */
-    public function __construct(string $passkey, int $cost = 0)
+    public function __construct(string $key)
     {
-        $this->passkey = $passkey;
-
-        $this->cost = $cost;
+        $this->key = $key;
     }
 
     /**
-     * @param string $cipher
-     * @param string $algo
+     * Add a new cipher/algo combo to the execution stack
+     *
+     * @param string $cipher Cipher mode to use
+     * @param string $algo   Hashing algo to use
      * @return OpensslStack
      */
     public function add(string $cipher, string $algo): self
@@ -75,7 +69,7 @@ class OpensslStack
     public function encrypt(string $data): string
     {
         foreach ($this->stack as $s) {
-            $data = OpensslStatic::encrypt($data, $this->passkey, $s[0], $s[1], $this->cost);
+            $data = OpensslStatic::encrypt($data, $this->key, $s[0], $s[1]);
         }
 
         return $data;
@@ -91,7 +85,7 @@ class OpensslStack
     public function decrypt(string $data): string
     {
         foreach (\array_reverse($this->stack) as $s) {
-            $data = OpensslStatic::decrypt($data, $this->passkey, $s[0], $s[1], $this->cost);
+            $data = OpensslStatic::decrypt($data, $this->key, $s[0], $s[1]);
         }
 
         return $data;

@@ -1,3 +1,9 @@
+# Upgrade from 10.x to 11.x
+- You are now _required_ to provide a key to all encrypt/decrypt functions
+- All `cost` parameters have been remove, password-based key derivation is no longer offered
+- `Rc4` and `Spritz` are removed and will be placed in a separate library
+- SHA3 replaces SHA2 wherever default
+
 # Upgrade from 9.x to 10.x
 This is a major refactor of the core of dcrypt to focus on the most important features.
 - Minimum PHP version is now 7.1 
@@ -9,7 +15,7 @@ This is a major refactor of the core of dcrypt to focus on the most important fe
 - **All data encrypted with Aes\*\*\* functions from prior versions will not be decryptable**
 
 # Upgrade from 8.x to 9.x
-Version 9 is a MAJOR update to dcrypt and breaks almost all backword compatibility.
+Version 9 is a MAJOR update to dcrypt and breaks almost all backward compatibility.
 It removes all legacy crutches and moves to use more a more modern design.
 
 - All data encrypted with AesCtr and AesCbc prior to 9.0 will not be compatible in 9.0.

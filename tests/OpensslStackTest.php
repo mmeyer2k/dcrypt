@@ -1,10 +1,14 @@
 <?php declare(strict_types=1);
 
+namespace Dcrypt\Tests;
+
 class OpensslStackTest extends \PHPUnit\Framework\TestCase
 {
-    public function testAes256StackWithPassword()
+    public function testAes256StackWithKey()
     {
-        $stack = (new \Dcrypt\OpensslStack('password', 10000))
+        $key = \Dcrypt\OpensslKey::newKey();
+
+        $stack = (new \Dcrypt\OpensslStack($key))
             ->add('rc4-40', 'md2')
             ->add('bf-cbc', 'sha256')
             ->add('bf-cfb', 'sha256')
@@ -29,7 +33,7 @@ class OpensslStackTest extends \PHPUnit\Framework\TestCase
 
     public function testAes256StackWithKeyFromReadmeFile()
     {
-        $key = \Dcrypt\OpensslKeyGenerator::newKey();
+        $key = \Dcrypt\OpensslKey::newKey();
 
         $stack = (new \Dcrypt\OpensslStack($key))
             ->add('aes-256-ecb', 'snefru')

@@ -14,14 +14,22 @@ For legacy PHP version support, look [here](https://github.com/mmeyer2k/dcrypt/b
 - [Install](#install)
 - [Features](#features)
   - [Block Ciphers](#block-ciphers)
+    - [AES-256 GCM Encryption](#aes-256-gcm-encryption)
+    - [Other AES-256 Modes](#other-aes-256-modes)
+    - [Custom Encryption Suites](#sustom-encryption-suites)
+      - [Static Wrapper](#static-wrapper)
+      - [Class Overloading](#class-overloading)
+      - [Layered Encryption Factory](#layered-encryption-factory)
+    - [Message Authenticity Checking](#message-authenticity-checking)
   - [Stream Ciphers](#stream-ciphers)
+    - [One Time Pad](#one-time-pad)
 - [Show me some love](#show-me-some-love-heart_eyes) :heart_eyes::beer:
 
 # Install
 Add dcrypt to your composer.json file requirements.
 Don't worry, dcrypt does not have any dependencies of its own.
 ```bash
-composer require "mmeyer2k/dcrypt=^10.0"
+composer require "mmeyer2k/dcrypt=^11.0"
 ```
 
 # Features
@@ -30,20 +38,21 @@ composer require "mmeyer2k/dcrypt=^10.0"
 
 The dcrypt library helps application developers avoid common mistakes in crypto implementations that leave data at risk while still providing flexibility in its options for crypto enthusiasts.
 Dcrypt strives to make correct usage simple, but it _is_ possible to use dcrypt incorrectly.
+Fully understanding the instructions is important.
 
-__NOTE__: Dcrypt's default configurations assume the usage of a base64 encoded high entropy key with a minimum of 256 bytes. 
-Be sure to read the section on key hardening and pay close attention to the differences between `$key` and `$password`.
-
-To generate a strong new key execute this command line:
+Dcrypt's functions __require__ the use of a high entropy 256 byte (minimum) key encoded with base64.
+To generate a new key quickly, execute this on the command line:
 
 ```bash
 head -c 256 /dev/urandom | base64 -w 0 | xargs echo
 ```
 
+Storing this key safely is up to you!
+
 ### AES-256 GCM Encryption
 
-PHP 7.1 ships with support for new AEAD encryption modes, GCM being considered the safest of these.
-Dcrypt will handle the 32 bit AEAD authentication tag, SHA-256 HMAC and initialization vector as a single string.
+Since PHP 7.1 supports native AEAD encryption modes, using GCM would be safest option for most applications.
+Dcrypt will handle the 32 bit AEAD authentication tag, SHA3-256 HMAC ([Keccak](https://en.wikipedia.org/wiki/SHA-3)), initialization vector and encrypted message as a single unencoded string.
 
 ```php
 <?php
@@ -67,6 +76,7 @@ Several AES-256 encryption modes are supported out of the box via hardcoded clas
 | `\Dcrypt\Aes256Gcm`  |    `aes-256-gcm` | [wiki](https://en.wikipedia.org/wiki/Galois/Counter_Mode) |
 | `\Dcrypt\Aes256Cbc`  |    `aes-256-cbc` | [wiki](https://en.wikipedia.org/wiki/Block_cipher_mode_of_operation) |
 | `\Dcrypt\Aes256Ctr`  |    `aes-256-ctr` | [wiki](https://en.wikipedia.org/wiki/Block_cipher_mode_of_operation#Counter_(CTR)) |
+| `\Dcrypt\Aes256Ofb`  |    `aes-256-ofb` | [wiki](https://en.wikipedia.org/wiki/Block_cipher_mode_of_operation#Output_Feedback_(OFB)) |
 | `\Dcrypt\Aes256Ecb`  |    `aes-256-ecb` | [wiki](https://en.wikipedia.org/wiki/Block_cipher_mode_of_operation#ECB) |
 
 ### Custom Encryption Suites
@@ -80,9 +90,9 @@ Use any cipher/algo combination by calling the `OpensslStatic` class.
 
 ```php
 <?php
-$encrypted = \Dcrypt\OpensslStatic::encrypt('a secret', $key, 'des-ofb', 'md5');
+$encrypted = \Dcrypt\OpensslStatic::encrypt('a secret', $key, 'bf-ofb', 'crc32');
 
-$plaintext = \Dcrypt\OpensslStatic::decrypt($encrypted, $key, 'des-ofb', 'md5');
+$plaintext = \Dcrypt\OpensslStatic::decrypt($encrypted, $key, 'bf-ofb', 'crc32');
 ```
 
 #### Class Overloading
@@ -92,7 +102,7 @@ Dcrypt's internal functions are easily extendable by overloading the `OpensslBri
 ```php
 <?php
 
-class BlowfishCrc extends \Dcrypt\OpensslBridge 
+class BlowfishCrc32 extends \Dcrypt\OpensslBridge 
 {
     const CIPHER = 'bf-ofb';
 
@@ -104,58 +114,12 @@ then...
 
 ```php
 <?php
-$encrypted = \BlowfishCrc::encrypt('a secret', $password);
+$encrypted = \BlowfishCrc32::encrypt('a secret', $key);
 
-$plaintext = \BlowfishCrc::decrypt($encrypted, $password);
+$plaintext = \BlowfishCrc32::decrypt($encrypted, $key);
 ```
 
-### Message Authenticity Checking
-By default, `\Dcrypt\Exceptions\InvalidChecksumException` exception will be raised before decryption is allowed to proceed when the supplied checksum is not valid.
-
-```php
-<?php
-$encrypted = \Dcrypt\Aes256Gcm::encrypt('a secret', $key);
-
-// Mangle the encrypted data by adding a single character
-$encrypted = $encrypted . 'A';
-
-try {
-    $decrypted = \Dcrypt\Aes256Gcm::decrypt($encrypted, $key);
-} catch (\Dcrypt\Exceptions\InvalidChecksumException $ex) {
-    // ...
-}
-```
-
-### PBKDF2 Key Hardening
-
-Key-based encryption mode is _highly_ preferred because the PBKDF2 hardening process can be skipped, reducing overhead.
-If using strong keys never use these options.
-
-When using a source of low entropy for the password/key (or "passkey") parameter, a `$cost` value of appropriate size _must_ be chosen based on the requirements of the application.
-High cost values could lead to DoS attacks if used improperly for your application, use caution when selecting this number.
-
-The PBKDF2 cost can be defined in a custom class...
-
-```php
-<?php
-
-class Aes256GcmWithCost extends \Dcrypt\Aes256Gcm 
-{
-    const COST = 1000000;
-}
-```
-
-or by passing a third parameter to the (en|de)crypt calls.
-The `$cost` parameter always overloads any value stored in the class's `const COST`.
-
-```php
-<?php
-$encrypted = \Dcrypt\Aes256Gcm::encrypt('a secret', $password, 10000);
-
-$plaintext = \Dcrypt\Aes256Gcm::decrypt($encrypted, $password, 10000);
-```
-
-### Layered Encryption Factory
+#### Layered Encryption Factory
 
 Feeling especially paranoid?
 Is the NSA monitoring your brainwaves?
@@ -176,15 +140,36 @@ $encrypted = $stack->encrypt('a secret');
 $plaintext = $stack->decrypt($encrypted);
 ```
 
+### Message Authenticity Checking
+
+By default, `\Dcrypt\Exceptions\InvalidChecksumException` exception will be raised before decryption is allowed to proceed when the supplied checksum is not valid.
+
+```php
+<?php
+$encrypted = \Dcrypt\Aes256Gcm::encrypt('a secret', $key);
+
+// Mangle the encrypted data by adding a single character
+$encrypted = $encrypted . 'A';
+
+try {
+    $decrypted = \Dcrypt\Aes256Gcm::decrypt($encrypted, $key);
+} catch (\Dcrypt\Exceptions\InvalidChecksumException $ex) {
+    // ...
+}
+```
+
 ## Stream Ciphers
 
 Be sure you understand the risks and inherent issues of using a stream cipher before proceeding.
+Read the relevant information before using a stream cipher for anything important
 
-### One Time Pad Encryption
+- [https://en.wikipedia.org/wiki/Stream_cipher_attacks](https://en.wikipedia.org/wiki/Stream_cipher_attacks)
+- [https://jameshfisher.com/2018/01/01/making-a-stream-cipher/](https://jameshfisher.com/2018/01/01/making-a-stream-cipher/)
+
+### One Time Pad
 
 A fast symmetric stream cipher is quickly accessible with the `Otp` class.
-`Otp` uses SHA-512 to output a keystream that is ⊕'d with the input in 512 bit chunks.
-
+`Otp` uses SHA3-512 to output a keystream that is ⊕'d with the input in 512 bit chunks.
 
 ```php
 <?php
@@ -194,6 +179,7 @@ $plaintext = \Dcrypt\Otp::crypt($encrypted, $key);
 ```
 
 `Otp` can also be configured to use any other hashing algorithm to generate the pseudorandom keystream.
+
 ```php
 <?php
 $encrypted = \Dcrypt\Otp::crypt('a secret', $key, 'whirlpool');
@@ -201,36 +187,11 @@ $encrypted = \Dcrypt\Otp::crypt('a secret', $key, 'whirlpool');
 $plaintext = \Dcrypt\Otp::crypt($encrypted, $key, 'whirlpool');
 ```
 
-### Rivest's Ciphers
-
-`\Dcrypt\Rc4` and `\Dcrypt\Spritz` are pure PHP implementations of the immortal [RC4](https://en.wikipedia.org/wiki/RC4) cipher and its successor [Spritz](https://people.csail.mit.edu/rivest/pubs/RS14.pdf).
-
-```php
-<?php
-$encrypted = \Dcrypt\Rc4::crypt('a secret', $password);
-
-$plaintext = \Dcrypt\Rc4::crypt($encrypted, $password);
-```
-```php
-<?php
-$encrypted = \Dcrypt\Spritz::crypt('a secret', $password);
-
-$plaintext = \Dcrypt\Spritz::crypt($encrypted, $password);
-```
-
-**NOTE**: 
-These implementations are for reference only and are fully marked as `@deprecated`. 
-The RC4 cipher in general has many known security problems, and the Spirtz implementation provided here has not been verified against known test vectors. 
-Both are very slow and inefficient.
-This was just for fun.
-
-**NOTE**: 
-Backwards compatibility breaking changes to these classes will not result in an incremented major version number.
-
 # Show me some love :heart_eyes::beer:
+
 Developing dcrypt has been a great journey for many years.
 If you find dcrypt useful, please consider donating some Litecoin.
  
-`LN97LrLCNiv14V6fntp247H2pj9UiFzUQZ`
+__`LN97LrLCNiv14V6fntp247H2pj9UiFzUQZ`__
 
  ![litecoin address](https://mmeyer2k.github.io/images/litecoin-wallet.png)

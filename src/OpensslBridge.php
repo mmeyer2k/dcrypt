@@ -26,35 +26,26 @@ namespace Dcrypt;
 class OpensslBridge
 {
     /**
-     * Cost value to give to pbkdf2 when not using key mode, or 0 for key mode
+     * Decrypt ciphertext
      *
-     * @var int
-     */
-    const COST = 0;
-
-    /**
-     * Decrypt cyphertext
-     *
-     * @param string   $data    Cyphertext to decrypt
-     * @param string   $passkey Password or key which will be used to decrypt data
-     * @param int|null $cost    Override static cost value
+     * @param string $data Ciphertext to decrypt
+     * @param string $key  Key which will be used to decrypt data
      * @return string
      */
-    public static function decrypt(string $data, string $passkey, ?int $cost = null): string
+    public static function decrypt(string $data, string $key): string
     {
-        return OpensslStatic::decrypt($data, $passkey, static::CIPHER, static::ALGO, $cost ?? static::COST);
+        return OpensslStatic::decrypt($data, $key, static::CIPHER, static::ALGO);
     }
 
     /**
      * Encrypt plaintext
      *
-     * @param string   $data    Plaintext string to encrypt.
-     * @param string   $passkey Password or key which will be used to encrypt data
-     * @param int|null $cost    Override static cost value
+     * @param string $data Plaintext string to encrypt.
+     * @param string $key  Key which will be used to encrypt data
      * @return string
      */
-    public static function encrypt(string $data, string $passkey, ?int $cost = null): string
+    public static function encrypt(string $data, string $key): string
     {
-        return OpensslStatic::encrypt($data, $passkey, static::CIPHER, static::ALGO, $cost ?? static::COST);
+        return OpensslStatic::encrypt($data, $key, static::CIPHER, static::ALGO);
     }
 }

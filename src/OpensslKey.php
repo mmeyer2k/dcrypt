@@ -1,7 +1,7 @@
 <?php declare(strict_types=1);
 
 /**
- * OpensslKeyGenerator.php
+ * OpensslKey.php
  *
  * PHP version 7
  *
@@ -15,7 +15,6 @@
 namespace Dcrypt;
 
 use Dcrypt\Exceptions\InvalidKeyException;
-use Dcrypt\Exceptions\InvalidPasswordException;
 
 /**
  * Provides key derivation functions
@@ -26,7 +25,7 @@ use Dcrypt\Exceptions\InvalidPasswordException;
  * @license  http://opensource.org/licenses/MIT The MIT License (MIT)
  * @link     https://github.com/mmeyer2k/dcrypt
  */
-final class OpensslKeyGenerator
+final class OpensslKey
 {
     /**
      * @var string
@@ -49,36 +48,22 @@ final class OpensslKeyGenerator
     private $cipher;
 
     /**
-     * OpensslKeyGenerator constructor.
+     * OpensslKey constructor.
      *
-     * @param string $algo    Algo to use for PBKDF2 and HKDF
-     * @param string $passkey Password or key
-     * @param string $cipher  Openssl cipher
-     * @param string $ivr     Initialization vactor
-     * @param int $cost       Cost value for PBKDF2
+     * @param string $algo   Algo to use for HKDF
+     * @param string $key    Key
+     * @param string $cipher Openssl cipher
+     * @param string $ivr    Initialization vactor
+     * @throws Exceptions\InvalidKeyException
      */
-    public function __construct(string $algo, string $passkey, string $cipher, string $ivr, int $cost = 0)
+    public function __construct(string $algo, string $key, string $cipher, string $ivr)
     {
-        // When cost is 0 then we are in key mode
-        if ($cost === 0) {
-            // Attempt to decode the passkey
-            $passkey = \base64_decode($passkey);
+        // Store the key as what was supplied
+        $this->key = \base64_decode($key);
 
-            // Make sure key was properly decoded and meets minimum required length
-            if (Str::strlen($passkey) < 256) {
-                throw new InvalidKeyException("Key must be at least 256 bytes and base64 encoded.");
-            }
-
-            // Store the key as what was supplied
-            $this->key = $passkey;
-        } else {
-            // Make sure that the user is not attempting to use a key in password word mode
-            if (Str::strlen($passkey) >= 256) {
-                throw new InvalidPasswordException("Passwords must be less than 256 bytes.");
-            }
-
-            // Derive the key from the password and store in object
-            $this->key = \hash_pbkdf2($algo, $passkey, $ivr, $cost, 0, true);
+        // Make sure key was properly decoded and meets minimum required length
+        if (!is_string($this->key) || Str::strlen($this->key) < 256) {
+            throw new InvalidKeyException("Key must be at least 256 bytes and base64 encoded.");
         }
 
         // Store the cipher string
@@ -114,19 +99,14 @@ final class OpensslKeyGenerator
     /**
      * Derive a key with differing authinfo strings
      *
-     * @param string $info
+     * @param string $info Info parameter to provide to hash_hkdf
      * @return string
-     * @throws \Exception
      */
     public function deriveKey(string $info): string
     {
         $info = $info . '|' . $this->cipher;
 
         $key = \hash_hkdf($this->algo, $this->key, 0, $info, $this->ivr);
-
-        if ($key === false) {
-            throw new Exceptions\InvalidAlgoException("Hash algo $this->algo is not supported by hash_hkdf.");
-        }
 
         return $key;
     }
@@ -141,7 +121,7 @@ final class OpensslKeyGenerator
     public static function newKey(int $bytes = 256): string
     {
         if ($bytes < 256) {
-            throw new InvalidKeyException('Key must be at least 256 bytes long.');
+            throw new InvalidKeyException('Keys must be at least 256 bytes long.');
         }
 
         return \base64_encode(\random_bytes($bytes));

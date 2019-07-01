@@ -1,20 +1,12 @@
 <?php declare(strict_types=1);
 
+namespace Dcrypt\Tests;
+
 class AesBase extends \PHPUnit\Framework\TestCase
 {
-    public static $password = 'BBBBBBBBCCCCCCCC';
-
-    public function testEngineInPasswordMode()
-    {
-        $encrypted = static::$class::encrypt('a secret', self::$password, 10000);
-        $decrypted = static::$class::decrypt($encrypted, self::$password, 10000);
-
-        $this->assertEquals('a secret', $decrypted);
-    }
-
     public function testEngineInKeyMode()
     {
-        $key = \Dcrypt\OpensslKeyGenerator::newKey();
+        $key = \Dcrypt\OpensslKey::newKey();
 
         $encrypted = static::$class::encrypt('a secret', $key);
         $decrypted = static::$class::decrypt($encrypted, $key);
@@ -24,8 +16,8 @@ class AesBase extends \PHPUnit\Framework\TestCase
 
     public function testEngineWithSomeRandomnessWhileInKeyMode()
     {
-        $input = \random_bytes(256);
-        $key = \Dcrypt\OpensslKeyGenerator::newKey();
+        $input = random_bytes(256);
+        $key = \Dcrypt\OpensslKey::newKey();
 
         $encrypted = static::$class::encrypt($input, $key);
         $decrypted = static::$class::decrypt($encrypted, $key);
@@ -35,7 +27,7 @@ class AesBase extends \PHPUnit\Framework\TestCase
 
     public function testCorruptDataUsingKeyMode()
     {
-        $key = \Dcrypt\OpensslKeyGenerator::newKey();
+        $key = \Dcrypt\OpensslKey::newKey();
 
         $encrypted = static::$class::encrypt('a secret', $key);
 
@@ -55,16 +47,21 @@ class AesBase extends \PHPUnit\Framework\TestCase
         static::$class::encrypt('a secret', $crazyKey);
     }
 
-    public function testCorruptDataUsingPassword()
+    public function testNameMatch()
     {
-        $key = \Dcrypt\OpensslKeyGenerator::newKey();
+        // Make sure that the name has the cipher in it so that there can never be a mismatch between
+        // the name of the cipher and the cipher given to openssl
+        $testname1 = strtolower(str_replace('-', '', static::$class::CIPHER));
+        $testname2 = strtolower(static::$class);
 
-        $encrypted = static::$class::encrypt('a secret', $key);
+        $this->assertStringContainsString($testname1, $testname2);
+    }
 
-        $this->assertEquals('a secret', static::$class::decrypt($encrypted, $key));
-
-        $this->expectException(\Dcrypt\Exceptions\InvalidChecksumException::class);
-
-        static::$class::decrypt($encrypted . 'A', $key);
+    public function testKnownVector()
+    {
+        $json = json_decode(file_get_contents(__DIR__ . '/.vectors.json'));
+        $c = $json->aes256->{static::$class};
+        $d = static::$class::decrypt(base64_decode($c), $json->key);
+        $this->assertEquals('a secret', $d);
     }
 }
