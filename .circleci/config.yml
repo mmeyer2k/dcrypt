@@ -9,6 +9,7 @@ jobs:
       - run: mkdir -p coverage
       - run: php vendor/phpunit/phpunit/phpunit --coverage-html coverage
       - run: php vendor/infection/infection/bin/infection
+      - run: php examples/support.php
       - store_artifacts:
           path: coverage
       - store_artifacts:
@@ -23,6 +24,7 @@ jobs:
       - run: composer require phpunit/phpunit infection/infection
       - run: php vendor/phpunit/phpunit/phpunit --coverage-html coverage
       - run: php vendor/infection/infection/bin/infection
+      - run: php examples/support.php
       - store_artifacts:
           path: coverage
       - store_artifacts:

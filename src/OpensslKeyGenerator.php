@@ -51,13 +51,13 @@ final class OpensslKeyGenerator
     /**
      * OpensslKeyGenerator constructor.
      *
-     * @param string $algo
-     * @param string $passkey
-     * @param string $cipher
-     * @param string $ivr
-     * @param int $cost
+     * @param string $algo    Algo to use for PBKDF2 and HKDF
+     * @param string $passkey Password or key
+     * @param string $cipher  Openssl cipher
+     * @param string $ivr     Initialization vactor
+     * @param int $cost       Cost value for PBKDF2
      */
-    public function __construct(string $algo, string $passkey, string $cipher, string $ivr, int $cost)
+    public function __construct(string $algo, string $passkey, string $cipher, string $ivr, int $cost = 0)
     {
         // When cost is 0 then we are in key mode
         if ($cost === 0) {
@@ -66,7 +66,7 @@ final class OpensslKeyGenerator
 
             // Make sure key was properly decoded and meets minimum required length
             if (Str::strlen($passkey) < 256) {
-                throw new InvalidKeyException("Key must be at least 2048 bits long and base64 encoded.");
+                throw new InvalidKeyException("Key must be at least 256 bytes and base64 encoded.");
             }
 
             // Store the key as what was supplied
@@ -74,7 +74,7 @@ final class OpensslKeyGenerator
         } else {
             // Make sure that the user is not attempting to use a key in password word mode
             if (Str::strlen($passkey) >= 256) {
-                throw new InvalidPasswordException("Passwords must be less than 2048 bits (256 bytes) long.");
+                throw new InvalidPasswordException("Passwords must be less than 256 bytes.");
             }
 
             // Derive the key from the password and store in object
@@ -134,20 +134,16 @@ final class OpensslKeyGenerator
     /**
      * Generate a new key that meets requirements for dcrypt
      *
-     * @param int $size
+     * @param int $size Size of key in bytes
      * @return string
      * @throws Exceptions\InvalidKeyException
      */
-    public static function newKey(int $size = 2048): string
+    public static function newKey(int $bytes = 256): string
     {
-        if ($size < 2048) {
-            throw new InvalidKeyException('Key must be at least 2048 bits long.');
+        if ($bytes < 256) {
+            throw new InvalidKeyException('Key must be at least 256 bytes long.');
         }
 
-        if ($size % 8 !== 0) {
-            throw new InvalidKeyException('Key must be divisible by 8.');
-        }
-
-        return \base64_encode(\random_bytes($size / 8));
+        return \base64_encode(\random_bytes($bytes));
     }
 }
