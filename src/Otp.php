@@ -34,7 +34,7 @@ class Otp
      * @param string $algo  Hashing algo to generate keystream
      * @return string
      */
-    public static function crypt(string $input, string $key, string $algo = 'sha512'): string
+    public static function crypt(string $input, string $key, string $algo = 'sha3-512'): string
     {
         $chunks = \str_split($input, Str::hashSize($algo));
 

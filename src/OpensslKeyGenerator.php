@@ -61,7 +61,7 @@ final class OpensslKeyGenerator
         $this->key = \base64_decode($key);
 
         // Make sure key was properly decoded and meets minimum required length
-        if (Str::strlen($this->key) < 256) {
+        if (!is_string($this->key) || Str::strlen($this->key) < 256) {
             throw new InvalidKeyException("Key must be at least 256 bytes and base64 encoded.");
         }
 

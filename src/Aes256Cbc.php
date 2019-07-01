@@ -30,5 +30,5 @@ class Aes256Cbc extends Aes256Gcm
      *
      * @var string
      */
-    const CIPHER = 'aes-256-cfb';
+    const CIPHER = 'aes-256-cbc';
 }

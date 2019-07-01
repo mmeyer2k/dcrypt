@@ -1,5 +1,7 @@
 <?php declare(strict_types=1);
 
+namespace Dcrypt\Tests;
+
 use Dcrypt\Exceptions\InvalidKeyException;
 
 class OpensslKeyGeneratorTest extends \PHPUnit\Framework\TestCase

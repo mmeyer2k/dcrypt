@@ -1,5 +1,7 @@
 <?php declare(strict_types=1);
 
+namespace Dcrypt\Tests;
+
 use Dcrypt\Rc4;
 
 class Rc4Test extends \PHPUnit\Framework\TestCase

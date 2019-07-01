@@ -6,7 +6,7 @@ This document serves as a high level design document for the block cipher functi
 - `SALT` initialization vector generated with `random_bytes`.
 - `CIPHER` the chosen cipher method as a string
 - `ALGO` the chosen hmac algorithm as a string
-- `KEY` key selected for symmetric encryption
+- `KEY` high entropy key selected for symmetric encryption
 - `ENCRINFO` is the string `encryptionKey` + `|` + `CIPHER`
 - `AUTHINFO` is the string `authenticationKey` + `|` + `CIPHER`
 - `MTEXT` the plaintext message to be encrypted
@@ -40,7 +40,6 @@ This document serves as a high level design document for the block cipher functi
 1. Pop `SALT` off front of `CTEXT`
 1. Same as step 2 from above
 1. Same as step 3 from above
-1. Save as step 4 from above
 1. Pop `CHECKSUM` from front of `CTEXT`
 1. Pop `TAG` from front of `CTEXT`
 1. Generate a checksum where `COMPUTED = HMAC(CTEXT)`

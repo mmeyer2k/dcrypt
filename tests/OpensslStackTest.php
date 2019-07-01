@@ -1,5 +1,7 @@
 <?php declare(strict_types=1);
 
+namespace Dcrypt\Tests;
+
 class OpensslStackTest extends \PHPUnit\Framework\TestCase
 {
     public function testAes256StackWithPassword()
