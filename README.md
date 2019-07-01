@@ -14,7 +14,15 @@ For legacy PHP version support, look [here](https://github.com/mmeyer2k/dcrypt/b
 - [Install](#install)
 - [Features](#features)
   - [Block Ciphers](#block-ciphers)
+    - [AES-256 GCM Encryption](#aes-256-gcm-encryption)
+    - [Other AES-256 Modes](#other-aes-256-modes)
+    - [Custom Encryption Suites](#sustom-encryption-suites)
+      - [Static Wrapper](#static-wrapper)
+      - [Class Overloading](#class-overloading)
+      - [Layered Encryption Factory](#layered-encryption-factory)
+    - [Message Authenticity Checking](#message-authenticity-checking)
   - [Stream Ciphers](#stream-ciphers)
+    - [One Time Pad](#one-time-pad)
 - [Show me some love](#show-me-some-love-heart_eyes) :heart_eyes::beer:
 
 # Install
@@ -111,25 +119,7 @@ $encrypted = \BlowfishCrc::encrypt('a secret', $key);
 $plaintext = \BlowfishCrc::decrypt($encrypted, $key);
 ```
 
-### Message Authenticity Checking
-
-By default, `\Dcrypt\Exceptions\InvalidChecksumException` exception will be raised before decryption is allowed to proceed when the supplied checksum is not valid.
-
-```php
-<?php
-$encrypted = \Dcrypt\Aes256Gcm::encrypt('a secret', $key);
-
-// Mangle the encrypted data by adding a single character
-$encrypted = $encrypted . 'A';
-
-try {
-    $decrypted = \Dcrypt\Aes256Gcm::decrypt($encrypted, $key);
-} catch (\Dcrypt\Exceptions\InvalidChecksumException $ex) {
-    // ...
-}
-```
-
-### Layered Encryption Factory
+#### Layered Encryption Factory
 
 Feeling especially paranoid?
 Is the NSA monitoring your brainwaves?
@@ -150,11 +140,30 @@ $encrypted = $stack->encrypt('a secret');
 $plaintext = $stack->decrypt($encrypted);
 ```
 
+### Message Authenticity Checking
+
+By default, `\Dcrypt\Exceptions\InvalidChecksumException` exception will be raised before decryption is allowed to proceed when the supplied checksum is not valid.
+
+```php
+<?php
+$encrypted = \Dcrypt\Aes256Gcm::encrypt('a secret', $key);
+
+// Mangle the encrypted data by adding a single character
+$encrypted = $encrypted . 'A';
+
+try {
+    $decrypted = \Dcrypt\Aes256Gcm::decrypt($encrypted, $key);
+} catch (\Dcrypt\Exceptions\InvalidChecksumException $ex) {
+    // ...
+}
+```
+
 ## Stream Ciphers
 
 Be sure you understand the risks and inherent issues of using a stream cipher before proceeding.
+Stream ciphers have inherent flaws
 
-### One Time Pad Encryption
+### One Time Pad
 
 A fast symmetric stream cipher is quickly accessible with the `Otp` class.
 `Otp` uses SHA3-512 to output a keystream that is ⊕'d with the input in 512 bit chunks.
@@ -175,9 +184,9 @@ $plaintext = \Dcrypt\Otp::crypt($encrypted, $key, 'whirlpool');
 ```
 
 # Show me some love :heart_eyes::beer:
+
 Developing dcrypt has been a great journey for many years.
 If you find dcrypt useful, please consider donating some Litecoin.
  
-`LN97LrLCNiv14V6fntp247H2pj9UiFzUQZ`
-
+__`LN97LrLCNiv14V6fntp247H2pj9UiFzUQZ`__
  ![litecoin address](https://mmeyer2k.github.io/images/litecoin-wallet.png)
