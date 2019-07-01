@@ -14,8 +14,6 @@
 
 namespace Dcrypt;
 
-use Dcrypt\Exceptions\OpensslException;
-
 /**
  * A wrapper around any openssl_* functions.
  *
@@ -68,7 +66,6 @@ class OpensslWrapper
      *
      * @param string $cipher
      * @return int
-     * @throws OpensslException
      */
     protected static function ivSize(string $cipher): int
     {
