@@ -8,14 +8,16 @@ class OpensslStaticTest extends \PHPUnit\Framework\TestCase
 
         $json = json_decode($json);
 
+        $key = file_get_contents(__DIR__ . '/vectors/.testkey');
+
         foreach ($json as $algo => $data) {
             try {
-                $plaintext = \Dcrypt\OpensslStatic::decrypt(base64_decode($data), 'world', 'aes-256-gcm', $algo, 1000);
+                $plaintext = \Dcrypt\OpensslStatic::decrypt(base64_decode($data), $key, 'aes-256-gcm', $algo);
             } catch (\Exception|\Error $e) {
                 throw new \Exception("Failure in [$algo]: " . $e->getMessage());
             }
 
-            $this->assertEquals('hello', $plaintext);
+            $this->assertEquals('hello world', $plaintext);
         }
     }
 
@@ -25,14 +27,16 @@ class OpensslStaticTest extends \PHPUnit\Framework\TestCase
 
         $json = json_decode($json);
 
+        $key = file_get_contents(__DIR__ . '/vectors/.testkey');
+
         foreach ($json as $cipher => $data) {
             try {
-                $plaintext = \Dcrypt\OpensslStatic::decrypt(base64_decode($data), 'world', $cipher, 'sha256', 1000);
+                $plaintext = \Dcrypt\OpensslStatic::decrypt(base64_decode($data), $key, $cipher, 'sha3-256');
             } catch (\Exception|\Error $e) {
                 throw new \Exception("Failure in [$cipher]: " . $e->getMessage());
             }
 
-            $this->assertEquals('hello', $plaintext);
+            $this->assertEquals('hello world', $plaintext);
         }
     }
 }

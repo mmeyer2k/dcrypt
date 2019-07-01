@@ -4,7 +4,9 @@ class OpensslStackTest extends \PHPUnit\Framework\TestCase
 {
     public function testAes256StackWithPassword()
     {
-        $stack = (new \Dcrypt\OpensslStack('password', 10000))
+        $key = \Dcrypt\OpensslKeyGenerator::newKey();
+
+        $stack = (new \Dcrypt\OpensslStack($key))
             ->add('rc4-40', 'md2')
             ->add('bf-cbc', 'sha256')
             ->add('bf-cfb', 'sha256')

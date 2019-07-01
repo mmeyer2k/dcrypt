@@ -41,8 +41,8 @@ head -c 256 /dev/urandom | base64 -w 0 | xargs echo
 
 ### AES-256 GCM Encryption
 
-PHP 7.1 ships with support for new AEAD encryption modes, GCM being considered the safest of these.
-Dcrypt will handle the 32 bit AEAD authentication tag, SHA3-256 HMAC and initialization vector as a single string.
+Since PHP 7.1 supports native AEAD encryption modes, using GCM would be safest option for most applications.
+Dcrypt will handle the 32 bit AEAD authentication tag, SHA3-256 HMAC, initialization vector and encrypted message as a single string.
 
 ```php
 <?php
@@ -66,7 +66,7 @@ Several AES-256 encryption modes are supported out of the box via hardcoded clas
 | `\Dcrypt\Aes256Gcm`  |    `aes-256-gcm` | [wiki](https://en.wikipedia.org/wiki/Galois/Counter_Mode) |
 | `\Dcrypt\Aes256Cbc`  |    `aes-256-cbc` | [wiki](https://en.wikipedia.org/wiki/Block_cipher_mode_of_operation) |
 | `\Dcrypt\Aes256Ctr`  |    `aes-256-ctr` | [wiki](https://en.wikipedia.org/wiki/Block_cipher_mode_of_operation#Counter_(CTR)) |
-| `\Dcrypt\Aes256ofb`  |    `aes-256-ofb` | [wiki](https://en.wikipedia.org/wiki/Galois/Counter_Mode) |
+| `\Dcrypt\Aes256Ofb`  |    `aes-256-ofb` | [wiki](https://en.wikipedia.org/wiki/Galois/Counter_Mode) |
 | `\Dcrypt\Aes256Ecb`  |    `aes-256-ecb` | [wiki](https://en.wikipedia.org/wiki/Block_cipher_mode_of_operation#ECB) |
 
 ### Custom Encryption Suites

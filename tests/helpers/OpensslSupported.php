@@ -25,10 +25,16 @@ final class OpensslSupported
     {
         $algos = [];
 
+        $key = \Dcrypt\OpensslKeyGenerator::newKey();
+
         foreach (\hash_algos() as $algo) {
             try {
-                OpensslStatic::encrypt('test', 'test', 'aes-256-gcm', $algo, 1);
-                $algos[] = $algo;
+                $a = OpensslStatic::encrypt('test', $key, 'aes-256-gcm', $algo);
+                $b = OpensslStatic::decrypt($a, $key, 'aes-256-gcm', $algo);
+
+                if ($b === 'test') {
+                    $algos[] = $algo;
+                }
             } catch(\Error|\Exception $e) {
 
             }
@@ -41,10 +47,13 @@ final class OpensslSupported
     {
         $ciphers = [];
 
+        $key = \Dcrypt\OpensslKeyGenerator::newKey();
+
         foreach (\openssl_get_cipher_methods() as $cipher) {
             try {
-                $a = OpensslStatic::encrypt('test', 'test', $cipher, 'sha256', 1);
-                $b = OpensslStatic::decrypt($a, 'test', $cipher, 'sha256', 1);
+                $a = OpensslStatic::encrypt('test', $key, $cipher, 'sha256');
+                $b = OpensslStatic::decrypt($a, $key, $cipher, 'sha256');
+
                 if ($b === 'test') {
                     $ciphers[] = $cipher;
                 }
