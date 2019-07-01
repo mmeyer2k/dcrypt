@@ -16,6 +16,7 @@ $out = [
     'key' => $key,
     'algos' => [],
     'ciphers' => [],
+    'aes256' => [],
     'otp' => [],
 ];
 
@@ -25,7 +26,7 @@ foreach (\Dcrypt\OpensslSupported::ciphers() as $cipher) {
     }
 
     try {
-        $out['ciphers'][$cipher] = base64_encode(OpensslStatic::encrypt('hello world', $key, $cipher, 'sha3-256'));
+        $out['ciphers'][$cipher] = base64_encode(OpensslStatic::encrypt('a secret', $key, $cipher, 'sha3-256'));
     } catch (\Exception|\Error $e) {
 
     }
@@ -36,7 +37,12 @@ foreach (\Dcrypt\OpensslSupported::algos() as $algo) {
         continue;
     }
 
-    $out['algos'][$algo] = base64_encode(OpensslStatic::encrypt('hello world', $key, 'aes-256-gcm', $algo));
+    $out['algos'][$algo] = base64_encode(OpensslStatic::encrypt('a secret', $key, 'aes-256-gcm', $algo));
+}
+
+foreach(['Gcm', 'Ctr', 'Ofb', 'Cbc', 'Ecb'] as $mode){
+    $c = "\\Dcrypt\\Aes256$mode";
+    $out['aes256'][$c] = base64_encode($c::encrypt('a secret', $key));
 }
 
 foreach (range(1, 10) as $r) {

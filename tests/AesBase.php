@@ -56,4 +56,12 @@ class AesBase extends \PHPUnit\Framework\TestCase
 
         $this->assertContains($testname1, $testname2);
     }
+
+    public function testKnownVector()
+    {
+        $json = json_decode(file_get_contents(__DIR__ . '/.vectors.json'));
+        $c = $json->aes256->{static::$class};
+        $d = static::$class::decrypt(base64_decode($c), $json->key);
+        $this->assertEquals('a secret', $d);
+    }
 }

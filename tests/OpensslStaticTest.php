@@ -17,7 +17,7 @@ class OpensslStaticTest extends \PHPUnit\Framework\TestCase
                 throw new \Exception("Failure in [$algo]: " . $e->getMessage());
             }
 
-            $this->assertEquals('hello world', $plaintext);
+            $this->assertEquals('a secret', $plaintext);
         }
     }
 
@@ -34,7 +34,7 @@ class OpensslStaticTest extends \PHPUnit\Framework\TestCase
                 throw new \Exception("Failure in [$cipher]: " . $e->getMessage());
             }
 
-            $this->assertEquals('hello world', $plaintext);
+            $this->assertEquals('a secret', $plaintext);
         }
     }
 }
