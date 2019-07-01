@@ -44,7 +44,7 @@ Storing this key safely is up to you!
 ### AES-256 GCM Encryption
 
 Since PHP 7.1 supports native AEAD encryption modes, using GCM would be safest option for most applications.
-Dcrypt will handle the 32 bit AEAD authentication tag, SHA3-256 HMAC, initialization vector and encrypted message as a single unencoded string.
+Dcrypt will handle the 32 bit AEAD authentication tag, SHA3-256 HMAC ([Keccak](https://en.wikipedia.org/wiki/SHA-3)), initialization vector and encrypted message as a single unencoded string.
 
 ```php
 <?php
