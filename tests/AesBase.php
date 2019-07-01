@@ -16,7 +16,7 @@ class AesBase extends \PHPUnit\Framework\TestCase
 
     public function testEngineWithSomeRandomnessWhileInKeyMode()
     {
-        $input = \random_bytes(256);
+        $input = random_bytes(256);
         $key = \Dcrypt\OpensslKey::newKey();
 
         $encrypted = static::$class::encrypt($input, $key);
@@ -45,5 +45,15 @@ class AesBase extends \PHPUnit\Framework\TestCase
         $crazyKey = str_repeat('?', 10000);
 
         static::$class::encrypt('a secret', $crazyKey);
+    }
+
+    public function testNameMatch()
+    {
+        // Make sure that the name has the cipher in it so that there can never be a mismatch between
+        // the name of the cipher and the cipher given to openssl
+        $testname1 = strtolower(str_replace('-', '', static::$class::CIPHER));
+        $testname2 = strtolower(static::$class);
+
+        $this->assertContains($testname1, $testname2);
     }
 }

@@ -32,8 +32,8 @@ The dcrypt library helps application developers avoid common mistakes in crypto 
 Dcrypt strives to make correct usage simple, but it _is_ possible to use dcrypt incorrectly.
 Fully understanding the instructions is important.
 
-Dcrypt's functions __require__ the use of a 256 byte (minimum) key encoded with base64.
-To generate and encode a new key execute this command line:
+Dcrypt's functions __require__ the use of a high entropy 256 byte (minimum) key encoded with base64.
+To generate a new key quickly, execute this on the command line:
 
 ```bash
 head -c 256 /dev/urandom | base64 -w 0 | xargs echo
