@@ -90,9 +90,9 @@ Use any cipher/algo combination by calling the `OpensslStatic` class.
 
 ```php
 <?php
-$encrypted = \Dcrypt\OpensslStatic::encrypt('a secret', $key, 'des-ofb', 'md5');
+$encrypted = \Dcrypt\OpensslStatic::encrypt('a secret', $key, 'bf-ofb', 'crc32');
 
-$plaintext = \Dcrypt\OpensslStatic::decrypt($encrypted, $key, 'des-ofb', 'md5');
+$plaintext = \Dcrypt\OpensslStatic::decrypt($encrypted, $key, 'bf-ofb', 'crc32');
 ```
 
 #### Class Overloading
@@ -102,7 +102,7 @@ Dcrypt's internal functions are easily extendable by overloading the `OpensslBri
 ```php
 <?php
 
-class BlowfishCrc extends \Dcrypt\OpensslBridge 
+class BlowfishCrc32 extends \Dcrypt\OpensslBridge 
 {
     const CIPHER = 'bf-ofb';
 
@@ -114,9 +114,9 @@ then...
 
 ```php
 <?php
-$encrypted = \BlowfishCrc::encrypt('a secret', $key);
+$encrypted = \BlowfishCrc32::encrypt('a secret', $key);
 
-$plaintext = \BlowfishCrc::decrypt($encrypted, $key);
+$plaintext = \BlowfishCrc32::decrypt($encrypted, $key);
 ```
 
 #### Layered Encryption Factory
@@ -161,7 +161,10 @@ try {
 ## Stream Ciphers
 
 Be sure you understand the risks and inherent issues of using a stream cipher before proceeding.
-Stream ciphers have inherent flaws
+Read the relevant information before using a stream cipher for anything important
+
+- [https://en.wikipedia.org/wiki/Stream_cipher_attacks](https://en.wikipedia.org/wiki/Stream_cipher_attacks)
+- [https://jameshfisher.com/2018/01/01/making-a-stream-cipher/](https://jameshfisher.com/2018/01/01/making-a-stream-cipher/)
 
 ### One Time Pad
 
@@ -176,6 +179,7 @@ $plaintext = \Dcrypt\Otp::crypt($encrypted, $key);
 ```
 
 `Otp` can also be configured to use any other hashing algorithm to generate the pseudorandom keystream.
+
 ```php
 <?php
 $encrypted = \Dcrypt\Otp::crypt('a secret', $key, 'whirlpool');
@@ -189,4 +193,5 @@ Developing dcrypt has been a great journey for many years.
 If you find dcrypt useful, please consider donating some Litecoin.
  
 __`LN97LrLCNiv14V6fntp247H2pj9UiFzUQZ`__
+
  ![litecoin address](https://mmeyer2k.github.io/images/litecoin-wallet.png)
