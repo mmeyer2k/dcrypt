@@ -22,13 +22,4 @@ class OpensslKeyGeneratorTest extends \PHPUnit\Framework\TestCase
 
         new \Dcrypt\OpensslKeyGenerator('sha256', $key, 'aes-256-gcm', \random_bytes(128), 10000);
     }
-
-    public function testInvalidAlgo()
-    {
-        $this->expectException(\Error::class);
-
-        $key = \Dcrypt\OpensslKeyGenerator::newKey(256);
-
-        \Dcrypt\OpensslStatic::encrypt('AAAA', 'BBBB', 'aes-256-gcm', 'crc32', 10000);
-    }
 }
