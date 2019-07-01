@@ -4,16 +4,15 @@ This document serves as a high level design document for the block cipher functi
 
 ## Definitions
 - `SALT` initialization vector generated with `random_bytes`.
-- `COST` integer which will ultimately be passed as cost parameter to `PBKDF2`. Can be set to `0` in cases where a high entropy key is supplied for `PASSKEY`.
 - `CIPHER` the chosen cipher method as a string
 - `ALGO` the chosen hmac algorithm as a string
-- `PASSKEY` a password or key selected
+- `KEY` key selected for symmetric encryption
 - `ENCRINFO` is the string `encryptionKey` + `|` + `CIPHER`
 - `AUTHINFO` is the string `authenticationKey` + `|` + `CIPHER`
 - `MTEXT` the plaintext message to be encrypted
 - `PBKDF2` is the password-based key derivation function supported by PHP (hash_pbkdf2). The parameters are:
     - `ALGO`
-    - `PASSKEY`
+    - `KEY`
     - `SALT`
     - `COST` number of iterations
 - `HKDF` is the password-based key derivation function supported by PHP (hash_hkdf) and defined as ([RFC-5869](https://tools.ietf.org/html/rfc5869)). The parameters are:
@@ -27,7 +26,6 @@ This document serves as a high level design document for the block cipher functi
 
 ## Steps for encryption
 1. Obtain a new `SALT` of appropriate size for given `CIPHER`
-1. Derive a new key `PKEY` from `PASSKEY` using `PBKDF2()` when `COST >= 1`. If `COST = 0` (default) then `PKEY = PASSKEY`.
 1. Derive authentication key `AKEY` = `HKDF` with info parameter = `AUTHINFO`
 1. Derive encryption key `EKEY` = `HKDF` with info parameter = `ENCRINFO`
 1. Use `OPENSSL_ENCRYPT` to get the raw encrypted string `CTEXT`

@@ -15,7 +15,6 @@
 namespace Dcrypt;
 
 use Dcrypt\Exceptions\InvalidKeyException;
-use Dcrypt\Exceptions\InvalidPasswordException;
 
 /**
  * Provides key derivation functions
@@ -51,34 +50,19 @@ final class OpensslKeyGenerator
     /**
      * OpensslKeyGenerator constructor.
      *
-     * @param string $algo    Algo to use for PBKDF2 and HKDF
-     * @param string $passkey Password or key
-     * @param string $cipher  Openssl cipher
-     * @param string $ivr     Initialization vactor
-     * @param int $cost       Cost value for PBKDF2
+     * @param string $algo   Algo to use for PBKDF2 and HKDF
+     * @param string $key    Password or key
+     * @param string $cipher Openssl cipher
+     * @param string $ivr    Initialization vactor
      */
-    public function __construct(string $algo, string $passkey, string $cipher, string $ivr, int $cost = 0)
+    public function __construct(string $algo, string $key, string $cipher, string $ivr)
     {
-        // When cost is 0 then we are in key mode
-        if ($cost === 0) {
-            // Attempt to decode the passkey
-            $passkey = \base64_decode($passkey);
+        // Store the key as what was supplied
+        $this->key = \base64_decode($key);
 
-            // Make sure key was properly decoded and meets minimum required length
-            if (Str::strlen($passkey) < 256) {
-                throw new InvalidKeyException("Key must be at least 256 bytes and base64 encoded.");
-            }
-
-            // Store the key as what was supplied
-            $this->key = $passkey;
-        } else {
-            // Make sure that the user is not attempting to use a key in password word mode
-            if (Str::strlen($passkey) >= 256) {
-                throw new InvalidPasswordException("Passwords must be less than 256 bytes.");
-            }
-
-            // Derive the key from the password and store in object
-            $this->key = \hash_pbkdf2($algo, $passkey, $ivr, $cost, 0, true);
+        // Make sure key was properly decoded and meets minimum required length
+        if (Str::strlen($this->key) < 256) {
+            throw new InvalidKeyException("Key must be at least 256 bytes and base64 encoded.");
         }
 
         // Store the cipher string

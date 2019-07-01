@@ -21,7 +21,7 @@ For legacy PHP version support, look [here](https://github.com/mmeyer2k/dcrypt/b
 Add dcrypt to your composer.json file requirements.
 Don't worry, dcrypt does not have any dependencies of its own.
 ```bash
-composer require "mmeyer2k/dcrypt=^10.0"
+composer require "mmeyer2k/dcrypt=^11.0"
 ```
 
 # Features
@@ -30,11 +30,10 @@ composer require "mmeyer2k/dcrypt=^10.0"
 
 The dcrypt library helps application developers avoid common mistakes in crypto implementations that leave data at risk while still providing flexibility in its options for crypto enthusiasts.
 Dcrypt strives to make correct usage simple, but it _is_ possible to use dcrypt incorrectly.
+Fully understanding the instructions is important.
 
-__NOTE__: Dcrypt's default configurations assume the usage of a base64 encoded high entropy key with a minimum of 256 bytes. 
-Be sure to read the section on key hardening and pay close attention to the differences between `$key` and `$password`.
-
-To generate a strong new key execute this command line:
+Dcrypt's functions require the use of a 256 byte (minimum) key encoded with base64.
+To generate and encode a new key execute this command line:
 
 ```bash
 head -c 256 /dev/urandom | base64 -w 0 | xargs echo
@@ -43,7 +42,7 @@ head -c 256 /dev/urandom | base64 -w 0 | xargs echo
 ### AES-256 GCM Encryption
 
 PHP 7.1 ships with support for new AEAD encryption modes, GCM being considered the safest of these.
-Dcrypt will handle the 32 bit AEAD authentication tag, SHA-256 HMAC and initialization vector as a single string.
+Dcrypt will handle the 32 bit AEAD authentication tag, SHA3-256 HMAC and initialization vector as a single string.
 
 ```php
 <?php
@@ -67,6 +66,7 @@ Several AES-256 encryption modes are supported out of the box via hardcoded clas
 | `\Dcrypt\Aes256Gcm`  |    `aes-256-gcm` | [wiki](https://en.wikipedia.org/wiki/Galois/Counter_Mode) |
 | `\Dcrypt\Aes256Cbc`  |    `aes-256-cbc` | [wiki](https://en.wikipedia.org/wiki/Block_cipher_mode_of_operation) |
 | `\Dcrypt\Aes256Ctr`  |    `aes-256-ctr` | [wiki](https://en.wikipedia.org/wiki/Block_cipher_mode_of_operation#Counter_(CTR)) |
+| `\Dcrypt\Aes256ofb`  |    `aes-256-ofb` | [wiki](https://en.wikipedia.org/wiki/Galois/Counter_Mode) |
 | `\Dcrypt\Aes256Ecb`  |    `aes-256-ecb` | [wiki](https://en.wikipedia.org/wiki/Block_cipher_mode_of_operation#ECB) |
 
 ### Custom Encryption Suites
@@ -104,12 +104,13 @@ then...
 
 ```php
 <?php
-$encrypted = \BlowfishCrc::encrypt('a secret', $password);
+$encrypted = \BlowfishCrc::encrypt('a secret', $key);
 
-$plaintext = \BlowfishCrc::decrypt($encrypted, $password);
+$plaintext = \BlowfishCrc::decrypt($encrypted, $key);
 ```
 
 ### Message Authenticity Checking
+
 By default, `\Dcrypt\Exceptions\InvalidChecksumException` exception will be raised before decryption is allowed to proceed when the supplied checksum is not valid.
 
 ```php
@@ -124,35 +125,6 @@ try {
 } catch (\Dcrypt\Exceptions\InvalidChecksumException $ex) {
     // ...
 }
-```
-
-### PBKDF2 Key Hardening
-
-Key-based encryption mode is _highly_ preferred because the PBKDF2 hardening process can be skipped, reducing overhead.
-If using strong keys never use these options.
-
-When using a source of low entropy for the password/key (or "passkey") parameter, a `$cost` value of appropriate size _must_ be chosen based on the requirements of the application.
-High cost values could lead to DoS attacks if used improperly for your application, use caution when selecting this number.
-
-The PBKDF2 cost can be defined in a custom class...
-
-```php
-<?php
-
-class Aes256GcmWithCost extends \Dcrypt\Aes256Gcm 
-{
-    const COST = 1000000;
-}
-```
-
-or by passing a third parameter to the (en|de)crypt calls.
-The `$cost` parameter always overloads any value stored in the class's `const COST`.
-
-```php
-<?php
-$encrypted = \Dcrypt\Aes256Gcm::encrypt('a secret', $password, 10000);
-
-$plaintext = \Dcrypt\Aes256Gcm::decrypt($encrypted, $password, 10000);
 ```
 
 ### Layered Encryption Factory
@@ -183,7 +155,7 @@ Be sure you understand the risks and inherent issues of using a stream cipher be
 ### One Time Pad Encryption
 
 A fast symmetric stream cipher is quickly accessible with the `Otp` class.
-`Otp` uses SHA-512 to output a keystream that is ⊕'d with the input in 512 bit chunks.
+`Otp` uses SHA3-512 to output a keystream that is ⊕'d with the input in 512 bit chunks.
 
 
 ```php
@@ -207,15 +179,15 @@ $plaintext = \Dcrypt\Otp::crypt($encrypted, $key, 'whirlpool');
 
 ```php
 <?php
-$encrypted = \Dcrypt\Rc4::crypt('a secret', $password);
+$encrypted = \Dcrypt\Rc4::crypt('a secret', $key);
 
-$plaintext = \Dcrypt\Rc4::crypt($encrypted, $password);
+$plaintext = \Dcrypt\Rc4::crypt($encrypted, $key);
 ```
 ```php
 <?php
-$encrypted = \Dcrypt\Spritz::crypt('a secret', $password);
+$encrypted = \Dcrypt\Spritz::crypt('a secret', $key);
 
-$plaintext = \Dcrypt\Spritz::crypt($encrypted, $password);
+$plaintext = \Dcrypt\Spritz::crypt($encrypted, $key);
 ```
 
 **NOTE**: 

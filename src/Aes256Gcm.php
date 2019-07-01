@@ -37,5 +37,5 @@ class Aes256Gcm extends OpensslBridge
      *
      * @var string
      */
-    const ALGO = 'sha256';
+    const ALGO = 'sha3-256';
 }
