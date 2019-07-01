@@ -44,8 +44,29 @@ class OpensslStaticTest extends \PHPUnit\Framework\TestCase
     {
         $key = \Dcrypt\OpensslKey::newKey();
 
-        $this->expectException(\Dcrypt\Exceptions\OpensslException::class);
+        $pass = false;
 
-        OpensslStatic::encrypt('a secret', $key, 'lol this cipher doesnt exist', 'sha3-256');
+        try {
+            OpensslStatic::encrypt('a secret', $key, 'lol this cipher doesnt exist', 'sha3-256');
+        } catch(\Exception $e) {
+            $pass = true;
+        }
+
+        $this->assertTrue($pass);
+    }
+
+    public function testBadAlgoException()
+    {
+        $key = \Dcrypt\OpensslKey::newKey();
+
+        $pass = false;
+
+        try {
+            OpensslStatic::encrypt('a secret', $key, 'aes-256-gcm', 'lol this algo doesnt exist');
+        } catch(\Exception $e) {
+            $pass = true;
+        }
+
+        $this->assertTrue($pass);
     }
 }
