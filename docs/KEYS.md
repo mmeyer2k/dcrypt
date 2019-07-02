@@ -6,7 +6,7 @@ This document explains some of the reasoning behind these design decisions and s
 ## Why 2048 bytes though?
 
 At 2048 bytes the probability of any byte in the 0x00 to 0xFF range being used at least once approaches 1.
-Unless, of course, a source of low entropy were to used for the initial keying material.
+Unless, of course, a source of low entropy were used for the initial keying material.
 
 A basic test is performed at run time to indicate whether the key is likely to be pseudorandom.
 An exception is raised if the key does not pass this test.
