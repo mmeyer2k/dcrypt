@@ -13,9 +13,9 @@ jobs:
       - run: wget https://scrutinizer-ci.com/ocular.phar
       - run: php ocular.phar code-coverage:upload --format=php-clover coverage.clover
       - save_cache:
-        key: source-php7.1-{{ .Branch }}-{{ .Revision }}
-        paths:
-          - vendor
+          key: source-php7.2-{{ .Branch }}-{{ .Revision }}
+          paths:
+            - vendor
       - store_artifacts:
           path: coverage
       - store_artifacts:
@@ -29,9 +29,9 @@ jobs:
       - run: composer require phpunit/phpunit
       - run: php vendor/phpunit/phpunit/phpunit
       - save_cache:
-        key: source-php7.2-{{ .Branch }}-{{ .Revision }}
-        paths:
-          - vendor
+          key: source-php7.2-{{ .Branch }}-{{ .Revision }}
+          paths:
+            - vendor
 
   build-73:
     docker:
@@ -41,9 +41,9 @@ jobs:
       - run: composer require phpunit/phpunit
       - run: php vendor/phpunit/phpunit/phpunit
       - save_cache:
-        key: source-php7.3-{{ .Branch }}-{{ .Revision }}
-        paths:
-          - vendor
+          key: source-php7.2-{{ .Branch }}-{{ .Revision }}
+          paths:
+            - vendor
         
 workflows:
   version: 2
