@@ -21,7 +21,7 @@ class OpensslKeyTest extends \PHPUnit\Framework\TestCase
         $key = \Dcrypt\OpensslKey::create();
 
         // Double encode the key
-        $key = base32_encode($key);
+        $key = \base64_encode($key);
 
         $this->expectException(InvalidKeyException::class);
 
