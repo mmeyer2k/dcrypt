@@ -26,10 +26,12 @@ For legacy PHP version support, look [here](https://github.com/mmeyer2k/dcrypt/b
 - [Show me some love](#show-me-some-love-heart_eyes) :heart_eyes::beer:
 
 # Install
+
 Add dcrypt to your composer.json file requirements.
 Don't worry, dcrypt does not have any dependencies of its own.
+
 ```bash
-composer require "mmeyer2k/dcrypt=^11.0"
+composer require "mmeyer2k/dcrypt=^12.0"
 ```
 
 # Features
