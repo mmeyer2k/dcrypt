@@ -5,6 +5,11 @@ jobs:
       - image: circleci/php:7.1
     steps:
       - checkout
+      - restore_cache:
+          keys:
+            - source-php7.1-{{ .Branch }}-{{ .Revision }}
+            - source-php7.1-{{ .Branch }}-
+            - source-php7.1-
       - run: composer require phpunit/phpunit infection/infection
       - run: mkdir -p coverage
       - run: php vendor/phpunit/phpunit/phpunit --coverage-html coverage --coverage-clover=coverage.clover
@@ -13,7 +18,7 @@ jobs:
       - run: wget https://scrutinizer-ci.com/ocular.phar
       - run: php ocular.phar code-coverage:upload --format=php-clover coverage.clover
       - save_cache:
-          key: source-php7.2-{{ .Branch }}-{{ .Revision }}
+          key: source-php7.1-{{ .Branch }}-{{ .Revision }}
           paths:
             - vendor
       - store_artifacts:
@@ -26,6 +31,11 @@ jobs:
       - image: circleci/php:7.2
     steps:
       - checkout
+      - restore_cache:
+          keys:
+            - source-php7.2-{{ .Branch }}-{{ .Revision }}
+            - source-php7.2-{{ .Branch }}-
+            - source-php7.2-
       - run: composer require phpunit/phpunit
       - run: php vendor/phpunit/phpunit/phpunit
       - save_cache:
@@ -38,6 +48,11 @@ jobs:
       - image: circleci/php:7.3
     steps:
       - checkout
+      - restore_cache:
+          keys:
+            - source-php7.2-{{ .Branch }}-{{ .Revision }}
+            - source-php7.2-{{ .Branch }}-
+            - source-php7.2-
       - run: composer require phpunit/phpunit
       - run: php vendor/phpunit/phpunit/phpunit
       - save_cache:
