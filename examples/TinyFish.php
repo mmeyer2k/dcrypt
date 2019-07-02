@@ -24,11 +24,4 @@ class TinyFish extends \Dcrypt\OpensslBridge
      * @var string
      */
     const ALGO = 'crc32';
-
-    /**
-     * Cost value for hash_pbkdf2
-     *
-     * @var int
-     */
-    const COST = 1000;
 }

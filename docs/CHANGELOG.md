@@ -1,5 +1,12 @@
 # Changes in Dcrypt
 
+## 12.0.0
+- Adds PHP 7.3 testing support to circle ci
+- Clearer base64 class overload example
+- Signature change on the Openssl::newKey method
+- Rename `Otp` to `OneTimePad`
+- Refactor key object constructor
+
 ## 11.0.0
 - Move to default of SHA3-256 instead of SHA-256 for block ciphers
 - Move to default of SHA3-512 instead of SHA-512 for OTP
@@ -49,3 +56,20 @@
 
 ## 9.0.0
 - Removes some remains of mcrypt code
+
+## 8.3.1
+- Documentation updates
+- Change to keying system
+- Rename Aes wrapper class
+
+## 8.3.0
+- Rebuilt openssl encryption internal functions to be more easily extendable
+- Simplified api
+- Improved docs
+- More sensible class names
+- Removed gitignore
+- Removed last composer dependency
+- Smarter key generation step
+
+## 8.2.1
+- Minor scoping fixes

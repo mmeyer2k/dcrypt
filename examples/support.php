@@ -5,12 +5,12 @@ error_reporting(0);
 /**
  * support.php
  *
- * Displays supported
+ * Displays supported ciphers and algos
  */
 
 require __DIR__ . '/../vendor/autoload.php';
 
-$key = \Dcrypt\OpensslKey::newKey();
+$key = \Dcrypt\OpensslKey::create();
 
 echo "\nCIPHERS ----------------------------------------------------------------------------------------------\n";
 
@@ -29,7 +29,7 @@ foreach (\openssl_get_cipher_methods() as $meth) {
         echo " [pass] ";
     } catch (\Exception|\Error $e) {
         $m = $e->getMessage();
-        echo " [fail] [$m]";
+        echo " [fail] [!!!]";
     } finally {
         echo "\n";
     }
@@ -52,7 +52,7 @@ foreach (\hash_algos() as $algo) {
         echo " [pass] ";
     } catch (\Exception|\Error $e) {
         $m = $e->getMessage();
-        echo " [fail] [$m]";
+        echo " [fail] [!!!]";
     } finally {
         echo "\n";
     }

@@ -1,7 +1,7 @@
 <?php declare(strict_types=1);
 
 /**
- * Otp.php
+ * OneTimePad.php
  * 
  * PHP version 7
  * 
@@ -24,7 +24,7 @@ namespace Dcrypt;
  * @link     https://github.com/mmeyer2k/dcrypt
  * @link     http://en.wikipedia.org/wiki/Stream_cipher
  */
-class Otp
+class OneTimePad
 {
     /**
      * Encrypt or decrypt a binary input string.
@@ -40,7 +40,7 @@ class Otp
 
         $length = Str::strlen($input);
 
-        $key = new OpensslKey($algo, $key, '', (string)$length);
+        $key = new OpensslKey($algo, $key, '');
 
         foreach ($chunks as $i => &$chunk) {
             $info = $length . $i;

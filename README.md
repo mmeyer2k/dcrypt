@@ -26,10 +26,12 @@ For legacy PHP version support, look [here](https://github.com/mmeyer2k/dcrypt/b
 - [Show me some love](#show-me-some-love-heart_eyes) :heart_eyes::beer:
 
 # Install
+
 Add dcrypt to your composer.json file requirements.
 Don't worry, dcrypt does not have any dependencies of its own.
+
 ```bash
-composer require "mmeyer2k/dcrypt=^11.0"
+composer require "mmeyer2k/dcrypt=^12.0"
 ```
 
 # Features
@@ -40,11 +42,11 @@ The dcrypt library helps application developers avoid common mistakes in crypto 
 Dcrypt strives to make correct usage simple, but it _is_ possible to use dcrypt incorrectly.
 Fully understanding the instructions is important.
 
-Dcrypt's functions __require__ the use of a high entropy 256 byte (minimum) key encoded with base64.
-To generate a new key quickly, execute this on the command line:
+Dcrypt's functions __require__ the use of a high entropy __2048 byte__ (minimum) key encoded with base64.
+To generate a new key, execute this on the command line:
 
 ```bash
-head -c 256 /dev/urandom | base64 -w 0 | xargs echo
+head -c 2048 /dev/urandom | base64 -w 0 | xargs echo
 ```
 
 Storing this key safely is up to you!
@@ -56,7 +58,7 @@ Dcrypt will handle the 32 bit AEAD authentication tag, SHA3-256 HMAC ([Keccak](h
 
 ```php
 <?php
-$key = "replace this with the output of: head -c 256 /dev/urandom | base64 -w 0 | xargs echo";
+$key = "replace this with the output of: head -c 2048 /dev/urandom | base64 -w 0 | xargs echo";
 
 $encrypted = \Dcrypt\Aes256Gcm::encrypt('a secret', $key);
 
@@ -168,23 +170,23 @@ Read the relevant information before using a stream cipher for anything importan
 
 ### One Time Pad
 
-A fast symmetric stream cipher is quickly accessible with the `Otp` class.
-`Otp` uses SHA3-512 to output a keystream that is ⊕'d with the input in 512 bit chunks.
+A fast symmetric stream cipher is quickly accessible with the `OneTimePad` class.
+`OneTimePad` uses SHA3-512 to output a keystream that is ⊕'d with the input in 512 bit chunks.
 
 ```php
 <?php
-$encrypted = \Dcrypt\Otp::crypt('a secret', $key);
+$encrypted = \Dcrypt\OneTimePad::crypt('a secret', $key);
 
-$plaintext = \Dcrypt\Otp::crypt($encrypted, $key);
+$plaintext = \Dcrypt\OneTimePad::crypt($encrypted, $key);
 ```
 
 `Otp` can also be configured to use any other hashing algorithm to generate the pseudorandom keystream.
 
 ```php
 <?php
-$encrypted = \Dcrypt\Otp::crypt('a secret', $key, 'whirlpool');
+$encrypted = \Dcrypt\OneTimePad::crypt('a secret', $key, 'whirlpool');
 
-$plaintext = \Dcrypt\Otp::crypt($encrypted, $key, 'whirlpool');
+$plaintext = \Dcrypt\OneTimePad::crypt($encrypted, $key, 'whirlpool');
 ```
 
 # Show me some love :heart_eyes::beer:

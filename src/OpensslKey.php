@@ -43,31 +43,27 @@ final class OpensslKey
     private $ivr;
 
     /**
-     * @var string
-     */
-    private $cipher;
-
-    /**
      * OpensslKey constructor.
      *
-     * @param string $algo   Algo to use for HKDF
-     * @param string $key    Key
-     * @param string $cipher Openssl cipher
-     * @param string $ivr    Initialization vactor
-     * @throws Exceptions\InvalidKeyException
+     * @param string $algo Algo to use for HKDF
+     * @param string $key  Key
+     * @param string $ivr  Initialization vactor
+     * @throws InvalidKeyException
      */
-    public function __construct(string $algo, string $key, string $cipher, string $ivr)
+    public function __construct(string $algo, string $key, string $ivr)
     {
         // Store the key as what was supplied
         $this->key = \base64_decode($key);
 
         // Make sure key was properly decoded and meets minimum required length
-        if (!is_string($this->key) || Str::strlen($this->key) < 256) {
+        if (!is_string($this->key) || Str::strlen($this->key) < 2048) {
             throw new InvalidKeyException("Key must be at least 256 bytes and base64 encoded.");
         }
 
-        // Store the cipher string
-        $this->cipher = $cipher;
+        // Make sure key meets minimum entropy requirement
+        if (\count(\array_unique(\str_split($this->key))) < 250) {
+            throw new InvalidKeyException("Key does not contain the minimum amount of entropy.");
+        }
 
         // Store algo in object
         $this->algo = $algo;
@@ -79,21 +75,23 @@ final class OpensslKey
     /**
      * Generate the authentication key
      *
+     * @param string $info
      * @return string
      */
-    public function authenticationKey(): string
+    public function authenticationKey(string $info): string
     {
-        return $this->deriveKey(__FUNCTION__);
+        return $this->deriveKey(__FUNCTION__ . '|' . $info);
     }
 
     /**
      * Generate the encryption key
      *
+     * @param string $info
      * @return string
      */
-    public function encryptionKey(): string
+    public function encryptionKey(string $info): string
     {
-        return $this->deriveKey(__FUNCTION__);
+        return $this->deriveKey(__FUNCTION__ . '|' . $info);
     }
 
     /**
@@ -104,8 +102,6 @@ final class OpensslKey
      */
     public function deriveKey(string $info): string
     {
-        $info = $info . '|' . $this->cipher;
-
         $key = \hash_hkdf($this->algo, $this->key, 0, $info, $this->ivr);
 
         return $key;
@@ -116,12 +112,12 @@ final class OpensslKey
      *
      * @param int $size Size of key in bytes
      * @return string
-     * @throws Exceptions\InvalidKeyException
+     * @throws InvalidKeyException
      */
-    public static function newKey(int $bytes = 256): string
+    public static function create(int $bytes = 2048): string
     {
-        if ($bytes < 256) {
-            throw new InvalidKeyException('Keys must be at least 256 bytes long.');
+        if ($bytes < 2048) {
+            throw new InvalidKeyException('Keys must be at least 2048 bytes long.');
         }
 
         return \base64_encode(\random_bytes($bytes));
