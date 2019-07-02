@@ -91,3 +91,11 @@
 - Better internal API
 - Dropped more PHP5 specific code
 - Better code docs
+
+## 8.0.1
+- Released 8.0.1 before merging PR
+
+## 8.0.0
+- `Aes` has been renamed to `AesCbc`.
+- Many improvents to structure and readability
+- Added normalized hmac wrapper
