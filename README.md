@@ -40,11 +40,11 @@ The dcrypt library helps application developers avoid common mistakes in crypto 
 Dcrypt strives to make correct usage simple, but it _is_ possible to use dcrypt incorrectly.
 Fully understanding the instructions is important.
 
-Dcrypt's functions __require__ the use of a high entropy 256 byte (minimum) key encoded with base64.
-To generate a new key quickly, execute this on the command line:
+Dcrypt's functions __require__ the use of a high entropy __2048 byte__ (minimum) key encoded with base64.
+To generate a new key, execute this on the command line:
 
 ```bash
-head -c 256 /dev/urandom | base64 -w 0 | xargs echo
+head -c 2048 /dev/urandom | base64 -w 0 | xargs echo
 ```
 
 Storing this key safely is up to you!
@@ -56,7 +56,7 @@ Dcrypt will handle the 32 bit AEAD authentication tag, SHA3-256 HMAC ([Keccak](h
 
 ```php
 <?php
-$key = "replace this with the output of: head -c 256 /dev/urandom | base64 -w 0 | xargs echo";
+$key = "replace this with the output of: head -c 2048 /dev/urandom | base64 -w 0 | xargs echo";
 
 $encrypted = \Dcrypt\Aes256Gcm::encrypt('a secret', $key);
 

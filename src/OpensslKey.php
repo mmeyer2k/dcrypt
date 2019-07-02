@@ -62,8 +62,13 @@ final class OpensslKey
         $this->key = \base64_decode($key);
 
         // Make sure key was properly decoded and meets minimum required length
-        if (!is_string($this->key) || Str::strlen($this->key) < 256) {
+        if (!is_string($this->key) || Str::strlen($this->key) < 2048) {
             throw new InvalidKeyException("Key must be at least 256 bytes and base64 encoded.");
+        }
+
+        // Make sure key meets minimum entropy requirement
+        if (\count(\array_unique(\str_split($this->key))) < 250) {
+            throw new InvalidKeyException("Key does not contain the minimum amount of entropy.");
         }
 
         // Store the cipher string
@@ -118,10 +123,10 @@ final class OpensslKey
      * @return string
      * @throws InvalidKeyException
      */
-    public static function create(int $bytes = 256): string
+    public static function create(int $bytes = 2048): string
     {
-        if ($bytes < 256) {
-            throw new InvalidKeyException('Keys must be at least 256 bytes long.');
+        if ($bytes < 2048) {
+            throw new InvalidKeyException('Keys must be at least 2048 bytes long.');
         }
 
         return \base64_encode(\random_bytes($bytes));
