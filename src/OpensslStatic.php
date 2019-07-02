@@ -68,7 +68,7 @@ final class OpensslStatic extends OpensslWrapper
 
         // Compare given checksum against computed checksum using a time-safe function
         if (!Str::equal($chk, $sum)) {
-            throw new InvalidChecksumException('Decryption can not proceed due to invalid cyphertext checksum.');
+            throw new InvalidChecksumException('Decryption can not proceed due to invalid ciphertext checksum.');
         }
 
         // Decrypt message and return

@@ -1,5 +1,12 @@
 # Changes in Dcrypt
 
+## 12.0.1
+- Much more efficient testing config
+- Fix spelling mistakes
+- Create a keys guide
+- Add vendor caching to circle tests
+- Add a ONETIMEPAD spec document
+
 ## 12.0.0
 - Increase minimum key size to 2048 bytes
 - Adds PHP 7.3 testing support to circle ci
@@ -84,3 +91,11 @@
 - Better internal API
 - Dropped more PHP5 specific code
 - Better code docs
+
+## 8.0.1
+- Released 8.0.1 before merging PR
+
+## 8.0.0
+- `Aes` has been renamed to `AesCbc`.
+- Many improvents to structure and readability
+- Added normalized hmac wrapper

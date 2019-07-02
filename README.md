@@ -49,7 +49,10 @@ To generate a new key, execute this on the command line:
 head -c 2048 /dev/urandom | base64 -w 0 | xargs echo
 ```
 
-Storing this key safely is up to you!
+Storing this key safely is up to you! [Guide to keys](https://github.com/mmeyer2k/dcrypt/blob/master/docs/KEYS.md).
+
+[Specification document](https://github.com/mmeyer2k/dcrypt/blob/master/docs/CRYPTO.md)
+
 
 ### AES-256 GCM Encryption
 
@@ -163,15 +166,17 @@ try {
 ## Stream Ciphers
 
 Be sure you understand the risks and inherent issues of using a stream cipher before proceeding.
-Read the relevant information before using a stream cipher for anything important
+Read the relevant information before using a stream cipher for anything important:
 
 - [https://en.wikipedia.org/wiki/Stream_cipher_attacks](https://en.wikipedia.org/wiki/Stream_cipher_attacks)
 - [https://jameshfisher.com/2018/01/01/making-a-stream-cipher/](https://jameshfisher.com/2018/01/01/making-a-stream-cipher/)
 
 ### One Time Pad
 
-A fast symmetric stream cipher is quickly accessible with the `OneTimePad` class.
+A novel counter-based stream cipher.
 `OneTimePad` uses SHA3-512 to output a keystream that is ⊕'d with the input in 512 bit chunks.
+
+[Specification document](https://github.com/mmeyer2k/dcrypt/blob/master/docs/ONETIMEPAD.md)
 
 ```php
 <?php

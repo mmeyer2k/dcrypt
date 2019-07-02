@@ -47,7 +47,7 @@ final class OpensslKey
      *
      * @param string $algo Algo to use for HKDF
      * @param string $key  Key
-     * @param string $ivr  Initialization vactor
+     * @param string $ivr  Initialization vector
      * @throws InvalidKeyException
      */
     public function __construct(string $algo, string $key, string $ivr)
@@ -57,7 +57,7 @@ final class OpensslKey
 
         // Make sure key was properly decoded and meets minimum required length
         if (!is_string($this->key) || Str::strlen($this->key) < 2048) {
-            throw new InvalidKeyException("Key must be at least 256 bytes and base64 encoded.");
+            throw new InvalidKeyException("Key must be at least 2048 bytes and base64 encoded.");
         }
 
         // Make sure key meets minimum entropy requirement
@@ -95,16 +95,14 @@ final class OpensslKey
     }
 
     /**
-     * Derive a key with differing authinfo strings
+     * Derive a key with differing info string parameters
      *
      * @param string $info Info parameter to provide to hash_hkdf
      * @return string
      */
     public function deriveKey(string $info): string
     {
-        $key = \hash_hkdf($this->algo, $this->key, 0, $info, $this->ivr);
-
-        return $key;
+        return \hash_hkdf($this->algo, $this->key, 0, $info, $this->ivr);
     }
 
     /**
