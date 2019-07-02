@@ -75,6 +75,7 @@ final class OpensslKey
     /**
      * Generate the authentication key
      *
+     * @param string $info
      * @return string
      */
     public function authenticationKey(string $info): string
@@ -85,11 +86,12 @@ final class OpensslKey
     /**
      * Generate the encryption key
      *
+     * @param string $info
      * @return string
      */
-    public function encryptionKey(): string
+    public function encryptionKey(string $info): string
     {
-        return $this->deriveKey(__FUNCTION__);
+        return $this->deriveKey(__FUNCTION__ . '|' . $info);
     }
 
     /**

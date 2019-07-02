@@ -168,23 +168,23 @@ Read the relevant information before using a stream cipher for anything importan
 
 ### One Time Pad
 
-A fast symmetric stream cipher is quickly accessible with the `Otp` class.
-`Otp` uses SHA3-512 to output a keystream that is ⊕'d with the input in 512 bit chunks.
+A fast symmetric stream cipher is quickly accessible with the `OneTimePad` class.
+`OneTimePad` uses SHA3-512 to output a keystream that is ⊕'d with the input in 512 bit chunks.
 
 ```php
 <?php
-$encrypted = \Dcrypt\Otp::crypt('a secret', $key);
+$encrypted = \Dcrypt\OneTimePad::crypt('a secret', $key);
 
-$plaintext = \Dcrypt\Otp::crypt($encrypted, $key);
+$plaintext = \Dcrypt\OneTimePad::crypt($encrypted, $key);
 ```
 
 `Otp` can also be configured to use any other hashing algorithm to generate the pseudorandom keystream.
 
 ```php
 <?php
-$encrypted = \Dcrypt\Otp::crypt('a secret', $key, 'whirlpool');
+$encrypted = \Dcrypt\OneTimePad::crypt('a secret', $key, 'whirlpool');
 
-$plaintext = \Dcrypt\Otp::crypt($encrypted, $key, 'whirlpool');
+$plaintext = \Dcrypt\OneTimePad::crypt($encrypted, $key, 'whirlpool');
 ```
 
 # Show me some love :heart_eyes::beer:

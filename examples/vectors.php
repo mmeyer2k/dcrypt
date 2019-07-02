@@ -48,7 +48,7 @@ foreach(['Gcm', 'Ctr', 'Ofb', 'Cbc', 'Ecb'] as $mode){
 foreach (range(1, 10) as $r) {
     $mult = $r * $r * 10;
 
-    $out['otp'][$mult] = \base64_encode(\Dcrypt\Otp::crypt(str_repeat('A', $mult), $key));
+    $out['otp'][$mult] = \base64_encode(\Dcrypt\OneTimePad::crypt(str_repeat('A', $mult), $key));
 }
 
 file_put_contents(__DIR__ . '/../tests/.vectors.json', \json_encode($out, JSON_PRETTY_PRINT));

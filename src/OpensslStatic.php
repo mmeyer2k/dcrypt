@@ -72,7 +72,7 @@ final class OpensslStatic extends OpensslWrapper
         }
 
         // Decrypt message and return
-        return parent::openssl_decrypt($msg, $cipher, $key->encryptionKey(), $ivr, $tag);
+        return parent::openssl_decrypt($msg, $cipher, $key->encryptionKey($cipher), $ivr, $tag);
     }
 
     /**
@@ -97,7 +97,7 @@ final class OpensslStatic extends OpensslWrapper
         $tag = '';
 
         // Encrypt the plaintext
-        $msg = parent::openssl_encrypt($data, $cipher, $key->encryptionKey(), $ivr, $tag);
+        $msg = parent::openssl_encrypt($data, $cipher, $key->encryptionKey($cipher), $ivr, $tag);
 
         // Generate the ciphertext checksum
         $chk = \hash_hmac($algo, $msg, $key->authenticationKey($cipher), true);

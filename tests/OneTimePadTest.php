@@ -2,9 +2,9 @@
 
 namespace Dcrypt\Tests;
 
-use Dcrypt\Otp;
+use Dcrypt\OneTimePad;
 
-class OtpTest extends \PHPUnit\Framework\TestCase
+class OneTimePadTest extends \PHPUnit\Framework\TestCase
 {
     public function testCrypt()
     {
@@ -13,12 +13,12 @@ class OtpTest extends \PHPUnit\Framework\TestCase
         foreach (range(1, 1000, 100) as $mult) {
             $input = str_repeat('A', 4 * $mult);
 
-            $encrypted = Otp::crypt($input, $key);
+            $encrypted = OneTimePad::crypt($input, $key);
 
             $this->assertEquals(strlen($input), strlen($encrypted));
             $this->assertNotEquals($input, $encrypted);
 
-            $decrypted = Otp::crypt($encrypted, $key);
+            $decrypted = OneTimePad::crypt($encrypted, $key);
             $this->assertEquals($input, $decrypted);
         }
     }
@@ -30,7 +30,7 @@ class OtpTest extends \PHPUnit\Framework\TestCase
         foreach ($json->otp as $mult => $data) {
             $data = base64_decode($data);
             $expected = str_repeat('A', (int)$mult);
-            $this->assertEquals($expected, Otp::crypt($data, $json->key));
+            $this->assertEquals($expected, OneTimePad::crypt($data, $json->key));
         }
     }
 }

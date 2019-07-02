@@ -1,9 +1,11 @@
 # Changes in Dcrypt
 
-## 11.0.1
+## 12.0.0
 - Adds PHP 7.3 testing support to circle ci
 - Clearer base64 class overload example
 - Signature change on the Openssl::newKey method
+- Rename `Otp` to `OneTimePad`
+- Refactor key object constructor
 
 ## 11.0.0
 - Move to default of SHA3-256 instead of SHA-256 for block ciphers
