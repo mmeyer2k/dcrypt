@@ -42,7 +42,7 @@ class OpensslStaticTest extends \PHPUnit\Framework\TestCase
 
     public function testBadCipherException()
     {
-        $key = \Dcrypt\OpensslKey::newKey();
+        $key = \Dcrypt\OpensslKey::create();
 
         $pass = false;
 
@@ -57,7 +57,7 @@ class OpensslStaticTest extends \PHPUnit\Framework\TestCase
 
     public function testBadAlgoException()
     {
-        $key = \Dcrypt\OpensslKey::newKey();
+        $key = \Dcrypt\OpensslKey::create();
 
         $pass = false;
 

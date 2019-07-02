@@ -8,10 +8,10 @@ class OpensslKeyTest extends \PHPUnit\Framework\TestCase
 {
     public function testNewKeyTooShort()
     {
-        \Dcrypt\OpensslKey::newKey(256);
+        \Dcrypt\OpensslKey::create(256);
 
         $this->expectException(InvalidKeyException::class);
 
-        \Dcrypt\OpensslKey::newKey(128);
+        \Dcrypt\OpensslKey::create(128);
     }
 }

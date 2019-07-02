@@ -54,7 +54,7 @@ final class OpensslKey
      * @param string $key    Key
      * @param string $cipher Openssl cipher
      * @param string $ivr    Initialization vactor
-     * @throws Exceptions\InvalidKeyException
+     * @throws InvalidKeyException
      */
     public function __construct(string $algo, string $key, string $cipher, string $ivr)
     {
@@ -116,9 +116,9 @@ final class OpensslKey
      *
      * @param int $size Size of key in bytes
      * @return string
-     * @throws Exceptions\InvalidKeyException
+     * @throws InvalidKeyException
      */
-    public static function newKey(int $bytes = 256): string
+    public static function create(int $bytes = 256): string
     {
         if ($bytes < 256) {
             throw new InvalidKeyException('Keys must be at least 256 bytes long.');

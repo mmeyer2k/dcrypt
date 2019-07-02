@@ -30,6 +30,21 @@ jobs:
       - store_artifacts:
           path: infection.log
 
+  build-73:
+    docker:
+      - image: circleci/php:7.3
+    steps:
+      - checkout
+      - run: mkdir -p coverage
+      - run: composer require phpunit/phpunit infection/infection
+      - run: php vendor/phpunit/phpunit/phpunit --coverage-html coverage
+      - run: php vendor/infection/infection/bin/infection
+      - run: php examples/support.php
+      - store_artifacts:
+          path: coverage
+      - store_artifacts:
+          path: infection.log
+
   clover:
     docker:
       - image: circleci/php:7.1
@@ -45,9 +60,12 @@ workflows:
   build-test-all:
     jobs:
       - build
-      - clover:
-          requires:
-            - build-72
       - build-72:
           requires:
             - build
+      - build-73:
+          requires:
+            - build-72
+      - clover:
+          requires:
+            - build-73
