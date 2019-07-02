@@ -2,19 +2,8 @@
 
 namespace Dcrypt\Examples;
 
-class Aes256Base64 extends \Dcrypt\OpensslBridge
+class Aes256Base64 extends \Dcrypt\Aes256Gcm
 {
-    const CIPHER = 'aes-256-gcm';
-
-    const ALGO = 'sha256';
-
-    /**
-     * Cost value of zero because we are using a key.
-     *
-     * @var int
-     */
-    const COST = 0;
-
     /**
      * An example key generated with linux command:  head -c 256 /dev/urandom | base64 --wrap 64
      *
