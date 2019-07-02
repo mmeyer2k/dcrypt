@@ -4,6 +4,8 @@
 - Much more efficient testing config
 - Fix spelling mistakes
 - Create a keys guide
+- Add vendor caching to circle tests
+- Add a ONETIMEPAD spec document
 
 ## 12.0.0
 - Increase minimum key size to 2048 bytes

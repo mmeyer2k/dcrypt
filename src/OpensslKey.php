@@ -95,16 +95,14 @@ final class OpensslKey
     }
 
     /**
-     * Derive a key with differing authinfo strings
+     * Derive a key with differing info string parameters
      *
      * @param string $info Info parameter to provide to hash_hkdf
      * @return string
      */
     public function deriveKey(string $info): string
     {
-        $key = \hash_hkdf($this->algo, $this->key, 0, $info, $this->ivr);
-
-        return $key;
+        return \hash_hkdf($this->algo, $this->key, 0, $info, $this->ivr);
     }
 
     /**
