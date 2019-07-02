@@ -1,7 +1,7 @@
 # Changes in Dcrypt
 
 ## 12.0.0
-- Increate minimum key size to 2048 bytes
+- Increase minimum key size to 2048 bytes
 - Adds PHP 7.3 testing support to circle ci
 - Clearer base64 class overload example
 - Signature change on the Openssl::newKey method
@@ -74,3 +74,13 @@
 
 ## 8.2.1
 - Minor scoping fixes
+
+## 8.2.0
+- Allow override of AES constants
+
+## 8.1.0
+- Isolated handling of openssl functions
+- Cleaner calls to centralized hmac function
+- Better internal API
+- Dropped more PHP5 specific code
+- Better code docs
