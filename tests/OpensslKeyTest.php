@@ -3,6 +3,7 @@
 namespace Dcrypt\Tests;
 
 use Dcrypt\Exceptions\InvalidKeyException;
+use Dcrypt\OpensslKey;
 
 class OpensslKeyTest extends \PHPUnit\Framework\TestCase
 {
@@ -13,5 +14,17 @@ class OpensslKeyTest extends \PHPUnit\Framework\TestCase
         $this->expectException(InvalidKeyException::class);
 
         \Dcrypt\OpensslKey::create(2047);
+    }
+
+    public function testDetectDoubleEncodedKey()
+    {
+        $key = \Dcrypt\OpensslKey::create();
+
+        // Double encode the key
+        $key = base32_encode($key);
+
+        $this->expectException(InvalidKeyException::class);
+
+        $key = new OpensslKey('sha3-256', $key, '', '');
     }
 }

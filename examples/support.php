@@ -5,7 +5,7 @@ error_reporting(0);
 /**
  * support.php
  *
- * Displays supported
+ * Displays supported ciphers and algos
  */
 
 require __DIR__ . '/../vendor/autoload.php';
