@@ -1,6 +1,7 @@
 # Changes in Dcrypt
 
 ## 12.0.0
+- Increate minimum key size to 2048 bytes
 - Adds PHP 7.3 testing support to circle ci
 - Clearer base64 class overload example
 - Signature change on the Openssl::newKey method
