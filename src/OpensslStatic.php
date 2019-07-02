@@ -61,10 +61,10 @@ final class OpensslStatic extends OpensslWrapper
         $msg = Str::substr($data, $isz + $hsz + $tsz);
 
         // Create a new password derivation object
-        $key = new OpensslKey($algo, $key, $cipher, $ivr);
+        $key = new OpensslKey($algo, $key, $ivr);
 
         // Calculate checksum of message payload for verification
-        $chk = \hash_hmac($algo, $msg, $key->authenticationKey(), true);
+        $chk = \hash_hmac($algo, $msg, $key->authenticationKey($cipher), true);
 
         // Compare given checksum against computed checksum using a time-safe function
         if (!Str::equal($chk, $sum)) {
@@ -91,7 +91,7 @@ final class OpensslStatic extends OpensslWrapper
         $ivr = parent::ivGenerate($cipher);
 
         // Create key derivation object
-        $key = new OpensslKey($algo, $key, $cipher, $ivr);
+        $key = new OpensslKey($algo, $key, $ivr);
 
         // Create a placeholder for the authentication tag to be passed by reference
         $tag = '';
@@ -100,7 +100,7 @@ final class OpensslStatic extends OpensslWrapper
         $msg = parent::openssl_encrypt($data, $cipher, $key->encryptionKey(), $ivr, $tag);
 
         // Generate the ciphertext checksum
-        $chk = \hash_hmac($algo, $msg, $key->authenticationKey(), true);
+        $chk = \hash_hmac($algo, $msg, $key->authenticationKey($cipher), true);
 
         // Return iv + checksum + tag + ciphertext
         return $ivr . $chk . $tag . $msg;

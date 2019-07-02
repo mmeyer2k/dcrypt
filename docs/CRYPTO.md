@@ -31,8 +31,9 @@ This document serves as a high level design document for the block cipher functi
 ## Testing key validity
 Before any encryption/decryption calls, a key derivation object must be created.
 This object tests the key supplied to it to make sure that it:
-1. Can be decoded as a base64 string.
-1. The size after decoding meets or exceeds 256 bytes.
+1. Can be decoded as a base64 string
+1. The size after decoding meets or exceeds 2048 bytes
+1. Contains a minimum amount of entropy as determined by counting the unique characters in the key
 
 Providing a high quality key is __essential__ to the security level it provides.
 

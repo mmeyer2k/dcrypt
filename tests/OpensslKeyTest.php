@@ -25,6 +25,6 @@ class OpensslKeyTest extends \PHPUnit\Framework\TestCase
 
         $this->expectException(InvalidKeyException::class);
 
-        $key = new OpensslKey('sha3-256', $key, '', '');
+        $key = new OpensslKey('sha3-256', $key, '');
     }
 }

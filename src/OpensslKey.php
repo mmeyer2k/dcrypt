@@ -43,20 +43,14 @@ final class OpensslKey
     private $ivr;
 
     /**
-     * @var string
-     */
-    private $cipher;
-
-    /**
      * OpensslKey constructor.
      *
-     * @param string $algo   Algo to use for HKDF
-     * @param string $key    Key
-     * @param string $cipher Openssl cipher
-     * @param string $ivr    Initialization vactor
+     * @param string $algo Algo to use for HKDF
+     * @param string $key  Key
+     * @param string $ivr  Initialization vactor
      * @throws InvalidKeyException
      */
-    public function __construct(string $algo, string $key, string $cipher, string $ivr)
+    public function __construct(string $algo, string $key, string $ivr)
     {
         // Store the key as what was supplied
         $this->key = \base64_decode($key);
@@ -71,9 +65,6 @@ final class OpensslKey
             throw new InvalidKeyException("Key does not contain the minimum amount of entropy.");
         }
 
-        // Store the cipher string
-        $this->cipher = $cipher;
-
         // Store algo in object
         $this->algo = $algo;
 
@@ -86,9 +77,9 @@ final class OpensslKey
      *
      * @return string
      */
-    public function authenticationKey(): string
+    public function authenticationKey(string $info): string
     {
-        return $this->deriveKey(__FUNCTION__);
+        return $this->deriveKey(__FUNCTION__ . '|' . $info);
     }
 
     /**
@@ -109,8 +100,6 @@ final class OpensslKey
      */
     public function deriveKey(string $info): string
     {
-        $info = $info . '|' . $this->cipher;
-
         $key = \hash_hkdf($this->algo, $this->key, 0, $info, $this->ivr);
 
         return $key;
