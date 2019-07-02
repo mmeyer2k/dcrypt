@@ -1,5 +1,10 @@
 # Changes in Dcrypt
 
+## 12.0.1
+- Much more efficient testing config
+- Fix spelling mistakes
+- Create a keys guide
+
 ## 12.0.0
 - Increase minimum key size to 2048 bytes
 - Adds PHP 7.3 testing support to circle ci

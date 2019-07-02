@@ -10,6 +10,8 @@ jobs:
       - run: php vendor/phpunit/phpunit/phpunit --coverage-html coverage
       - run: php vendor/infection/infection/bin/infection
       - run: php examples/support.php
+      - run: wget https://scrutinizer-ci.com/ocular.phar
+      - run: php ocular.phar code-coverage:upload --format=php-clover coverage.clover
       - store_artifacts:
           path: coverage
       - store_artifacts:
@@ -20,52 +22,21 @@ jobs:
       - image: circleci/php:7.2
     steps:
       - checkout
-      - run: mkdir -p coverage
-      - run: composer require phpunit/phpunit infection/infection
-      - run: php vendor/phpunit/phpunit/phpunit --coverage-html coverage
-      - run: php vendor/infection/infection/bin/infection
-      - run: php examples/support.php
-      - store_artifacts:
-          path: coverage
-      - store_artifacts:
-          path: infection.log
+      - run: composer require phpunit/phpunit
+      - run: php vendor/phpunit/phpunit/phpunit
 
   build-73:
     docker:
       - image: circleci/php:7.3
     steps:
       - checkout
-      - run: mkdir -p coverage
-      - run: composer require phpunit/phpunit infection/infection
-      - run: php vendor/phpunit/phpunit/phpunit --coverage-html coverage
-      - run: php vendor/infection/infection/bin/infection
-      - run: php examples/support.php
-      - store_artifacts:
-          path: coverage
-      - store_artifacts:
-          path: infection.log
-
-  clover:
-    docker:
-      - image: circleci/php:7.1
-    steps:
-      - checkout
       - run: composer require phpunit/phpunit
-      - run: php vendor/phpunit/phpunit/phpunit --coverage-clover=coverage.clover
-      - run: wget https://scrutinizer-ci.com/ocular.phar
-      - run: php ocular.phar code-coverage:upload --format=php-clover coverage.clover
+      - run: php vendor/phpunit/phpunit/phpunit
         
 workflows:
   version: 2
   build-test-all:
     jobs:
       - build
-      - build-72:
-          requires:
-            - build
-      - build-73:
-          requires:
-            - build-72
-      - clover:
-          requires:
-            - build-73
+      - build-72
+      - build-73
