@@ -101,7 +101,7 @@ class OpensslWrapper
     /**
      * Determines if the provided cipher requires a tag
      *
-     * @param string $cipher
+     * @param string $cipher Openssl cipher
      *
      * @return bool
      */

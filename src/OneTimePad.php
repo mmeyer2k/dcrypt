@@ -29,9 +29,10 @@ class OneTimePad
     /**
      * Encrypt or decrypt a binary input string.
      * 
-     * @param  string $input Input data to encrypt
-     * @param  string $key   Encryption/decryption key to use on input
-     * @param  string $algo  Hashing algo to generate keystream
+     * @param string $input Input data to encrypt
+     * @param string $key   Encryption/decryption key to use on input
+     * @param string $algo  Hashing algo to generate keystream
+     *
      * @return string
      */
     public static function crypt(string $input, string $key, string $algo = 'sha3-512'): string
