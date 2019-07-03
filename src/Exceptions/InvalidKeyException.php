@@ -15,6 +15,8 @@
 namespace Dcrypt\Exceptions;
 
 /**
+ * A handler for key exceptions
+ *
  * @category Dcrypt
  * @package  Dcrypt
  * @author   Michael Meyer (mmeyer2k) <m.meyer2k@gmail.com>

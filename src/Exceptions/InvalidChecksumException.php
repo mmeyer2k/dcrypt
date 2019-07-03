@@ -15,6 +15,8 @@
 namespace Dcrypt\Exceptions;
 
 /**
+ * A handler for checksum exceptions
+ *
  * @category Dcrypt
  * @package  Dcrypt
  * @author   Michael Meyer (mmeyer2k) <m.meyer2k@gmail.com>
