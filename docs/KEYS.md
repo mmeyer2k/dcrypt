@@ -5,10 +5,10 @@ This document explains some of the reasoning behind these design decisions and s
 
 ## Why 2048 bytes though?
 
-At 2048 bytes the probability of any byte in the 0x00 to 0xFF range being used at least once approaches 1.
-Unless, of course, a source of low entropy were used for the initial keying material.
+At 2048 bytes the probability of every byte in the 0x00 to 0xFF range being used at least once in a pseudo-random string approaches 1.
+This statistical truth is exploited to prevent, with a high degree of confidence, entire classes of implementation errors like double encoding of keys.
 
-A basic test is performed at run time to indicate whether the key is likely to be pseudorandom.
+A basic test is performed at run time to indicate whether the key is likely to be pseudo-random.
 An exception is raised if the key does not pass this test.
 This test is not perfect but it is simple and fast.
 It may become conditional in the future.
@@ -17,8 +17,9 @@ A generic of the randomness test is this as follows:
 
 ```php
 <?php
+
 if (\count(\array_unique(\str_split($key))) < 250) {
-    // throw exception
+    // throw InvalidKeyException
 }
 ```
 
@@ -53,10 +54,10 @@ file_put_contents("~/secret.key", $key);
 Since the key is base64 encoded it can contain any whitespace you desire.
 An optimal solution when using opcache is to store as a single file and use it in a `require` statement.
 
+Content of `/path/to/secret.key`:
+
 ```php
 <?php
-
-# content of /path/to/secret.key
 
 return <<<EOT
 
