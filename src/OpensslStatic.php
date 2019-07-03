@@ -47,7 +47,7 @@ final class OpensslStatic extends OpensslWrapper
         // Calculate the hash checksum size in bytes for the specified algo
         $hsz = Str::hashSize($algo);
 
-        // Find the tag size for this cipher mode. Unless using GCM/CCM this will be zero.
+        // Get the tag size in bytes for this cipher mode
         $tsz = parent::tagRequired($cipher) ? 4 : 0;
 
         // Ask openssl for the IV size needed for specified cipher
@@ -76,8 +76,11 @@ final class OpensslStatic extends OpensslWrapper
             throw new InvalidChecksumException(InvalidChecksumException::MESSAGE);
         }
 
+        // Derive the encryption key
+        $enc = $key->encryptionKey($cipher);
+
         // Decrypt message and return
-        return parent::opensslDecrypt($msg, $cipher, $key->encryptionKey($cipher), $ivr, $tag);
+        return parent::opensslDecrypt($msg, $cipher, $enc, $ivr, $tag);
     }
 
     /**
@@ -106,8 +109,11 @@ final class OpensslStatic extends OpensslWrapper
         // Create a placeholder for the authentication tag to be passed by reference
         $tag = '';
 
+        // Derive the encryption key
+        $enc = $key->encryptionKey($cipher);
+
         // Encrypt the plaintext
-        $msg = parent::opensslEncrypt($data, $cipher, $key->encryptionKey($cipher), $ivr, $tag);
+        $msg = parent::opensslEncrypt($data, $cipher, $enc, $ivr, $tag);
 
         // Generate the ciphertext checksum
         $chk = \hash_hmac($algo, $msg, $key->authenticationKey($cipher), true);
