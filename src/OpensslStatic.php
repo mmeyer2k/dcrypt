@@ -43,8 +43,7 @@ final class OpensslStatic extends OpensslWrapper
         string $key,
         string $cipher,
         string $algo
-    ): string
-    {
+    ): string {
         // Calculate the hash checksum size in bytes for the specified algo
         $hsz = Str::hashSize($algo);
 
@@ -97,8 +96,7 @@ final class OpensslStatic extends OpensslWrapper
         string $key,
         string $cipher, 
         string $algo
-    ): string
-    {
+    ): string {
         // Generate IV of appropriate size
         $ivr = parent::ivGenerate($cipher);
 

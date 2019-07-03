@@ -35,8 +35,11 @@ class OneTimePad
      *
      * @return string
      */
-    public static function crypt(string $input, string $key, string $algo = 'sha3-512'): string
-    {
+    public static function crypt(
+        string $input,
+        string $key,
+        string $algo = 'sha3-512'
+    ): string {
         $chunks = \str_split($input, Str::hashSize($algo));
 
         $length = Str::strlen($input);
