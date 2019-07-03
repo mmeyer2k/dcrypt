@@ -52,24 +52,31 @@ final class OpensslKey
      * OpensslKey constructor.
      *
      * @param string $algo Algo to use for HKDF
-     * @param string $key  Key
-     * @param string $ivr  Initialization vector
+     * @param string $key Key
+     * @param string $ivr Initialization vector
      *
      * @throws InvalidKeyException
      */
-    public function __construct(string $algo, string $key, string $ivr)
+    public function __construct(
+        string $algo,
+        string $key,
+        string $ivr = '',
+        bool $testKey = true
+    )
     {
         // Store the key as what was supplied
         $this->_key = \base64_decode($key);
 
-        // Make sure key was properly decoded and meets minimum required length
-        if (!is_string($this->_key) || Str::strlen($this->_key) < 2048) {
-            throw new InvalidKeyException(InvalidKeyException::KEYLENGTH);
-        }
+        if ($testKey) {
+            // Make sure key was properly decoded and meets minimum required length
+            if (!is_string($this->_key) || Str::strlen($this->_key) < 2048) {
+                throw new InvalidKeyException(InvalidKeyException::KEYLENGTH);
+            }
 
-        // Make sure key meets minimum entropy requirement
-        if (\count(\array_unique(\str_split($this->_key))) < 250) {
-            throw new InvalidKeyException(InvalidKeyException::KEYRANDOM);
+            // Make sure key meets minimum entropy requirement
+            if (self::testKeyEntropy($this->_key) === false) {
+                throw new InvalidKeyException(InvalidKeyException::KEYRANDOM);
+            }
         }
 
         // Store algo in object
@@ -130,5 +137,17 @@ final class OpensslKey
         }
 
         return \base64_encode(\random_bytes($bytes));
+    }
+
+    /**
+     * Returns true if key has enough entropy
+     *
+     * @param string $key Key string to test
+     *
+     * @return bool
+     */
+    private static function testKeyEntropy(string $key): bool
+    {
+        return \count(\array_unique(\str_split($key))) > 250;
     }
 }

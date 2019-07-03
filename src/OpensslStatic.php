@@ -104,7 +104,7 @@ final class OpensslStatic extends OpensslWrapper
         $ivr = parent::ivGenerate($cipher);
 
         // Create key derivation object
-        $key = new OpensslKey($algo, $key, $ivr);
+        $key = new OpensslKey($algo, $key, $ivr, false);
 
         // Create a placeholder for the authentication tag to be passed by reference
         $tag = '';
