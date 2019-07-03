@@ -30,6 +30,7 @@ class OpensslBridge
      *
      * @param string $data Ciphertext to decrypt
      * @param string $key  Key which will be used to decrypt data
+     *
      * @return string
      */
     public static function decrypt(string $data, string $key): string
@@ -42,6 +43,7 @@ class OpensslBridge
      *
      * @param string $data Plaintext string to encrypt.
      * @param string $key  Key which will be used to encrypt data
+     *
      * @return string
      */
     public static function encrypt(string $data, string $key): string

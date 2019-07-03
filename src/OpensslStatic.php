@@ -34,6 +34,7 @@ final class OpensslStatic extends OpensslWrapper
      * @param string $key    Key material
      * @param string $cipher OpenSSL cipher name
      * @param string $algo   Hashing and key derivation algo name
+     *
      * @return string
      * @throws \Exception
      */
@@ -82,6 +83,7 @@ final class OpensslStatic extends OpensslWrapper
      * @param string $key    Key material
      * @param string $cipher OpenSSL cipher name
      * @param string $algo   Hashing and key derivation algo name
+     *
      * @return string
      * @throws \Exception
      */

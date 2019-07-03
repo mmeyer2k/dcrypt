@@ -26,11 +26,15 @@ namespace Dcrypt;
 class OpensslStack
 {
     /**
+     * Stack of cipher/algo combos
+     *
      * @var array
      */
     private $stack = [];
 
     /**
+     * High entropy key
+     *
      * @var string
      */
     private $key;
@@ -38,7 +42,7 @@ class OpensslStack
     /**
      * OpensslStack constructor.
      *
-     * @param string $passkey Password or key
+     * @param string $key Password or key
      */
     public function __construct(string $key)
     {
@@ -50,6 +54,7 @@ class OpensslStack
      *
      * @param string $cipher Cipher mode to use
      * @param string $algo   Hashing algo to use
+     *
      * @return OpensslStack
      */
     public function add(string $cipher, string $algo): self
@@ -63,6 +68,7 @@ class OpensslStack
      * Encrypt data using custom stack
      *
      * @param string $data Data to encrypt
+     *
      * @return string
      */
     public function encrypt(string $data): string
@@ -78,6 +84,7 @@ class OpensslStack
      * Decrypt data using custom stack
      *
      * @param string $data Data to decrypt
+     *
      * @return string
      */
     public function decrypt(string $data): string

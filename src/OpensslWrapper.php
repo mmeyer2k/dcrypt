@@ -28,18 +28,20 @@ class OpensslWrapper
     /**
      * OpenSSL encrypt wrapper function
      *
-     * @param string $input  Data to decrypt
-     * @param string $method Cipher method to use
-     * @param string $key    Key string
-     * @param string $iv     Initialization vector
+     * @param  string $data   Data to decrypt
+     * @param  string $method Cipher method to use
+     * @param  string $key    Key string
+     * @param  string $iv     Initialization vector
+     * @param  string $tag    AAD tag
+     *
      * @return string
      */
-    protected static function openssl_encrypt(string $input, string $method, string $key, string $iv, string &$tag): string
+    protected static function openssl_encrypt(string $data, string $method, string $key, string $iv, string &$tag): string
     {
         if (OpensslStatic::tagRequired($method)) {
-            return \openssl_encrypt($input, $method, $key, OPENSSL_RAW_DATA, $iv, $tag, '', 4);
+            return \openssl_encrypt($data, $method, $key, OPENSSL_RAW_DATA, $iv, $tag, '', 4);
         } else {
-            return \openssl_encrypt($input, $method, $key, OPENSSL_RAW_DATA, $iv);
+            return \openssl_encrypt($data, $method, $key, OPENSSL_RAW_DATA, $iv);
         }
     }
 
@@ -50,6 +52,7 @@ class OpensslWrapper
      * @param string $method Cipher method to use
      * @param string $key    Key string
      * @param string $iv     Initialization vector
+     *
      * @return string
      */
     protected static function openssl_decrypt(string $input, string $method, string $key, string $iv, string $tag): string
@@ -65,6 +68,7 @@ class OpensslWrapper
      * Get IV size for specified CIPHER.
      *
      * @param string $cipher
+     *
      * @return int
      */
     protected static function ivSize(string $cipher): int
@@ -78,6 +82,7 @@ class OpensslWrapper
      * Get a correctly sized IV for the specified cipher
      *
      * @param string $cipher
+     *
      * @return string
      * @throws \Exception
      */
@@ -96,6 +101,7 @@ class OpensslWrapper
      * Determines if the provided cipher requires a tag
      *
      * @param string $cipher
+     *
      * @return bool
      */
     protected static function tagRequired(string $cipher): bool
