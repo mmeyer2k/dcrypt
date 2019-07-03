@@ -76,13 +76,14 @@ If you read to this point then you are an experienced cryptonaut, congrats! :ok_
 
 Several AES-256 encryption modes are supported out of the box via hardcoded classes.
 
-| Class Name           | OpenSSL Cipher   | Further Reading |
-| -------------------- | :--------------: | --------------- |
-| `\Dcrypt\Aes256Gcm`  |    `aes-256-gcm` | [wiki](https://en.wikipedia.org/wiki/Galois/Counter_Mode) |
-| `\Dcrypt\Aes256Cbc`  |    `aes-256-cbc` | [wiki](https://en.wikipedia.org/wiki/Block_cipher_mode_of_operation) |
-| `\Dcrypt\Aes256Ctr`  |    `aes-256-ctr` | [wiki](https://en.wikipedia.org/wiki/Block_cipher_mode_of_operation#Counter_(CTR)) |
-| `\Dcrypt\Aes256Ofb`  |    `aes-256-ofb` | [wiki](https://en.wikipedia.org/wiki/Block_cipher_mode_of_operation#Output_Feedback_(OFB)) |
-| `\Dcrypt\Aes256Ecb`  |    `aes-256-ecb` | [wiki](https://en.wikipedia.org/wiki/Block_cipher_mode_of_operation#ECB) |
+| Class Name           | OpenSSL Cipher   | Security Rating   | Further Reading |
+| -------------------- | :--------------: | :---------------: | --------------- |
+| `\Dcrypt\Aes256Gcm`  |    `aes-256-gcm` | :smiley:          | [wiki](https://en.wikipedia.org/wiki/Galois/Counter_Mode) |
+| `\Dcrypt\Aes256Ctr`  |    `aes-256-ctr` | :relaxed:         | [wiki](https://en.wikipedia.org/wiki/Block_cipher_mode_of_operation#Counter_(CTR)) |
+| `\Dcrypt\Aes256Cbc`  |    `aes-256-cbc` | :expressionless:  | [wiki](https://en.wikipedia.org/wiki/Block_cipher_mode_of_operation) |
+| `\Dcrypt\Aes256Ofb`  |    `aes-256-ofb` | :grimacing:       | [wiki](https://en.wikipedia.org/wiki/Block_cipher_mode_of_operation#Output_Feedback_(OFB)) |
+| `\Dcrypt\Aes256Cfb`  |    `aes-256-cfb` | :hushed:          | [wiki](https://en.wikipedia.org/wiki/Block_cipher_mode_of_operation#Cipher_Feedback_(CFB)) |
+| `\Dcrypt\Aes256Ecb`  |    `aes-256-ecb` | :rage:            | [wiki](https://en.wikipedia.org/wiki/Block_cipher_mode_of_operation#ECB) |
 
 ### Custom Encryption Suites
 

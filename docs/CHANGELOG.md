@@ -1,5 +1,9 @@
 # Changes in Dcrypt
 
+## 12.0.3
+- Skip validating key when decrypting
+- Clean up internal API
+
 ## 12.0.2
 - More clarity and unity in internal API
 - Add codesniffer to circle ci testing
