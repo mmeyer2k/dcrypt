@@ -48,6 +48,7 @@ final class OpensslKey
      * @param string $algo Algo to use for HKDF
      * @param string $key  Key
      * @param string $ivr  Initialization vector
+     *
      * @throws InvalidKeyException
      */
     public function __construct(string $algo, string $key, string $ivr)
@@ -75,7 +76,8 @@ final class OpensslKey
     /**
      * Generate the authentication key
      *
-     * @param string $info
+     * @param string $info The extra info parameter for hash_hkdf
+     *
      * @return string
      */
     public function authenticationKey(string $info): string
@@ -86,7 +88,8 @@ final class OpensslKey
     /**
      * Generate the encryption key
      *
-     * @param string $info
+     * @param string $info The extra info parameter for hash_hkdf
+     *
      * @return string
      */
     public function encryptionKey(string $info): string
@@ -98,6 +101,7 @@ final class OpensslKey
      * Derive a key with differing info string parameters
      *
      * @param string $info Info parameter to provide to hash_hkdf
+     *
      * @return string
      */
     public function deriveKey(string $info): string
@@ -108,7 +112,8 @@ final class OpensslKey
     /**
      * Generate a new key that meets requirements for dcrypt
      *
-     * @param int $size Size of key in bytes
+     * @param int $bytes Size of key in bytes
+     *
      * @return string
      * @throws InvalidKeyException
      */
