@@ -44,9 +44,9 @@ class OpensslWrapper
         string &$tag
     ): string {
         if (OpensslStatic::tagRequired($cipher)) {
-            return \openssl_encrypt($data, $cipher, $key, OPENSSL_RAW_DATA, $iv, $tag, '', 4);
+            return \openssl_encrypt($data, $cipher, $key, 1, $iv, $tag, '', 4);
         } else {
-            return \openssl_encrypt($data, $cipher, $key, OPENSSL_RAW_DATA, $iv);
+            return \openssl_encrypt($data, $cipher, $key, 1, $iv);
         }
     }
 
@@ -69,9 +69,9 @@ class OpensslWrapper
         string $tag
     ): string {
         if (OpensslStatic::tagRequired($cipher)) {
-            return \openssl_decrypt($input, $cipher, $key, OPENSSL_RAW_DATA, $iv, $tag, '');
+            return \openssl_decrypt($input, $cipher, $key, 1, $iv, $tag, '');
         } else {
-            return \openssl_decrypt($input, $cipher, $key, OPENSSL_RAW_DATA, $iv);
+            return \openssl_decrypt($input, $cipher, $key, 1, $iv);
         }
     }
 
