@@ -83,6 +83,7 @@ Several AES-256 encryption modes are supported out of the box via hardcoded clas
 | `\Dcrypt\Aes256Cbc`  |    `aes-256-cbc` | :expressionless:  | [wiki](https://en.wikipedia.org/wiki/Block_cipher_mode_of_operation) |
 | `\Dcrypt\Aes256Ofb`  |    `aes-256-ofb` | :grimacing:       | [wiki](https://en.wikipedia.org/wiki/Block_cipher_mode_of_operation#Output_Feedback_(OFB)) |
 | `\Dcrypt\Aes256Cfb`  |    `aes-256-cfb` | :hushed:          | [wiki](https://en.wikipedia.org/wiki/Block_cipher_mode_of_operation#Cipher_Feedback_(CFB)) |
+| `\Dcrypt\Aes256Ccm`  |    `aes-256-ccm` | :astonished:      | [wiki](https://en.wikipedia.org/wiki/CCM_mode) |
 | `\Dcrypt\Aes256Ecb`  |    `aes-256-ecb` | :rage:            | [wiki](https://en.wikipedia.org/wiki/Block_cipher_mode_of_operation#ECB) |
 
 ### Custom Encryption Suites
