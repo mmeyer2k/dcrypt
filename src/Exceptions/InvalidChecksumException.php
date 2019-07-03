@@ -25,5 +25,5 @@ namespace Dcrypt\Exceptions;
  */
 class InvalidChecksumException extends \Exception
 {
-    const BADCHECKSUM = 'Decryption can not proceed due to invalid ciphertext checksum.';
+    const BADCHECKSUM = 'Invalid ciphertext checksum';
 }

@@ -40,10 +40,13 @@ class OneTimePad
         string $key,
         string $algo = 'sha3-512'
     ): string {
+        // Split the input into chunks sized the same as the hash size
         $chunks = \str_split($input, Str::hashSize($algo));
 
+        // Determine total input length
         $length = Str::strlen($input);
 
+        // Create a new key object
         $key = new OpensslKey($algo, $key, '');
 
         foreach ($chunks as $i => &$chunk) {
