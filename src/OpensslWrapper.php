@@ -52,6 +52,7 @@ class OpensslWrapper
      * @param string $method Cipher method to use
      * @param string $key    Key string
      * @param string $iv     Initialization vector
+     * @param string $tag    AAD authentication tag
      *
      * @return string
      */
