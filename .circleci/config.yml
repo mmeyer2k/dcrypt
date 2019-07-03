@@ -10,7 +10,7 @@ jobs:
             - source-php7.1-{{ .Branch }}-{{ .Revision }}
             - source-php7.1-{{ .Branch }}-
             - source-php7.1-
-      - run: composer require phpunit/phpunit infection/infection
+      - run: composer require phpunit/phpunit infection/infection squizlabs/php_codesniffer
       - run: mkdir -p coverage
       - run: php vendor/phpunit/phpunit/phpunit --coverage-html coverage --coverage-clover=coverage.clover
       - run: php vendor/infection/infection/bin/infection
