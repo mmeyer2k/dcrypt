@@ -36,7 +36,13 @@ class OpensslWrapper
      *
      * @return string
      */
-    protected static function opensslEncrypt(string $data, string $cipher, string $key, string $iv, string &$tag): string
+    protected static function opensslEncrypt(
+        string $data,
+        string $cipher,
+        string $key,
+        string $iv,
+        string &$tag
+    ): string
     {
         if (OpensslStatic::tagRequired($cipher)) {
             return \openssl_encrypt($data, $cipher, $key, OPENSSL_RAW_DATA, $iv, $tag, '', 4);
@@ -56,7 +62,13 @@ class OpensslWrapper
      *
      * @return string
      */
-    protected static function opensslDecrypt(string $input, string $cipher, string $key, string $iv, string $tag): string
+    protected static function opensslDecrypt(
+        string $input,
+        string $cipher,
+        string $key,
+        string $iv,
+        string $tag
+    ): string
     {
         if (OpensslStatic::tagRequired($cipher)) {
             return \openssl_decrypt($input, $cipher, $key, OPENSSL_RAW_DATA, $iv, $tag, '');
