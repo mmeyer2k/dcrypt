@@ -71,9 +71,9 @@ final class OpensslStatic extends OpensslWrapper
         // Calculate checksum of message payload for verification
         $chk = \hash_hmac($algo, $msg, $key->authenticationKey($cipher), true);
 
-        // Compare given checksum against computed checksum using a time-safe function
+        // Compare given checksum against computed checksum
         if (!Str::equal($chk, $sum)) {
-            throw new InvalidChecksumException(InvalidChecksumException::BADCHECKSUM);
+            throw new InvalidChecksumException(InvalidChecksumException::MESSAGE);
         }
 
         // Decrypt message and return
