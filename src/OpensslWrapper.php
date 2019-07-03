@@ -28,11 +28,11 @@ class OpensslWrapper
     /**
      * OpenSSL encrypt wrapper function
      *
-     * @param  string $data   Data to decrypt
-     * @param  string $method Cipher method to use
-     * @param  string $key    Key string
-     * @param  string $iv     Initialization vector
-     * @param  string $tag    AAD tag
+     * @param string $data   Data to decrypt
+     * @param string $method Cipher method to use
+     * @param string $key    Key string
+     * @param string $iv     Initialization vector
+     * @param string $tag    AAD tag
      *
      * @return string
      */

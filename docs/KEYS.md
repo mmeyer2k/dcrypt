@@ -1,29 +1,28 @@
 # Guide to dcrypt keys
 
 Dcrypt likes __BIG__ keys.
-This document explains some of the reasoning behind these design decisions and some tips on handling keys.
+This document explains some of the reasoning behind this design decision and some tips on key management.
 
 ## Why 2048 bytes though?
 
+The large size of key size of 2048 bytes enables dcrypt to forgo any computationally wasteful (at best) and potentially dangerous (at worst) password derivation while still providing very strong security and brute force resistance.
+
 At 2048 bytes the probability of every byte in the 0x00 to 0xFF range being used at least once in a pseudo-random string approaches 1.
-This statistical truth is exploited to prevent, with a high degree of confidence, entire classes of implementation errors like double encoding of keys.
+This statistical curiosity can be leveraged to differentiate between strong and weak entropy sources.
+Particularly, implementation mistakes like double encoding of the key can be rejected by ensuring that the byte stream uses most of the 2^8 keyspace.
 
-A basic test is performed at run time to indicate whether the key is likely to be pseudo-random.
-An exception is raised if the key does not pass this test.
-This test is not perfect but it is simple and fast.
-It may become conditional in the future.
+Before usage, a basic key entropy test is performed which rejects keys that are not likely to be pseudo-random.
+This test is not perfect but it is simple and fast, and it may become conditional in the future.
 
-A generic of the randomness test is this as follows:
+A generic of the randomness test is as follows:
 
 ```php
 <?php
 
-if (\count(\array_unique(\str_split($key))) < 250) {
+if (count(array_unique(str_split($key))) < 250) {
     // throw InvalidKeyException
 }
 ```
-
-The large size of 2048 bytes safely allows us to forgo computationally wasteful and potentially dangerous password derivation while still providing strong security.
 
 ## Create a new key
 
