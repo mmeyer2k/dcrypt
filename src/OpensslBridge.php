@@ -15,7 +15,8 @@
 namespace Dcrypt;
 
 /**
- * Provides functionality common to the dcrypt AES block ciphers. Extend this class to customize your cipher suite.
+ * Provides functionality common to the dcrypt AES block ciphers.
+ * Extend this class to customize your cipher suite.
  *
  * @category Dcrypt
  * @package  Dcrypt

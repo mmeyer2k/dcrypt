@@ -14,6 +14,7 @@ jobs:
       - run: mkdir -p coverage
       - run: php vendor/phpunit/phpunit/phpunit --coverage-html coverage --coverage-clover=coverage.clover
       - run: php vendor/infection/infection/bin/infection
+      - run: php vendor/squizlabs/php_codesniffer/bin/phpcs src | tee codesniff.log
       - run: php examples/support.php
       - run: wget https://scrutinizer-ci.com/ocular.phar
       - run: php ocular.phar code-coverage:upload --format=php-clover coverage.clover
@@ -25,6 +26,8 @@ jobs:
           path: coverage
       - store_artifacts:
           path: infection.log
+      - store_artifacts:
+          path: codesniff.log
 
   build-72:
     docker:

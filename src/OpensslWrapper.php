@@ -28,20 +28,25 @@ class OpensslWrapper
     /**
      * OpenSSL encrypt wrapper function
      *
-     * @param  string $data   Data to decrypt
-     * @param  string $method Cipher method to use
-     * @param  string $key    Key string
-     * @param  string $iv     Initialization vector
-     * @param  string $tag    AAD tag
+     * @param string $data   Data to decrypt
+     * @param string $cipher Cipher method to use
+     * @param string $key    Key string
+     * @param string $iv     Initialization vector
+     * @param string $tag    AAD tag
      *
      * @return string
      */
-    protected static function openssl_encrypt(string $data, string $method, string $key, string $iv, string &$tag): string
-    {
-        if (OpensslStatic::tagRequired($method)) {
-            return \openssl_encrypt($data, $method, $key, OPENSSL_RAW_DATA, $iv, $tag, '', 4);
+    protected static function opensslEncrypt(
+        string $data,
+        string $cipher,
+        string $key,
+        string $iv,
+        string &$tag
+    ): string {
+        if (OpensslStatic::tagRequired($cipher)) {
+            return \openssl_encrypt($data, $cipher, $key, 1, $iv, $tag, '', 4);
         } else {
-            return \openssl_encrypt($data, $method, $key, OPENSSL_RAW_DATA, $iv);
+            return \openssl_encrypt($data, $cipher, $key, 1, $iv);
         }
     }
 
@@ -49,25 +54,31 @@ class OpensslWrapper
      * OpenSSL decrypt wrapper function
      *
      * @param string $input  Data to decrypt
-     * @param string $method Cipher method to use
+     * @param string $cipher Cipher method to use
      * @param string $key    Key string
      * @param string $iv     Initialization vector
+     * @param string $tag    AAD authentication tag
      *
      * @return string
      */
-    protected static function openssl_decrypt(string $input, string $method, string $key, string $iv, string $tag): string
-    {
-        if (OpensslStatic::tagRequired($method)) {
-            return \openssl_decrypt($input, $method, $key, OPENSSL_RAW_DATA, $iv, $tag, '');
+    protected static function opensslDecrypt(
+        string $input,
+        string $cipher,
+        string $key,
+        string $iv,
+        string $tag
+    ): string {
+        if (OpensslStatic::tagRequired($cipher)) {
+            return \openssl_decrypt($input, $cipher, $key, 1, $iv, $tag, '');
         } else {
-            return \openssl_decrypt($input, $method, $key, OPENSSL_RAW_DATA, $iv);
+            return \openssl_decrypt($input, $cipher, $key, 1, $iv);
         }
     }
 
     /**
      * Get IV size for specified CIPHER.
      *
-     * @param string $cipher
+     * @param string $cipher Openssl cipher
      *
      * @return int
      */
@@ -81,7 +92,7 @@ class OpensslWrapper
     /**
      * Get a correctly sized IV for the specified cipher
      *
-     * @param string $cipher
+     * @param string $cipher Openssl cipher
      *
      * @return string
      * @throws \Exception
@@ -100,7 +111,7 @@ class OpensslWrapper
     /**
      * Determines if the provided cipher requires a tag
      *
-     * @param string $cipher
+     * @param string $cipher Openssl cipher
      *
      * @return bool
      */

@@ -30,14 +30,14 @@ class OpensslStack
      *
      * @var array
      */
-    private $stack = [];
+    private $_stack = [];
 
     /**
      * High entropy key
      *
      * @var string
      */
-    private $key;
+    private $_key;
 
     /**
      * OpensslStack constructor.
@@ -46,7 +46,7 @@ class OpensslStack
      */
     public function __construct(string $key)
     {
-        $this->key = $key;
+        $this->_key = $key;
     }
 
     /**
@@ -59,7 +59,7 @@ class OpensslStack
      */
     public function add(string $cipher, string $algo): self
     {
-        $this->stack[] = [$cipher, $algo];
+        $this->_stack[] = [$cipher, $algo];
 
         return $this;
     }
@@ -73,8 +73,8 @@ class OpensslStack
      */
     public function encrypt(string $data): string
     {
-        foreach ($this->stack as $s) {
-            $data = OpensslStatic::encrypt($data, $this->key, $s[0], $s[1]);
+        foreach ($this->_stack as $s) {
+            $data = OpensslStatic::encrypt($data, $this->_key, $s[0], $s[1]);
         }
 
         return $data;
@@ -89,8 +89,8 @@ class OpensslStack
      */
     public function decrypt(string $data): string
     {
-        foreach (\array_reverse($this->stack) as $s) {
-            $data = OpensslStatic::decrypt($data, $this->key, $s[0], $s[1]);
+        foreach (\array_reverse($this->_stack) as $s) {
+            $data = OpensslStatic::decrypt($data, $this->_key, $s[0], $s[1]);
         }
 
         return $data;

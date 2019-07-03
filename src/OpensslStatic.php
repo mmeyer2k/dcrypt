@@ -38,12 +38,16 @@ final class OpensslStatic extends OpensslWrapper
      * @return string
      * @throws \Exception
      */
-    public static function decrypt(string $data, string $key, string $cipher, string $algo): string
-    {
+    public static function decrypt(
+        string $data,
+        string $key,
+        string $cipher,
+        string $algo
+    ): string {
         // Calculate the hash checksum size in bytes for the specified algo
         $hsz = Str::hashSize($algo);
 
-        // Find the tag size for this cipher mode. Unless using GCM/CCM this will be zero.
+        // Get the tag size in bytes for this cipher mode
         $tsz = parent::tagRequired($cipher) ? 4 : 0;
 
         // Ask openssl for the IV size needed for specified cipher
@@ -67,13 +71,16 @@ final class OpensslStatic extends OpensslWrapper
         // Calculate checksum of message payload for verification
         $chk = \hash_hmac($algo, $msg, $key->authenticationKey($cipher), true);
 
-        // Compare given checksum against computed checksum using a time-safe function
+        // Compare given checksum against computed checksum
         if (!Str::equal($chk, $sum)) {
-            throw new InvalidChecksumException('Decryption can not proceed due to invalid ciphertext checksum.');
+            throw new InvalidChecksumException(InvalidChecksumException::MESSAGE);
         }
 
+        // Derive the encryption key
+        $enc = $key->encryptionKey($cipher);
+
         // Decrypt message and return
-        return parent::openssl_decrypt($msg, $cipher, $key->encryptionKey($cipher), $ivr, $tag);
+        return parent::opensslDecrypt($msg, $cipher, $enc, $ivr, $tag);
     }
 
     /**
@@ -87,8 +94,12 @@ final class OpensslStatic extends OpensslWrapper
      * @return string
      * @throws \Exception
      */
-    public static function encrypt(string $data, string $key, string $cipher, string $algo): string
-    {
+    public static function encrypt(
+        string $data,
+        string $key,
+        string $cipher, 
+        string $algo
+    ): string {
         // Generate IV of appropriate size
         $ivr = parent::ivGenerate($cipher);
 
@@ -98,8 +109,11 @@ final class OpensslStatic extends OpensslWrapper
         // Create a placeholder for the authentication tag to be passed by reference
         $tag = '';
 
+        // Derive the encryption key
+        $enc = $key->encryptionKey($cipher);
+
         // Encrypt the plaintext
-        $msg = parent::openssl_encrypt($data, $cipher, $key->encryptionKey($cipher), $ivr, $tag);
+        $msg = parent::opensslEncrypt($data, $cipher, $enc, $ivr, $tag);
 
         // Generate the ciphertext checksum
         $chk = \hash_hmac($algo, $msg, $key->authenticationKey($cipher), true);
