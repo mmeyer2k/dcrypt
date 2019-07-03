@@ -28,16 +28,22 @@ use Dcrypt\Exceptions\InvalidKeyException;
 final class OpensslKey
 {
     /**
+     * High entropy key
+     *
      * @var string
      */
     private $_key;
 
     /**
+     * Algo string
+     *
      * @var string
      */
     private $_algo;
 
     /**
+     * High entropy salt
+     *
      * @var string
      */
     private $_ivr;

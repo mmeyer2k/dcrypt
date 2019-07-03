@@ -69,11 +69,11 @@ final class OpensslStatic extends OpensslWrapper
 
         // Compare given checksum against computed checksum using a time-safe function
         if (!Str::equal($chk, $sum)) {
-            throw new InvalidChecksumException('Decryption can not proceed due to invalid ciphertext checksum.');
+            throw new InvalidChecksumException(InvalidChecksumException::BADCHECKSUM);
         }
 
         // Decrypt message and return
-        return parent::openssl_decrypt($msg, $cipher, $key->encryptionKey($cipher), $ivr, $tag);
+        return parent::opensslDecrypt($msg, $cipher, $key->encryptionKey($cipher), $ivr, $tag);
     }
 
     /**
@@ -99,7 +99,7 @@ final class OpensslStatic extends OpensslWrapper
         $tag = '';
 
         // Encrypt the plaintext
-        $msg = parent::openssl_encrypt($data, $cipher, $key->encryptionKey($cipher), $ivr, $tag);
+        $msg = parent::opensslEncrypt($data, $cipher, $key->encryptionKey($cipher), $ivr, $tag);
 
         // Generate the ciphertext checksum
         $chk = \hash_hmac($algo, $msg, $key->authenticationKey($cipher), true);

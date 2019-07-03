@@ -1,5 +1,10 @@
 # Changes in Dcrypt
 
+## 12.0.2
+- More clarity and unity in internal API
+- Add codesniffer to circle ci testing
+- Lots of cs fixes
+
 ## 12.0.1
 - Much more efficient testing config
 - Fix spelling mistakes

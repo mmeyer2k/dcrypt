@@ -1,7 +1,7 @@
 # Guide to dcrypt keys
 
 Dcrypt likes __BIG__ keys.
-This document explains some of the reasoning behind this design decision and some tips on key management.
+This document explains the reasoning behind this design decision and some tips on key management.
 
 ## Why 2048 bytes though?
 
@@ -11,7 +11,7 @@ At 2048 bytes the probability of every byte in the 0x00 to 0xFF range being used
 This statistical curiosity can be leveraged to differentiate between strong and weak entropy sources.
 Particularly, implementation mistakes like double encoding of the key can be rejected by ensuring that the byte stream uses most of the 2^8 keyspace.
 
-Before usage, a basic key entropy test is performed which rejects keys that are not likely to be pseudo-random.
+Before encryption a basic key entropy test is performed which rejects keys that are not likely to be pseudo-random.
 This test is not perfect but it is simple and fast, and it may become conditional in the future.
 
 A generic of the randomness test is as follows:
@@ -35,7 +35,7 @@ head -c 2048 /dev/urandom | base64 -w 0 | xargs echo
 Command line to file:
 
 ```bash
-head -c 2048 /dev/urandom | base64 -w 0 > ~/secret.key
+head -c 2048 /dev/urandom | base64 -w 0 > /path/to/secret.key
 ```
 
 PHP static function:
