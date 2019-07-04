@@ -1,8 +1,9 @@
 # Changes in Dcrypt
 
-## 12.0.3
+## 13.0.0
 - Skip validating key when decrypting
 - Clean up internal API
+- Increase default AAD tag size
 
 ## 12.0.2
 - More clarity and unity in internal API
