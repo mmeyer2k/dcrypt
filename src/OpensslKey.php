@@ -51,9 +51,10 @@ final class OpensslKey
     /**
      * OpensslKey constructor.
      *
-     * @param string $algo Algo to use for HKDF
-     * @param string $key Key
-     * @param string $ivr Initialization vector
+     * @param string $algo    Algo to use for HKDF
+     * @param string $key     Key
+     * @param string $ivr     Initialization vector
+     * @param bool   $testKey Validate the key
      *
      * @throws InvalidKeyException
      */
@@ -133,7 +134,7 @@ final class OpensslKey
     public static function create(int $bytes = 2048): string
     {
         if ($bytes < 2048) {
-            throw new InvalidKeyException('Keys must be at least 2048 bytes long.');
+            throw new InvalidKeyException(InvalidKeyException::KEYLENGTH);
         }
 
         return \base64_encode(\random_bytes($bytes));
