@@ -69,7 +69,7 @@ final class OpensslKey
 
         if ($testKey) {
             // Make sure key was properly decoded and meets minimum required length
-            if (!is_string($this->_key) || Str::strlen($this->_key) < 2048) {
+            if (Str::strlen($this->_key) < 2048) {
                 throw new InvalidKeyException(InvalidKeyException::KEYLENGTH);
             }
 
