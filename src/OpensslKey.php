@@ -63,8 +63,7 @@ final class OpensslKey
         string $key,
         string $ivr = '',
         bool $testKey = true
-    )
-    {
+    ) {
         // Store the key as what was supplied
         $this->_key = \base64_decode($key);
 
@@ -75,7 +74,7 @@ final class OpensslKey
             }
 
             // Make sure key meets minimum entropy requirement
-            if (self::testKeyEntropy($this->_key) === false) {
+            if (self::_testKeyEntropy($this->_key) === false) {
                 throw new InvalidKeyException(InvalidKeyException::KEYRANDOM);
             }
         }
@@ -147,7 +146,7 @@ final class OpensslKey
      *
      * @return bool
      */
-    private static function testKeyEntropy(string $key): bool
+    private static function _testKeyEntropy(string $key): bool
     {
         return \count(\array_unique(\str_split($key))) > 250;
     }
