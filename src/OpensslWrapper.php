@@ -44,7 +44,7 @@ class OpensslWrapper
         string &$tag
     ): string {
         if (OpensslStatic::tagRequired($cipher)) {
-            return \openssl_encrypt($data, $cipher, $key, 1, $iv, $tag, '', 4);
+            return \openssl_encrypt($data, $cipher, $key, 1, $iv, $tag, '', 16);
         } else {
             return \openssl_encrypt($data, $cipher, $key, 1, $iv);
         }

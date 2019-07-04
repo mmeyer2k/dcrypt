@@ -1,3 +1,6 @@
+# Upgrade from 12.x to 13.x
+- Anything encrypted with GCM or CCM will not be decryptable anymore due to change in tag sizes
+
 # Upgrade from 11.x to 12.x
 - Upgrade to minimum 2048 byte keys
 - Rename `Otp` to `OneTimePad`

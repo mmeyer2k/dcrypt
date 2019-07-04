@@ -8,9 +8,13 @@ use \Dcrypt\OpensslStatic;
 
 require __DIR__ . '/../vendor/autoload.php';
 
-$key = \Dcrypt\OpensslKey::create();
+$vectors = __DIR__ . '/../tests/.vectors.json';
 
-file_put_contents(__DIR__ . '/../tests/vectors/.testkey', $key);
+if (file_exists($vectors)) {
+    $key = json_decode(file_get_contents($vectors))->key;
+} else {
+    $key = \Dcrypt\OpensslKey::create();
+}
 
 $out = [
     'key' => $key,
@@ -40,7 +44,7 @@ foreach (\Dcrypt\OpensslSupported::algos() as $algo) {
     $out['algos'][$algo] = base64_encode(OpensslStatic::encrypt('a secret', $key, 'aes-256-gcm', $algo));
 }
 
-foreach(['Gcm', 'Ctr', 'Ofb', 'Cbc', 'Ecb'] as $mode){
+foreach(['Gcm', 'Ctr', 'Ofb', 'Cbc', 'Ecb', 'Ccm', 'Cfb'] as $mode){
     $c = "\\Dcrypt\\Aes256$mode";
     $out['aes256'][$c] = base64_encode($c::encrypt('a secret', $key));
 }
@@ -52,3 +56,5 @@ foreach (range(1, 10) as $r) {
 }
 
 file_put_contents(__DIR__ . '/../tests/.vectors.json', \json_encode($out, JSON_PRETTY_PRINT));
+
+var_dump($out);

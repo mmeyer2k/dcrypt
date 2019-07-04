@@ -15,7 +15,7 @@
 namespace Dcrypt;
 
 /**
- * Symmetric AES-256-ECB encryption functions powered by OpenSSL.
+ * Symmetric AES-256 ECB encryption functions powered by OpenSSL.
  *
  * @category Dcrypt
  * @package  Dcrypt

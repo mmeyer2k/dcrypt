@@ -47,7 +47,7 @@ class OneTimePad
         $length = Str::strlen($input);
 
         // Create a new key object
-        $key = new OpensslKey($algo, $key, '');
+        $key = new OpensslKey($algo, $key);
 
         foreach ($chunks as $i => &$chunk) {
             // Create the info key based on counter

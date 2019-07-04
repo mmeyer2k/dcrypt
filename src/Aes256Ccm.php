@@ -1,7 +1,7 @@
 <?php declare(strict_types=1);
 
 /**
- * Aes256Ofb.php
+ * Aes256Ccm.php
  *
  * PHP version 7
  *
@@ -15,7 +15,7 @@
 namespace Dcrypt;
 
 /**
- * Symmetric AES-256 GCM encryption functions powered by OpenSSL.
+ * Symmetric AES-256 CCM encryption functions powered by OpenSSL.
  *
  * @category Dcrypt
  * @package  Dcrypt
@@ -23,12 +23,12 @@ namespace Dcrypt;
  * @license  http://opensource.org/licenses/MIT The MIT License (MIT)
  * @link     https://github.com/mmeyer2k/dcrypt
  */
-class Aes256Ofb extends Aes256Gcm
+class Aes256Ccm extends Aes256Gcm
 {
     /**
      * AES-256 cipher identifier that will be passed to openssl
      *
      * @var string
      */
-    const CIPHER = 'aes-256-ofb';
+    const CIPHER = 'aes-256-ccm';
 }

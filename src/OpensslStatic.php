@@ -48,7 +48,7 @@ final class OpensslStatic extends OpensslWrapper
         $hsz = Str::hashSize($algo);
 
         // Get the tag size in bytes for this cipher mode
-        $tsz = parent::tagRequired($cipher) ? 4 : 0;
+        $tsz = parent::tagRequired($cipher) ? 16 : 0;
 
         // Ask openssl for the IV size needed for specified cipher
         $isz = parent::ivSize($cipher);
@@ -66,7 +66,7 @@ final class OpensslStatic extends OpensslWrapper
         $msg = Str::substr($data, $isz + $hsz + $tsz);
 
         // Create a new password derivation object
-        $key = new OpensslKey($algo, $key, $ivr);
+        $key = new OpensslKey($algo, $key, $ivr, false);
 
         // Calculate checksum of message payload for verification
         $chk = \hash_hmac($algo, $msg, $key->authenticationKey($cipher), true);
