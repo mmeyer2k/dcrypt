@@ -53,13 +53,13 @@ jobs:
       - checkout
       - restore_cache:
           keys:
-            - source-php7.2-{{ .Branch }}-{{ .Revision }}
-            - source-php7.2-{{ .Branch }}-
-            - source-php7.2-
+            - source-php7.3-{{ .Branch }}-{{ .Revision }}
+            - source-php7.3-{{ .Branch }}-
+            - source-php7.3-
       - run: composer require phpunit/phpunit
       - run: php vendor/phpunit/phpunit/phpunit
       - save_cache:
-          key: source-php7.2-{{ .Branch }}-{{ .Revision }}
+          key: source-php7.3-{{ .Branch }}-{{ .Revision }}
           paths:
             - vendor
         
