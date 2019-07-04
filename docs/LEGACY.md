@@ -2,7 +2,7 @@
 
 ## PHP 7.1+
 ```
-composer require "mmeyer2k/dcrypt:^10.0"
+composer require "mmeyer2k/dcrypt:^13.0"
 ```
 
 ## PHP 7.0
