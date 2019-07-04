@@ -57,7 +57,7 @@ Storing this key safely is up to you! [Guide to keys](https://github.com/mmeyer2
 ### AES-256 GCM Encryption
 
 Since PHP 7.1 supports native AEAD encryption modes, using GCM would be safest option for most applications.
-Dcrypt will handle the 32 bit AEAD authentication tag, SHA3-256 HMAC ([Keccak](https://en.wikipedia.org/wiki/SHA-3)), initialization vector and encrypted message as a single unencoded string.
+Dcrypt will handle the AEAD authentication tag, SHA3-256 HMAC ([Keccak](https://en.wikipedia.org/wiki/SHA-3)), initialization vector and encrypted message as a single unencoded string.
 
 ```php
 <?php
@@ -129,7 +129,6 @@ $plaintext = \BlowfishCrc32::decrypt($encrypted, $key);
 #### Layered Encryption Factory
 
 Feeling especially paranoid?
-Is the NSA monitoring your brainwaves?
 Not sure which cipher methods and algos can be trusted?
 Why not try all of them.
 
@@ -168,8 +167,9 @@ try {
 ## Stream Ciphers
 
 Be sure you understand the risks and inherent issues of using a stream cipher before proceeding.
-Read the relevant information before using a stream cipher for anything important:
 
+- Each key should only be used once
+- No checksums mean data can be forged or altered
 - [https://en.wikipedia.org/wiki/Stream_cipher_attacks](https://en.wikipedia.org/wiki/Stream_cipher_attacks)
 - [https://jameshfisher.com/2018/01/01/making-a-stream-cipher/](https://jameshfisher.com/2018/01/01/making-a-stream-cipher/)
 
@@ -187,7 +187,7 @@ $encrypted = \Dcrypt\OneTimePad::crypt('a secret', $key);
 $plaintext = \Dcrypt\OneTimePad::crypt($encrypted, $key);
 ```
 
-`Otp` can also be configured to use any other hashing algorithm to generate the pseudorandom keystream.
+`OneTimePad` can use any hashing algorithm to generate the pseudorandom keystream.
 
 ```php
 <?php
