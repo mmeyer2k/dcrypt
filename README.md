@@ -102,6 +102,15 @@ $encrypted = \Dcrypt\OpensslStatic::encrypt('a secret', $key, 'bf-ofb', 'crc32')
 $plaintext = \Dcrypt\OpensslStatic::decrypt($encrypted, $key, 'bf-ofb', 'crc32');
 ```
 
+then...
+
+```php
+<?php
+$encrypted = \BlowfishCrc32::encrypt('a secret', $key);
+
+$plaintext = \BlowfishCrc32::decrypt($encrypted, $key);
+```
+
 #### Class Overloading
 
 Dcrypt's internal functions are easily extendable by overloading the `OpensslBridge` class. 
@@ -115,15 +124,6 @@ class BlowfishCrc32 extends \Dcrypt\OpensslBridge
 
     const ALGO = 'crc32';
 }
-```
-
-then...
-
-```php
-<?php
-$encrypted = \BlowfishCrc32::encrypt('a secret', $key);
-
-$plaintext = \BlowfishCrc32::decrypt($encrypted, $key);
 ```
 
 #### Layered Encryption Factory
