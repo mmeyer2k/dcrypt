@@ -43,7 +43,7 @@ class OpensslWrapper
         string $iv,
         string &$tag
     ): string {
-        if (OpensslStatic::tagRequired($cipher)) {
+        if (self::tagRequired($cipher)) {
             return \openssl_encrypt($data, $cipher, $key, 1, $iv, $tag, '', 16);
         } else {
             return \openssl_encrypt($data, $cipher, $key, 1, $iv);
@@ -68,7 +68,7 @@ class OpensslWrapper
         string $iv,
         string $tag
     ): string {
-        if (OpensslStatic::tagRequired($cipher)) {
+        if (self::tagRequired($cipher)) {
             return \openssl_decrypt($input, $cipher, $key, 1, $iv, $tag, '');
         } else {
             return \openssl_decrypt($input, $cipher, $key, 1, $iv);

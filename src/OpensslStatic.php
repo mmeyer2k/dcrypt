@@ -65,7 +65,7 @@ final class OpensslStatic extends OpensslWrapper
         // Get the encrypted message payload
         $msg = Str::substr($data, $isz + $hsz + $tsz);
 
-        // Create a new password derivation object
+        // Create a new password derivation object with no key tests
         $key = new OpensslKey($algo, $key, $ivr, false);
 
         // Calculate checksum of message payload for verification
