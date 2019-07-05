@@ -1,9 +1,7 @@
 # PHP Version Support
 
 ## PHP 7.1+
-```
-composer require "mmeyer2k/dcrypt:^13.0"
-```
+Use current stable version.
 
 ## PHP 7.0
 ```
