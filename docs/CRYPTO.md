@@ -28,17 +28,11 @@ This document serves as a high level design document for the block cipher functi
     - iv
     - tag
 
-## Testing key validity
-Before any encryption/decryption calls, a key derivation object must be created.
-This object tests the key supplied to it to make sure that it:
-1. Can be decoded as a base64 string
-1. The size after decoding meets or exceeds 2048 bytes
-1. Contains a minimum amount of entropy as determined by counting the unique characters in the key
-
 Providing a high quality key is __essential__ to the security level it provides.
 
 ## Steps for encryption
 1. Obtain a new `SALT` of appropriate size for given `CIPHER`
+1. Test key for validity
 1. Derive authentication key `AKEY = HKDF(ALGO, KEY, AUTHINFO)`
 1. Derive encryption key `EKEY = HKDF(ALGO, KEY, ENCRINFO)`
 1. Encrypt the data as `CTEXT = OPENSSL_ENCRYPT(MTEXT, EKEY, SALT)`
@@ -51,8 +45,8 @@ Providing a high quality key is __essential__ to the security level it provides.
     
 ## Steps for decryption
 1. Pop `SALT` off front of `CTEXT`
-1. Same as step 2 from above
 1. Same as step 3 from above
+1. Same as step 4 from above
 1. Pop `CHECKSUM` from front of `CTEXT`
 1. Pop `TAG` from front of `CTEXT`
 1. Generate a checksum where `COMPUTED = HMAC(CTEXT, ALGO, AKEY)`
