@@ -33,7 +33,7 @@ final class OpensslStatic extends OpensslWrapper
      * @param string $data   Data to be decrypted
      * @param string $key    Key material
      * @param string $cipher OpenSSL cipher name
-     * @param string $algo   Hashing and key derivation algo name
+     * @param string $algo   Hash algo name
      *
      * @return string
      * @throws \Exception
@@ -65,7 +65,7 @@ final class OpensslStatic extends OpensslWrapper
         // Get the encrypted message payload
         $msg = Str::substr($data, $isz + $hsz + $tsz);
 
-        // Create a new password derivation object with no key tests
+        // Create key derivation object (key testing = false)
         $key = new OpensslKey($algo, $key, $ivr, false);
 
         // Calculate checksum of message payload for verification
@@ -89,7 +89,7 @@ final class OpensslStatic extends OpensslWrapper
      * @param string $data   Data to be encrypted
      * @param string $key    Key material
      * @param string $cipher OpenSSL cipher name
-     * @param string $algo   Hashing and key derivation algo name
+     * @param string $algo   Hash algo name
      *
      * @return string
      * @throws \Exception
@@ -106,7 +106,7 @@ final class OpensslStatic extends OpensslWrapper
         // Create key derivation object
         $key = new OpensslKey($algo, $key, $ivr);
 
-        // Create a placeholder for the authentication tag to be passed by reference
+        // Create a placeholder for the authentication tag to be returned via reference
         $tag = '';
 
         // Derive the encryption key
@@ -118,7 +118,7 @@ final class OpensslStatic extends OpensslWrapper
         // Generate the ciphertext checksum
         $chk = \hash_hmac($algo, $msg, $key->authenticationKey($cipher), true);
 
-        // Return iv + checksum + tag + ciphertext
+        // Return concatenation of iv + checksum + tag + ciphertext
         return $ivr . $chk . $tag . $msg;
     }
 }
