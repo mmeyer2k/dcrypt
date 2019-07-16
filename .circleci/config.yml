@@ -12,10 +12,10 @@ jobs:
             - source-php7.1-
       - run: composer require phpunit/phpunit infection/infection squizlabs/php_codesniffer phpmetrics/phpmetrics
       - run: mkdir -p coverage
-      - run: php vendor/phpunit/phpunit/phpunit --coverage-html coverage --coverage-clover=coverage.clover
-      - run: php vendor/infection/infection/bin/infection
-      - run: cat infection.log
-      - run: php vendor/squizlabs/php_codesniffer/bin/phpcs src | tee codesniff.log
+      - run: ./vendor/bin/phpunit --coverage-html coverage --coverage-clover=coverage.clover
+      - run: ./vendor/bin/infection
+      - run: ./vendor/bin/phpmetrics --report-html=phpmetrics ./src
+      - run: ./vendor/bin/phpcs src | tee codesniff.log
       - run: php examples/support.php
       - run: wget https://scrutinizer-ci.com/ocular.phar
       - run: php ocular.phar code-coverage:upload --format=php-clover coverage.clover
@@ -29,6 +29,8 @@ jobs:
           path: infection.log
       - store_artifacts:
           path: codesniff.log
+      - store_artifacts:
+          path: phpmetrics
 
   php-72:
     docker:
