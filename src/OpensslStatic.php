@@ -106,7 +106,7 @@ final class OpensslStatic extends OpensslWrapper
         // Create key derivation object
         $key = new OpensslKey($algo, $key, $ivr);
 
-        // Create a placeholder for the authentication tag to be returned via reference
+        // Create a variable for the authentication tag to be returned by reference
         $tag = '';
 
         // Derive the encryption key
