@@ -5,7 +5,7 @@ This document explains the reasoning behind this design decision and some tips o
 
 ## Why 2048 bytes?
 
-The large key size of 2048 bytes enables dcrypt to forgo any computationally wasteful (at best) and potentially dangerous (at worst) password derivation while still providing very strong security and brute force resistance.
+The large key size of 2048 bytes enables dcrypt to forgo any computationally wasteful (at best) and potentially dangerous (at worst) password derivation while still providing very strong security and brute force resilience.
 
 At 2048 bytes the probability of every byte in the 0x00 to 0xFF range being used at least once in a pseudo-random string approaches 1.
 This statistical curiosity can be leveraged to heuristically differentiate between strong and weak entropy sources.
@@ -23,6 +23,8 @@ if (count(array_unique(str_split($key))) < 250) {
     throw InvalidKeyException;
 }
 ```
+
+This test is not performed during decryption.
 
 ## Create a new key
 
