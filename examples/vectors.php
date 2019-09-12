@@ -1,14 +1,16 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 /*
  * Generates the openssl-related test vectors in tests/.vectors.json
  */
 
-use \Dcrypt\OpensslStatic;
+use Dcrypt\OpensslStatic;
 
-require __DIR__ . '/../vendor/autoload.php';
+require __DIR__.'/../vendor/autoload.php';
 
-$vectors = __DIR__ . '/../tests/.vectors.json';
+$vectors = __DIR__.'/../tests/.vectors.json';
 
 if (file_exists($vectors)) {
     $key = json_decode(file_get_contents($vectors))->key;
@@ -17,11 +19,11 @@ if (file_exists($vectors)) {
 }
 
 $out = [
-    'key' => $key,
-    'algos' => [],
+    'key'     => $key,
+    'algos'   => [],
     'ciphers' => [],
-    'aes256' => [],
-    'otp' => [],
+    'aes256'  => [],
+    'otp'     => [],
 ];
 
 foreach (\Dcrypt\OpensslSupported::ciphers() as $cipher) {
@@ -31,8 +33,7 @@ foreach (\Dcrypt\OpensslSupported::ciphers() as $cipher) {
 
     try {
         $out['ciphers'][$cipher] = base64_encode(OpensslStatic::encrypt('a secret', $key, $cipher, 'sha3-256'));
-    } catch (\Exception|\Error $e) {
-
+    } catch (\Exception | \Error $e) {
     }
 }
 
@@ -44,7 +45,7 @@ foreach (\Dcrypt\OpensslSupported::algos() as $algo) {
     $out['algos'][$algo] = base64_encode(OpensslStatic::encrypt('a secret', $key, 'aes-256-gcm', $algo));
 }
 
-foreach(['Gcm', 'Ctr', 'Ofb', 'Cbc', 'Ecb', 'Ccm', 'Cfb'] as $mode){
+foreach (['Gcm', 'Ctr', 'Ofb', 'Cbc', 'Ecb', 'Ccm', 'Cfb'] as $mode) {
     $c = "\\Dcrypt\\Aes256$mode";
     $out['aes256'][$c] = base64_encode($c::encrypt('a secret', $key));
 }
@@ -55,6 +56,6 @@ foreach (range(1, 10) as $r) {
     $out['otp'][$mult] = \base64_encode(\Dcrypt\OneTimePad::crypt(str_repeat('A', $mult), $key));
 }
 
-file_put_contents(__DIR__ . '/../tests/.vectors.json', \json_encode($out, JSON_PRETTY_PRINT));
+file_put_contents(__DIR__.'/../tests/.vectors.json', \json_encode($out, JSON_PRETTY_PRINT));
 
 var_dump($out);

@@ -1,10 +1,12 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Dcrypt\Tests;
 
 use Dcrypt\Str;
 
-class StrcmpTest extends \PHPUnit\Framework\TestCase
+class StrTest extends \PHPUnit\Framework\TestCase
 {
     public function testEquals()
     {

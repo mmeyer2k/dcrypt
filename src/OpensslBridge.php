@@ -1,14 +1,17 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 /**
- * OpensslBridge.php
+ * OpensslBridge.php.
  *
  * PHP version 7
  *
  * @category Dcrypt
- * @package  Dcrypt
+ *
  * @author   Michael Meyer (mmeyer2k) <m.meyer2k@gmail.com>
  * @license  http://opensource.org/licenses/MIT The MIT License (MIT)
+ *
  * @link     https://github.com/mmeyer2k/dcrypt
  */
 
@@ -19,15 +22,16 @@ namespace Dcrypt;
  * Extend this class to customize your cipher suite.
  *
  * @category Dcrypt
- * @package  Dcrypt
+ *
  * @author   Michael Meyer (mmeyer2k) <m.meyer2k@gmail.com>
  * @license  http://opensource.org/licenses/MIT The MIT License (MIT)
+ *
  * @link     https://github.com/mmeyer2k/dcrypt
  */
 class OpensslBridge
 {
     /**
-     * Decrypt ciphertext
+     * Decrypt ciphertext.
      *
      * @param string $data Ciphertext to decrypt
      * @param string $key  Key which will be used to decrypt data
@@ -40,7 +44,7 @@ class OpensslBridge
     }
 
     /**
-     * Encrypt plaintext
+     * Encrypt plaintext.
      *
      * @param string $data Plaintext string to encrypt.
      * @param string $key  Key which will be used to encrypt data

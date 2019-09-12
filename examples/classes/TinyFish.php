@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Dcrypt\Examples;
 
@@ -12,14 +14,14 @@ namespace Dcrypt\Examples;
 class TinyFish extends \Dcrypt\OpensslBridge
 {
     /**
-     * Specify using blowfish ofb cipher method
+     * Specify using blowfish ofb cipher method.
      *
      * @var string
      */
     const CIPHER = 'bf-ofb';
 
     /**
-     * Use crc32 hashing algo to authenticate messages
+     * Use crc32 hashing algo to authenticate messages.
      *
      * @var string
      */
