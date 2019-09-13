@@ -1,14 +1,17 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 /**
- * OpensslStack.php
+ * OpensslStack.php.
  *
  * PHP version 7
  *
  * @category Dcrypt
- * @package  Dcrypt
+ *
  * @author   Michael Meyer (mmeyer2k) <m.meyer2k@gmail.com>
  * @license  http://opensource.org/licenses/MIT The MIT License (MIT)
+ *
  * @link     https://github.com/mmeyer2k/dcrypt
  */
 
@@ -18,22 +21,23 @@ namespace Dcrypt;
  * A factory class to build and use custom encryption stacks.
  *
  * @category Dcrypt
- * @package  Dcrypt
+ *
  * @author   Michael Meyer (mmeyer2k) <m.meyer2k@gmail.com>
  * @license  http://opensource.org/licenses/MIT The MIT License (MIT)
+ *
  * @link     https://github.com/mmeyer2k/dcrypt
  */
 class OpensslStack
 {
     /**
-     * Stack of cipher/algo combos
+     * Stack of cipher/algo combos.
      *
      * @var array
      */
     private $_stack = [];
 
     /**
-     * High entropy key
+     * High entropy key.
      *
      * @var string
      */
@@ -50,7 +54,7 @@ class OpensslStack
     }
 
     /**
-     * Add a new cipher/algo combo to the execution stack
+     * Add a new cipher/algo combo to the execution stack.
      *
      * @param string $cipher Cipher mode to use
      * @param string $algo   Hashing algo to use
@@ -65,7 +69,7 @@ class OpensslStack
     }
 
     /**
-     * Encrypt data using custom stack
+     * Encrypt data using custom stack.
      *
      * @param string $data Data to encrypt
      *
@@ -81,7 +85,7 @@ class OpensslStack
     }
 
     /**
-     * Decrypt data using custom stack
+     * Decrypt data using custom stack.
      *
      * @param string $data Data to decrypt
      *

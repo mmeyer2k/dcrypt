@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Dcrypt\Tests;
 
@@ -35,7 +37,7 @@ class AesBase extends \PHPUnit\Framework\TestCase
 
         $this->expectException(\Dcrypt\Exceptions\InvalidChecksumException::class);
 
-        static::$class::decrypt($encrypted . 'A', $key);
+        static::$class::decrypt($encrypted.'A', $key);
     }
 
     public function testInvalidKeyEncoding()
@@ -59,7 +61,7 @@ class AesBase extends \PHPUnit\Framework\TestCase
 
     public function testKnownVector()
     {
-        $json = json_decode(file_get_contents(__DIR__ . '/.vectors.json'));
+        $json = json_decode(file_get_contents(__DIR__.'/.vectors.json'));
         $c = $json->aes256->{static::$class};
         $d = static::$class::decrypt(base64_decode($c), $json->key);
         $this->assertEquals('a secret', $d);

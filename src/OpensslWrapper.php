@@ -1,14 +1,17 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 /**
- * OpensslWrapper.php
+ * OpensslWrapper.php.
  *
  * PHP version 7
  *
  * @category Dcrypt
- * @package  Dcrypt
+ *
  * @author   Michael Meyer (mmeyer2k) <m.meyer2k@gmail.com>
  * @license  http://opensource.org/licenses/MIT The MIT License (MIT)
+ *
  * @link     https://github.com/mmeyer2k/dcrypt
  */
 
@@ -18,15 +21,16 @@ namespace Dcrypt;
  * A wrapper around any openssl_* functions.
  *
  * @category Dcrypt
- * @package  Dcrypt
+ *
  * @author   Michael Meyer (mmeyer2k) <m.meyer2k@gmail.com>
  * @license  http://opensource.org/licenses/MIT The MIT License (MIT)
+ *
  * @link     https://github.com/mmeyer2k/dcrypt
  */
 class OpensslWrapper
 {
     /**
-     * OpenSSL encrypt wrapper function
+     * OpenSSL encrypt wrapper function.
      *
      * @param string $data   Data to decrypt
      * @param string $cipher Cipher method to use
@@ -51,7 +55,7 @@ class OpensslWrapper
     }
 
     /**
-     * OpenSSL decrypt wrapper function
+     * OpenSSL decrypt wrapper function.
      *
      * @param string $input  Data to decrypt
      * @param string $cipher Cipher method to use
@@ -90,12 +94,13 @@ class OpensslWrapper
     }
 
     /**
-     * Get a correctly sized IV for the specified cipher
+     * Get a correctly sized IV for the specified cipher.
      *
      * @param string $cipher Openssl cipher
      *
-     * @return string
      * @throws \Exception
+     *
+     * @return string
      */
     protected static function ivGenerate(string $cipher): string
     {
@@ -109,7 +114,7 @@ class OpensslWrapper
     }
 
     /**
-     * Determines if the provided cipher requires a tag
+     * Determines if the provided cipher requires a tag.
      *
      * @param string $cipher Openssl cipher
      *
