@@ -1,14 +1,15 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 error_reporting(0);
 
 /**
- * support.php
+ * support.php.
  *
  * Displays supported ciphers and algos
  */
-
-require __DIR__ . '/../vendor/autoload.php';
+require __DIR__.'/../vendor/autoload.php';
 
 $key = \Dcrypt\OpensslKey::create();
 
@@ -26,10 +27,10 @@ foreach (\openssl_get_cipher_methods() as $meth) {
         $e = \Dcrypt\OpensslStatic::encrypt('AAAA', $key, $meth, 'sha256');
         $d = \Dcrypt\OpensslStatic::decrypt($e, $key, $meth, 'sha256');
 
-        echo " [pass] ";
-    } catch (\Exception|\Error $e) {
+        echo ' [pass] ';
+    } catch (\Exception | \Error $e) {
         $m = $e->getMessage();
-        echo " [fail] [!!!]";
+        echo ' [fail] [!!!]';
     } finally {
         echo "\n";
     }
@@ -49,10 +50,10 @@ foreach (\hash_algos() as $algo) {
         $e = \Dcrypt\OpensslStatic::encrypt('AAAA', $key, 'aes-256-gcm', $algo);
         $d = \Dcrypt\OpensslStatic::decrypt($e, $key, 'aes-256-gcm', $algo);
 
-        echo " [pass] ";
-    } catch (\Exception|\Error $e) {
+        echo ' [pass] ';
+    } catch (\Exception | \Error $e) {
         $m = $e->getMessage();
-        echo " [fail] [!!!]";
+        echo ' [fail] [!!!]';
     } finally {
         echo "\n";
     }

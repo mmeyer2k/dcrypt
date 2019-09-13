@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Dcrypt\Tests;
 
@@ -24,11 +26,11 @@ class OpensslStackTest extends \PHPUnit\Framework\TestCase
             ->add('aes-256-ofb', 'sha512')
             ->add('aes-256-gcm', 'sha512');
 
-        $encrypted = $stack->encrypt("a secret");
+        $encrypted = $stack->encrypt('a secret');
 
         $plaintext = $stack->decrypt($encrypted);
 
-        $this->assertEquals("a secret", $plaintext);
+        $this->assertEquals('a secret', $plaintext);
     }
 
     public function testAes256StackWithKeyFromReadmeFile()
@@ -42,10 +44,10 @@ class OpensslStackTest extends \PHPUnit\Framework\TestCase
             ->add('aes-256-ctr', 'sha384')
             ->add('aes-256-gcm', 'sha512');
 
-        $encrypted = $stack->encrypt("a secret");
+        $encrypted = $stack->encrypt('a secret');
 
         $plaintext = $stack->decrypt($encrypted);
 
-        $this->assertEquals("a secret", $plaintext);
+        $this->assertEquals('a secret', $plaintext);
     }
 }

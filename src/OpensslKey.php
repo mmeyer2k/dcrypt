@@ -1,14 +1,17 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 /**
- * OpensslKey.php
+ * OpensslKey.php.
  *
  * PHP version 7
  *
  * @category Dcrypt
- * @package  Dcrypt
+ *
  * @author   Michael Meyer (mmeyer2k) <m.meyer2k@gmail.com>
  * @license  http://opensource.org/licenses/MIT The MIT License (MIT)
+ *
  * @link     https://github.com/mmeyer2k/dcrypt
  */
 
@@ -17,32 +20,33 @@ namespace Dcrypt;
 use Dcrypt\Exceptions\InvalidKeyException;
 
 /**
- * Provides key derivation functions
+ * Provides key derivation functions.
  *
  * @category Dcrypt
- * @package  Dcrypt
+ *
  * @author   Michael Meyer (mmeyer2k) <m.meyer2k@gmail.com>
  * @license  http://opensource.org/licenses/MIT The MIT License (MIT)
+ *
  * @link     https://github.com/mmeyer2k/dcrypt
  */
 final class OpensslKey
 {
     /**
-     * High entropy key
+     * High entropy key.
      *
      * @var string
      */
     private $_key;
 
     /**
-     * Algo string
+     * Algo string.
      *
      * @var string
      */
     private $_algo;
 
     /**
-     * High entropy salt
+     * High entropy salt.
      *
      * @var string
      */
@@ -87,7 +91,7 @@ final class OpensslKey
     }
 
     /**
-     * Generate the authentication key
+     * Generate the authentication key.
      *
      * @param string $info The extra info parameter for hash_hkdf
      *
@@ -95,11 +99,11 @@ final class OpensslKey
      */
     public function authenticationKey(string $info): string
     {
-        return $this->deriveKey(__FUNCTION__ . '|' . $info);
+        return $this->deriveKey(__FUNCTION__.'|'.$info);
     }
 
     /**
-     * Generate the encryption key
+     * Generate the encryption key.
      *
      * @param string $info The extra info parameter for hash_hkdf
      *
@@ -107,11 +111,11 @@ final class OpensslKey
      */
     public function encryptionKey(string $info): string
     {
-        return $this->deriveKey(__FUNCTION__ . '|' . $info);
+        return $this->deriveKey(__FUNCTION__.'|'.$info);
     }
 
     /**
-     * Derive a key with differing info string parameters
+     * Derive a key with differing info string parameters.
      *
      * @param string $info Info parameter to provide to hash_hkdf
      *
@@ -123,12 +127,13 @@ final class OpensslKey
     }
 
     /**
-     * Generate a new key that meets requirements for dcrypt
+     * Generate a new key that meets requirements for dcrypt.
      *
      * @param int $bytes Size of key in bytes
      *
-     * @return string
      * @throws InvalidKeyException
+     *
+     * @return string
      */
     public static function create(int $bytes = 2048): string
     {
@@ -140,7 +145,7 @@ final class OpensslKey
     }
 
     /**
-     * Returns true if key has enough entropy
+     * Returns true if key has enough entropy.
      *
      * @param string $key Key string to test
      *

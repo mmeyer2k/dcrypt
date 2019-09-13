@@ -1,42 +1,47 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 /**
- * OpensslStatic.php
+ * OpensslStatic.php.
  *
  * PHP version 7
  *
  * @category Dcrypt
- * @package  Dcrypt
+ *
  * @author   Michael Meyer (mmeyer2k) <m.meyer2k@gmail.com>
  * @license  http://opensource.org/licenses/MIT The MIT License (MIT)
+ *
  * @link     https://github.com/mmeyer2k/dcrypt
  */
 
 namespace Dcrypt;
 
-use \Dcrypt\Exceptions\InvalidChecksumException;
+use Dcrypt\Exceptions\InvalidChecksumException;
 
 /**
  * Static functions that handle encryption/decryption with openssl.
  *
  * @category Dcrypt
- * @package  Dcrypt
+ *
  * @author   Michael Meyer (mmeyer2k) <m.meyer2k@gmail.com>
  * @license  http://opensource.org/licenses/MIT The MIT License (MIT)
+ *
  * @link     https://github.com/mmeyer2k/dcrypt
  */
 final class OpensslStatic extends OpensslWrapper
 {
     /**
-     * Decrypt raw data string
+     * Decrypt raw data string.
      *
      * @param string $data   Data to be decrypted
      * @param string $key    Key material
      * @param string $cipher OpenSSL cipher name
      * @param string $algo   Hash algo name
      *
-     * @return string
      * @throws \Exception
+     *
+     * @return string
      */
     public static function decrypt(
         string $data,
@@ -84,20 +89,21 @@ final class OpensslStatic extends OpensslWrapper
     }
 
     /**
-     * Encrypt raw string
+     * Encrypt raw string.
      *
      * @param string $data   Data to be encrypted
      * @param string $key    Key material
      * @param string $cipher OpenSSL cipher name
      * @param string $algo   Hash algo name
      *
-     * @return string
      * @throws \Exception
+     *
+     * @return string
      */
     public static function encrypt(
         string $data,
         string $key,
-        string $cipher, 
+        string $cipher,
         string $algo
     ): string {
         // Generate IV of appropriate size
@@ -119,6 +125,6 @@ final class OpensslStatic extends OpensslWrapper
         $chk = \hash_hmac($algo, $msg, $key->authenticationKey($cipher), true);
 
         // Return concatenation of iv + checksum + tag + ciphertext
-        return $ivr . $chk . $tag . $msg;
+        return $ivr.$chk.$tag.$msg;
     }
 }

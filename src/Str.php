@@ -1,14 +1,17 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 /**
- * Str.php
- * 
+ * Str.php.
+ *
  * PHP version 7
- * 
+ *
  * @category Dcrypt
- * @package  Dcrypt
+ *
  * @author   Michael Meyer (mmeyer2k) <m.meyer2k@gmail.com>
  * @license  http://opensource.org/licenses/MIT The MIT License (MIT)
+ *
  * @link     https://github.com/mmeyer2k/dcrypt
  */
 
@@ -17,13 +20,14 @@ namespace Dcrypt;
 /**
  * Provides time-safe string comparison facilities, and safe string operations
  * on systems that have mb_* function overloading enabled.
- * 
- * The functions in this class were inspired by the symfony's StringUtils class. 
- * 
+ *
+ * The functions in this class were inspired by the symfony's StringUtils class.
+ *
  * @category Dcrypt
- * @package  Dcrypt
+ *
  * @author   Michael Meyer (mmeyer2k) <m.meyer2k@gmail.com>
  * @license  http://opensource.org/licenses/MIT The MIT License (MIT)
+ *
  * @link     https://github.com/mmeyer2k/dcrypt
  * @link     https://github.com/symfony/Security/blob/master/Core/Util/StringUtils.php
  * @link     https://php.net/manual/en/mbstring.overload.php
@@ -31,13 +35,13 @@ namespace Dcrypt;
 final class Str
 {
     /**
-     * Compares two strings in constant time. Strings are hashed before 
+     * Compares two strings in constant time. Strings are hashed before
      * comparison so information is not leaked when strings are not of
      * equal length.
      *
      * @param string $known The string of known length to compare against
      * @param string $given The string that the user can control
-     * 
+     *
      * @return bool
      */
     public static function equal(string $known, string $given): bool
@@ -82,7 +86,7 @@ final class Str
      * @param string $string The string whose length we wish to obtain
      * @param int    $start  Offset to start gathering output
      * @param int    $length Distance from starting offset to gather
-     * 
+     *
      * @return string
      */
     public static function substr(
