@@ -10,12 +10,11 @@ jobs:
             - source-php7.1-{{ .Branch }}-{{ .Revision }}
             - source-php7.1-{{ .Branch }}-
             - source-php7.1-
-      - run: composer require phpunit/phpunit infection/infection squizlabs/php_codesniffer phpmetrics/phpmetrics
+      - run: composer require phpunit/phpunit infection/infection phpmetrics/phpmetrics
       - run: mkdir -p coverage
       - run: ./vendor/bin/phpunit --coverage-html coverage --coverage-clover=coverage.clover
       - run: ./vendor/bin/infection
       - run: ./vendor/bin/phpmetrics --report-html=phpmetrics ./src
-      - run: ./vendor/bin/phpcs src | tee codesniff.log || exit 0
       - run: php examples/support.php
       - run: wget https://scrutinizer-ci.com/ocular.phar
       - run: php ocular.phar code-coverage:upload --format=php-clover coverage.clover
