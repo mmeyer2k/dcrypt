@@ -27,8 +27,6 @@ jobs:
       - store_artifacts:
           path: infection.log
       - store_artifacts:
-          path: codesniff.log
-      - store_artifacts:
           path: phpmetrics
 
   php-72:
