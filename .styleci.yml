@@ -1,0 +1,13 @@
+preset: recommended
+
+risky: true
+
+enabled:
+  - array_indentation
+  - unalign_double_arrow
+  - ternary_to_null_coalescing
+  - no_alternative_syntax
+
+disabled:
+  - concat_without_spaces
+  - not_operator_with_successor_space
