@@ -9,4 +9,5 @@ enabled:
   - no_alternative_syntax
 
 disabled:
+  - align_double_arrow
   - concat_without_spaces
