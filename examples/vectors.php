@@ -19,11 +19,11 @@ if (file_exists($vectors)) {
 }
 
 $out = [
-    'key'     => $key,
-    'algos'   => [],
+    'key' => $key,
+    'algos' => [],
     'ciphers' => [],
-    'aes256'  => [],
-    'otp'     => [],
+    'aes256' => [],
+    'otp' => [],
 ];
 
 foreach (\Dcrypt\OpensslSupported::ciphers() as $cipher) {
