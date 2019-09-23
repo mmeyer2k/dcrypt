@@ -9,7 +9,7 @@ error_reporting(0);
  *
  * Displays supported ciphers and algos
  */
-require __DIR__.'/../vendor/autoload.php';
+require __DIR__ . '/../vendor/autoload.php';
 
 $key = \Dcrypt\OpensslKey::create();
 

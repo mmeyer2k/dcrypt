@@ -125,6 +125,6 @@ final class OpensslStatic extends OpensslWrapper
         $chk = \hash_hmac($algo, $msg, $key->authenticationKey($cipher), true);
 
         // Return concatenation of iv + checksum + tag + ciphertext
-        return $ivr.$chk.$tag.$msg;
+        return $ivr . $chk . $tag . $msg;
     }
 }

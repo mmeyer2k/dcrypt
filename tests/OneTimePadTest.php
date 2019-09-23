@@ -27,7 +27,7 @@ class OneTimePadTest extends \PHPUnit\Framework\TestCase
 
     public function testVector()
     {
-        $json = json_decode(file_get_contents(__DIR__.'/.vectors.json'));
+        $json = json_decode(file_get_contents(__DIR__ . '/.vectors.json'));
 
         foreach ($json->otp as $mult => $data) {
             $data = base64_decode($data);
