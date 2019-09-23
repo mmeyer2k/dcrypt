@@ -55,7 +55,7 @@ class OneTimePad
 
         foreach ($chunks as $i => &$chunk) {
             // Create the info key based on counter
-            $info = $length.$i;
+            $info = $length . $i;
 
             // Xor the derived key with the data chunk
             $chunk = $chunk ^ $key->deriveKey($info);

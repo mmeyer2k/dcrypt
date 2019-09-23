@@ -99,7 +99,7 @@ final class OpensslKey
      */
     public function authenticationKey(string $info): string
     {
-        return $this->deriveKey(__FUNCTION__.'|'.$info);
+        return $this->deriveKey(__FUNCTION__ . '|' . $info);
     }
 
     /**
@@ -111,7 +111,7 @@ final class OpensslKey
      */
     public function encryptionKey(string $info): string
     {
-        return $this->deriveKey(__FUNCTION__.'|'.$info);
+        return $this->deriveKey(__FUNCTION__ . '|' . $info);
     }
 
     /**
