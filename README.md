@@ -10,6 +10,7 @@
 
 A petite library of essential encryption functions for PHP 7.1+.
 For legacy PHP version support, look [here](https://github.com/mmeyer2k/dcrypt/blob/master/docs/LEGACY.md).
+If you need a dcrypt inspired encryption library for .NET, check out [harpocrates](https://github.com/mmeyer2k/harpocrates).
 
 - [Install](#install)
 - [Features](#features)
