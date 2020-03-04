@@ -29,6 +29,5 @@ namespace Dcrypt\Exceptions;
  */
 class InvalidKeyException extends \Exception
 {
-    const KEYLENGTH = 'Key must be at least 2048 bytes and base64 encoded';
-    const KEYRANDOM = 'Key does not contain the minimum amount of entropy';
+    const KEYLENGTH = 'Key must be at least 32 bytes';
 }
