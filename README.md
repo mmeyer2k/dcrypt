@@ -40,11 +40,11 @@ composer require "mmeyer2k/dcrypt=^13.0"
 ## Block Ciphers
 
 The dcrypt library helps application developers avoid common mistakes in crypto implementations that leave data at risk while still providing flexibility in its options for crypto enthusiasts.
-Dcrypt's functions require the use of a high entropy 256 bit key encoded with base64.
+Dcrypt's block cipher functions require the use of a high entropy 256 bit, base64-encoded key.
 To generate a new key, execute this on the command line:
 
 ```bash
-head -c 256 /dev/urandom | base64 -w 0 | xargs echo
+head -c 32 /dev/urandom | base64 -w 0 | xargs echo
 ```
 
 [Specification document](https://github.com/mmeyer2k/dcrypt/blob/master/docs/CRYPTO.md)

@@ -69,7 +69,7 @@ final class OpensslKey
         // Store the key as what was supplied
         $this->_key = \base64_decode($key);
 
-        if (Str::strlen($this->key) < 32) {
+        if (Str::strlen($this->_key) < 32) {
             throw new InvalidKeyException(InvalidKeyException::KEYLENGTH);
         }
 
