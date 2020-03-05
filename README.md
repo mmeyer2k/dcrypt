@@ -13,17 +13,16 @@ For legacy PHP version support, look [here](https://github.com/mmeyer2k/dcrypt/b
 If you need a dcrypt inspired encryption library for .NET, check out [harpocrates](https://github.com/mmeyer2k/harpocrates).
 
 - [Install](#install)
-- [Features](#features)
-  - [Block Ciphers](#block-ciphers)
-    - [AES-256 GCM Encryption](#aes-256-gcm-encryption)
-    - [Other AES-256 Modes](#other-aes-256-modes)
-    - [Custom Encryption Suites](#custom-encryption-suites)
-      - [Static Wrapper](#static-wrapper)
-      - [Class Overloading](#class-overloading)
-      - [Layered Encryption Factory](#layered-encryption-factory)
-    - [Message Authenticity Checking](#message-authenticity-checking)
-  - [Stream Ciphers](#stream-ciphers)
-    - [One Time Pad](#one-time-pad)
+- [Block Ciphers](#block-ciphers)
+  - [AES-256 GCM Encryption](#aes-256-gcm-encryption)
+  - [Other AES-256 Modes](#other-aes-256-modes)
+  - [Custom Encryption Suites](#custom-encryption-suites)
+    - [Static Wrapper](#static-wrapper)
+    - [Class Overloading](#class-overloading)
+    - [Layered Encryption Factory](#layered-encryption-factory)
+  - [Message Authenticity Checking](#message-authenticity-checking)
+- [Stream Ciphers](#stream-ciphers)
+  - [One Time Pad](#one-time-pad)
 - [Show me some love](#show-me-some-love-heart_eyes) :heart_eyes::beer:
 
 # Install
@@ -34,8 +33,6 @@ Don't worry, dcrypt does not have any dependencies of its own.
 ```bash
 composer require "mmeyer2k/dcrypt=^13.0"
 ```
-
-# Features
 
 ## Block Ciphers
 
@@ -56,7 +53,7 @@ Dcrypt will handle the AEAD authentication tag, SHA3-256 HMAC ([Keccak](https://
 
 ```php
 <?php
-$key = "[ ... ]";
+$key = "..............................";
 
 $encrypted = \Dcrypt\Aes::encrypt('a secret', $key);
 
