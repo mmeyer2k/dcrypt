@@ -18,7 +18,7 @@ declare(strict_types=1);
 namespace Dcrypt;
 
 /**
- * A shorthand alias for Aes256Gcm to prevent typos and make neater code
+ * A shorthand alias for Aes256Gcm to prevent typos and make neater code.
  *
  * @category Dcrypt
  *
