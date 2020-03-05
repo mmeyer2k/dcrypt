@@ -6,5 +6,4 @@ namespace Dcrypt\Tests;
 
 class Aes extends Aes256GcmTest
 {
-
 }
