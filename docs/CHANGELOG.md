@@ -1,12 +1,13 @@
 # Changes in Dcrypt
 
 ## 13.1.1
+- Add test class for `Aes` static helper object
 - Add base64 decode failure exception message for clarity
 
 ## 13.1.0
 - Only require 32 byte keys from now on
 - Remove key randomness testing in favor of trusting devs
-- Add "Aes" as shorthand alias for "Aes256Gcm" to prevent typos
+- Add `Aes` as shorthand alias for `Aes256Gcm` to prevent typos
 
 ## 13.0.0
 - Skip validating key when decrypting
