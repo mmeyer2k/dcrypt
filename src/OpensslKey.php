@@ -67,12 +67,14 @@ final class OpensslKey
         string $ivr = ''
     ) {
         // Store the key as what was supplied
-        $this->_key = \base64_decode($key);
+        $this->_key = \base64_decode($key, true);
 
+        // If key was not proper base64, bail out
         if ($this->_key === false) {
             throw new InvalidKeyException(InvalidKeyException::BASE64ENC);
         }
 
+        // If key was to short, bail out
         if (Str::strlen($this->_key) < 32) {
             throw new InvalidKeyException(InvalidKeyException::KEYLENGTH);
         }
