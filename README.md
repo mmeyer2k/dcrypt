@@ -13,17 +13,16 @@ For legacy PHP version support, look [here](https://github.com/mmeyer2k/dcrypt/b
 If you need a dcrypt inspired encryption library for .NET, check out [harpocrates](https://github.com/mmeyer2k/harpocrates).
 
 - [Install](#install)
-- [Features](#features)
-  - [Block Ciphers](#block-ciphers)
-    - [AES-256 GCM Encryption](#aes-256-gcm-encryption)
-    - [Other AES-256 Modes](#other-aes-256-modes)
-    - [Custom Encryption Suites](#custom-encryption-suites)
-      - [Static Wrapper](#static-wrapper)
-      - [Class Overloading](#class-overloading)
-      - [Layered Encryption Factory](#layered-encryption-factory)
-    - [Message Authenticity Checking](#message-authenticity-checking)
-  - [Stream Ciphers](#stream-ciphers)
-    - [One Time Pad](#one-time-pad)
+- [Block Ciphers](#block-ciphers)
+  - [AES-256 GCM Encryption](#aes-256-gcm-encryption)
+  - [Other AES-256 Modes](#other-aes-256-modes)
+  - [Custom Encryption Suites](#custom-encryption-suites)
+    - [Static Wrapper](#static-wrapper)
+    - [Class Overloading](#class-overloading)
+    - [Layered Encryption Factory](#layered-encryption-factory)
+  - [Message Authenticity Checking](#message-authenticity-checking)
+- [Stream Ciphers](#stream-ciphers)
+  - [One Time Pad](#one-time-pad)
 - [Show me some love](#show-me-some-love-heart_eyes) :heart_eyes::beer:
 
 # Install
@@ -35,25 +34,17 @@ Don't worry, dcrypt does not have any dependencies of its own.
 composer require "mmeyer2k/dcrypt=^13.0"
 ```
 
-# Features
-
 ## Block Ciphers
 
 The dcrypt library helps application developers avoid common mistakes in crypto implementations that leave data at risk while still providing flexibility in its options for crypto enthusiasts.
-Dcrypt strives to make correct usage simple, but it _is_ possible to use dcrypt incorrectly.
-Fully understanding the instructions is important.
-
-Dcrypt's functions __require__ the use of a high entropy __2048 byte__ (minimum) key encoded with base64.
+Dcrypt's block cipher functions require the use of a high entropy 256 bit, base64-encoded key.
 To generate a new key, execute this on the command line:
 
 ```bash
-head -c 2048 /dev/urandom | base64 -w 0 | xargs echo
+head -c 32 /dev/urandom | base64 -w 0 | xargs echo
 ```
 
-Storing this key safely is up to you! [Guide to keys](https://github.com/mmeyer2k/dcrypt/blob/master/docs/KEYS.md).
-
 [Specification document](https://github.com/mmeyer2k/dcrypt/blob/master/docs/CRYPTO.md)
-
 
 ### AES-256 GCM Encryption
 
@@ -62,11 +53,11 @@ Dcrypt will handle the AEAD authentication tag, SHA3-256 HMAC ([Keccak](https://
 
 ```php
 <?php
-$key = "replace this with the output of: head -c 2048 /dev/urandom | base64 -w 0 | xargs echo";
+$key = "..............................";
 
-$encrypted = \Dcrypt\Aes256Gcm::encrypt('a secret', $key);
+$encrypted = \Dcrypt\Aes::encrypt('a secret', $key);
 
-$plaintext = \Dcrypt\Aes256Gcm::decrypt($encrypted, $key);
+$plaintext = \Dcrypt\Aes::decrypt($encrypted, $key);
 ```
 
 **If in doubt, use this example and don't read any further!**
@@ -77,15 +68,15 @@ If you read to this point then you are an experienced cryptonaut, congrats! :ok_
 
 Several AES-256 encryption modes are supported out of the box via hardcoded classes.
 
-| Class Name           | OpenSSL Cipher   | Security Rating   | Further Reading |
-| -------------------- | :--------------: | :---------------: | --------------- |
-| `\Dcrypt\Aes256Gcm`  |    `aes-256-gcm` | :smiley:          | [wiki](https://en.wikipedia.org/wiki/Galois/Counter_Mode) |
-| `\Dcrypt\Aes256Ctr`  |    `aes-256-ctr` | :relaxed:         | [wiki](https://en.wikipedia.org/wiki/Block_cipher_mode_of_operation#Counter_(CTR)) |
-| `\Dcrypt\Aes256Cbc`  |    `aes-256-cbc` | :expressionless:  | [wiki](https://en.wikipedia.org/wiki/Block_cipher_mode_of_operation) |
-| `\Dcrypt\Aes256Ofb`  |    `aes-256-ofb` | :grimacing:       | [wiki](https://en.wikipedia.org/wiki/Block_cipher_mode_of_operation#Output_Feedback_(OFB)) |
-| `\Dcrypt\Aes256Cfb`  |    `aes-256-cfb` | :hushed:          | [wiki](https://en.wikipedia.org/wiki/Block_cipher_mode_of_operation#Cipher_Feedback_(CFB)) |
-| `\Dcrypt\Aes256Ccm`  |    `aes-256-ccm` | :astonished:      | [wiki](https://en.wikipedia.org/wiki/CCM_mode) |
-| `\Dcrypt\Aes256Ecb`  |    `aes-256-ecb` | :rage:            | [wiki](https://en.wikipedia.org/wiki/Block_cipher_mode_of_operation#ECB) |
+| Class Name            | OpenSSL Cipher   | Security Rating   | Further Reading |
+| --------------------  | :--------------: | :---------------: | --------------- |
+| `Aes256Gcm` or `Aes`  |    `aes-256-gcm` | :smiley:          | [wiki](https://en.wikipedia.org/wiki/Galois/Counter_Mode) |
+| `Aes256Ctr`           |    `aes-256-ctr` | :relaxed:         | [wiki](https://en.wikipedia.org/wiki/Block_cipher_mode_of_operation#Counter_(CTR)) |
+| `Aes256Cbc`           |    `aes-256-cbc` | :expressionless:  | [wiki](https://en.wikipedia.org/wiki/Block_cipher_mode_of_operation) |
+| `Aes256Ofb`           |    `aes-256-ofb` | :grimacing:       | [wiki](https://en.wikipedia.org/wiki/Block_cipher_mode_of_operation#Output_Feedback_(OFB)) |
+| `Aes256Cfb`           |    `aes-256-cfb` | :hushed:          | [wiki](https://en.wikipedia.org/wiki/Block_cipher_mode_of_operation#Cipher_Feedback_(CFB)) |
+| `Aes256Ccm`           |    `aes-256-ccm` | :astonished:      | [wiki](https://en.wikipedia.org/wiki/CCM_mode) |
+| `Aes256Ecb`           |    `aes-256-ecb` | :rage:            | [wiki](https://en.wikipedia.org/wiki/Block_cipher_mode_of_operation#ECB) |
 
 ### Custom Encryption Suites
 

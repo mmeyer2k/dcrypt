@@ -55,32 +55,22 @@ final class OpensslKey
     /**
      * OpensslKey constructor.
      *
-     * @param string $algo    Algo to use for HKDF
-     * @param string $key     Key
-     * @param string $ivr     Initialization vector
-     * @param bool   $testKey Validate the key
+     * @param string $algo Algo to use for HKDF
+     * @param string $key  Key to use for encryption
+     * @param string $ivr  Initialization vector
      *
      * @throws InvalidKeyException
      */
     public function __construct(
         string $algo,
         string $key,
-        string $ivr = '',
-        bool $testKey = true
+        string $ivr = ''
     ) {
         // Store the key as what was supplied
         $this->_key = \base64_decode($key);
 
-        if ($testKey) {
-            // Make sure key was properly decoded and meets minimum required length
-            if (Str::strlen($this->_key) < 2048) {
-                throw new InvalidKeyException(InvalidKeyException::KEYLENGTH);
-            }
-
-            // Make sure key meets minimum entropy requirement
-            if (self::_testKeyEntropy($this->_key) === false) {
-                throw new InvalidKeyException(InvalidKeyException::KEYRANDOM);
-            }
+        if (Str::strlen($this->_key) < 32) {
+            throw new InvalidKeyException(InvalidKeyException::KEYLENGTH);
         }
 
         // Store algo in object
@@ -135,24 +125,12 @@ final class OpensslKey
      *
      * @return string
      */
-    public static function create(int $bytes = 2048): string
+    public static function create(int $bytes = 32): string
     {
-        if ($bytes < 2048) {
+        if ($bytes < 32) {
             throw new InvalidKeyException(InvalidKeyException::KEYLENGTH);
         }
 
         return \base64_encode(\random_bytes($bytes));
-    }
-
-    /**
-     * Returns true if key has enough entropy.
-     *
-     * @param string $key Key string to test
-     *
-     * @return bool
-     */
-    private static function _testKeyEntropy(string $key): bool
-    {
-        return \count(\array_unique(\str_split($key))) > 250;
     }
 }

@@ -11,22 +11,19 @@ class OpensslKeyTest extends \PHPUnit\Framework\TestCase
 {
     public function testNewKeyTooShort()
     {
-        \Dcrypt\OpensslKey::create(2048);
+        \Dcrypt\OpensslKey::create(32);
 
         $this->expectException(InvalidKeyException::class);
 
-        \Dcrypt\OpensslKey::create(2047);
+        \Dcrypt\OpensslKey::create(31);
     }
 
-    public function testDetectDoubleEncodedKey()
+    public function testKeyInvalidBase64()
     {
-        $key = \Dcrypt\OpensslKey::create();
-
-        // Double encode the key
-        $key = \base64_encode($key);
+        $str = str_repeat('A', 32);
 
         $this->expectException(InvalidKeyException::class);
 
-        $key = new OpensslKey('sha3-256', $key, '');
+        new OpensslKey('sha3-256', $str);
     }
 }

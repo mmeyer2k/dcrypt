@@ -7,9 +7,7 @@ jobs:
       - checkout
       - restore_cache:
           keys:
-            - source-php7.1-{{ .Branch }}-{{ .Revision }}
-            - source-php7.1-{{ .Branch }}-
-            - source-php7.1-
+            - php7.1-{{ .Branch }}
       - run: composer require phpunit/phpunit infection/infection phpmetrics/phpmetrics
       - run: mkdir -p coverage
       - run: ./vendor/bin/phpunit --coverage-html coverage --coverage-clover=coverage.clover
@@ -19,7 +17,7 @@ jobs:
       - run: wget https://scrutinizer-ci.com/ocular.phar
       - run: php ocular.phar code-coverage:upload --format=php-clover coverage.clover
       - save_cache:
-          key: source-php7.1-{{ .Branch }}-{{ .Revision }}
+          key: php7.1-{{ .Branch }}
           paths:
             - vendor
       - store_artifacts:
@@ -36,13 +34,11 @@ jobs:
       - checkout
       - restore_cache:
           keys:
-            - source-php7.2-{{ .Branch }}-{{ .Revision }}
-            - source-php7.2-{{ .Branch }}-
-            - source-php7.2-
+            - php7.2-{{ .Branch }}
       - run: composer require phpunit/phpunit
       - run: php vendor/phpunit/phpunit/phpunit
       - save_cache:
-          key: source-php7.2-{{ .Branch }}-{{ .Revision }}
+          key: php7.2-{{ .Branch }}
           paths:
             - vendor
 
@@ -53,13 +49,11 @@ jobs:
       - checkout
       - restore_cache:
           keys:
-            - source-php7.3-{{ .Branch }}-{{ .Revision }}
-            - source-php7.3-{{ .Branch }}-
-            - source-php7.3-
+            - php7.3-{{ .Branch }}
       - run: composer require phpunit/phpunit
       - run: php vendor/phpunit/phpunit/phpunit
       - save_cache:
-          key: source-php7.3-{{ .Branch }}-{{ .Revision }}
+          key: php7.3-{{ .Branch }}
           paths:
             - vendor
   php-74:
@@ -69,13 +63,11 @@ jobs:
       - checkout
       - restore_cache:
           keys:
-            - source-php7.4-{{ .Branch }}-{{ .Revision }}
-            - source-php7.4-{{ .Branch }}-
-            - source-php7.4-
+            - php7.4-{{ .Branch }}
       - run: composer require phpunit/phpunit
       - run: php vendor/phpunit/phpunit/phpunit
       - save_cache:
-          key: source-php7.4-{{ .Branch }}-{{ .Revision }}
+          key: php7.4-{{ .Branch }}
           paths:
             - vendor
         

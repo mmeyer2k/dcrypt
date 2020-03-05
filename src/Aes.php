@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /**
- * InvalidKeyException.php.
+ * Aes.php.
  *
  * PHP version 7
  *
@@ -15,10 +15,10 @@ declare(strict_types=1);
  * @link     https://github.com/mmeyer2k/dcrypt
  */
 
-namespace Dcrypt\Exceptions;
+namespace Dcrypt;
 
 /**
- * A handler for key exceptions.
+ * A shorthand alias for Aes256Gcm to prevent typos and make neater code.
  *
  * @category Dcrypt
  *
@@ -27,7 +27,6 @@ namespace Dcrypt\Exceptions;
  *
  * @link     https://github.com/mmeyer2k/dcrypt
  */
-class InvalidKeyException extends \Exception
+class Aes extends Aes256Gcm
 {
-    const KEYLENGTH = 'Key must be at least 32 bytes';
 }
