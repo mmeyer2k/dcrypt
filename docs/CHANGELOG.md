@@ -4,7 +4,6 @@
 - Only require 32 byte keys from now on
 - Remove key randomness testing in favor of trusting devs
 - Add "Aes" as shorthand alias for "Aes256Gcm" to prevent typos
-- 
 
 ## 13.0.0
 - Skip validating key when decrypting
