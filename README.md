@@ -100,7 +100,6 @@ Dcrypt's internal functions are easily extendable by overloading the `OpensslBri
 
 ```php
 <?php
-
 class BlowfishCrc32 extends \Dcrypt\OpensslBridge 
 {
     const CIPHER = 'bf-ofb';
@@ -144,13 +143,8 @@ By default, `\Dcrypt\Exceptions\InvalidChecksumException` exception will be rais
 
 ```php
 <?php
-$encrypted = \Dcrypt\Aes256Gcm::encrypt('a secret', $key);
-
-// Mangle the encrypted data by adding a single character
-$encrypted = $encrypted . 'A';
-
 try {
-    $decrypted = \Dcrypt\Aes256Gcm::decrypt($encrypted, $key);
+    $decrypted = \Dcrypt\Aes::decrypt('malformed cyphertext', $key);
 } catch (\Dcrypt\Exceptions\InvalidChecksumException $ex) {
     // ...
 }
