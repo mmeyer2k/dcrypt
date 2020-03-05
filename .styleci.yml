@@ -5,7 +5,6 @@ risky: true
 enabled:
   - unalign_double_arrow
   - ternary_to_null_coalescing
-  - no_alternative_syntax
   - concat_with_spaces
 
 disabled:
