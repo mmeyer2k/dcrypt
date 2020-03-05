@@ -1,5 +1,8 @@
 # Changes in Dcrypt
 
+## 13.1.1
+- Add base64 decode failure exception message for clarity
+
 ## 13.1.0
 - Only require 32 byte keys from now on
 - Remove key randomness testing in favor of trusting devs

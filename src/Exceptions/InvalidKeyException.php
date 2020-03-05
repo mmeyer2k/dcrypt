@@ -30,4 +30,5 @@ namespace Dcrypt\Exceptions;
 class InvalidKeyException extends \Exception
 {
     const KEYLENGTH = 'Key must be at least 32 bytes';
+    const BASE64ENC = 'Key must be properly formatted base64';
 }
