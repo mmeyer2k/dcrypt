@@ -121,7 +121,7 @@ class OpensslWrapper
     protected static function tagRequired(string $cipher): bool
     {
         $cipher = strtolower($cipher);
-        
+
         return strpos($cipher, '-gcm') || strpos($cipher, '-ccm');
     }
 }
