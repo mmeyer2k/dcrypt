@@ -88,9 +88,7 @@ class OpensslWrapper
      */
     protected static function ivSize(string $cipher): int
     {
-        $ret = \openssl_cipher_iv_length($cipher);
-
-        return $ret;
+        return \openssl_cipher_iv_length($cipher);
     }
 
     /**
@@ -123,18 +121,7 @@ class OpensslWrapper
     protected static function tagRequired(string $cipher): bool
     {
         $cipher = strtolower($cipher);
-
-        $needle_tips = [
-            '-gcm',
-            '-ccm',
-        ];
-
-        foreach ($needle_tips as $needle) {
-            if (strpos($cipher, $needle)) {
-                return true;
-            }
-        }
-
-        return false;
+        
+        return strpos($cipher, '-gcm') || strpos($cipher, '-ccm');
     }
 }
