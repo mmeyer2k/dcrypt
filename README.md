@@ -115,9 +115,9 @@ then...
 
 ```php
 <?php
-$encrypted = \BlowfishCrc32::encrypt('a secret', $key);
+$encrypted = BlowfishCrc32::encrypt('a secret', $key);
 
-$plaintext = \BlowfishCrc32::decrypt($encrypted, $key);
+$plaintext = BlowfishCrc32::decrypt($encrypted, $key);
 ```
 
 #### Layered Encryption Factory
