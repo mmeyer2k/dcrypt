@@ -37,19 +37,22 @@ composer require "mmeyer2k/dcrypt=^13.0"
 ## Block Ciphers
 
 The dcrypt library helps application developers avoid common mistakes in crypto implementations that leave data at risk while still providing flexibility in its options for crypto enthusiasts.
-Dcrypt's block cipher functions require the use of a high entropy 256 bit, base64-encoded key.
+Dcrypt's block cipher functions require the use of a high entropy 256 bit (minimum), base64-encoded key.
+
 To generate a new key, execute this on the command line:
 
 ```bash
 head -c 32 /dev/urandom | base64 -w 0 | xargs echo
 ```
 
+_You are responsible for the randomness of your key!_
+
 [Specification document](https://github.com/mmeyer2k/dcrypt/blob/master/docs/CRYPTO.md)
 
 ### AES-256 GCM Encryption
 
 Since PHP 7.1 supports native AEAD encryption modes, using GCM would be safest option for most applications.
-Dcrypt will handle the AEAD authentication tag, SHA3-256 HMAC ([Keccak](https://en.wikipedia.org/wiki/SHA-3)), initialization vector and encrypted message as a single unencoded string.
+Dcrypt will handle the AEAD authentication tag, [SHA3](https://en.wikipedia.org/wiki/SHA-3)-256 HMAC, initialization vector and encrypted message as a single unencoded string.
 
 ```php
 <?php
