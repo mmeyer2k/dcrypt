@@ -32,9 +32,9 @@ class OpensslWrapper
     /**
      * OpenSSL encrypt wrapper function.
      *
-     * @param string $data Data string to encrypt
+     * @param string     $data Data string to encrypt
      * @param OpensslKey $key Key object
-     * @param string $tag AAD tag
+     * @param string     $tag AAD tag
      *
      * @return string
      */
@@ -57,15 +57,15 @@ class OpensslWrapper
             );
         }
 
-        return \openssl_encrypt($data, $key->algo(), $enc, 1, $key->iv());
+        return \openssl_encrypt($data, $key->algo(), $key->encryptionKey(), 1, $key->iv());
     }
 
     /**
      * OpenSSL decrypt wrapper function.
      *
-     * @param string $input Data string to decrypt
+     * @param string     $input Data string to decrypt
      * @param OpensslKey $key Key string
-     * @param string $tag AAD authentication tag
+     * @param string     $tag AAD authentication tag
      *
      * @return string
      */
@@ -87,7 +87,7 @@ class OpensslWrapper
             );
         }
 
-        return \openssl_decrypt($input, $key->algo(), $key, 1, $key->iv());
+        return \openssl_decrypt($input, $key->algo(), $key->encryptionKey(), 1, $key->iv());
     }
 
     /**
