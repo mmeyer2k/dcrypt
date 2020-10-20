@@ -83,7 +83,7 @@ final class OpensslStatic extends OpensslWrapper
         }
 
         // Decrypt message and return
-        return parent::opensslDecrypt($msg, $key, $tag);
+        return parent::opensslDecrypt($msg, $cipher, $key, $tag);
     }
 
     /**
@@ -115,7 +115,7 @@ final class OpensslStatic extends OpensslWrapper
         $tag = '';
 
         // Encrypt the plaintext
-        $msg = parent::opensslEncrypt($data, $key, $tag);
+        $msg = parent::opensslEncrypt($data, $cipher, $key, $tag);
 
         // Generate the ciphertext checksum
         $chk = $key->messageChecksum($msg);

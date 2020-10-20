@@ -33,6 +33,7 @@ class OpensslWrapper
      * OpenSSL encrypt wrapper function.
      *
      * @param string     $data Data string to encrypt
+     * @param string     $cipher Cipher method to use for encryption
      * @param OpensslKey $key Key object
      * @param string     $tag AAD tag
      *
@@ -40,14 +41,15 @@ class OpensslWrapper
      */
     protected static function opensslEncrypt(
         string $data,
+        string $cipher,
         OpensslKey $key,
         string &$tag
     ): string
     {
-        if (self::tagRequired($key->algo())) {
+        if (self::tagRequired($cipher)) {
             return \openssl_encrypt(
                 $data,
-                $key->algo(),
+                $cipher,
                 $key->encryptionKey(),
                 1,
                 $key->iv(),
@@ -57,13 +59,14 @@ class OpensslWrapper
             );
         }
 
-        return \openssl_encrypt($data, $key->algo(), $key->encryptionKey(), 1, $key->iv());
+        return \openssl_encrypt($data, $cipher, $key->encryptionKey(), 1, $key->iv());
     }
 
     /**
      * OpenSSL decrypt wrapper function.
      *
      * @param string     $input Data string to decrypt
+     * @param string     $cipher Cipher method to use for decryption
      * @param OpensslKey $key Key string
      * @param string     $tag AAD authentication tag
      *
@@ -71,6 +74,7 @@ class OpensslWrapper
      */
     protected static function opensslDecrypt(
         string $input,
+        string $cipher,
         OpensslKey $key,
         string $tag
     ): string
@@ -78,7 +82,7 @@ class OpensslWrapper
         if (self::tagRequired($key->algo())) {
             return \openssl_decrypt(
                 $input,
-                $key->algo(),
+                $key->cipher,
                 $key->encryptionKey(),
                 1,
                 $key->iv(),
@@ -87,7 +91,7 @@ class OpensslWrapper
             );
         }
 
-        return \openssl_decrypt($input, $key->algo(), $key->encryptionKey(), 1, $key->iv());
+        return \openssl_decrypt($input, $cipher, $key->encryptionKey(), 1, $key->iv());
     }
 
     /**
