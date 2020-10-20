@@ -114,7 +114,7 @@ final class OpensslKey
      *
      * @return string
      */
-    private function deriveKey(string $info): string
+    public function deriveKey(string $info): string
     {
         return \hash_hkdf($this->_algo, $this->_key, 0, $info, $this->_ivr);
     }

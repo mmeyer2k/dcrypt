@@ -79,10 +79,10 @@ class OpensslWrapper
         string $tag
     ): string
     {
-        if (self::tagRequired($key->algo())) {
+        if (self::tagRequired($cipher)) {
             return \openssl_decrypt(
                 $input,
-                $key->cipher,
+                $cipher,
                 $key->encryptionKey(),
                 1,
                 $key->iv(),
