@@ -34,21 +34,22 @@ final class OpensslStatic extends OpensslWrapper
     /**
      * Decrypt raw data string.
      *
-     * @param string $data   Data to be decrypted
-     * @param string $key    Key material
+     * @param string $data Data to be decrypted
+     * @param string $key Key material
      * @param string $cipher OpenSSL cipher name
-     * @param string $algo   Hash algo name
-     *
-     * @throws \Exception
+     * @param string $algo Hash algo name
      *
      * @return string
+     * @throws \Exception
+     *
      */
     public static function decrypt(
         string $data,
         string $key,
         string $cipher,
         string $algo
-    ): string {
+    ): string
+    {
         // Calculate the hash checksum size in bytes for the specified algo
         $hsz = Str::hashSize($algo);
 
@@ -74,38 +75,36 @@ final class OpensslStatic extends OpensslWrapper
         $key = new OpensslKey($algo, $key, $ivr);
 
         // Calculate checksum of message payload for verification
-        $chk = \hash_hmac($algo, $msg, $key->authenticationKey($cipher), true);
+        $chk = $key->messageChecksum($msg);
 
         // Compare given checksum against computed checksum
         if (!Str::equal($chk, $sum)) {
             throw new InvalidChecksumException(InvalidChecksumException::MESSAGE);
         }
 
-        // Derive the encryption key
-        $enc = $key->encryptionKey($cipher);
-
         // Decrypt message and return
-        return parent::opensslDecrypt($msg, $cipher, $enc, $ivr, $tag);
+        return parent::opensslDecrypt($msg, $key, $tag);
     }
 
     /**
      * Encrypt raw string.
      *
-     * @param string $data   Data to be encrypted
-     * @param string $key    Key material
+     * @param string $data Data to be encrypted
+     * @param string $key Key material
      * @param string $cipher OpenSSL cipher name
-     * @param string $algo   Hash algo name
-     *
-     * @throws \Exception
+     * @param string $algo Hash algo name
      *
      * @return string
+     * @throws \Exception
+     *
      */
     public static function encrypt(
         string $data,
         string $key,
         string $cipher,
         string $algo
-    ): string {
+    ): string
+    {
         // Generate IV of appropriate size
         $ivr = parent::ivGenerate($cipher);
 
@@ -115,14 +114,11 @@ final class OpensslStatic extends OpensslWrapper
         // Create a variable for the authentication tag to be returned by reference
         $tag = '';
 
-        // Derive the encryption key
-        $enc = $key->encryptionKey($cipher);
-
         // Encrypt the plaintext
-        $msg = parent::opensslEncrypt($data, $cipher, $enc, $ivr, $tag);
+        $msg = parent::opensslEncrypt($data, $key, $tag);
 
         // Generate the ciphertext checksum
-        $chk = \hash_hmac($algo, $msg, $key->authenticationKey($cipher), true);
+        $chk = $key->messageChecksum($msg);
 
         // Return concatenation of iv + checksum + tag + ciphertext
         return $ivr . $chk . $tag . $msg;

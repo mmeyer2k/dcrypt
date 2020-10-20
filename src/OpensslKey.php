@@ -56,8 +56,8 @@ final class OpensslKey
      * OpensslKey constructor.
      *
      * @param string $algo Algo to use for HKDF
-     * @param string $key  Key to use for encryption
-     * @param string $ivr  Initialization vector
+     * @param string $key Key to use for encryption
+     * @param string $ivr Initialization vector
      *
      * @throws InvalidKeyException
      */
@@ -65,7 +65,8 @@ final class OpensslKey
         string $algo,
         string $key,
         string $ivr = ''
-    ) {
+    )
+    {
         // Store the key as what was supplied
         $this->_key = \base64_decode($key, true);
 
@@ -89,25 +90,21 @@ final class OpensslKey
     /**
      * Generate the authentication key.
      *
-     * @param string $info The extra info parameter for hash_hkdf
-     *
      * @return string
      */
-    public function authenticationKey(string $info): string
+    public function authenticationKey(): string
     {
-        return $this->deriveKey(__FUNCTION__ . '|' . $info);
+        return $this->deriveKey(__FUNCTION__ . '|' . $this->_algo);
     }
 
     /**
      * Generate the encryption key.
      *
-     * @param string $info The extra info parameter for hash_hkdf
-     *
      * @return string
      */
-    public function encryptionKey(string $info): string
+    public function encryptionKey(): string
     {
-        return $this->deriveKey(__FUNCTION__ . '|' . $info);
+        return $this->deriveKey(__FUNCTION__ . '|' . $this->_algo);
     }
 
     /**
@@ -117,9 +114,40 @@ final class OpensslKey
      *
      * @return string
      */
-    public function deriveKey(string $info): string
+    private function deriveKey(string $info): string
     {
         return \hash_hkdf($this->_algo, $this->_key, 0, $info, $this->_ivr);
+    }
+
+    /**
+     * Calculates a given message HMAC.
+     *
+     * @param string $message
+     * @return string
+     */
+    public function messageChecksum(string $message): string
+    {
+        return \hash_hmac($this->_algo, $message, $this->authenticationKey(), true);
+    }
+
+    /**
+     * Returns the iv that object was created with.
+     *
+     * @return string
+     */
+    public function iv(): string
+    {
+        return $this->_ivr;
+    }
+
+    /**
+     * Returns the cipher algo that object was created with.
+     *
+     * @return string
+     */
+    public function algo(): string
+    {
+        return $this->_algo;
     }
 
     /**
@@ -127,9 +155,8 @@ final class OpensslKey
      *
      * @param int $bytes Size of key in bytes
      *
-     * @throws InvalidKeyException
-     *
      * @return string
+     * @throws InvalidKeyException
      */
     public static function create(int $bytes = 32): string
     {

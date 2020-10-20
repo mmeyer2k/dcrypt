@@ -32,51 +32,62 @@ class OpensslWrapper
     /**
      * OpenSSL encrypt wrapper function.
      *
-     * @param string $data   Data to decrypt
-     * @param string $cipher Cipher method to use
-     * @param string $key    Key string
-     * @param string $iv     Initialization vector
-     * @param string $tag    AAD tag
+     * @param string $data Data string to encrypt
+     * @param OpensslKey $key Key object
+     * @param string $tag AAD tag
      *
      * @return string
      */
     protected static function opensslEncrypt(
         string $data,
-        string $cipher,
-        string $key,
-        string $iv,
+        OpensslKey $key,
         string &$tag
-    ): string {
-        if (self::tagRequired($cipher)) {
-            return \openssl_encrypt($data, $cipher, $key, 1, $iv, $tag, '', 16);
-        } else {
-            return \openssl_encrypt($data, $cipher, $key, 1, $iv);
+    ): string
+    {
+        if (self::tagRequired($key->algo())) {
+            return \openssl_encrypt(
+                $data,
+                $key->algo(),
+                $key->encryptionKey(),
+                1,
+                $key->iv(),
+                $tag,
+                '',
+                16
+            );
         }
+
+        return \openssl_encrypt($data, $key->algo(), $enc, 1, $key->iv());
     }
 
     /**
      * OpenSSL decrypt wrapper function.
      *
-     * @param string $input  Data to decrypt
-     * @param string $cipher Cipher method to use
-     * @param string $key    Key string
-     * @param string $iv     Initialization vector
-     * @param string $tag    AAD authentication tag
+     * @param string $input Data string to decrypt
+     * @param OpensslKey $key Key string
+     * @param string $tag AAD authentication tag
      *
      * @return string
      */
     protected static function opensslDecrypt(
         string $input,
-        string $cipher,
-        string $key,
-        string $iv,
+        OpensslKey $key,
         string $tag
-    ): string {
-        if (self::tagRequired($cipher)) {
-            return \openssl_decrypt($input, $cipher, $key, 1, $iv, $tag, '');
-        } else {
-            return \openssl_decrypt($input, $cipher, $key, 1, $iv);
+    ): string
+    {
+        if (self::tagRequired($key->algo())) {
+            return \openssl_decrypt(
+                $input,
+                $key->algo(),
+                $key->encryptionKey(),
+                1,
+                $key->iv(),
+                $tag,
+                ''
+            );
         }
+
+        return \openssl_decrypt($input, $key->algo(), $key, 1, $key->iv());
     }
 
     /**
@@ -96,9 +107,9 @@ class OpensslWrapper
      *
      * @param string $cipher Openssl cipher
      *
+     * @return string
      * @throws \Exception
      *
-     * @return string
      */
     protected static function ivGenerate(string $cipher): string
     {
