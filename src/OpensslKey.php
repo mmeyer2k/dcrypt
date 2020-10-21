@@ -143,33 +143,19 @@ final class OpensslKey
     }
 
     /**
-     * Returns the iv that object was created with.
+     * Magic method to allow read only access to private variables via whitelist
      *
-     * @return string
+     * @param string $name
+     * @return mixed
+     * @throws \Exception
      */
-    public function iv(): string
+    public function __get(string $name)
     {
-        return $this->_iv;
-    }
+        if (in_array($name, ['iv', 'algo', 'cipher'])) {
+            return $this->{"_{$name}"};
+        }
 
-    /**
-     * Returns the cipher name
-     *
-     * @return string
-     */
-    public function cipher(): string
-    {
-        return $this->_cipher;
-    }
-
-    /**
-     * Returns the cipher algo that object was created with.
-     *
-     * @return string
-     */
-    public function algo(): string
-    {
-        return $this->_algo;
+        throw new \Exception("Invalid property access attempt");
     }
 
     /**
