@@ -34,22 +34,21 @@ final class OpensslStatic extends OpensslWrapper
     /**
      * Decrypt raw data string.
      *
-     * @param string $data Data to be decrypted
-     * @param string $key Key material
+     * @param string $data   Data to be decrypted
+     * @param string $key    Key material
      * @param string $cipher OpenSSL cipher name
-     * @param string $algo Hash algo name
+     * @param string $algo   Hash algo name
      *
-     * @return string
      * @throws \Exception
      *
+     * @return string
      */
     public static function decrypt(
         string $data,
         string $key,
         string $cipher,
         string $algo
-    ): string
-    {
+    ): string {
         // Calculate the hash checksum size in bytes for the specified algo
         $hsz = Str::hashSize($algo);
 
@@ -89,22 +88,21 @@ final class OpensslStatic extends OpensslWrapper
     /**
      * Encrypt raw string.
      *
-     * @param string $data Data to be encrypted
-     * @param string $key Key material
+     * @param string $data   Data to be encrypted
+     * @param string $key    Key material
      * @param string $cipher OpenSSL cipher name
-     * @param string $algo Hash algo name
+     * @param string $algo   Hash algo name
      *
-     * @return string
      * @throws \Exception
      *
+     * @return string
      */
     public static function encrypt(
         string $data,
         string $key,
         string $cipher,
         string $algo
-    ): string
-    {
+    ): string {
         // Generate IV of appropriate size
         $ivr = parent::ivGenerate($cipher);
 

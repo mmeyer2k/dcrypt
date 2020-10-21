@@ -54,7 +54,7 @@ final class OpensslKey
     private $_iv;
 
     /**
-     * Name of cipher
+     * Name of cipher.
      *
      * @var string
      */
@@ -63,10 +63,10 @@ final class OpensslKey
     /**
      * OpensslKey constructor.
      *
-     * @param string $key Key to use for encryption
-     * @param string $algo Algo to use for HKDF
+     * @param string $key    Key to use for encryption
+     * @param string $algo   Algo to use for HKDF
      * @param string $cipher Name of cipher
-     * @param string $iv Initialization vector
+     * @param string $iv     Initialization vector
      *
      * @throws InvalidKeyException
      */
@@ -75,8 +75,7 @@ final class OpensslKey
         string $algo,
         string $cipher = '',
         string $iv = ''
-    )
-    {
+    ) {
         // Store the key as what was supplied
         $this->_key = \base64_decode($key, true);
 
@@ -136,6 +135,7 @@ final class OpensslKey
      * Calculates a given message HMAC.
      *
      * @param string $message
+     *
      * @return string
      */
     public function messageChecksum(string $message): string
@@ -144,11 +144,13 @@ final class OpensslKey
     }
 
     /**
-     * Allows secure read only access to private properties
+     * Allows secure read only access to private properties.
      *
      * @param string $name
-     * @return mixed
+     *
      * @throws Exception
+     *
+     * @return mixed
      */
     public function __get(string $name)
     {
@@ -156,7 +158,7 @@ final class OpensslKey
             return $this->{"_{$name}"};
         }
 
-        throw new Exception("Invalid property access attempt");
+        throw new Exception('Invalid property access attempt');
     }
 
     /**
@@ -164,9 +166,10 @@ final class OpensslKey
      *
      * @param int $bytes Size of key in bytes
      *
-     * @return string
      * @throws InvalidKeyException
      * @throws Exception
+     *
+     * @return string
      */
     public static function create(int $bytes = 32): string
     {

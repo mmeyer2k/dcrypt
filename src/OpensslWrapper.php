@@ -32,9 +32,9 @@ class OpensslWrapper
     /**
      * OpenSSL encrypt wrapper function.
      *
-     * @param string $data Data to decrypt
-     * @param OpensslKey $key Key string
-     * @param string $tag AAD tag
+     * @param string     $data Data to decrypt
+     * @param OpensslKey $key  Key string
+     * @param string     $tag  AAD tag
      *
      * @return string
      */
@@ -52,9 +52,9 @@ class OpensslWrapper
     /**
      * OpenSSL decrypt wrapper function.
      *
-     * @param string $input Data to decrypt
-     * @param OpensslKey $key Key string
-     * @param string $tag AAD authentication tag
+     * @param string     $input Data to decrypt
+     * @param OpensslKey $key   Key string
+     * @param string     $tag   AAD authentication tag
      *
      * @return string
      */
@@ -86,9 +86,9 @@ class OpensslWrapper
      *
      * @param string $cipher Openssl cipher
      *
-     * @return string
      * @throws \Exception
      *
+     * @return string
      */
     protected static function ivGenerate(string $cipher): string
     {
