@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace Dcrypt;
 
 use Dcrypt\Exceptions\InvalidKeyException;
+use Exception;
 
 /**
  * Provides key derivation functions.
@@ -65,7 +66,7 @@ final class OpensslKey
      * @param string $key Key to use for encryption
      * @param string $algo Algo to use for HKDF
      * @param string $cipher Name of cipher
-     * @param string $ivr Initialization vector
+     * @param string $iv Initialization vector
      *
      * @throws InvalidKeyException
      */
@@ -73,7 +74,7 @@ final class OpensslKey
         string $key,
         string $algo,
         string $cipher = '',
-        string $ivr = ''
+        string $iv = ''
     )
     {
         // Store the key as what was supplied
@@ -93,7 +94,7 @@ final class OpensslKey
         $this->_algo = $algo;
 
         // Store init vector in object
-        $this->_iv = $ivr;
+        $this->_iv = $iv;
 
         // Store the cipher name
         $this->_cipher = $cipher;
@@ -143,28 +144,29 @@ final class OpensslKey
     }
 
     /**
-     * Magic method to allow read only access to private variables via whitelist
+     * Allows secure read only access to private properties
      *
      * @param string $name
      * @return mixed
-     * @throws \Exception
+     * @throws Exception
      */
     public function __get(string $name)
     {
-        if (in_array($name, ['iv', 'algo', 'cipher'])) {
+        if (in_array($name, ['iv', 'cipher'])) {
             return $this->{"_{$name}"};
         }
 
-        throw new \Exception("Invalid property access attempt");
+        throw new Exception("Invalid property access attempt");
     }
 
     /**
-     * Generate a new key that meets requirements for dcrypt.
+     * Generate a new key.
      *
      * @param int $bytes Size of key in bytes
      *
      * @return string
      * @throws InvalidKeyException
+     * @throws Exception
      */
     public static function create(int $bytes = 32): string
     {

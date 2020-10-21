@@ -1,4 +1,10 @@
-# Changes in Dcrypt
+# Changelog for `dcrypt`
+
+## 13.1.2
+- Offload some functionality into OpensslKey object for readability
+- OpensslKey throws exception if non-allowed properties are accessed
+- Add ext-openssl to the requirements (makes IDE happy)
+- Remove examples directory in favor of `docs/`
 
 ## 13.1.1
 - Add test class for `Aes` static helper object
