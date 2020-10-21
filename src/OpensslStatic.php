@@ -72,7 +72,7 @@ final class OpensslStatic extends OpensslWrapper
         $msg = Str::substr($data, $isz + $hsz + $tsz);
 
         // Create key derivation object
-        $key = new OpensslKey($algo, $key, $ivr);
+        $key = new OpensslKey($key, $algo, $cipher, $ivr);
 
         // Calculate checksum of message payload for verification
         $chk = $key->messageChecksum($msg);
@@ -83,7 +83,7 @@ final class OpensslStatic extends OpensslWrapper
         }
 
         // Decrypt message and return
-        return parent::opensslDecrypt($msg, $cipher, $key, $tag);
+        return parent::opensslDecrypt($msg, $key, $tag);
     }
 
     /**
@@ -109,13 +109,13 @@ final class OpensslStatic extends OpensslWrapper
         $ivr = parent::ivGenerate($cipher);
 
         // Create key derivation object
-        $key = new OpensslKey($algo, $key, $ivr);
+        $key = new OpensslKey($key, $algo, $cipher, $ivr);
 
         // Create a variable for the authentication tag to be returned by reference
         $tag = '';
 
         // Encrypt the plaintext
-        $msg = parent::opensslEncrypt($data, $cipher, $key, $tag);
+        $msg = parent::opensslEncrypt($data, $key, $tag);
 
         // Generate the ciphertext checksum
         $chk = $key->messageChecksum($msg);

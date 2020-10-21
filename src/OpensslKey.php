@@ -50,20 +50,29 @@ final class OpensslKey
      *
      * @var string
      */
-    private $_ivr;
+    private $_iv;
+
+    /**
+     * Name of cipher
+     *
+     * @var string
+     */
+    private $_cipher;
 
     /**
      * OpensslKey constructor.
      *
-     * @param string $algo Algo to use for HKDF
      * @param string $key Key to use for encryption
+     * @param string $algo Algo to use for HKDF
+     * @param string $cipher Name of cipher
      * @param string $ivr Initialization vector
      *
      * @throws InvalidKeyException
      */
     public function __construct(
-        string $algo,
         string $key,
+        string $algo,
+        string $cipher = '',
         string $ivr = ''
     )
     {
@@ -84,7 +93,10 @@ final class OpensslKey
         $this->_algo = $algo;
 
         // Store init vector in object
-        $this->_ivr = $ivr;
+        $this->_iv = $ivr;
+
+        // Store the cipher name
+        $this->_cipher = $cipher;
     }
 
     /**
@@ -94,7 +106,7 @@ final class OpensslKey
      */
     public function authenticationKey(): string
     {
-        return $this->deriveKey(__FUNCTION__ . '|' . $this->_algo);
+        return $this->deriveKey(__FUNCTION__ . '|' . $this->_cipher);
     }
 
     /**
@@ -104,7 +116,7 @@ final class OpensslKey
      */
     public function encryptionKey(): string
     {
-        return $this->deriveKey(__FUNCTION__ . '|' . $this->_algo);
+        return $this->deriveKey(__FUNCTION__ . '|' . $this->_cipher);
     }
 
     /**
@@ -116,7 +128,7 @@ final class OpensslKey
      */
     public function deriveKey(string $info): string
     {
-        return \hash_hkdf($this->_algo, $this->_key, 0, $info, $this->_ivr);
+        return \hash_hkdf($this->_algo, $this->_key, 0, $info, $this->_iv);
     }
 
     /**
@@ -137,7 +149,17 @@ final class OpensslKey
      */
     public function iv(): string
     {
-        return $this->_ivr;
+        return $this->_iv;
+    }
+
+    /**
+     * Returns the cipher name
+     *
+     * @return string
+     */
+    public function cipher(): string
+    {
+        return $this->_cipher;
     }
 
     /**

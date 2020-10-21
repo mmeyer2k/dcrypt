@@ -18,9 +18,9 @@ jobs:
       - run: php ocular.phar code-coverage:upload --format=php-clover coverage.clover
       - save_cache:
           key: php7.1-{{ .Branch }}
-          paths:
-            - composer.lock
+          paths: &paths
             - vendor
+            - composer.lock
       - store_artifacts:
           path: coverage
       - store_artifacts:
@@ -40,9 +40,7 @@ jobs:
       - run: php vendor/phpunit/phpunit/phpunit
       - save_cache:
           key: php7.2-{{ .Branch }}
-          paths:
-            - vendor
-            - composer.lock
+          paths: *paths
 
   php-73:
     docker:
@@ -56,9 +54,8 @@ jobs:
       - run: php vendor/phpunit/phpunit/phpunit
       - save_cache:
           key: php7.3-{{ .Branch }}
-          paths:
-            - vendor
-            - composer.lock
+          paths: *paths
+
   php-74:
     docker:
       - image: circleci/php:7.4
@@ -71,10 +68,8 @@ jobs:
       - run: php vendor/phpunit/phpunit/phpunit
       - save_cache:
           key: php7.4-{{ .Branch }}
-          paths:
-            - composer.lock
-            - vendor
-        
+          paths: *paths
+
 workflows:
   version: 2
   build-test-all:

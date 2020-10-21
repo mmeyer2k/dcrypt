@@ -32,66 +32,41 @@ class OpensslWrapper
     /**
      * OpenSSL encrypt wrapper function.
      *
-     * @param string     $data Data string to encrypt
-     * @param string     $cipher Cipher method to use for encryption
-     * @param OpensslKey $key Key object
-     * @param string     $tag AAD tag
+     * @param string $data Data to decrypt
+     * @param OpensslKey $key Key string
+     * @param string $tag AAD tag
      *
      * @return string
      */
-    protected static function opensslEncrypt(
-        string $data,
-        string $cipher,
-        OpensslKey $key,
-        string &$tag
-    ): string
+    protected static function opensslEncrypt(string $data, OpensslKey $key, string &$tag): string
     {
+        list($iv, $enc, $cipher) = [$key->iv(), $key->encryptionKey(), $key->cipher()];
+
         if (self::tagRequired($cipher)) {
-            return \openssl_encrypt(
-                $data,
-                $cipher,
-                $key->encryptionKey(),
-                1,
-                $key->iv(),
-                $tag,
-                '',
-                16
-            );
+            return \openssl_encrypt($data, $cipher, $enc, 1, $iv, $tag, '', 16);
         }
 
-        return \openssl_encrypt($data, $cipher, $key->encryptionKey(), 1, $key->iv());
+        return \openssl_encrypt($data, $cipher, $enc, 1, $iv);
     }
 
     /**
      * OpenSSL decrypt wrapper function.
      *
-     * @param string     $input Data string to decrypt
-     * @param string     $cipher Cipher method to use for decryption
+     * @param string $input Data to decrypt
      * @param OpensslKey $key Key string
-     * @param string     $tag AAD authentication tag
+     * @param string $tag AAD authentication tag
      *
      * @return string
      */
-    protected static function opensslDecrypt(
-        string $input,
-        string $cipher,
-        OpensslKey $key,
-        string $tag
-    ): string
+    protected static function opensslDecrypt(string $input, OpensslKey $key, string $tag): string
     {
+        list($iv, $enc, $cipher) = [$key->iv(), $key->encryptionKey(), $key->cipher()];
+
         if (self::tagRequired($cipher)) {
-            return \openssl_decrypt(
-                $input,
-                $cipher,
-                $key->encryptionKey(),
-                1,
-                $key->iv(),
-                $tag,
-                ''
-            );
+            return \openssl_decrypt($input, $cipher, $enc, 1, $iv, $tag, '');
         }
 
-        return \openssl_decrypt($input, $cipher, $key->encryptionKey(), 1, $key->iv());
+        return \openssl_decrypt($input, $cipher, $enc, 1, $iv);
     }
 
     /**
