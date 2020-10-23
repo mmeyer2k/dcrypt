@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /**
- * InvalidChecksumException.php.
+ * InvalidKeyException.php.
  *
  * PHP version 7
  *
@@ -20,7 +20,7 @@ namespace Dcrypt\Exceptions;
 use Exception;
 
 /**
- * A handler for checksum exceptions.
+ * A handler for key exceptions.
  *
  * @category Dcrypt
  *
@@ -29,7 +29,7 @@ use Exception;
  *
  * @link     https://github.com/mmeyer2k/dcrypt
  */
-class InvalidChecksumException extends Exception
+class InvalidKeyLengthException extends Exception
 {
-    protected $message = 'Invalid ciphertext checksum';
+    protected $message = 'Key must be at least 32 bytes';
 }

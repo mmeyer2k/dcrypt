@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace Dcrypt;
 
 use Dcrypt\Exceptions\InvalidChecksumException;
+use Exception;
 
 /**
  * Static functions that handle encryption/decryption with openssl.
@@ -39,7 +40,7 @@ final class OpensslStatic extends OpensslWrapper
      * @param string $cipher OpenSSL cipher name
      * @param string $algo   Hash algo name
      *
-     * @throws \Exception
+     * @throws Exception
      *
      * @return string
      */
@@ -78,7 +79,7 @@ final class OpensslStatic extends OpensslWrapper
 
         // Compare given checksum against computed checksum
         if (!Str::equal($chk, $sum)) {
-            throw new InvalidChecksumException(InvalidChecksumException::MESSAGE);
+            throw new InvalidChecksumException;
         }
 
         // Decrypt message and return
@@ -93,7 +94,7 @@ final class OpensslStatic extends OpensslWrapper
      * @param string $cipher OpenSSL cipher name
      * @param string $algo   Hash algo name
      *
-     * @throws \Exception
+     * @throws Exception
      *
      * @return string
      */

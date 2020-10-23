@@ -63,10 +63,10 @@ class OpensslWrapper
         list($iv, $enc, $cipher) = [$key->iv, $key->encryptionKey(), $key->cipher];
 
         if (self::tagRequired($cipher)) {
-            return \openssl_decrypt($input, $cipher, $enc, 1, $iv, $tag, '');
+            return openssl_decrypt($input, $cipher, $enc, 1, $iv, $tag, '');
         }
 
-        return \openssl_decrypt($input, $cipher, $enc, 1, $iv);
+        return openssl_decrypt($input, $cipher, $enc, 1, $iv);
     }
 
     /**
@@ -78,7 +78,7 @@ class OpensslWrapper
      */
     protected static function ivSize(string $cipher): int
     {
-        return \openssl_cipher_iv_length($cipher);
+        return openssl_cipher_iv_length($cipher);
     }
 
     /**
@@ -98,7 +98,7 @@ class OpensslWrapper
             return '';
         }
 
-        return \random_bytes($size);
+        return random_bytes($size);
     }
 
     /**

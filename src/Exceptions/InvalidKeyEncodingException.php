@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace Dcrypt\Exceptions;
 
+use Exception;
+
 /**
  * A handler for key exceptions.
  *
@@ -27,8 +29,7 @@ namespace Dcrypt\Exceptions;
  *
  * @link     https://github.com/mmeyer2k/dcrypt
  */
-class InvalidKeyException extends \Exception
+class InvalidKeyEncodingException extends Exception
 {
-    const KEYLENGTH = 'Key must be at least 32 bytes';
-    const BASE64ENC = 'Key must be properly formatted base64';
+    protected $message = 'Key must be base64 encoded';
 }

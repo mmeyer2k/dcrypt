@@ -47,13 +47,13 @@ final class Str
     public static function equal(string $known, string $given): bool
     {
         // Create some entropy
-        $nonce = \random_bytes(16);
+        $nonce = random_bytes(16);
 
         // Prehash the input strings with the nonce
-        $known = \hash_hmac('sha256', $known, $nonce, true);
-        $given = \hash_hmac('sha256', $given, $nonce, true);
+        $known = hash_hmac('sha256', $known, $nonce, true);
+        $given = hash_hmac('sha256', $given, $nonce, true);
 
-        return \hash_equals($known, $given);
+        return hash_equals($known, $given);
     }
 
     /**
@@ -65,7 +65,7 @@ final class Str
      */
     public static function hashSize(string $algo): int
     {
-        return self::strlen(\hash($algo, 'hash me', true));
+        return self::strlen(hash($algo, 'hash me', true));
     }
 
     /**
@@ -77,15 +77,15 @@ final class Str
      */
     public static function strlen(string $string): int
     {
-        return \mb_strlen($string, '8bit');
+        return mb_strlen($string, '8bit');
     }
 
     /**
      * Returns part of a string.
      *
-     * @param string $string The string whose length we wish to obtain
-     * @param int    $start  Offset to start gathering output
-     * @param int    $length Distance from starting offset to gather
+     * @param string   $string The string whose length we wish to obtain
+     * @param int      $start  Offset to start gathering output
+     * @param int|null $length Distance from starting offset to gather
      *
      * @return string
      */
@@ -94,6 +94,6 @@ final class Str
         int $start,
         int $length = null
     ): string {
-        return \mb_substr($string, $start, $length, '8bit');
+        return mb_substr($string, $start, $length, '8bit');
     }
 }

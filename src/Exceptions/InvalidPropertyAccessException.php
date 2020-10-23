@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /**
- * InvalidChecksumException.php.
+ * InvalidPropertyAccessException.php.
  *
  * PHP version 7
  *
@@ -29,7 +29,7 @@ use Exception;
  *
  * @link     https://github.com/mmeyer2k/dcrypt
  */
-class InvalidChecksumException extends Exception
+class InvalidPropertyAccessException extends Exception
 {
-    protected $message = 'Invalid ciphertext checksum';
+    protected $message = 'Invalid property access attempt.';
 }
