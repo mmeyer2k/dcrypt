@@ -79,7 +79,7 @@ final class OpensslKey
         string $iv = ''
     ) {
         // Store the key as what was supplied
-        $this->_key = \base64_decode($key, true);
+        $this->_key = base64_decode($key, true);
 
         // If key was not proper base64, bail out
         if ($this->_key === false) {
@@ -152,7 +152,7 @@ final class OpensslKey
      *
      * @throws Exception
      *
-     * @return mixed
+     * @return string
      */
     public function __get(string $name): string
     {
@@ -160,7 +160,7 @@ final class OpensslKey
             throw new Exceptions\InvalidPropertyAccessException();
         }
 
-        return $this->{"_{$name}"};
+        return $this->$name;
     }
 
     /**
@@ -179,6 +179,6 @@ final class OpensslKey
             throw new InvalidKeyLengthException();
         }
 
-        return \base64_encode(\random_bytes($bytes));
+        return base64_encode(random_bytes($bytes));
     }
 }

@@ -40,13 +40,13 @@ class OpensslWrapper
      */
     protected static function opensslEncrypt(string $data, OpensslKey $key, string &$tag): string
     {
-        list($iv, $enc, $cipher) = [$key->iv, $key->encryptionKey(), $key->cipher];
+        list($iv, $enc, $cipher) = [$key->_iv, $key->encryptionKey(), $key->_cipher];
 
         if (self::tagRequired($cipher)) {
-            return \openssl_encrypt($data, $cipher, $enc, 1, $iv, $tag, '', 16);
+            return openssl_encrypt($data, $cipher, $enc, 1, $iv, $tag, '', 16);
         }
 
-        return \openssl_encrypt($data, $cipher, $enc, 1, $iv);
+        return openssl_encrypt($data, $cipher, $enc, 1, $iv);
     }
 
     /**
@@ -60,7 +60,7 @@ class OpensslWrapper
      */
     protected static function opensslDecrypt(string $input, OpensslKey $key, string $tag): string
     {
-        list($iv, $enc, $cipher) = [$key->iv, $key->encryptionKey(), $key->cipher];
+        list($iv, $enc, $cipher) = [$key->_iv, $key->encryptionKey(), $key->_cipher];
 
         if (self::tagRequired($cipher)) {
             return openssl_decrypt($input, $cipher, $enc, 1, $iv, $tag, '');

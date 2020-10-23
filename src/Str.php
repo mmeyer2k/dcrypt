@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace Dcrypt;
 
+use Exception;
+
 /**
  * Provides time-safe string comparison facilities, and safe string operations
  * on systems that have mb_* function overloading enabled.
@@ -43,6 +45,7 @@ final class Str
      * @param string $given The string that the user can control
      *
      * @return bool
+     * @throws Exception
      */
     public static function equal(string $known, string $given): bool
     {
