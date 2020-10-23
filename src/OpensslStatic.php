@@ -79,7 +79,7 @@ final class OpensslStatic extends OpensslWrapper
 
         // Compare given checksum against computed checksum
         if (!Str::equal($chk, $sum)) {
-            throw new InvalidChecksumException;
+            throw new InvalidChecksumException();
         }
 
         // Decrypt message and return

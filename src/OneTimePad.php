@@ -34,11 +34,12 @@ class OneTimePad
      * Encrypt or decrypt a binary input string.
      *
      * @param string $input Input data to encrypt
-     * @param string $key Encryption/decryption key to use on input
-     * @param string $algo Hashing algo to generate keystream
+     * @param string $key   Encryption/decryption key to use on input
+     * @param string $algo  Hashing algo to generate keystream
+     *
+     * @throws Exceptions\InvalidKeyLengthException
      *
      * @return string
-     * @throws Exceptions\InvalidKeyLengthException
      */
     public static function crypt(
         string $input,

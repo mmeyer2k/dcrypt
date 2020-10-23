@@ -64,10 +64,10 @@ final class OpensslKey
     /**
      * OpensslKey constructor.
      *
-     * @param string $key Key to use for encryption
-     * @param string $algo Algo to use for HKDF
+     * @param string $key    Key to use for encryption
+     * @param string $algo   Algo to use for HKDF
      * @param string $cipher Name of cipher
-     * @param string $iv Initialization vector
+     * @param string $iv     Initialization vector
      *
      * @throws InvalidKeyLengthException
      * @throws InvalidKeyEncodingException
@@ -83,12 +83,12 @@ final class OpensslKey
 
         // If key was not proper base64, bail out
         if ($this->_key === false) {
-            throw new InvalidKeyEncodingException;
+            throw new InvalidKeyEncodingException();
         }
 
         // If key was to short, bail out
         if (Str::strlen($this->_key) < 32) {
-            throw new InvalidKeyLengthException;
+            throw new InvalidKeyLengthException();
         }
 
         // Store algo in object
@@ -157,7 +157,7 @@ final class OpensslKey
     public function __get(string $name): string
     {
         if (!in_array($name, ['iv', 'cipher'])) {
-            throw new Exceptions\InvalidPropertyAccessException;
+            throw new Exceptions\InvalidPropertyAccessException();
         }
 
         return $this->{"_{$name}"};
@@ -168,15 +168,15 @@ final class OpensslKey
      *
      * @param int $bytes Size of key in bytes
      *
-     * @return string
      * @throws Exception
-     *
      * @throws InvalidKeyLengthException
+     *
+     * @return string
      */
     public static function create(int $bytes = 32): string
     {
         if ($bytes < 32) {
-            throw new InvalidKeyLengthException;
+            throw new InvalidKeyLengthException();
         }
 
         return \base64_encode(\random_bytes($bytes));

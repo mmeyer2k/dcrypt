@@ -66,7 +66,7 @@ class AesBase extends \PHPUnit\Framework\TestCase
     public function testKnownVector()
     {
         // Skip if PHP 7.1 and CCM mode. Implementation in Openssl was fixed but never backported it seems...
-        if (PHP_MAJOR_VERSION . PHP_MINOR_VERSION === "71" && strpos(static::$class, 'Ccm')) {
+        if (PHP_MAJOR_VERSION . PHP_MINOR_VERSION === '71' && strpos(static::$class, 'Ccm')) {
             return $this->assertTrue(true);
         }
 

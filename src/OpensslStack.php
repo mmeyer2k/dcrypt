@@ -75,8 +75,9 @@ class OpensslStack
      *
      * @param string $data Data to encrypt
      *
-     * @return string
      * @throws Exception
+     *
+     * @return string
      */
     public function encrypt(string $data): string
     {
@@ -92,8 +93,9 @@ class OpensslStack
      *
      * @param string $data Data to decrypt
      *
-     * @return string
      * @throws Exception
+     *
+     * @return string
      */
     public function decrypt(string $data): string
     {
