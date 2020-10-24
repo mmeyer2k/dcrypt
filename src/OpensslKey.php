@@ -19,6 +19,7 @@ namespace Dcrypt;
 
 use Dcrypt\Exceptions\InvalidKeyEncodingException;
 use Dcrypt\Exceptions\InvalidKeyLengthException;
+use Dcrypt\Exceptions\InvalidPropertyAccessException;
 use Exception;
 
 /**
@@ -130,7 +131,7 @@ final class OpensslKey
      */
     public function deriveKey(string $info): string
     {
-        return \hash_hkdf($this->_algo, $this->_key, 0, $info, $this->_iv);
+        return hash_hkdf($this->_algo, $this->_key, 0, $info, $this->_iv);
     }
 
     /**
@@ -142,7 +143,7 @@ final class OpensslKey
      */
     public function messageChecksum(string $message): string
     {
-        return \hash_hmac($this->_algo, $message, $this->authenticationKey(), true);
+        return hash_hmac($this->_algo, $message, $this->authenticationKey(), true);
     }
 
     /**
@@ -156,8 +157,8 @@ final class OpensslKey
      */
     public function __get(string $name): string
     {
-        if (!in_array($name, ['iv', 'cipher'])) {
-            throw new Exceptions\InvalidPropertyAccessException();
+        if (!in_array($name, ['_iv', '_cipher'])) {
+            throw new InvalidPropertyAccessException();
         }
 
         return $this->$name;
