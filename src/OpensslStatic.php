@@ -65,7 +65,7 @@ final class OpensslStatic extends OpensslWrapper
         // Get the checksum after the IV
         $sum = Str::substr($data, $isz, $hsz);
 
-        // Get the AEAD authentication tag (if present) after the checksum
+        // Get the AAD tag (if present) after the checksum
         $tag = Str::substr($data, $isz + $hsz, $tsz);
 
         // Get the encrypted message payload
