@@ -30,14 +30,4 @@ class OpensslKeyTest extends \PHPUnit\Framework\TestCase
 
         new OpensslKey('sha3-256', $str);
     }
-
-    public function testPropertyAccessExcepption()
-    {
-        $key = new OpensslKey(OpensslKey::create(), 'does not matter');
-
-        $this->expectException(InvalidPropertyAccessException::class);
-
-        // Attempt to access private key
-        $key->_key;
-    }
 }

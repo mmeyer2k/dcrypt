@@ -84,7 +84,7 @@ Several AES-256 encryption modes are supported out of the box via hardcoded clas
 ### Custom Encryption Suites
 
 Dcrypt is compatible with _most_ OpenSSL ciphers and hashing algorithms supported by PHP.
-Run `php examples/support.php` to view supported options.
+Run `openssl_get_cipher_methods()` and `hash_algos()` to view supported options on your platform.
 
 #### Static Wrapper
 

@@ -147,21 +147,17 @@ final class OpensslKey
     }
 
     /**
-     * Allows secure read only access to private properties.
+     * Allows read only access to the internal variables needed by the openssl wrapper.
      *
-     * @param string $name
-     *
-     * @throws Exception
-     *
-     * @return string
+     * @return array
      */
-    public function __get(string $name): string
+    public function wrapperVariables(): array
     {
-        if (!in_array($name, ['_iv', '_cipher'])) {
-            throw new InvalidPropertyAccessException();
-        }
-
-        return $this->$name;
+        return [
+            $this->_iv,
+            $this->encryptionKey(),
+            $this->_cipher,
+        ];
     }
 
     /**
