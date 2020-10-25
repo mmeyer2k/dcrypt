@@ -17,7 +17,9 @@ declare(strict_types=1);
 
 namespace Dcrypt;
 
-use Dcrypt\Exceptions\InvalidKeyException;
+use Dcrypt\Exceptions\InvalidKeyEncodingException;
+use Dcrypt\Exceptions\InvalidKeyLengthException;
+use Exception;
 
 /**
  * Provides key derivation functions.
@@ -50,64 +52,73 @@ final class OpensslKey
      *
      * @var string
      */
-    private $_ivr;
+    private $_iv;
+
+    /**
+     * Name of cipher.
+     *
+     * @var string
+     */
+    private $_cipher;
 
     /**
      * OpensslKey constructor.
      *
-     * @param string $algo Algo to use for HKDF
-     * @param string $key  Key to use for encryption
-     * @param string $ivr  Initialization vector
+     * @param string $key    Key to use for encryption
+     * @param string $algo   Algo to use for HKDF
+     * @param string $cipher Name of cipher
+     * @param string $iv     Initialization vector
      *
-     * @throws InvalidKeyException
+     * @throws InvalidKeyLengthException
+     * @throws InvalidKeyEncodingException
      */
     public function __construct(
-        string $algo,
         string $key,
-        string $ivr = ''
+        string $algo,
+        string $cipher = '',
+        string $iv = ''
     ) {
         // Store the key as what was supplied
-        $this->_key = \base64_decode($key, true);
+        $this->_key = base64_decode($key, true);
 
         // If key was not proper base64, bail out
         if ($this->_key === false) {
-            throw new InvalidKeyException(InvalidKeyException::BASE64ENC);
+            throw new InvalidKeyEncodingException();
         }
 
         // If key was to short, bail out
         if (Str::strlen($this->_key) < 32) {
-            throw new InvalidKeyException(InvalidKeyException::KEYLENGTH);
+            throw new InvalidKeyLengthException();
         }
 
         // Store algo in object
         $this->_algo = $algo;
 
         // Store init vector in object
-        $this->_ivr = $ivr;
+        $this->_iv = $iv;
+
+        // Store the cipher name
+        $this->_cipher = $cipher;
     }
 
     /**
      * Generate the authentication key.
      *
-     * @param string $info The extra info parameter for hash_hkdf
-     *
      * @return string
      */
-    public function authenticationKey(string $info): string
+    public function authenticationKey(): string
     {
-        return $this->deriveKey(__FUNCTION__ . '|' . $info);
+        return $this->deriveKey(__FUNCTION__ . '|' . $this->_cipher);
     }
 
     /**
      * Generate the encryption key.
      *
-     * @param string $info The extra info parameter for hash_hkdf
-     *
      * @return string
      */
-    public function encryptionKey(string $info): string
+    public function encryptionKey(): string
     {
-        return $this->deriveKey(__FUNCTION__ . '|' . $info);
+        return $this->deriveKey(__FUNCTION__ . '|' . $this->_cipher);
     }
 
     /**
@@ -119,24 +130,51 @@ final class OpensslKey
      */
     public function deriveKey(string $info): string
     {
-        return \hash_hkdf($this->_algo, $this->_key, 0, $info, $this->_ivr);
+        return hash_hkdf($this->_algo, $this->_key, 0, $info, $this->_iv);
     }
 
     /**
-     * Generate a new key that meets requirements for dcrypt.
+     * Calculates a given message HMAC.
+     *
+     * @param string $message
+     *
+     * @return string
+     */
+    public function messageChecksum(string $message): string
+    {
+        return hash_hmac($this->_algo, $message, $this->authenticationKey(), true);
+    }
+
+    /**
+     * Allows read only access to the internal variables needed by the openssl wrapper.
+     *
+     * @return array
+     */
+    public function wrapperVariables(): array
+    {
+        return [
+            $this->_iv,
+            $this->encryptionKey(),
+            $this->_cipher,
+        ];
+    }
+
+    /**
+     * Generate a new key.
      *
      * @param int $bytes Size of key in bytes
      *
-     * @throws InvalidKeyException
+     * @throws Exception
+     * @throws InvalidKeyLengthException
      *
      * @return string
      */
     public static function create(int $bytes = 32): string
     {
         if ($bytes < 32) {
-            throw new InvalidKeyException(InvalidKeyException::KEYLENGTH);
+            throw new InvalidKeyLengthException();
         }
 
-        return \base64_encode(\random_bytes($bytes));
+        return base64_encode(random_bytes($bytes));
     }
 }

@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace Dcrypt;
 
 use Dcrypt\Exceptions\InvalidChecksumException;
+use Exception;
 
 /**
  * Static functions that handle encryption/decryption with openssl.
@@ -39,7 +40,7 @@ final class OpensslStatic extends OpensslWrapper
      * @param string $cipher OpenSSL cipher name
      * @param string $algo   Hash algo name
      *
-     * @throws \Exception
+     * @throws Exception
      *
      * @return string
      */
@@ -49,43 +50,28 @@ final class OpensslStatic extends OpensslWrapper
         string $cipher,
         string $algo
     ): string {
-        // Calculate the hash checksum size in bytes for the specified algo
-        $hsz = Str::hashSize($algo);
+        // Shift the IV off of the beginning of the ciphertext
+        $ivr = Str::shift($data, parent::ivSize($cipher));
 
-        // Get the tag size in bytes for this cipher mode
-        $tsz = parent::tagRequired($cipher) ? 16 : 0;
+        // Shift off the checksum
+        $sum = Str::shift($data, Str::hashSize($algo));
 
-        // Ask openssl for the IV size needed for specified cipher
-        $isz = parent::ivSize($cipher);
+        // Shift off the AAD tag (if present)
+        $tag = Str::shift($data, parent::tagLength($cipher));
 
-        // Get the IV at the beginning of the ciphertext
-        $ivr = Str::substr($data, 0, $isz);
-
-        // Get the checksum after the IV
-        $sum = Str::substr($data, $isz, $hsz);
-
-        // Get the AEAD authentication tag (if present) after the checksum
-        $tag = Str::substr($data, $isz + $hsz, $tsz);
-
-        // Get the encrypted message payload
-        $msg = Str::substr($data, $isz + $hsz + $tsz);
-
-        // Create key derivation object
-        $key = new OpensslKey($algo, $key, $ivr);
+        // Create a new key object
+        $key = new OpensslKey($key, $algo, $cipher, $ivr);
 
         // Calculate checksum of message payload for verification
-        $chk = \hash_hmac($algo, $msg, $key->authenticationKey($cipher), true);
+        $chk = $key->messageChecksum($data);
 
         // Compare given checksum against computed checksum
         if (!Str::equal($chk, $sum)) {
-            throw new InvalidChecksumException(InvalidChecksumException::MESSAGE);
+            throw new InvalidChecksumException();
         }
 
-        // Derive the encryption key
-        $enc = $key->encryptionKey($cipher);
-
         // Decrypt message and return
-        return parent::opensslDecrypt($msg, $cipher, $enc, $ivr, $tag);
+        return parent::opensslDecrypt($data, $key, $tag);
     }
 
     /**
@@ -96,7 +82,7 @@ final class OpensslStatic extends OpensslWrapper
      * @param string $cipher OpenSSL cipher name
      * @param string $algo   Hash algo name
      *
-     * @throws \Exception
+     * @throws Exception
      *
      * @return string
      */
@@ -110,19 +96,16 @@ final class OpensslStatic extends OpensslWrapper
         $ivr = parent::ivGenerate($cipher);
 
         // Create key derivation object
-        $key = new OpensslKey($algo, $key, $ivr);
+        $key = new OpensslKey($key, $algo, $cipher, $ivr);
 
         // Create a variable for the authentication tag to be returned by reference
         $tag = '';
 
-        // Derive the encryption key
-        $enc = $key->encryptionKey($cipher);
-
         // Encrypt the plaintext
-        $msg = parent::opensslEncrypt($data, $cipher, $enc, $ivr, $tag);
+        $msg = parent::opensslEncrypt($data, $key, $tag);
 
         // Generate the ciphertext checksum
-        $chk = \hash_hmac($algo, $msg, $key->authenticationKey($cipher), true);
+        $chk = $key->messageChecksum($msg);
 
         // Return concatenation of iv + checksum + tag + ciphertext
         return $ivr . $chk . $tag . $msg;

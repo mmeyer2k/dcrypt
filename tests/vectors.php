@@ -10,7 +10,7 @@ use Dcrypt\OpensslStatic;
 
 require __DIR__ . '/../vendor/autoload.php';
 
-$vectors = __DIR__ . '/../tests/.vectors.json';
+$vectors = __DIR__ . '.vectors.json';
 
 if (file_exists($vectors)) {
     $key = json_decode(file_get_contents($vectors))->key;
@@ -56,6 +56,6 @@ foreach (range(1, 10) as $r) {
     $out['otp'][$mult] = \base64_encode(\Dcrypt\OneTimePad::crypt(str_repeat('A', $mult), $key));
 }
 
-file_put_contents(__DIR__ . '/../tests/.vectors.json', \json_encode($out, JSON_PRETTY_PRINT));
+file_put_contents($vectors, \json_encode($out, JSON_PRETTY_PRINT));
 
 var_dump($out);

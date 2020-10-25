@@ -1,4 +1,14 @@
-# Changes in Dcrypt
+# Changelog for `dcrypt`
+
+## 13.1.2
+- Offload some functionality into OpensslKey object for readability
+- OpensslKey throws exception if non-allowed properties are accessed
+- Add ext-openssl and ext-mbstring to the requirements (makes IDE happy)
+- Remove examples directory in favor of a more robust `docs/` option
+- Improved exception handling that sheds some legacy crust
+- Removed superfluous root namespace backslashes throughout project
+- Modified ciphertext unpacking algorithm
+- More complete docblocks
 
 ## 13.1.1
 - Add test class for `Aes` static helper object

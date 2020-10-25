@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace Dcrypt;
 
+use Exception;
+
 /**
  * Provides time-safe string comparison facilities, and safe string operations
  * on systems that have mb_* function overloading enabled.
@@ -42,18 +44,20 @@ final class Str
      * @param string $known The string of known length to compare against
      * @param string $given The string that the user can control
      *
+     * @throws Exception
+     *
      * @return bool
      */
     public static function equal(string $known, string $given): bool
     {
         // Create some entropy
-        $nonce = \random_bytes(16);
+        $nonce = random_bytes(16);
 
         // Prehash the input strings with the nonce
-        $known = \hash_hmac('sha256', $known, $nonce, true);
-        $given = \hash_hmac('sha256', $given, $nonce, true);
+        $known = hash_hmac('sha256', $known, $nonce, true);
+        $given = hash_hmac('sha256', $given, $nonce, true);
 
-        return \hash_equals($known, $given);
+        return hash_equals($known, $given);
     }
 
     /**
@@ -65,7 +69,7 @@ final class Str
      */
     public static function hashSize(string $algo): int
     {
-        return self::strlen(\hash($algo, 'hash me', true));
+        return self::strlen(hash($algo, 'hash me', true));
     }
 
     /**
@@ -77,23 +81,37 @@ final class Str
      */
     public static function strlen(string $string): int
     {
-        return \mb_strlen($string, '8bit');
+        return mb_strlen($string, '8bit');
     }
 
     /**
      * Returns part of a string.
      *
-     * @param string $string The string whose length we wish to obtain
-     * @param int    $start  Offset to start gathering output
-     * @param int    $length Distance from starting offset to gather
+     * @param string   $string The string whose length we wish to obtain
+     * @param int      $start  Offset to start gathering output
+     * @param int|null $length Distance from starting offset to gather
      *
      * @return string
      */
-    public static function substr(
-        string $string,
-        int $start,
-        int $length = null
-    ): string {
-        return \mb_substr($string, $start, $length, '8bit');
+    public static function substr(string $string, int $start, int $length = null): string
+    {
+        return mb_substr($string, $start, $length, '8bit');
+    }
+
+    /**
+     * Shifts bytes off of the front of a string and return. Input string is modified.
+     *
+     * @param string $input
+     * @param int    $bytes
+     *
+     * @return string
+     */
+    public static function shift(string &$input, int $bytes): string
+    {
+        $shift = self::substr($input, 0, $bytes);
+
+        $input = self::substr($input, $bytes);
+
+        return $shift;
     }
 }

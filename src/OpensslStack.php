@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace Dcrypt;
 
+use Exception;
+
 /**
  * A factory class to build and use custom encryption stacks.
  *
@@ -73,6 +75,8 @@ class OpensslStack
      *
      * @param string $data Data to encrypt
      *
+     * @throws Exception
+     *
      * @return string
      */
     public function encrypt(string $data): string
@@ -89,11 +93,13 @@ class OpensslStack
      *
      * @param string $data Data to decrypt
      *
+     * @throws Exception
+     *
      * @return string
      */
     public function decrypt(string $data): string
     {
-        foreach (\array_reverse($this->_stack) as $s) {
+        foreach (array_reverse($this->_stack) as $s) {
             $data = OpensslStatic::decrypt($data, $this->_key, $s[0], $s[1]);
         }
 

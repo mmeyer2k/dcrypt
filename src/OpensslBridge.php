@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace Dcrypt;
 
+use Exception;
+
 /**
  * Provides functionality common to the dcrypt AES block ciphers.
  * Extend this class to customize your cipher suite.
@@ -36,6 +38,8 @@ class OpensslBridge
      * @param string $data Ciphertext to decrypt
      * @param string $key  Key which will be used to decrypt data
      *
+     * @throws Exception
+     *
      * @return string
      */
     public static function decrypt(string $data, string $key): string
@@ -48,6 +52,8 @@ class OpensslBridge
      *
      * @param string $data Plaintext string to encrypt.
      * @param string $key  Key which will be used to encrypt data
+     *
+     * @throws Exception
      *
      * @return string
      */

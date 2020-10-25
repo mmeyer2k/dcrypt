@@ -4,7 +4,10 @@ declare(strict_types=1);
 
 namespace Dcrypt\Tests;
 
+use Dcrypt\Exceptions\InvalidChecksumException;
+use Dcrypt\OpensslKey;
 use Dcrypt\OpensslStatic;
+use Exception;
 
 class OpensslStaticTest extends \PHPUnit\Framework\TestCase
 {
@@ -16,9 +19,8 @@ class OpensslStaticTest extends \PHPUnit\Framework\TestCase
 
         foreach ($json->algos as $algo => $data) {
             try {
-                $plaintext = \Dcrypt\OpensslStatic::decrypt(base64_decode($data), $json->key, 'aes-256-gcm', $algo);
-            } catch (\Exception | \Error $e) {
-                throw new \Exception("Failure in [$algo]: " . $e->getMessage());
+                $plaintext = OpensslStatic::decrypt(base64_decode($data), $json->key, 'aes-256-gcm', $algo);
+            } catch (Exception | \Error $e) {
             }
 
             $this->assertEquals('a secret', $plaintext);
@@ -33,9 +35,8 @@ class OpensslStaticTest extends \PHPUnit\Framework\TestCase
 
         foreach ($json->ciphers as $cipher => $data) {
             try {
-                $plaintext = \Dcrypt\OpensslStatic::decrypt(base64_decode($data), $json->key, $cipher, 'sha3-256');
-            } catch (\Exception | \Error $e) {
-
+                $plaintext = OpensslStatic::decrypt(base64_decode($data), $json->key, $cipher, 'sha3-256');
+            } catch (Exception | \Error $e) {
             }
 
             $this->assertEquals('a secret', $plaintext);
@@ -44,13 +45,13 @@ class OpensslStaticTest extends \PHPUnit\Framework\TestCase
 
     public function testBadCipherException()
     {
-        $key = \Dcrypt\OpensslKey::create();
+        $key = OpensslKey::create();
 
         $pass = false;
 
         try {
             OpensslStatic::encrypt('a secret', $key, 'lol this cipher doesnt exist', 'sha3-256');
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $pass = true;
         }
 
@@ -59,13 +60,13 @@ class OpensslStaticTest extends \PHPUnit\Framework\TestCase
 
     public function testBadAlgoException()
     {
-        $key = \Dcrypt\OpensslKey::create();
+        $key = OpensslKey::create();
 
         $pass = false;
 
         try {
             OpensslStatic::encrypt('a secret', $key, 'aes-256-gcm', 'lol this algo doesnt exist');
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $pass = true;
         }
 
@@ -74,11 +75,11 @@ class OpensslStaticTest extends \PHPUnit\Framework\TestCase
 
     public function testCrossDecryptFails()
     {
-        $key = \Dcrypt\OpensslKey::create();
+        $key = OpensslKey::create();
 
-        $this->expectException(\Dcrypt\Exceptions\InvalidChecksumException::class);
+        $this->expectException(InvalidChecksumException::class);
 
-        $e = \Dcrypt\OpensslStatic::encrypt('AAAA', $key, 'aes-256-gcm', 'sha256');
-        $d = \Dcrypt\OpensslStatic::decrypt($e, $key, 'aes-256-ctr', 'sha256');
+        $e = OpensslStatic::encrypt('AAAA', $key, 'aes-256-gcm', 'sha256');
+        $d = OpensslStatic::decrypt($e, $key, 'aes-256-ctr', 'sha256');
     }
 }

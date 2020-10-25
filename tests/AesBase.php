@@ -4,11 +4,15 @@ declare(strict_types=1);
 
 namespace Dcrypt\Tests;
 
+use Dcrypt\Exceptions\InvalidChecksumException;
+use Dcrypt\Exceptions\InvalidKeyEncodingException;
+use Dcrypt\OpensslKey;
+
 class AesBase extends \PHPUnit\Framework\TestCase
 {
     public function testEngineInKeyMode()
     {
-        $key = \Dcrypt\OpensslKey::create();
+        $key = OpensslKey::create();
 
         $encrypted = static::$class::encrypt('a secret', $key);
         $decrypted = static::$class::decrypt($encrypted, $key);
@@ -19,7 +23,7 @@ class AesBase extends \PHPUnit\Framework\TestCase
     public function testEngineWithSomeRandomnessWhileInKeyMode()
     {
         $input = random_bytes(256);
-        $key = \Dcrypt\OpensslKey::create();
+        $key = OpensslKey::create();
 
         $encrypted = static::$class::encrypt($input, $key);
         $decrypted = static::$class::decrypt($encrypted, $key);
@@ -29,20 +33,20 @@ class AesBase extends \PHPUnit\Framework\TestCase
 
     public function testCorruptDataUsingKeyMode()
     {
-        $key = \Dcrypt\OpensslKey::create();
+        $key = OpensslKey::create();
 
         $encrypted = static::$class::encrypt('a secret', $key);
 
         $this->assertEquals('a secret', static::$class::decrypt($encrypted, $key));
 
-        $this->expectException(\Dcrypt\Exceptions\InvalidChecksumException::class);
+        $this->expectException(InvalidChecksumException::class);
 
         static::$class::decrypt($encrypted . 'A', $key);
     }
 
     public function testInvalidKeyEncoding()
     {
-        $this->expectException(\Dcrypt\Exceptions\InvalidKeyException::class);
+        $this->expectException(InvalidKeyEncodingException::class);
 
         $crazyKey = str_repeat('?', 10000);
 
@@ -62,7 +66,7 @@ class AesBase extends \PHPUnit\Framework\TestCase
     public function testKnownVector()
     {
         // Skip if PHP 7.1 and CCM mode. Implementation in Openssl was fixed but never backported it seems...
-        if (PHP_MAJOR_VERSION === 7 && PHP_MINOR_VERSION === 1 && strpos(static::$class, 'Ccm')) {
+        if (PHP_MAJOR_VERSION . PHP_MINOR_VERSION === '71' && strpos(static::$class, 'Ccm')) {
             return $this->assertTrue(true);
         }
 

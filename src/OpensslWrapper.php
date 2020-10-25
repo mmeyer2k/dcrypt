@@ -32,51 +32,41 @@ class OpensslWrapper
     /**
      * OpenSSL encrypt wrapper function.
      *
-     * @param string $data   Data to decrypt
-     * @param string $cipher Cipher method to use
-     * @param string $key    Key string
-     * @param string $iv     Initialization vector
-     * @param string $tag    AAD tag
+     * @param string     $data Data to decrypt
+     * @param OpensslKey $key  Key string
+     * @param string     $tag  AAD tag
      *
      * @return string
      */
-    protected static function opensslEncrypt(
-        string $data,
-        string $cipher,
-        string $key,
-        string $iv,
-        string &$tag
-    ): string {
-        if (self::tagRequired($cipher)) {
-            return \openssl_encrypt($data, $cipher, $key, 1, $iv, $tag, '', 16);
+    protected static function opensslEncrypt(string $data, OpensslKey $key, string &$tag): string
+    {
+        list($iv, $enc, $cipher) = $key->wrapperVariables();
+
+        if (self::tagLength($cipher) > 0) {
+            return openssl_encrypt($data, $cipher, $enc, 1, $iv, $tag, '', 16);
         }
 
-        return \openssl_encrypt($data, $cipher, $key, 1, $iv);
+        return openssl_encrypt($data, $cipher, $enc, 1, $iv);
     }
 
     /**
      * OpenSSL decrypt wrapper function.
      *
-     * @param string $input  Data to decrypt
-     * @param string $cipher Cipher method to use
-     * @param string $key    Key string
-     * @param string $iv     Initialization vector
-     * @param string $tag    AAD authentication tag
+     * @param string     $input Data to decrypt
+     * @param OpensslKey $key   Key string
+     * @param string     $tag   AAD authentication tag
      *
      * @return string
      */
-    protected static function opensslDecrypt(
-        string $input,
-        string $cipher,
-        string $key,
-        string $iv,
-        string $tag
-    ): string {
-        if (self::tagRequired($cipher)) {
-            return \openssl_decrypt($input, $cipher, $key, 1, $iv, $tag, '');
+    protected static function opensslDecrypt(string $input, OpensslKey $key, string $tag): string
+    {
+        list($iv, $enc, $cipher) = $key->wrapperVariables();
+
+        if (self::tagLength($cipher) > 0) {
+            return openssl_decrypt($input, $cipher, $enc, 1, $iv, $tag, '');
         }
 
-        return \openssl_decrypt($input, $cipher, $key, 1, $iv);
+        return openssl_decrypt($input, $cipher, $enc, 1, $iv);
     }
 
     /**
@@ -88,7 +78,7 @@ class OpensslWrapper
      */
     protected static function ivSize(string $cipher): int
     {
-        return \openssl_cipher_iv_length($cipher);
+        return openssl_cipher_iv_length($cipher);
     }
 
     /**
@@ -108,7 +98,7 @@ class OpensslWrapper
             return '';
         }
 
-        return \random_bytes($size);
+        return random_bytes($size);
     }
 
     /**
@@ -116,12 +106,10 @@ class OpensslWrapper
      *
      * @param string $cipher Openssl cipher
      *
-     * @return bool
+     * @return int
      */
-    protected static function tagRequired(string $cipher): bool
+    protected static function tagLength(string $cipher): int
     {
-        $cipher = strtolower($cipher);
-
-        return strpos($cipher, '-gcm') || strpos($cipher, '-ccm');
+        return stripos($cipher, '-gcm') || stripos($cipher, '-ccm') ? 16 : 0;
     }
 }

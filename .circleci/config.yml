@@ -13,7 +13,6 @@ jobs:
       - run: ./vendor/bin/phpunit --coverage-html coverage --coverage-clover=coverage.clover
       - run: ./vendor/bin/infection
       - run: ./vendor/bin/phpmetrics --report-html=phpmetrics ./src
-      - run: php examples/support.php
       - run: wget https://scrutinizer-ci.com/ocular.phar
       - run: php ocular.phar code-coverage:upload --format=php-clover coverage.clover
       - save_cache:

@@ -36,18 +36,28 @@ composer require "mmeyer2k/dcrypt=^13.0"
 
 ## Block Ciphers
 
-The dcrypt library helps application developers avoid common mistakes in crypto implementations that leave data at risk while still providing flexibility in its options for crypto enthusiasts.
-Dcrypt's block cipher functions require the use of a high entropy 256 bit (minimum), base64-encoded key.
+The dcrypt library helps application developers avoid common mistakes in crypto implementations that leave data at risk.
 
-To generate a new key, execute this on the command line:
+[Specification document](https://github.com/mmeyer2k/dcrypt/blob/master/docs/CRYPTO.md)
+
+### Keys
+
+Safe usage of dcrypt's block cipher functions requires the use of a high entropy 256 bit (minimum) key.
+Keys should be passed into dcrypt in *base64* encoded format.
+
+**You are responsible for the randomness of your key!**
+
+Generate a new key on the linux CLI:
 
 ```bash
 head -c 32 /dev/urandom | base64 -w 0 | xargs echo
 ```
 
-_You are responsible for the randomness of your key!_
-
-[Specification document](https://github.com/mmeyer2k/dcrypt/blob/master/docs/CRYPTO.md)
+Or with PHP...
+```php
+<?php
+$key = \Dcrypt\OpensslKey::create(32);
+```
 
 ### AES-256 GCM Encryption
 
@@ -56,7 +66,8 @@ Dcrypt will handle the AEAD authentication tag, [SHA3](https://en.wikipedia.org/
 
 ```php
 <?php
-$key = "..............................";
+// Create a new random 32 byte key
+$key = \Dcrypt\OpensslKey::create(32);
 
 $encrypted = \Dcrypt\Aes::encrypt('a secret', $key);
 
@@ -84,7 +95,7 @@ Several AES-256 encryption modes are supported out of the box via hardcoded clas
 ### Custom Encryption Suites
 
 Dcrypt is compatible with _most_ OpenSSL ciphers and hashing algorithms supported by PHP.
-Run `php examples/support.php` to view supported options.
+Run `openssl_get_cipher_methods()` and `hash_algos()` to view supported options on your platform.
 
 #### Static Wrapper
 
@@ -158,7 +169,7 @@ try {
 Be sure you understand the risks and inherent issues of using a stream cipher before proceeding.
 
 - Each key should only be used once
-- No checksums mean data can be forged or altered
+- Data integrity can not be guaranteed
 - [https://en.wikipedia.org/wiki/Stream_cipher_attacks](https://en.wikipedia.org/wiki/Stream_cipher_attacks)
 - [https://jameshfisher.com/2018/01/01/making-a-stream-cipher/](https://jameshfisher.com/2018/01/01/making-a-stream-cipher/)
 
