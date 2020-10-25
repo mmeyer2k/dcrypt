@@ -6,7 +6,6 @@ namespace Dcrypt\Tests;
 
 use Dcrypt\Exceptions\InvalidKeyEncodingException;
 use Dcrypt\Exceptions\InvalidKeyLengthException;
-use Dcrypt\Exceptions\InvalidPropertyAccessException;
 use Dcrypt\OpensslKey;
 
 class OpensslKeyTest extends \PHPUnit\Framework\TestCase

@@ -44,8 +44,9 @@ final class Str
      * @param string $known The string of known length to compare against
      * @param string $given The string that the user can control
      *
-     * @return bool
      * @throws Exception
+     *
+     * @return bool
      */
     public static function equal(string $known, string $given): bool
     {
@@ -101,7 +102,8 @@ final class Str
      * Shifts bytes off of the front of a string and return. Input string is modified.
      *
      * @param string $input
-     * @param int $bytes
+     * @param int    $bytes
+     *
      * @return string
      */
     public static function shift(string &$input, int $bytes): string

@@ -19,7 +19,6 @@ namespace Dcrypt;
 
 use Dcrypt\Exceptions\InvalidKeyEncodingException;
 use Dcrypt\Exceptions\InvalidKeyLengthException;
-use Dcrypt\Exceptions\InvalidPropertyAccessException;
 use Exception;
 
 /**
