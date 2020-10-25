@@ -3,9 +3,8 @@
   "description": "A petite library of encryption functionality for PHP",
   "keywords": [
     "encryption",
-    "hashing",
-    "pbkdf",
     "aes",
+    "gcm",
     "openssl"
   ],
   "license": "MIT",

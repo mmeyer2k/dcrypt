@@ -42,7 +42,7 @@ class OpensslWrapper
     {
         list($iv, $enc, $cipher) = [$key->_iv, $key->encryptionKey(), $key->_cipher];
 
-        if (self::tagRequired($cipher)) {
+        if (self::tagLength($cipher) > 0) {
             return openssl_encrypt($data, $cipher, $enc, 1, $iv, $tag, '', 16);
         }
 
@@ -62,7 +62,7 @@ class OpensslWrapper
     {
         list($iv, $enc, $cipher) = [$key->_iv, $key->encryptionKey(), $key->_cipher];
 
-        if (self::tagRequired($cipher)) {
+        if (self::tagLength($cipher) > 0) {
             return openssl_decrypt($input, $cipher, $enc, 1, $iv, $tag, '');
         }
 
@@ -106,12 +106,10 @@ class OpensslWrapper
      *
      * @param string $cipher Openssl cipher
      *
-     * @return bool
+     * @return int
      */
-    protected static function tagRequired(string $cipher): bool
+    protected static function tagLength(string $cipher): int
     {
-        $cipher = strtolower($cipher);
-
-        return strpos($cipher, '-gcm') || strpos($cipher, '-ccm');
+        return stripos($cipher, '-gcm') || stripos($cipher, '-ccm') ? 16 : 0;
     }
 }

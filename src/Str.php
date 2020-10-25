@@ -96,4 +96,20 @@ final class Str
     {
         return mb_substr($string, $start, $length, '8bit');
     }
+
+    /**
+     * Shifts bytes off of the front of a string and return. Input string is modified.
+     *
+     * @param string $input
+     * @param int $bytes
+     * @return string
+     */
+    public static function shift(string &$input, int $bytes): string
+    {
+        $shift = self::substr($input, 0, $bytes);
+
+        $input = self::substr($input, $bytes);
+
+        return $shift;
+    }
 }

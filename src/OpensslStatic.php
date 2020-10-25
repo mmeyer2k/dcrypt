@@ -50,32 +50,20 @@ final class OpensslStatic extends OpensslWrapper
         string $cipher,
         string $algo
     ): string {
-        // Calculate the hash checksum size in bytes for the specified algo
-        $hsz = Str::hashSize($algo);
+        // Shift the IV off of the beginning of the ciphertext
+        $ivr = Str::shift($data, parent::ivSize($cipher));
 
-        // Get the tag size in bytes for this cipher mode
-        $tsz = parent::tagRequired($cipher) ? 16 : 0;
+        // Shift off the checksum
+        $sum = Str::shift($data, Str::hashSize($algo));
 
-        // Ask openssl for the IV size needed for specified cipher
-        $isz = parent::ivSize($cipher);
+        // Shift off the AAD tag (if present)
+        $tag = Str::shift($data, parent::tagLength($cipher));
 
-        // Get the IV at the beginning of the ciphertext
-        $ivr = Str::substr($data, 0, $isz);
-
-        // Get the checksum after the IV
-        $sum = Str::substr($data, $isz, $hsz);
-
-        // Get the AAD tag (if present) after the checksum
-        $tag = Str::substr($data, $isz + $hsz, $tsz);
-
-        // Get the encrypted message payload
-        $msg = Str::substr($data, $isz + $hsz + $tsz);
-
-        // Create key derivation object
+        // Create a new key object
         $key = new OpensslKey($key, $algo, $cipher, $ivr);
 
         // Calculate checksum of message payload for verification
-        $chk = $key->messageChecksum($msg);
+        $chk = $key->messageChecksum($data);
 
         // Compare given checksum against computed checksum
         if (!Str::equal($chk, $sum)) {
@@ -83,7 +71,7 @@ final class OpensslStatic extends OpensslWrapper
         }
 
         // Decrypt message and return
-        return parent::opensslDecrypt($msg, $key, $tag);
+        return parent::opensslDecrypt($data, $key, $tag);
     }
 
     /**
