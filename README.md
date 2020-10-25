@@ -158,7 +158,7 @@ try {
 Be sure you understand the risks and inherent issues of using a stream cipher before proceeding.
 
 - Each key should only be used once
-- No checksums mean data can be forged or altered
+- Data integrity can not be guaranteed
 - [https://en.wikipedia.org/wiki/Stream_cipher_attacks](https://en.wikipedia.org/wiki/Stream_cipher_attacks)
 - [https://jameshfisher.com/2018/01/01/making-a-stream-cipher/](https://jameshfisher.com/2018/01/01/making-a-stream-cipher/)
 

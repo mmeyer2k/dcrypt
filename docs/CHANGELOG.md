@@ -5,8 +5,9 @@
 - OpensslKey throws exception if non-allowed properties are accessed
 - Add ext-openssl and ext-mbstring to the requirements (makes IDE happy)
 - Remove examples directory in favor of a more robust `docs/` option
-- Improved exception handling
-- Removed superfluous backslashes throughout project
+- Improved exception handling that sheds some legacy crust
+- Removed superfluous root namespace backslashes throughout project
+- Modified ciphertext unpacking algorithm
 - More complete docblocks
 
 ## 13.1.1
