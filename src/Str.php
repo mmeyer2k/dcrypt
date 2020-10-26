@@ -69,7 +69,7 @@ final class Str
      */
     public static function hashSize(string $algo): int
     {
-        return self::strlen(hash($algo, 'hash me', true));
+        return self::length(hash($algo, 'hash me', true));
     }
 
     /**
@@ -79,7 +79,7 @@ final class Str
      *
      * @return int
      */
-    public static function strlen(string $string): int
+    public static function length(string $string): int
     {
         return mb_strlen($string, '8bit');
     }
@@ -93,7 +93,7 @@ final class Str
      *
      * @return string
      */
-    public static function substr(string $string, int $start, int $length = null): string
+    private static function substr(string $string, int $start, int $length = null): string
     {
         return mb_substr($string, $start, $length, '8bit');
     }

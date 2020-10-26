@@ -1,5 +1,11 @@
 # Changelog for `dcrypt`
 
+## 13.2.0
+- Changes to internal function names for human readability
+- Added `Openssl` object oriented encryptor
+- Changed to inline property declaration
+- Tightened up internal API visibility
+
 ## 13.1.2
 - Offload some functionality into OpensslKey object for readability
 - OpensslKey throws exception if non-allowed properties are accessed

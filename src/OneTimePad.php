@@ -51,7 +51,7 @@ class OneTimePad
         $chunks = str_split($input, Str::hashSize($algo));
 
         // Determine total input length
-        $length = Str::strlen($input);
+        $length = Str::length($input);
 
         // Create a new key object with empty cipher and iv
         $key = new OpensslKey($key, $algo, '', '');

@@ -33,33 +33,7 @@ use Exception;
  */
 final class OpensslKey
 {
-    /**
-     * High entropy key.
-     *
-     * @var string
-     */
-    private $_key;
-
-    /**
-     * Algo string.
-     *
-     * @var string
-     */
-    private $_algo;
-
-    /**
-     * High entropy salt.
-     *
-     * @var string
-     */
-    private $_iv;
-
-    /**
-     * Name of cipher.
-     *
-     * @var string
-     */
-    private $_cipher;
+    private $_iv, $_key, $_algo, $_cipher;
 
     /**
      * OpensslKey constructor.
@@ -90,7 +64,7 @@ final class OpensslKey
         }
 
         // If key was to short, bail out
-        if (Str::strlen($this->_key) < 32) {
+        if (Str::length($this->_key) < 32) {
             throw new InvalidKeyLengthException();
         }
     }
