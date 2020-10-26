@@ -33,7 +33,10 @@ use Exception;
  */
 final class OpensslKey
 {
-    private $_iv, $_key, $_algo, $_cipher;
+    private $_iv;
+    private $_key;
+    private $_algo;
+    private $_cipher;
 
     /**
      * OpensslKey constructor.

@@ -8,7 +8,9 @@ use Exception;
 
 class Openssl
 {
-    private $cipher, $algo, $key;
+    private $cipher;
+    private $algo;
+    private $key;
 
     /**
      * Openssl constructor.
@@ -24,8 +26,10 @@ class Openssl
 
     /**
      * @param string $data
-     * @return string
+     *
      * @throws Exception
+     *
+     * @return string
      */
     public function decrypt(string $data): string
     {
@@ -34,8 +38,10 @@ class Openssl
 
     /**
      * @param string $data
-     * @return string
+     *
      * @throws Exception
+     *
+     * @return string
      */
     public function encrypt(string $data): string
     {
