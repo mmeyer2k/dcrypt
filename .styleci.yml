@@ -10,4 +10,3 @@ enabled:
 disabled:
   - align_double_arrow
   - concat_without_spaces
-  - property_separation
