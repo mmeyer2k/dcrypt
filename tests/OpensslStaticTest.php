@@ -8,8 +8,9 @@ use Dcrypt\Exceptions\InvalidChecksumException;
 use Dcrypt\OpensslKey;
 use Dcrypt\OpensslStatic;
 use Exception;
+use PHPUnit\Framework\TestCase;
 
-class OpensslStaticTest extends \PHPUnit\Framework\TestCase
+class OpensslStaticTest extends TestCase
 {
     public function testVectorsAlgos()
     {

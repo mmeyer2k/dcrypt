@@ -75,11 +75,14 @@ final class OpensslKey
     public function __construct(
         string $key,
         string $algo,
-        string $cipher = '',
-        string $iv = ''
+        string $cipher,
+        string $iv
     ) {
-        // Store the key as what was supplied
-        $this->_key = base64_decode($key, true);
+        // Store args into the object
+        [$this->_key, $this->_algo, $this->_cipher, $this->_iv] = func_get_args();
+
+        // Attempt to base64 decode the key
+        $this->_key = base64_decode($this->_key, true);
 
         // If key was not proper base64, bail out
         if ($this->_key === false) {
@@ -90,15 +93,6 @@ final class OpensslKey
         if (Str::strlen($this->_key) < 32) {
             throw new InvalidKeyLengthException();
         }
-
-        // Store algo in object
-        $this->_algo = $algo;
-
-        // Store init vector in object
-        $this->_iv = $iv;
-
-        // Store the cipher name
-        $this->_cipher = $cipher;
     }
 
     /**

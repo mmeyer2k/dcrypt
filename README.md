@@ -131,6 +131,19 @@ $encrypted = BlowfishCrc32::encrypt('a secret', $key);
 $plaintext = BlowfishCrc32::decrypt($encrypted, $key);
 ```
 
+#### Object Oriented Usage
+
+Reusable encryption objects can also be instantiated with the `Openssl` class.
+
+```php
+<?php
+$crypt = \Dcrypt\Openssl('aes-256-cbc', 'sha3-256', $key);
+
+$ciphertext = $crypt->encrypt("a secret string to encrypt");
+
+$secret = $crypt->decrypt($ciphertext);
+```
+
 #### Layered Encryption Factory
 
 Feeling especially paranoid?

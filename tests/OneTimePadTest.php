@@ -5,8 +5,9 @@ declare(strict_types=1);
 namespace Dcrypt\Tests;
 
 use Dcrypt\OneTimePad;
+use PHPUnit\Framework\TestCase;
 
-class OneTimePadTest extends \PHPUnit\Framework\TestCase
+class OneTimePadTest extends TestCase
 {
     public function testCrypt()
     {

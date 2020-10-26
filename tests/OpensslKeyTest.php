@@ -7,8 +7,9 @@ namespace Dcrypt\Tests;
 use Dcrypt\Exceptions\InvalidKeyEncodingException;
 use Dcrypt\Exceptions\InvalidKeyLengthException;
 use Dcrypt\OpensslKey;
+use PHPUnit\Framework\TestCase;
 
-class OpensslKeyTest extends \PHPUnit\Framework\TestCase
+class OpensslKeyTest extends TestCase
 {
     public function testNewKeyTooShort()
     {
@@ -27,6 +28,6 @@ class OpensslKeyTest extends \PHPUnit\Framework\TestCase
 
         $this->expectException(InvalidKeyEncodingException::class);
 
-        new OpensslKey('sha3-256', $str);
+        new OpensslKey('sha3-256', $str, '', '');
     }
 }

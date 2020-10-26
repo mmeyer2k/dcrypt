@@ -34,12 +34,13 @@ class OneTimePad
      * Encrypt or decrypt a binary input string.
      *
      * @param string $input Input data to encrypt
-     * @param string $key   Encryption/decryption key to use on input
-     * @param string $algo  Hashing algo to generate keystream
-     *
-     * @throws Exceptions\InvalidKeyLengthException
+     * @param string $key Encryption/decryption key to use on input
+     * @param string $algo Hashing algo to generate keystream
      *
      * @return string
+     * @throws Exceptions\InvalidKeyEncodingException
+     *
+     * @throws Exceptions\InvalidKeyLengthException
      */
     public static function crypt(
         string $input,
@@ -52,8 +53,8 @@ class OneTimePad
         // Determine total input length
         $length = Str::strlen($input);
 
-        // Create a new key object
-        $key = new OpensslKey($key, $algo);
+        // Create a new key object with empty cipher and iv
+        $key = new OpensslKey($key, $algo, '', '');
 
         foreach ($chunks as $i => &$chunk) {
             // Create the info key based on counter

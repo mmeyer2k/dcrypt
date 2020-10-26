@@ -5,8 +5,9 @@ declare(strict_types=1);
 namespace Dcrypt\Tests;
 
 use Dcrypt\Str;
+use PHPUnit\Framework\TestCase;
 
-class StrTest extends \PHPUnit\Framework\TestCase
+class StrTest extends TestCase
 {
     public function testEquals()
     {
