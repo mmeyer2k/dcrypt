@@ -35,6 +35,7 @@ jobs:
       - restore_cache:
           keys:
             - php7.2-{{ .Branch }}
+      - run: composer install
       - run: composer require phpunit/phpunit
       - run: php vendor/phpunit/phpunit/phpunit
       - save_cache:
@@ -49,6 +50,7 @@ jobs:
       - restore_cache:
           keys:
             - php7.3-{{ .Branch }}
+      - run: composer install
       - run: composer require phpunit/phpunit
       - run: php vendor/phpunit/phpunit/phpunit
       - save_cache:
@@ -63,6 +65,7 @@ jobs:
       - restore_cache:
           keys:
             - php7.4-{{ .Branch }}
+      - run: composer install
       - run: composer require phpunit/phpunit
       - run: php vendor/phpunit/phpunit/phpunit
       - save_cache:
