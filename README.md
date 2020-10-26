@@ -120,12 +120,7 @@ class BlowfishCrc32 extends \Dcrypt\OpensslBridge
 
     const ALGO = 'crc32';
 }
-```
 
-then...
-
-```php
-<?php
 $encrypted = BlowfishCrc32::encrypt('a secret', $key);
 
 $plaintext = BlowfishCrc32::decrypt($encrypted, $key);
