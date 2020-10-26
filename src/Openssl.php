@@ -8,8 +8,19 @@ use Exception;
 
 class Openssl
 {
+    /**
+     * @var string
+     */
     private $cipher;
+
+    /**
+     * @var string
+     */
     private $algo;
+
+    /**
+     * @var string
+     */
     private $key;
 
     /**

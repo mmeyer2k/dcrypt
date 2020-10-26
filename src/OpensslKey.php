@@ -33,9 +33,24 @@ use Exception;
  */
 final class OpensslKey
 {
+    /**
+     * @var string
+     */
     private $_iv;
+
+    /**
+     * @var false|string
+     */
     private $_key;
+
+    /**
+     * @var string
+     */
     private $_algo;
+
+    /**
+     * @var string
+     */
     private $_cipher;
 
     /**
