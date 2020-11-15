@@ -194,8 +194,8 @@ $plaintext = \Dcrypt\OneTimePad::crypt($encrypted, $key, 'whirlpool');
 # Show me some love :heart_eyes::beer:
 
 Developing dcrypt has been a great journey for many years.
-If you find dcrypt useful, please consider donating some Litecoin.
+If you find dcrypt useful, please consider donating.
  
-__`LN97LrLCNiv14V6fntp247H2pj9UiFzUQZ`__
-
- ![litecoin address](https://mmeyer2k.github.io/images/litecoin-wallet.png)
+__`LTC: LN97LrLCNiv14V6fntp247H2pj9UiFzUQZ`__
+__`BTC: 3N7vhA6ghWb1VrP4nGA6m6mzA9T2ASCVEj`__
+__`ETH: 0xe14a56046f28fCEF56A0EA4a84973bDdFF546923`__
