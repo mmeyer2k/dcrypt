@@ -86,7 +86,7 @@ final class OpensslKey
             throw new InvalidKeyEncodingException();
         }
 
-        // If key was to short, bail out
+        // If key was too short, bail out
         if (Str::strlen($this->_key) < 32) {
             throw new InvalidKeyLengthException();
         }
