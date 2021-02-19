@@ -12,7 +12,7 @@ A petite library of essential encryption functions for PHP 7.1+.
 For legacy PHP version support, look [here](https://github.com/mmeyer2k/dcrypt/blob/master/docs/LEGACY.md).
 If you need a dcrypt inspired encryption library for .NET, check out [harpocrates](https://github.com/mmeyer2k/harpocrates).
 
-<a href="https://dcrypt.meta.rip">Online Demo</a>
+<a target="_blank" href="https://dcrypt.meta.rip">Online Demo</a>
 
 # Install
 
@@ -32,8 +32,7 @@ The dcrypt library helps application developers avoid common mistakes in crypto 
 ### Keys
 
 Safe usage of dcrypt's block cipher functions requires the use of a high entropy 256 bit (minimum) key.
-Keys should be passed into dcrypt in *base64* encoded format.
-
+Keys should be passed into dcrypt in *base64* encoded format. 
 **You are responsible for the randomness of your key!**
 
 Generate a new key on the linux CLI:
