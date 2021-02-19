@@ -12,18 +12,7 @@ A petite library of essential encryption functions for PHP 7.1+.
 For legacy PHP version support, look [here](https://github.com/mmeyer2k/dcrypt/blob/master/docs/LEGACY.md).
 If you need a dcrypt inspired encryption library for .NET, check out [harpocrates](https://github.com/mmeyer2k/harpocrates).
 
-- [Install](#install)
-- [Block Ciphers](#block-ciphers)
-  - [AES-256 GCM Encryption](#aes-256-gcm-encryption)
-  - [Other AES-256 Modes](#other-aes-256-modes)
-  - [Custom Encryption Suites](#custom-encryption-suites)
-    - [Static Wrapper](#static-wrapper)
-    - [Class Overloading](#class-overloading)
-    - [Layered Encryption Factory](#layered-encryption-factory)
-  - [Message Authenticity Checking](#message-authenticity-checking)
-- [Stream Ciphers](#stream-ciphers)
-  - [One Time Pad](#one-time-pad)
-- [Show me some love](#show-me-some-love-heart_eyes) :heart_eyes::beer:
+<a href="https://dcrypt.meta.rip">Online Demo</a>
 
 # Install
 
