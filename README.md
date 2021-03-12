@@ -20,7 +20,7 @@ Add dcrypt to your composer.json file requirements.
 Don't worry, dcrypt does not have any dependencies of its own.
 
 ```bash
-composer require "mmeyer2k/dcrypt=^13.0"
+composer require mmeyer2k/dcrypt
 ```
 
 ## Block Ciphers
