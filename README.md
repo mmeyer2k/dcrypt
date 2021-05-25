@@ -58,7 +58,6 @@ Dcrypt will handle the AEAD authentication tag, [SHA3](https://en.wikipedia.org/
 
 ```php
 <?php
-// Create a new random 32 byte key
 $key = \Dcrypt\OpensslKey::create(32);
 
 $encrypted = \Dcrypt\Aes::encrypt('a secret', $key);
