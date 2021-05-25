@@ -12,8 +12,6 @@ A petite library of essential encryption functions for PHP 7.1+.
 For legacy PHP version support, look [here](https://github.com/mmeyer2k/dcrypt/blob/master/docs/LEGACY.md).
 If you need a dcrypt inspired encryption library for .NET, check out [harpocrates](https://github.com/mmeyer2k/harpocrates).
 
-<a target="_blank" href="https://dcrypt.meta.rip">Online Demo</a>
-
 # Install
 
 Add dcrypt to your composer.json file requirements.
@@ -21,6 +19,12 @@ Don't worry, dcrypt does not have any dependencies of its own.
 
 ```bash
 composer require mmeyer2k/dcrypt
+```
+
+Or run dcrypt as a local docker web demo [(view code)](https://github.com/mmeyer2k/dcrypt-demo).
+
+```bash
+docker run --rm -p 127.0.0.1:8080:80 mmeyer2k/dcrypt
 ```
 
 ## Block Ciphers

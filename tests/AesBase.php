@@ -7,8 +7,9 @@ namespace Dcrypt\Tests;
 use Dcrypt\Exceptions\InvalidChecksumException;
 use Dcrypt\Exceptions\InvalidKeyEncodingException;
 use Dcrypt\OpensslKey;
+use PHPUnit\Framework\TestCase;
 
-class AesBase extends \PHPUnit\Framework\TestCase
+class AesBase extends TestCase
 {
     public function testEngineInKeyMode()
     {

@@ -8,8 +8,10 @@ use Dcrypt\Exceptions\InvalidChecksumException;
 use Dcrypt\OpensslKey;
 use Dcrypt\OpensslStatic;
 use Exception;
+use PHPUnit\Framework\TestCase;
+use ValueError;
 
-class OpensslStaticTest extends \PHPUnit\Framework\TestCase
+class OpensslStaticTest extends TestCase
 {
     public function testVectorsAlgos()
     {
@@ -66,7 +68,7 @@ class OpensslStaticTest extends \PHPUnit\Framework\TestCase
 
         try {
             OpensslStatic::encrypt('a secret', $key, 'aes-256-gcm', 'lol this algo doesnt exist');
-        } catch (Exception $e) {
+        } catch (Exception | ValueError $e) {
             $pass = true;
         }
 

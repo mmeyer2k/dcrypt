@@ -37,9 +37,9 @@ class OneTimePad
      * @param string $key   Encryption/decryption key to use on input
      * @param string $algo  Hashing algo to generate keystream
      *
-     * @throws Exceptions\InvalidKeyLengthException
-     *
      * @return string
+     * @throws Exceptions\InvalidKeyEncodingException
+     * @throws Exceptions\InvalidKeyLengthException
      */
     public static function crypt(
         string $input,
