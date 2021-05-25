@@ -24,7 +24,7 @@ composer require mmeyer2k/dcrypt
 Or run dcrypt as a local docker web demo [(view code)](https://github.com/mmeyer2k/dcrypt-demo).
 
 ```bash
-docker run --rm -p 127.0.0.1:8080:80 mmeyer2k/dcrypt
+docker run --rm -ti -p 127.0.0.1:8080:80 mmeyer2k/dcrypt
 ```
 
 ## Block Ciphers
