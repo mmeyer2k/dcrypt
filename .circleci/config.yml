@@ -69,6 +69,20 @@ jobs:
           key: php7.4-{{ .Branch }}
           paths: *paths
 
+  php-80:
+    docker:
+      - image: circleci/php:8.0
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - php8.0-{{ .Branch }}
+      - run: composer require phpunit/phpunit
+      - run: php vendor/phpunit/phpunit/phpunit
+      - save_cache:
+          key: php8.0-{{ .Branch }}
+          paths: *paths
+
 workflows:
   version: 2
   build-test-all:
@@ -77,3 +91,4 @@ workflows:
       - php-72
       - php-73
       - php-74
+      - php-80
