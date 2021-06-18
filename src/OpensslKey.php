@@ -79,7 +79,7 @@ final class OpensslKey
         string $iv = ''
     ) {
         // Store the key as what was supplied
-        $this->_key = base64_decode($key, true);
+        $this->_key = self::decode($key);
 
         // If key was not proper base64, bail out
         if ($this->_key === false) {
@@ -99,6 +99,34 @@ final class OpensslKey
 
         // Store the cipher name
         $this->_cipher = $cipher;
+    }
+
+    /**
+     * Decode key and test validity.
+     * 
+     * @param string $key Encoded key to unpack
+     * 
+     * @throws InvalidKeyLengthException
+     * @throws InvalidKeyEncodingException
+     * 
+     * @return string
+     */
+    private static function decode(string $key): string
+    {
+        // Store the key as what was supplied
+        $key = base64_decode($key, true);
+
+        // If key was not proper base64, bail out
+        if ($key === false) {
+            throw new InvalidKeyEncodingException();
+        }
+
+        // If key was too short, bail out
+        if (Str::strlen($key) < 32) {
+            throw new InvalidKeyLengthException();
+        }
+
+        return $key;
     }
 
     /**
