@@ -103,12 +103,12 @@ final class OpensslKey
 
     /**
      * Decode key and test validity.
-     * 
+     *
      * @param string $key Encoded key to unpack
-     * 
+     *
      * @throws InvalidKeyLengthException
      * @throws InvalidKeyEncodingException
-     * 
+     *
      * @return string
      */
     private static function decode(string $key): string
