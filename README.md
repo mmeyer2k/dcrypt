@@ -182,7 +182,19 @@ $encrypted = \Dcrypt\OneTimePad::crypt('a secret', $key, 'whirlpool');
 $plaintext = \Dcrypt\OneTimePad::crypt($encrypted, $key, 'whirlpool');
 ```
 
-# Show me some love :heart_eyes::beer:
+## String Helpers
+
+Generate random base62 string tokens with specified length.
+```php
+$token = \Dcrypt\Str::token(10);
+```
+
+Compare 2 strings in a time-safe manner.
+```php
+$token = \Dcrypt\Str::equal($known, $given);
+```
+
+## Show me some love :heart_eyes::beer:
 
 Developing dcrypt has been a great journey for many years.
 If you find dcrypt useful, please consider donating.

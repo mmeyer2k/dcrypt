@@ -44,9 +44,9 @@ final class Str
      * @param string $known The string of known length to compare against
      * @param string $given The string that the user can control
      *
+     * @return bool
      * @throws Exception
      *
-     * @return bool
      */
     public static function equal(string $known, string $given): bool
     {
@@ -87,8 +87,8 @@ final class Str
     /**
      * Returns part of a string.
      *
-     * @param string   $string The string whose length we wish to obtain
-     * @param int      $start  Offset to start gathering output
+     * @param string $string The string whose length we wish to obtain
+     * @param int $start Offset to start gathering output
      * @param int|null $length Distance from starting offset to gather
      *
      * @return string
@@ -99,10 +99,10 @@ final class Str
     }
 
     /**
-     * Shifts bytes off of the front of a string and return. Input string is modified.
+     * Shifts bytes off of the front of a string and return. Input string is modified by reference.
      *
      * @param string $input
-     * @param int    $bytes
+     * @param int $bytes
      *
      * @return string
      */
@@ -113,5 +113,36 @@ final class Str
         $input = self::substr($input, $bytes);
 
         return $shift;
+    }
+
+    /**
+     * Generates a cryptographically secure random token string of a specified length.
+     *
+     * @param int $length Length of random string to generate
+     *
+     * @return string
+     * @throws \Exception
+     */
+    public static function token(int $length): string
+    {
+        if ($length < 0) {
+            $length = 0;
+        }
+
+        $bucket = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+
+        $output = '';
+
+        while (true) {
+            if (self::strlen($output) === $length) {
+                break;
+            }
+
+            $idx = random_int(0, self::strlen($bucket) - 1);
+
+            $output .= substr($bucket, $idx, 1);
+        }
+
+        return $output;
     }
 }

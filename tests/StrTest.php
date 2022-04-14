@@ -19,4 +19,12 @@ class StrTest extends TestCase
         $this->assertTrue(Str::equal('2222', '2222'));
         $this->assertFalse(Str::equal('2222', '3333'));
     }
+
+    public function testToken()
+    {
+        foreach (range(0, 100) as $i) {
+            $token = Str::token($i);
+            $this->assertEquals($i, strlen($token));
+        }
+    }
 }
