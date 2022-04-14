@@ -191,7 +191,7 @@ $token = \Dcrypt\Str::token(10);
 
 Compare 2 strings in a time-safe manner.
 ```php
-$token = \Dcrypt\Str::equal($known, $given);
+$equal = \Dcrypt\Str::equal($known, $given);
 ```
 
 ## Show me some love :heart_eyes::beer:
