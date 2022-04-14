@@ -2,16 +2,15 @@ version: 2
 jobs:
   php-71:
     docker:
-      - image: circleci/php:7.1
+      - image: cimg/php:7.1
     steps:
       - checkout
       - restore_cache:
           keys:
             - php7.1-{{ .Branch }}
-      - run: composer require phpunit/phpunit infection/infection phpmetrics/phpmetrics
+      - run: composer require phpunit/phpunit phpmetrics/phpmetrics
       - run: mkdir -p coverage
       - run: ./vendor/bin/phpunit --coverage-html coverage --coverage-clover=coverage.clover
-      - run: ./vendor/bin/infection
       - run: ./vendor/bin/phpmetrics --report-html=phpmetrics ./src
       - run: wget https://scrutinizer-ci.com/ocular.phar
       - run: php ocular.phar code-coverage:upload --format=php-clover coverage.clover
@@ -22,8 +21,6 @@ jobs:
             - composer.lock
       - store_artifacts:
           path: coverage
-      - store_artifacts:
-          path: infection.log
       - store_artifacts:
           path: phpmetrics
 
@@ -43,7 +40,7 @@ jobs:
 
   php-73:
     docker:
-      - image: circleci/php:7.3
+      - image: cimg/php:7.3
     steps:
       - checkout
       - restore_cache:
@@ -57,7 +54,7 @@ jobs:
 
   php-74:
     docker:
-      - image: circleci/php:7.4
+      - image: cimg/php:7.4
     steps:
       - checkout
       - restore_cache:
@@ -71,7 +68,7 @@ jobs:
 
   php-80:
     docker:
-      - image: circleci/php:8.0
+      - image: cimg/php:8.0
     steps:
       - checkout
       - restore_cache:
@@ -83,6 +80,20 @@ jobs:
           key: php8.0-{{ .Branch }}
           paths: *paths
 
+  php-81:
+    docker:
+      - image: cimg/php:8.1
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - php8.1-{{ .Branch }}
+      - run: composer require phpunit/phpunit
+      - run: php vendor/phpunit/phpunit/phpunit
+      - save_cache:
+          key: php8.1-{{ .Branch }}
+          paths: *paths
+
 workflows:
   version: 2
   build-test-all:
@@ -92,3 +103,4 @@ workflows:
       - php-73
       - php-74
       - php-80
+      - php-81
