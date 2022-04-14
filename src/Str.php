@@ -130,6 +130,7 @@ final class Str
         }
 
         $bucket = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+        $bucketEnd = self::strlen($bucket) - 1;
 
         $output = '';
 
@@ -138,7 +139,7 @@ final class Str
                 break;
             }
 
-            $idx = random_int(0, self::strlen($bucket) - 1);
+            $idx = random_int(0, $bucketEnd);
 
             $output .= substr($bucket, $idx, 1);
         }
