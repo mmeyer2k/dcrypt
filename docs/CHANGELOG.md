@@ -1,5 +1,8 @@
 # Changelog for `dcrypt`
 
+## 13.2.0
+- Adds the Str::token function
+
 ## 13.1.2
 - Offload some functionality into OpensslKey object for readability
 - OpensslKey throws exception if non-allowed properties are accessed
