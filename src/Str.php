@@ -44,9 +44,9 @@ final class Str
      * @param string $known The string of known length to compare against
      * @param string $given The string that the user can control
      *
-     * @return bool
      * @throws Exception
      *
+     * @return bool
      */
     public static function equal(string $known, string $given): bool
     {
@@ -87,8 +87,8 @@ final class Str
     /**
      * Returns part of a string.
      *
-     * @param string $string The string whose length we wish to obtain
-     * @param int $start Offset to start gathering output
+     * @param string   $string The string whose length we wish to obtain
+     * @param int      $start  Offset to start gathering output
      * @param int|null $length Distance from starting offset to gather
      *
      * @return string
@@ -102,7 +102,7 @@ final class Str
      * Shifts bytes off of the front of a string and return. Input string is modified by reference.
      *
      * @param string $input
-     * @param int $bytes
+     * @param int    $bytes
      *
      * @return string
      */
@@ -120,8 +120,9 @@ final class Str
      *
      * @param int $length Length of random string to generate
      *
-     * @return string
      * @throws \Exception
+     *
+     * @return string
      */
     public static function token(int $length): string
     {

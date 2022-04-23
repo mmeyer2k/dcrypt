@@ -22,7 +22,7 @@ class OpensslStaticTest extends TestCase
         foreach ($json->algos as $algo => $data) {
             try {
                 $plaintext = OpensslStatic::decrypt(base64_decode($data), $json->key, 'aes-256-gcm', $algo);
-            } catch (Exception | \Error $e) {
+            } catch (Exception|\Error $e) {
             }
 
             $this->assertEquals('a secret', $plaintext);
@@ -38,7 +38,7 @@ class OpensslStaticTest extends TestCase
         foreach ($json->ciphers as $cipher => $data) {
             try {
                 $plaintext = OpensslStatic::decrypt(base64_decode($data), $json->key, $cipher, 'sha3-256');
-            } catch (Exception | \Error $e) {
+            } catch (Exception|\Error $e) {
             }
 
             $this->assertEquals('a secret', $plaintext);
@@ -68,7 +68,7 @@ class OpensslStaticTest extends TestCase
 
         try {
             OpensslStatic::encrypt('a secret', $key, 'aes-256-gcm', 'lol this algo doesnt exist');
-        } catch (Exception | ValueError $e) {
+        } catch (Exception|ValueError $e) {
             $pass = true;
         }
 

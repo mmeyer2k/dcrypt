@@ -33,7 +33,7 @@ foreach (\Dcrypt\OpensslSupported::ciphers() as $cipher) {
 
     try {
         $out['ciphers'][$cipher] = base64_encode(OpensslStatic::encrypt('a secret', $key, $cipher, 'sha3-256'));
-    } catch (\Exception | \Error $e) {
+    } catch (\Exception|\Error $e) {
     }
 }
 
