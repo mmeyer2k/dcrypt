@@ -38,7 +38,7 @@ final class OpensslSupported
                 if ($b === 'test') {
                     $algos[] = $algo;
                 }
-            } catch (\Error | \Exception $e) {
+            } catch (\Error|\Exception $e) {
             }
         }
 
@@ -59,7 +59,7 @@ final class OpensslSupported
                 if ($b === 'test') {
                     $ciphers[] = $cipher;
                 }
-            } catch (\Error | \Exception $e) {
+            } catch (\Error|\Exception $e) {
             }
         }
 
