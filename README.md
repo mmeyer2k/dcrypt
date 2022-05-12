@@ -18,13 +18,7 @@ Add dcrypt to your composer.json file requirements.
 Don't worry, dcrypt does not have any dependencies of its own.
 
 ```bash
-composer require mmeyer2k/dcrypt
-```
-
-Or run dcrypt as a local docker web demo [(view code)](https://github.com/mmeyer2k/dcrypt-demo).
-
-```bash
-docker run --rm -ti -p 127.0.0.1:8080:80 mmeyer2k/dcrypt
+composer require "mmeyer2k/dcrypt:^13.2"
 ```
 
 ## Block Ciphers
@@ -184,7 +178,7 @@ $plaintext = \Dcrypt\OneTimePad::crypt($encrypted, $key, 'whirlpool');
 
 ## String Helpers
 
-Generate random base62 string tokens with specified length.
+Generate random base62 string tokens with specified number of characters.
 ```php
 $token = \Dcrypt\Str::token(10);
 ```
