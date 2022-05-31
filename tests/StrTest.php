@@ -17,7 +17,7 @@ class StrTest extends TestCase
 
     public function testToken()
     {
-        foreach (range(0, 100) as $i) {
+        foreach (range(0, 1000) as $i) {
             $token = Str::token($i);
             $this->assertEquals($i, strlen($token));
         }

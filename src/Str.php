@@ -126,21 +126,14 @@ final class Str
      */
     public static function token(int $length): string
     {
-        if ($length < 0) {
-            $length = 0;
-        }
+        $length = max($length, 0);
 
         $bucket = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-        $bucketEnd = self::strlen($bucket) - 1;
 
         $output = '';
 
-        while (true) {
-            if (self::strlen($output) === $length) {
-                break;
-            }
-
-            $idx = random_int(0, $bucketEnd);
+        for ($x = 0; $x < $length; $x++) {
+            $idx = random_int(0, 61);
 
             $output .= substr($bucket, $idx, 1);
         }
