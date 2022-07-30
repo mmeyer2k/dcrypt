@@ -28,6 +28,6 @@ class OpensslKeyTest extends TestCase
 
         $this->expectException(InvalidKeyEncodingException::class);
 
-        new OpensslKey('sha3-256', $str);
+        new OpensslKey('sha3-256', $str, '', '');
     }
 }
