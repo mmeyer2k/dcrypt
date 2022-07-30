@@ -53,12 +53,11 @@ class OpensslWrapper
      * Get IV size for specified CIPHER.
      *
      * @param string $cipher Openssl cipher
-     *
      * @return int
      */
     protected static function ivSize(string $cipher): int
     {
-        return openssl_cipher_iv_length($cipher);
+        return openssl_cipher_iv_length($cipher) ?: 0;
     }
 
     /**
