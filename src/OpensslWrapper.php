@@ -2,39 +2,19 @@
 
 declare(strict_types=1);
 
-/**
- * OpensslWrapper.php.
- *
- * PHP version 7
- *
- * @category Dcrypt
- *
- * @author   Michael Meyer (mmeyer2k) <m.meyer2k@gmail.com>
- * @license  http://opensource.org/licenses/MIT The MIT License (MIT)
- *
- * @link     https://github.com/mmeyer2k/dcrypt
- */
-
 namespace Dcrypt;
 
-/**
- * A wrapper around any openssl_* functions.
- *
- * @category Dcrypt
- *
- * @author   Michael Meyer (mmeyer2k) <m.meyer2k@gmail.com>
- * @license  http://opensource.org/licenses/MIT The MIT License (MIT)
- *
- * @link     https://github.com/mmeyer2k/dcrypt
- */
+use Dcrypt\Exceptions\InvalidInitializationVectorLength;
+use Exception;
+
 class OpensslWrapper
 {
     /**
      * OpenSSL encrypt wrapper function.
      *
-     * @param string     $data Data to decrypt
-     * @param OpensslKey $key  Key string
-     * @param string     $tag  AAD tag
+     * @param string $data Data to decrypt
+     * @param OpensslKey $key Key string
+     * @param string $tag AAD tag
      *
      * @return string
      */
@@ -52,9 +32,9 @@ class OpensslWrapper
     /**
      * OpenSSL decrypt wrapper function.
      *
-     * @param string     $input Data to decrypt
-     * @param OpensslKey $key   Key string
-     * @param string     $tag   AAD authentication tag
+     * @param string $input Data to decrypt
+     * @param OpensslKey $key Key string
+     * @param string $tag AAD authentication tag
      *
      * @return string
      */
@@ -84,13 +64,12 @@ class OpensslWrapper
     /**
      * Get a correctly sized IV for the specified cipher.
      *
-     * @param string $cipher Openssl cipher
-     *
-     * @throws \Exception
-     *
+     * @param string $cipher Openssl cipher name
+     * @param string|null $ivr Optional IV, must be longer than min length required by cipher
      * @return string
+     * @throws Exception
      */
-    protected static function ivGenerate(string $cipher): string
+    protected static function ivGenerate(string $cipher, ?string $ivr = null): string
     {
         $size = self::ivSize($cipher);
 
@@ -98,7 +77,15 @@ class OpensslWrapper
             return '';
         }
 
-        return random_bytes($size);
+        if ($ivr === null) {
+            $ivr = random_bytes($size);
+        }
+
+        if (strlen($ivr) < $size) {
+            throw new InvalidInitializationVectorLength;
+        }
+
+        return substr($ivr, 0, $size);
     }
 
     /**

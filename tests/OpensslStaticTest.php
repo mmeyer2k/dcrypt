@@ -84,4 +84,18 @@ class OpensslStaticTest extends TestCase
         $e = OpensslStatic::encrypt('AAAA', $key, 'aes-256-gcm', 'sha256');
         $d = OpensslStatic::decrypt($e, $key, 'aes-256-ctr', 'sha256');
     }
+
+    public function testCustomInitVector()
+    {
+        $secret = 'shhhhhhhhhhhhhhhhhhhhhhhhh';
+        $key = OpensslKey::create();
+        $iv = 'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAaa';
+        $algo = 'md5';
+        $cipher = 'aes-128-ctr';
+
+        $enc = OpensslStatic::encrypt($secret, $key, $cipher, $algo, $iv);
+        $dec = OpensslStatic::decrypt($enc, $key, $cipher, $algo);
+
+        $this->assertEqual($secret, $dec);
+    }
 }

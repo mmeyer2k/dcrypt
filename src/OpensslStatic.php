@@ -2,53 +2,30 @@
 
 declare(strict_types=1);
 
-/**
- * OpensslStatic.php.
- *
- * PHP version 7
- *
- * @category Dcrypt
- *
- * @author   Michael Meyer (mmeyer2k) <m.meyer2k@gmail.com>
- * @license  http://opensource.org/licenses/MIT The MIT License (MIT)
- *
- * @link     https://github.com/mmeyer2k/dcrypt
- */
-
 namespace Dcrypt;
 
 use Dcrypt\Exceptions\InvalidChecksumException;
 use Exception;
 
-/**
- * Static functions that handle encryption/decryption with openssl.
- *
- * @category Dcrypt
- *
- * @author   Michael Meyer (mmeyer2k) <m.meyer2k@gmail.com>
- * @license  http://opensource.org/licenses/MIT The MIT License (MIT)
- *
- * @link     https://github.com/mmeyer2k/dcrypt
- */
 final class OpensslStatic extends OpensslWrapper
 {
     /**
      * Decrypt raw data string.
      *
-     * @param string $data   Data to be decrypted
-     * @param string $key    Key material
+     * @param string $data Data to be decrypted
+     * @param string $key Key material
      * @param string $cipher OpenSSL cipher name
-     * @param string $algo   Hash algo name
-     *
-     * @throws Exception
-     *
+     * @param string $algo Hash algo name
      * @return string
+     * @throws Exceptions\InvalidKeyEncodingException
+     * @throws Exceptions\InvalidKeyLengthException
+     * @throws InvalidChecksumException
      */
     public static function decrypt(
         string $data,
         string $key,
         string $cipher,
-        string $algo
+        string $algo,
     ): string {
         // Shift the IV off of the beginning of the ciphertext
         $ivr = Str::shift($data, parent::ivSize($cipher));
@@ -77,23 +54,25 @@ final class OpensslStatic extends OpensslWrapper
     /**
      * Encrypt raw string.
      *
-     * @param string $data   Data to be encrypted
-     * @param string $key    Key material
+     * @param string $data Data to be encrypted
+     * @param string $key Key material
      * @param string $cipher OpenSSL cipher name
-     * @param string $algo   Hash algo name
-     *
-     * @throws Exception
-     *
+     * @param string $algo Hash algo name
+     * @param string|null $ivr Initialization vector or null to generate one
      * @return string
+     * @throws Exceptions\InvalidKeyEncodingException
+     * @throws Exceptions\InvalidKeyLengthException
+     * @throws Exception
      */
     public static function encrypt(
         string $data,
         string $key,
         string $cipher,
-        string $algo
+        string $algo,
+        ?string $ivr = null,
     ): string {
         // Generate IV of appropriate size
-        $ivr = parent::ivGenerate($cipher);
+        $ivr = parent::ivGenerate($cipher, $ivr);
 
         // Create key derivation object
         $key = new OpensslKey($key, $algo, $cipher, $ivr);
