@@ -96,6 +96,6 @@ class OpensslStaticTest extends TestCase
         $enc = OpensslStatic::encrypt($secret, $key, $cipher, $algo, $iv);
         $dec = OpensslStatic::decrypt($enc, $key, $cipher, $algo);
 
-        $this->assertEqual($secret, $dec);
+        $this->assertEquals($secret, $dec);
     }
 }
