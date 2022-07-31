@@ -5,11 +5,12 @@ declare(strict_types=1);
 namespace Dcrypt\Tests;
 
 use Dcrypt\Exceptions\InvalidChecksumException;
+use Dcrypt\Exceptions\InvalidKeyEncodingException;
+use Dcrypt\Exceptions\OpensslFailureException;
 use Dcrypt\OpensslKey;
 use Dcrypt\OpensslStatic;
 use Exception;
 use PHPUnit\Framework\TestCase;
-use ValueError;
 
 class OpensslStaticTest extends TestCase
 {
@@ -64,15 +65,9 @@ class OpensslStaticTest extends TestCase
     {
         $key = OpensslKey::create();
 
-        $pass = false;
+        $this->expectException(OpensslFailureException::class);
 
-        try {
-            OpensslStatic::encrypt('a secret', $key, 'aes-256-gcm', 'lol this algo doesnt exist');
-        } catch (Exception|ValueError $e) {
-            $pass = true;
-        }
-
-        $this->assertTrue($pass);
+        OpensslStatic::encrypt('a secret', $key, 'aes-256-gcm', 'lol this algo doesnt exist');
     }
 
     public function testCrossDecryptFails()

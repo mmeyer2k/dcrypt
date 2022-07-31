@@ -1,5 +1,9 @@
 # Changelog for `dcrypt`
 
+## 14.0.0
+- drop support for PHP 7
+- remove ugly and ancient docblocks
+
 ## 13.2.0
 - Adds the Str::token function
 

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Dcrypt;
 
 use Dcrypt\Exceptions\InvalidChecksumException;
+use Dcrypt\Exceptions\OpensslFailureException;
 use Exception;
 
 final class OpensslStatic extends OpensslWrapper
@@ -20,6 +21,7 @@ final class OpensslStatic extends OpensslWrapper
      * @throws Exceptions\InvalidKeyEncodingException
      * @throws Exceptions\InvalidKeyLengthException
      * @throws InvalidChecksumException
+     * @throws OpensslFailureException
      */
     public static function decrypt(
         string $data,

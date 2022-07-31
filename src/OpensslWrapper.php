@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Dcrypt;
 
 use Dcrypt\Exceptions\InvalidInitializationVectorLength;
+use Dcrypt\Exceptions\OpensslFailureException;
 use Exception;
 
 class OpensslWrapper
@@ -15,18 +16,24 @@ class OpensslWrapper
      * @param string $data Data to decrypt
      * @param OpensslKey $key Key string
      * @param string $tag AAD tag
-     *
      * @return string
+     * @throws OpensslFailureException
      */
     protected static function opensslEncrypt(string $data, OpensslKey $key, string &$tag): string
     {
         list($iv, $enc, $cipher) = $key->wrapperVariables();
 
         if (self::tagLength($cipher) > 0) {
-            return openssl_encrypt($data, $cipher, $enc, 1, $iv, $tag, '', 16);
+            $ret = openssl_encrypt($data, $cipher, $enc, 1, $iv, $tag, '', 16);
+        } else {
+            $ret = openssl_encrypt($data, $cipher, $enc, 1, $iv);
         }
 
-        return openssl_encrypt($data, $cipher, $enc, 1, $iv);
+        if ($ret === false) {
+            throw new OpensslFailureException;
+        }
+
+        return $ret;
     }
 
     /**
@@ -35,18 +42,24 @@ class OpensslWrapper
      * @param string $input Data to decrypt
      * @param OpensslKey $key Key string
      * @param string $tag AAD authentication tag
-     *
      * @return string
+     * @throws OpensslFailureException
      */
     protected static function opensslDecrypt(string $input, OpensslKey $key, string $tag): string
     {
         list($iv, $enc, $cipher) = $key->wrapperVariables();
 
         if (self::tagLength($cipher) > 0) {
-            return openssl_decrypt($input, $cipher, $enc, 1, $iv, $tag, '');
+            $ret = openssl_decrypt($input, $cipher, $enc, 1, $iv, $tag, '');
+        } else {
+            $ret = openssl_decrypt($input, $cipher, $enc, 1, $iv);
         }
 
-        return openssl_decrypt($input, $cipher, $enc, 1, $iv);
+        if ($ret === false) {
+            throw new OpensslFailureException;
+        }
+
+        return $ret;
     }
 
     /**
