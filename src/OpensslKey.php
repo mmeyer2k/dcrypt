@@ -2,35 +2,12 @@
 
 declare(strict_types=1);
 
-/**
- * OpensslKey.php.
- *
- * PHP version 7
- *
- * @category Dcrypt
- *
- * @author   Michael Meyer (mmeyer2k) <m.meyer2k@gmail.com>
- * @license  http://opensource.org/licenses/MIT The MIT License (MIT)
- *
- * @link     https://github.com/mmeyer2k/dcrypt
- */
-
 namespace Dcrypt;
 
 use Dcrypt\Exceptions\InvalidKeyEncodingException;
 use Dcrypt\Exceptions\InvalidKeyLengthException;
 use Exception;
 
-/**
- * Provides key derivation functions.
- *
- * @category Dcrypt
- *
- * @author   Michael Meyer (mmeyer2k) <m.meyer2k@gmail.com>
- * @license  http://opensource.org/licenses/MIT The MIT License (MIT)
- *
- * @link     https://github.com/mmeyer2k/dcrypt
- */
 final class OpensslKey
 {
     /**

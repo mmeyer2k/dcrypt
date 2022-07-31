@@ -2,31 +2,8 @@
 
 declare(strict_types=1);
 
-/**
- * Aes256Ofb.php.
- *
- * PHP version 7
- *
- * @category Dcrypt
- *
- * @author   Michael Meyer (mmeyer2k) <m.meyer2k@gmail.com>
- * @license  http://opensource.org/licenses/MIT The MIT License (MIT)
- *
- * @link     https://github.com/mmeyer2k/dcrypt
- */
-
 namespace Dcrypt;
 
-/**
- * Symmetric AES-256 GCM encryption functions powered by OpenSSL.
- *
- * @category Dcrypt
- *
- * @author   Michael Meyer (mmeyer2k) <m.meyer2k@gmail.com>
- * @license  http://opensource.org/licenses/MIT The MIT License (MIT)
- *
- * @link     https://github.com/mmeyer2k/dcrypt
- */
 class Aes256Ofb extends Aes256Gcm
 {
     /**

@@ -2,33 +2,10 @@
 
 declare(strict_types=1);
 
-/**
- * OpensslStack.php.
- *
- * PHP version 7
- *
- * @category Dcrypt
- *
- * @author   Michael Meyer (mmeyer2k) <m.meyer2k@gmail.com>
- * @license  http://opensource.org/licenses/MIT The MIT License (MIT)
- *
- * @link     https://github.com/mmeyer2k/dcrypt
- */
-
 namespace Dcrypt;
 
 use Exception;
 
-/**
- * A factory class to build and use custom encryption stacks.
- *
- * @category Dcrypt
- *
- * @author   Michael Meyer (mmeyer2k) <m.meyer2k@gmail.com>
- * @license  http://opensource.org/licenses/MIT The MIT License (MIT)
- *
- * @link     https://github.com/mmeyer2k/dcrypt
- */
 class OpensslStack
 {
     /**

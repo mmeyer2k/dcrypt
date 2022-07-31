@@ -2,32 +2,8 @@
 
 declare(strict_types=1);
 
-/**
- * OneTimePad.php.
- *
- * PHP version 7
- *
- * @category Dcrypt
- *
- * @author   Michael Meyer (mmeyer2k) <m.meyer2k@gmail.com>
- * @license  http://opensource.org/licenses/MIT The MIT License (MIT)
- *
- * @link     https://github.com/mmeyer2k/dcrypt
- */
-
 namespace Dcrypt;
 
-/**
- * A one time pad stream encryption class.
- *
- * @category Dcrypt
- *
- * @author   Michael Meyer (mmeyer2k) <m.meyer2k@gmail.com>
- * @license  http://opensource.org/licenses/MIT The MIT License (MIT)
- *
- * @link     https://github.com/mmeyer2k/dcrypt
- * @link     http://en.wikipedia.org/wiki/Stream_cipher
- */
 class OneTimePad
 {
     /**
