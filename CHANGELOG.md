@@ -1,5 +1,10 @@
 # Changelog for `dcrypt`
 
+## 13.2.1
+- Remove file and class level phpdoc blocks
+- Fix hash_hkdf error condition handling
+- Remove duplicate key checks
+
 ## 13.2.0
 - Adds the Str::token function
 

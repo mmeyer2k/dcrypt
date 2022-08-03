@@ -58,16 +58,6 @@ final class OpensslKey
         // Store the key as what was supplied
         $this->_key = self::decode($key);
 
-        // If key was not proper base64, bail out
-        if ($this->_key === false) {
-            throw new InvalidKeyEncodingException();
-        }
-
-        // If key was too short, bail out
-        if (Str::strlen($this->_key) < 32) {
-            throw new InvalidKeyLengthException();
-        }
-
         // Store algo in object
         $this->_algo = $algo;
 
@@ -95,12 +85,12 @@ final class OpensslKey
 
         // If key was not proper base64, bail out
         if ($key === false) {
-            throw new InvalidKeyEncodingException();
+            throw new InvalidKeyEncodingException;
         }
 
         // If key was too short, bail out
         if (Str::strlen($key) < 32) {
-            throw new InvalidKeyLengthException();
+            throw new InvalidKeyLengthException;
         }
 
         return $key;
@@ -110,6 +100,7 @@ final class OpensslKey
      * Generate the authentication key.
      *
      * @return string
+     * @throws Exception
      */
     public function authenticationKey(): string
     {
@@ -120,6 +111,7 @@ final class OpensslKey
      * Generate the encryption key.
      *
      * @return string
+     * @throws Exception
      */
     public function encryptionKey(): string
     {
@@ -132,10 +124,17 @@ final class OpensslKey
      * @param string $info Info parameter to provide to hash_hkdf
      *
      * @return string
+     * @throws Exception
      */
     public function deriveKey(string $info): string
     {
-        return hash_hkdf($this->_algo, $this->_key, 0, $info, $this->_iv);
+        $key = hash_hkdf($this->_algo, $this->_key, 0, $info, $this->_iv);
+
+        if ($key === false) {
+            throw new Exception('A failure occurred in hash_hkdf');
+        }
+
+        return $key;
     }
 
     /**
@@ -144,6 +143,7 @@ final class OpensslKey
      * @param string $message
      *
      * @return string
+     * @throws Exception
      */
     public function messageChecksum(string $message): string
     {
@@ -154,6 +154,7 @@ final class OpensslKey
      * Allows read only access to the internal variables needed by the openssl wrapper.
      *
      * @return array
+     * @throws Exception
      */
     public function wrapperVariables(): array
     {
