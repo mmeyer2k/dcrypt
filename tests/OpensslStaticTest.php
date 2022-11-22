@@ -53,7 +53,7 @@ class OpensslStaticTest extends TestCase
 
         try {
             OpensslStatic::encrypt('a secret', $key, 'lol this cipher doesnt exist', 'sha3-256');
-        } catch (Exception $e) {
+        } catch (Exception|ValueError $e) {
             $pass = true;
         }
 
