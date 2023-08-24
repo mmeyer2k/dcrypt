@@ -8,5 +8,5 @@ use Exception;
 
 class OpensslOperationException extends Exception
 {
-    protected $message = 'Openssl encrypt/decrypt operation failed';
+    protected $message = 'Openssl operation failed';
 }

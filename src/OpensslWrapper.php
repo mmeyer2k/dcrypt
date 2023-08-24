@@ -72,10 +72,17 @@ class OpensslWrapper
      * @param string $cipher Openssl cipher
      *
      * @return int
+     * @throws OpensslOperationException
      */
     protected static function ivSize(string $cipher): int
     {
-        return openssl_cipher_iv_length($cipher);
+        $size = openssl_cipher_iv_length($cipher);
+
+        if ($size === false) {
+            throw new OpensslOperationException;
+        }
+
+        return $size;
     }
 
     /**
