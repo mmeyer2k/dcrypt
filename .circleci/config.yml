@@ -94,6 +94,20 @@ jobs:
           key: php8.1-{{ .Branch }}
           paths: *paths
 
+  php-82:
+    docker:
+      - image: cimg/php:8.2
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - php8.2-{{ .Branch }}
+      - run: composer require phpunit/phpunit
+      - run: php vendor/phpunit/phpunit/phpunit
+      - save_cache:
+          key: php8.2-{{ .Branch }}
+          paths: *paths
+
 workflows:
   version: 2
   build-test-all:
@@ -104,3 +118,4 @@ workflows:
       - php-74
       - php-80
       - php-81
+      - php-82

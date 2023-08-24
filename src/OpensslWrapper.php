@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace Dcrypt;
 
-use Dcrypt\Exceptions\OpensslOperationException;
+use Dcrypt\Exceptions\InternalOperationException;
+use Exception;
 
 class OpensslWrapper
 {
@@ -16,22 +17,24 @@ class OpensslWrapper
      * @param string     $tag  AAD tag
      *
      * @return string
-     * @throws OpensslOperationException
+     * @throws InternalOperationException
      */
     protected static function opensslEncrypt(string $data, OpensslKey $key, string &$tag): string
     {
-        list($iv, $enc, $cipher) = $key->wrapperVariables();
+        list($iv, $enc, $cipher, $options) = $key->wrapperVariables();
 
-        $options = OPENSSL_RAW_DATA;
-
-        if (self::tagLength($cipher) > 0) {
-            $ciphertext = openssl_encrypt($data, $cipher, $enc, $options, $iv, $tag, '', 16);
-        } else {
-            $ciphertext = openssl_encrypt($data, $cipher, $enc, $options, $iv);
+        try {
+            if (self::tagLength($cipher) > 0) {
+                $ciphertext = openssl_encrypt($data, $cipher, $enc, $options, $iv, $tag, '', 16);
+            } else {
+                $ciphertext = openssl_encrypt($data, $cipher, $enc, $options, $iv);
+            }
+        } catch (Exception $e) {
+            throw new InternalOperationException($e->getMessage());
         }
 
         if ($ciphertext === false) {
-            throw new OpensslOperationException();
+            throw new InternalOperationException();
         }
 
         return $ciphertext;
@@ -45,22 +48,24 @@ class OpensslWrapper
      * @param string     $tag   AAD authentication tag
      *
      * @return string
-     * @throws OpensslOperationException
+     * @throws InternalOperationException
      */
     protected static function opensslDecrypt(string $input, OpensslKey $key, string $tag): string
     {
-        list($iv, $enc, $cipher) = $key->wrapperVariables();
+        list($iv, $enc, $cipher, $options) = $key->wrapperVariables();
 
-        $options = OPENSSL_RAW_DATA;
-
-        if (self::tagLength($cipher) > 0) {
-            $plaintext = openssl_decrypt($input, $cipher, $enc, $options, $iv, $tag, '');
-        } else {
-            $plaintext = openssl_decrypt($input, $cipher, $enc, $options, $iv);
+        try {
+            if (self::tagLength($cipher) > 0) {
+                $plaintext = openssl_decrypt($input, $cipher, $enc, $options, $iv, $tag, '');
+            } else {
+                $plaintext = openssl_decrypt($input, $cipher, $enc, $options, $iv);
+            }
+        } catch (Exception $e) {
+            throw new InternalOperationException($e->getMessage());
         }
 
         if ($plaintext === false) {
-            throw new OpensslOperationException();
+            throw new InternalOperationException();
         }
 
         return $plaintext;
@@ -72,14 +77,18 @@ class OpensslWrapper
      * @param string $cipher Openssl cipher
      *
      * @return int
-     * @throws OpensslOperationException
+     * @throws InternalOperationException
      */
     protected static function ivSize(string $cipher): int
     {
-        $size = openssl_cipher_iv_length($cipher);
+        try {
+            $size = openssl_cipher_iv_length($cipher);
+        } catch (Exception $e) {
+            throw new InternalOperationException($e->getMessage());
+        }
 
         if ($size === false) {
-            throw new OpensslOperationException();
+            throw new InternalOperationException();
         }
 
         return $size;
@@ -90,9 +99,8 @@ class OpensslWrapper
      *
      * @param string $cipher Openssl cipher
      *
-     * @throws \Exception
-     *
      * @return string
+     * @throws InternalOperationException
      */
     protected static function ivGenerate(string $cipher): string
     {
@@ -102,7 +110,11 @@ class OpensslWrapper
             return '';
         }
 
-        return random_bytes($size);
+        try {
+            return random_bytes($size);
+        } catch (Exception $e) {
+            throw new InternalOperationException($e->getMessage());
+        }
     }
 
     /**
