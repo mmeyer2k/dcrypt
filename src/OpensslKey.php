@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Dcrypt;
 
+use Dcrypt\Exceptions\HashOperationException;
 use Dcrypt\Exceptions\InvalidKeyEncodingException;
 use Dcrypt\Exceptions\InvalidKeyLengthException;
 use Exception;
@@ -130,8 +131,10 @@ final class OpensslKey
     {
         $key = hash_hkdf($this->_algo, $this->_key, 0, $info, $this->_iv);
 
+        // Handle exceptions in versions prior to php 8.0
+        // https://www.php.net/manual/en/function.hash-hkdf.php#refsect1-function.hash-hkdf-changelog
         if ($key === false) {
-            throw new Exception('A failure occurred in hash_hkdf');
+            throw new HashOperationException();
         }
 
         return $key;
@@ -140,14 +143,22 @@ final class OpensslKey
     /**
      * Calculates a given message HMAC.
      *
-     * @param string $message
+     * @param string $message Message string to be hashed and signed
      *
      * @return string
      * @throws Exception
      */
     public function messageChecksum(string $message): string
     {
-        return hash_hmac($this->_algo, $message, $this->authenticationKey(), true);
+        $hmac = hash_hmac($this->_algo, $message, $this->authenticationKey(), true);
+
+        // Handle exceptions in versions prior to php 8.0
+        // https://www.php.net/manual/en/function.hash-hmac.php#refsect1-function.hash-hmac-changelog
+        if ($hmac === false) {
+            throw new HashOperationException();
+        }
+
+        return $hmac;
     }
 
     /**
