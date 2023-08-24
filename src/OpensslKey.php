@@ -85,12 +85,12 @@ final class OpensslKey
 
         // If key was not proper base64, bail out
         if ($key === false) {
-            throw new InvalidKeyEncodingException;
+            throw new InvalidKeyEncodingException();
         }
 
         // If key was too short, bail out
         if (Str::strlen($key) < 32) {
-            throw new InvalidKeyLengthException;
+            throw new InvalidKeyLengthException();
         }
 
         return $key;

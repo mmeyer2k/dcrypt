@@ -31,7 +31,7 @@ class OpensslWrapper
         }
 
         if ($ciphertext === false) {
-            throw new OpensslOperationException;
+            throw new OpensslOperationException();
         }
 
         return $ciphertext;
@@ -60,7 +60,7 @@ class OpensslWrapper
         }
 
         if ($plaintext === false) {
-            throw new OpensslOperationException;
+            throw new OpensslOperationException();
         }
 
         return $plaintext;
@@ -79,7 +79,7 @@ class OpensslWrapper
         $size = openssl_cipher_iv_length($cipher);
 
         if ($size === false) {
-            throw new OpensslOperationException;
+            throw new OpensslOperationException();
         }
 
         return $size;
