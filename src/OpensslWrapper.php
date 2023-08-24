@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Dcrypt;
 
+use Dcrypt\Exceptions\OpensslOperationException;
+
 class OpensslWrapper
 {
     /**
@@ -14,16 +16,25 @@ class OpensslWrapper
      * @param string     $tag  AAD tag
      *
      * @return string
+     * @throws OpensslOperationException
      */
     protected static function opensslEncrypt(string $data, OpensslKey $key, string &$tag): string
     {
         list($iv, $enc, $cipher) = $key->wrapperVariables();
 
+        $options = OPENSSL_RAW_DATA;
+
         if (self::tagLength($cipher) > 0) {
-            return openssl_encrypt($data, $cipher, $enc, 1, $iv, $tag, '', 16);
+            $ciphertext = openssl_encrypt($data, $cipher, $enc, $options, $iv, $tag, '', 16);
+        } else {
+            $ciphertext = openssl_encrypt($data, $cipher, $enc, $options, $iv);
         }
 
-        return openssl_encrypt($data, $cipher, $enc, 1, $iv);
+        if ($ciphertext === false) {
+            throw new OpensslOperationException;
+        }
+
+        return $ciphertext;
     }
 
     /**
@@ -34,16 +45,25 @@ class OpensslWrapper
      * @param string     $tag   AAD authentication tag
      *
      * @return string
+     * @throws OpensslOperationException
      */
     protected static function opensslDecrypt(string $input, OpensslKey $key, string $tag): string
     {
         list($iv, $enc, $cipher) = $key->wrapperVariables();
 
+        $options = OPENSSL_RAW_DATA;
+
         if (self::tagLength($cipher) > 0) {
-            return openssl_decrypt($input, $cipher, $enc, 1, $iv, $tag, '');
+            $plaintext = openssl_decrypt($input, $cipher, $enc, $options, $iv, $tag, '');
+        } else {
+            $plaintext = openssl_decrypt($input, $cipher, $enc, $options, $iv);
         }
 
-        return openssl_decrypt($input, $cipher, $enc, 1, $iv);
+        if ($plaintext === false) {
+            throw new OpensslOperationException;
+        }
+
+        return $plaintext;
     }
 
     /**

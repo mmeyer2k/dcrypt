@@ -26,7 +26,7 @@ jobs:
 
   php-72:
     docker:
-      - image: circleci/php:7.2
+      - image: cimg/php:7.2
     steps:
       - checkout
       - restore_cache:

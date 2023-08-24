@@ -13,11 +13,6 @@ class OpensslStackTest extends TestCase
         $key = \Dcrypt\OpensslKey::create();
 
         $stack = (new \Dcrypt\OpensslStack($key))
-            ->add('rc4-40', 'md2')
-            ->add('bf-cbc', 'sha256')
-            ->add('bf-cfb', 'sha256')
-            ->add('bf-ecb', 'sha256')
-            ->add('bf-ofb', 'sha256')
             ->add('camellia-256-cfb', 'ripemd320')
             ->add('camellia-256-ofb', 'ripemd320')
             ->add('aes-256-cbc', 'sha512')

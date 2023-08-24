@@ -35,10 +35,10 @@ class OpensslStaticTest extends TestCase
 
         $json = json_decode($json);
 
-        foreach ($json->ciphers as $cipher => $data) {
+        foreach ($json->ciphers as $cipher => $ciphertext) {
             try {
-                $plaintext = OpensslStatic::decrypt(base64_decode($data), $json->key, $cipher, 'sha3-256');
-            } catch (Exception|\Error $e) {
+                $plaintext = OpensslStatic::decrypt(base64_decode($ciphertext), $json->key, $cipher, 'sha3-256');
+            } catch (\Exception $e) {
             }
 
             $this->assertEquals('a secret', $plaintext);
