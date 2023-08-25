@@ -10,7 +10,6 @@
 
 A petite library of essential encryption functions for PHP 7.1+.
 For legacy PHP version support, look [here](https://github.com/mmeyer2k/dcrypt/blob/master/docs/LEGACY.md).
-If you need a dcrypt inspired encryption library for .NET, check out [harpocrates](https://github.com/mmeyer2k/harpocrates).
 
 # Install
 
@@ -192,7 +191,11 @@ $equal = \Dcrypt\Str::equal($known, $given);
 
 Developing dcrypt has been a great journey for many years.
 If you find dcrypt useful, please consider donating.
- 
-__`LTC: LN97LrLCNiv14V6fntp247H2pj9UiFzUQZ`__
-__`BTC: 3N7vhA6ghWb1VrP4nGA6m6mzA9T2ASCVEj`__
-__`ETH: 0xe14a56046f28fCEF56A0EA4a84973bDdFF546923`__
+
+|       |                                              |
+|-------|:---------------------------------------------|
+| `LTC` | `LN97LrLCNiv14V6fntp247H2pj9UiFzUQZ`         |
+| `BTC` | `3N7vhA6ghWb1VrP4nGA6m6mzA9T2ASCVEj`         |
+| `ETH` | `0xe14a56046f28fCEF56A0EA4a84973bDdFF546923` |
+
+Or please consider checking out my dcrypt inspired encryption library for .NET, check out [harpocrates](https://github.com/mmeyer2k/harpocrates).
