@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Dcrypt\Tests;
 
-use Dcrypt\Exceptions\InternalOperationException;
 use Dcrypt\Exceptions\InvalidChecksumException;
 use Dcrypt\OpensslKey;
 use Dcrypt\OpensslStatic;
 use Exception;
 use PHPUnit\Framework\TestCase;
+use TypeError;
 
 class OpensslStaticTest extends TestCase
 {
@@ -52,29 +52,11 @@ class OpensslStaticTest extends TestCase
 
             try {
                 $plaintext = OpensslStatic::decrypt(base64_decode($ciphertext), $json->key, $cipher, 'sha3-256');
-            } catch (\Exception $e) {
+            } catch (TypeError|Exception $e) {
             }
 
             $this->assertEquals('a secret', $plaintext);
         }
-    }
-
-    public function testBadCipherException()
-    {
-        $key = OpensslKey::create();
-
-        $this->expectException(InternalOperationException::class);
-
-        OpensslStatic::encrypt('a secret', $key, 'lol this cipher doesnt exist', 'sha3-256');
-    }
-
-    public function testBadAlgoException()
-    {
-        $key = OpensslKey::create();
-
-        $this->expectException(InternalOperationException::class);
-
-        OpensslStatic::encrypt('a secret', $key, 'aes-256-gcm', 'lol this algo doesnt exist');
     }
 
     public function testCrossDecryptFails()

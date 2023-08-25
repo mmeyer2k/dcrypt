@@ -16,9 +16,8 @@ final class Str
      * @param string $known The string of known length to compare against
      * @param string $given The string that the user can control
      *
-     * @throws Exception
-     *
      * @return bool
+     * @throws Exception
      */
     public static function equal(string $known, string $given): bool
     {
@@ -92,9 +91,8 @@ final class Str
      *
      * @param int $length Length of random string to generate
      *
-     * @throws \Exception
-     *
      * @return string
+     * @throws Exception
      */
     public static function token(int $length): string
     {

@@ -1,4 +1,10 @@
 version: 2
+
+aliases:
+  - &composer
+    name: Install phpunit
+    command: composer require phpunit/phpunit
+
 jobs:
   php-71:
     docker:
@@ -8,21 +14,13 @@ jobs:
       - restore_cache:
           keys:
             - php7.1-{{ .Branch }}
-      - run: composer require phpunit/phpunit phpmetrics/phpmetrics
-      - run: mkdir -p coverage
-      - run: ./vendor/bin/phpunit --coverage-html coverage --coverage-clover=coverage.clover
-      - run: ./vendor/bin/phpmetrics --report-html=phpmetrics ./src
-      - run: wget https://scrutinizer-ci.com/ocular.phar
-      - run: php ocular.phar code-coverage:upload --format=php-clover coverage.clover
+      - run: *composer
+      - run: ./vendor/bin/phpunit
       - save_cache:
           key: php7.1-{{ .Branch }}
           paths: &paths
             - vendor
             - composer.lock
-      - store_artifacts:
-          path: coverage
-      - store_artifacts:
-          path: phpmetrics
 
   php-72:
     docker:
@@ -32,8 +30,8 @@ jobs:
       - restore_cache:
           keys:
             - php7.2-{{ .Branch }}
-      - run: composer require phpunit/phpunit
-      - run: php vendor/phpunit/phpunit/phpunit
+      - run: *composer
+      - run: ./vendor/bin/phpunit
       - save_cache:
           key: php7.2-{{ .Branch }}
           paths: *paths
@@ -46,8 +44,8 @@ jobs:
       - restore_cache:
           keys:
             - php7.3-{{ .Branch }}
-      - run: composer require phpunit/phpunit
-      - run: php vendor/phpunit/phpunit/phpunit
+      - run: *composer
+      - run: ./vendor/bin/phpunit
       - save_cache:
           key: php7.3-{{ .Branch }}
           paths: *paths
@@ -60,8 +58,8 @@ jobs:
       - restore_cache:
           keys:
             - php7.4-{{ .Branch }}
-      - run: composer require phpunit/phpunit
-      - run: php vendor/phpunit/phpunit/phpunit
+      - run: *composer
+      - run: ./vendor/bin/phpunit
       - save_cache:
           key: php7.4-{{ .Branch }}
           paths: *paths
@@ -74,8 +72,8 @@ jobs:
       - restore_cache:
           keys:
             - php8.0-{{ .Branch }}
-      - run: composer require phpunit/phpunit
-      - run: php vendor/phpunit/phpunit/phpunit
+      - run: *composer
+      - run: ./vendor/bin/phpunit
       - save_cache:
           key: php8.0-{{ .Branch }}
           paths: *paths
@@ -88,8 +86,8 @@ jobs:
       - restore_cache:
           keys:
             - php8.1-{{ .Branch }}
-      - run: composer require phpunit/phpunit
-      - run: php vendor/phpunit/phpunit/phpunit
+      - run: *composer
+      - run: ./vendor/bin/phpunit
       - save_cache:
           key: php8.1-{{ .Branch }}
           paths: *paths
@@ -102,8 +100,8 @@ jobs:
       - restore_cache:
           keys:
             - php8.2-{{ .Branch }}
-      - run: composer require phpunit/phpunit
-      - run: php vendor/phpunit/phpunit/phpunit
+      - run: *composer
+      - run: ./vendor/bin/phpunit
       - save_cache:
           key: php8.2-{{ .Branch }}
           paths: *paths

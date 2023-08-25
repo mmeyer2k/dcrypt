@@ -75,10 +75,9 @@ final class OpensslKey
      *
      * @param string $key Encoded key to unpack
      *
+     * @return string
      * @throws InvalidKeyLengthException
      * @throws InvalidKeyEncodingException
-     *
-     * @return string
      */
     private static function decode(string $key): string
     {
@@ -102,7 +101,6 @@ final class OpensslKey
      * Generate the authentication key.
      *
      * @return string
-     * @throws InternalOperationException
      */
     public function authenticationKey(): string
     {
@@ -113,7 +111,6 @@ final class OpensslKey
      * Generate the encryption key.
      *
      * @return string
-     * @throws InternalOperationException
      */
     public function encryptionKey(): string
     {
@@ -126,23 +123,10 @@ final class OpensslKey
      * @param string $info Info parameter to provide to hash_hkdf
      *
      * @return string
-     * @throws InternalOperationException
      */
     public function deriveKey(string $info): string
     {
-        try {
-            $key = hash_hkdf($this->_algo, $this->_key, 0, $info, $this->_iv);
-        } catch(Exception|ValueError $e) {
-            throw new InternalOperationException($e->getMessage());
-        }
-
-        // Handle exceptions in versions prior to php 8.0
-        // https://www.php.net/manual/en/function.hash-hkdf.php#refsect1-function.hash-hkdf-changelog
-        if ($key === false) {
-            throw new InternalOperationException();
-        }
-
-        return $key;
+        return hash_hkdf($this->_algo, $this->_key, 0, $info, $this->_iv);
     }
 
     /**
@@ -151,30 +135,16 @@ final class OpensslKey
      * @param string $message Message string to be hashed and signed
      *
      * @return string
-     * @throws InternalOperationException
      */
     public function messageChecksum(string $message): string
     {
-        try {
-            $hmac = hash_hmac($this->_algo, $message, $this->authenticationKey(), true);
-        } catch(ValueError $e) {
-            throw new InternalOperationException($e->getMessage());
-        }
-
-        // Handle exceptions in versions prior to php 8.0
-        // https://www.php.net/manual/en/function.hash-hmac.php#refsect1-function.hash-hmac-changelog
-        if ($hmac === false) {
-            throw new InternalOperationException();
-        }
-
-        return $hmac;
+        return hash_hmac($this->_algo, $message, $this->authenticationKey(), true);
     }
 
     /**
      * Allows read only access to the internal variables needed by the openssl wrapper.
      *
      * @return array
-     * @throws InternalOperationException
      */
     public function wrapperVariables(): array
     {
@@ -192,8 +162,8 @@ final class OpensslKey
      * @param int $bytes Size of key in bytes
      *
      * @return string
+     * @throws Exception
      * @throws InvalidKeyLengthException
-     * @throws InternalOperationException
      */
     public static function create(int $bytes = 32): string
     {
@@ -201,12 +171,6 @@ final class OpensslKey
             throw new InvalidKeyLengthException();
         }
 
-        try {
-            $entropy = random_bytes($bytes);
-        } catch (Exception $e) {
-            throw new InternalOperationException($e->getMessage());
-        }
-
-        return base64_encode($entropy);
+        return base64_encode(random_bytes($bytes));
     }
 }

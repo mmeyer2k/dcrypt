@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Dcrypt;
 
-use Dcrypt\Exceptions\InternalOperationException;
 use Exception;
 
 class OpensslWrapper
@@ -17,24 +16,15 @@ class OpensslWrapper
      * @param string     $tag  AAD tag
      *
      * @return string
-     * @throws InternalOperationException
      */
     protected static function opensslEncrypt(string $data, OpensslKey $key, string &$tag): string
     {
         list($iv, $enc, $cipher, $options) = $key->wrapperVariables();
 
-        try {
-            if (self::tagLength($cipher) > 0) {
-                $ciphertext = openssl_encrypt($data, $cipher, $enc, $options, $iv, $tag, '', 16);
-            } else {
-                $ciphertext = openssl_encrypt($data, $cipher, $enc, $options, $iv);
-            }
-        } catch (Exception $e) {
-            throw new InternalOperationException($e->getMessage());
-        }
-
-        if ($ciphertext === false) {
-            throw new InternalOperationException();
+        if (self::tagLength($cipher) > 0) {
+            $ciphertext = openssl_encrypt($data, $cipher, $enc, $options, $iv, $tag, '', 16);
+        } else {
+            $ciphertext = openssl_encrypt($data, $cipher, $enc, $options, $iv);
         }
 
         return $ciphertext;
@@ -48,24 +38,15 @@ class OpensslWrapper
      * @param string     $tag   AAD authentication tag
      *
      * @return string
-     * @throws InternalOperationException
      */
     protected static function opensslDecrypt(string $input, OpensslKey $key, string $tag): string
     {
         list($iv, $enc, $cipher, $options) = $key->wrapperVariables();
 
-        try {
-            if (self::tagLength($cipher) > 0) {
-                $plaintext = openssl_decrypt($input, $cipher, $enc, $options, $iv, $tag, '');
-            } else {
-                $plaintext = openssl_decrypt($input, $cipher, $enc, $options, $iv);
-            }
-        } catch (Exception $e) {
-            throw new InternalOperationException($e->getMessage());
-        }
-
-        if ($plaintext === false) {
-            throw new InternalOperationException();
+        if (self::tagLength($cipher) > 0) {
+            $plaintext = openssl_decrypt($input, $cipher, $enc, $options, $iv, $tag, '');
+        } else {
+            $plaintext = openssl_decrypt($input, $cipher, $enc, $options, $iv);
         }
 
         return $plaintext;
@@ -74,33 +55,22 @@ class OpensslWrapper
     /**
      * Get IV size for specified CIPHER.
      *
-     * @param string $cipher Openssl cipher
+     * @param string $cipher Openssl cipher identifier
      *
      * @return int
-     * @throws InternalOperationException
      */
     protected static function ivSize(string $cipher): int
     {
-        try {
-            $size = openssl_cipher_iv_length($cipher);
-        } catch (Exception $e) {
-            throw new InternalOperationException($e->getMessage());
-        }
-
-        if ($size === false) {
-            throw new InternalOperationException();
-        }
-
-        return $size;
+        return openssl_cipher_iv_length($cipher);
     }
 
     /**
      * Get a correctly sized IV for the specified cipher.
      *
-     * @param string $cipher Openssl cipher
+     * @param string $cipher Openssl cipher identifier
      *
      * @return string
-     * @throws InternalOperationException
+     * @throws Exception
      */
     protected static function ivGenerate(string $cipher): string
     {
@@ -110,11 +80,7 @@ class OpensslWrapper
             return '';
         }
 
-        try {
-            return random_bytes($size);
-        } catch (Exception $e) {
-            throw new InternalOperationException($e->getMessage());
-        }
+        return random_bytes($size);
     }
 
     /**

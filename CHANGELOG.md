@@ -1,5 +1,10 @@
 # Changelog for `dcrypt`
 
+## 13.2.2 [pending]
+- Consolidate exceptions in openssl_*, hash_*, and random_* across PHP versions (should not break anything)
+- Improve testing functionality and readability
+- Confirm PHP 8.2 compatibility
+
 ## 13.2.1
 - Remove file and class level phpdoc blocks
 - Fix hash_hkdf error condition handling
